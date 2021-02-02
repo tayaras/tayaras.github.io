@@ -13,28 +13,30 @@ html {
 
 body{
     height: 100%;
-/*     font-family: "Europa-Regular", "Arial", Icons; */
+    font-family: "Europa-Regular", "Arial", Icons;
 }
 
 
 
 .box {
     background-image: url("https://i.imgur.com/HbJfvDU.png");
-/*     backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px); */
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
     background-size: 90%;
     background-repeat: no-repeat;
     background-position: top;
     background-attachment: fixed;
+    z-index: -1;
 
 }
 
 .blur {
     background: rgba(255, 255, 255, 0.308);
-    backdrop-filter: blur(30px);
+    backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
     height: auto;
     min-height: 100%;
+    z-index: 0;
 
 }
 
@@ -160,12 +162,13 @@ body{
     font-size: 1.4rem;
     /* font-weight: 400; */
     color: #003CFF;
-/*     font-family: "Europa-Regular", Icons; */
+    font-family: "Europa-Regular", Icons;
     font-style: normal;
     line-height: 1.5;
     width: 40%;
     min-width: 400px;
     padding-top: 10rem;
+    z-index: 1;
 
 }
 
@@ -177,7 +180,7 @@ body{
     font-size: 1.4rem;
     font-weight: 400;
     color: #003CFF;
-/*     font-family: "Europa-Regular", Icons; */
+    font-family: "Europa-Regular", Icons;
     font-style: normal;
     line-height: 1.5;
     
@@ -196,8 +199,9 @@ body{
     height: 0;
     padding-bottom: 70%;
     background: rgba(255, 255, 255, 0.137);
-/*     backdrop-filter: blur(0.1px);
-    -webkit-backdrop-filter: blur(0.1px); */
+    backdrop-filter: blur(0.1px);
+    -webkit-backdrop-filter: blur(0.1px);
+    z-index: 2;
 }
 
 .chat_wrapper {
@@ -208,8 +212,9 @@ body{
     height: 0;
     padding-bottom: 70%;
     background: rgba(255, 255, 255, 0.137);
-/*     backdrop-filter: blur(0.5px);
-    -webkit-backdrop-filter: blur(0.5px); */
+    backdrop-filter: blur(0.1px);
+    -webkit-backdrop-filter: blur(0.1px);
+    z-index: 2;
 }
 
 
@@ -222,7 +227,7 @@ body{
     font-size: 1.4rem;
     font-weight: 400;
     color: #003CFF;
-/*     font-family: "Europa-Regular", Icons; */
+    font-family: "Europa-Regular", Icons;
     font-style: normal;
     line-height: 1.5;
     
@@ -251,7 +256,7 @@ body{
     font-size: 1.4rem;
     font-weight: 400;
     color: #003CFF;
-/*     font-family: "Europa-Regular", Icons; */
+    font-family: "Europa-Regular", Icons;
     font-style: normal;
     line-height: 1.5;
     
@@ -265,8 +270,10 @@ body{
     height: 90%;
     padding-bottom: 70%;
     background: rgba(255, 255, 255, 0.137);
-/*     backdrop-filter: blur(0.1px);
-    -webkit-backdrop-filter: blur(0.1px); */
+    backdrop-filter: blur(0.1px);
+    -webkit-backdrop-filter: blur(0.1px);
+    z-index: 2;
+
 
 }
 
@@ -325,8 +332,9 @@ body{
     display: inline-block;
     font-size: medium;
     background: rgba(255, 255, 255, 0.116);
-/*     backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px); */
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    z-index: 3;
 }
 
 
@@ -341,6 +349,7 @@ body{
     border-radius: 15px;
     color: white;
     font-size: medium;
+    z-index: 3;
 
 }
 
