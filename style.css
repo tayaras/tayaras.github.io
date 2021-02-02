@@ -20,6 +20,7 @@ body{
 
 .box {
     background-image: url("https://i.imgur.com/HbJfvDU.png");
+    backdrop-filter: blur(25px);
     background-size: 90%;
     background-repeat: no-repeat;
     background-position: top;
