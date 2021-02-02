@@ -21,6 +21,7 @@ body{
     background-repeat: no-repeat;
     background-position: top;
     backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(2em);
     /* margin-top: 0rem; */
     background-attachment: fixed;
 
@@ -29,6 +30,7 @@ body{
 .blur {
     background: rgba(255, 255, 255, 0.308);
     backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(2em);
     height: auto;
     min-height: 100%;
     /* visibility: hidden;  */
