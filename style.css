@@ -14,13 +14,15 @@ body{
     height: 100%;
 }
 
+main::before {
+  background: url(https://i.imgur.com/HbJfvDU.png) 0 / cover fixed;
+  background-size: 90%;
+  background-repeat: no-repeat;
+  background-position: top;
+}
 
 .box {
-    background-image: url("https://i.imgur.com/HbJfvDU.png");
-    background-size: 90%;
-    background-repeat: no-repeat;
-    background-position: top;
-    backdrop-filter: blur(25px);
+    filter: blur(25px);
     -webkit-backdrop-filter: blur(2em);
     /* margin-top: 0rem; */
     background-attachment: fixed;
