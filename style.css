@@ -31,7 +31,7 @@ main::before {
 
 .blur {
     background: rgba(255, 255, 255, 0.308);
-    backdrop-filter: blur(25px);
+    filter: blur(25px);
     -webkit-backdrop-filter: blur(2em);
     height: auto;
     min-height: 100%;
