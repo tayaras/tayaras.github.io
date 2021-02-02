@@ -208,8 +208,8 @@ body{
     height: 0;
     padding-bottom: 70%;
     background: rgba(255, 255, 255, 0.137);
-/*     backdrop-filter: blur(0.1px);
-    -webkit-backdrop-filter: blur(0.1px); */
+    backdrop-filter: blur(0.1px);
+    -webkit-backdrop-filter: blur(0.1px);
 }
 
 
