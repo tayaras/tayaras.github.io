@@ -3,7 +3,7 @@ html {
     overflow: scroll;
     overflow-x: hidden;
     height: 100%;
-    font-family: "Europa-Regular", "Arial", Icons;
+    font-family: "Europa-Regular", Icons;
 }
 ::-webkit-scrollbar {
     width: 0px;  /* Remove scrollbar space */
