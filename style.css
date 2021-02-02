@@ -31,7 +31,7 @@ body{
 
 .blur {
     background: rgba(255, 255, 255, 0.308);
-    backdrop-filter: blur(25px);
+    backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(25px);
     height: auto;
     min-height: 100%;
