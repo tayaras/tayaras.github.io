@@ -237,18 +237,22 @@
                 function () {
                     $(this).css('background', '#ffffff00');
                     $(this).css('backdrop-filter', 'blur(0px)');
+                    $(this).css('-webkit-backdrop-filter', 'blur(0px)');
                     $(this).css('border', '2px solid #003CFF');
 
                     $(".blur2").css('background', '#ffffff4d;');
+                    $(".blur2").css('-webkit-backdrop-filter', 'blur(25px)');
                     $(".blur2").css('backdrop-filter', 'blur(25px)');
 
                 },
                 function () {
                     $(this).css('background', '');
                     $(this).css('backdrop-filter', '');
+                    $(this).css('-webkit-backdrop-filter', '');
                     $(this).css('border', '');
                     $(".blur2").css('background', '');
                     $(".blur2").css('backdrop-filter', '');
+                    $(".blur2").css('-webkit-backdrop-filter', '');
                 }
             );
 
@@ -443,7 +447,7 @@
 
     </script>
     <script src="horizontalscroll.js"></script>
-
+    <script src="./app.js"></script>
 </body>
 
 </html>
