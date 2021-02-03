@@ -9,8 +9,13 @@
 
 
 <body>
-    <div class="box" >
-        <div class="blur">
+    <div class="box">
+
+
+        <div class="blur2" id="blurs2">
+            <div class="circle" id="circles"></div>
+        </div>
+        <div class="blur" id="blurs">
             <div class="total">
                 <div class="container main_content_padding">
                     <div class="chat chat_wrapper2" contenteditable="false">
@@ -213,6 +218,40 @@
 
 
     <script>
+
+        $('#circles')
+            .css('cursor', 'pointer')
+            .click(
+                function clicker() {
+                    var x = document.getElementById("blurs");
+                    var y = document.getElementById("blurs2");
+                    if (x.style.display == "none") {
+                        y.style.display = "none"
+                        x.style.display = "block";
+                    } else {
+                        x.style.display = "none";
+                    }
+                }
+            )
+            .hover(
+                function () {
+                    $(this).css('background', '#ffffff00');
+                    $(this).css('backdrop-filter', 'blur(0px)');
+                    $(this).css('border', '2px solid #003CFF');
+
+                    $(".blur2").css('background', '#ffffff4d;');
+                    $(".blur2").css('backdrop-filter', 'blur(25px)');
+
+                },
+                function () {
+                    $(this).css('background', '');
+                    $(this).css('backdrop-filter', '');
+                    $(this).css('border', '');
+                    $(".blur2").css('background', '');
+                    $(".blur2").css('backdrop-filter', '');
+                }
+            );
+
 
         let buttons = [
             '<button class="buttoninput" onclick="updateChat(\'techStart\')" id="Tech Based">Tech Based Projects</button>',
