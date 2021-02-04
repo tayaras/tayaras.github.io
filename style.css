@@ -3,7 +3,9 @@ html {
     overflow: scroll;
     overflow-x: hidden;
     height: 100%;
-    font-family: "europa", "arial" Icons;
+    font-family: europa, sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 ::-webkit-scrollbar {
     width: 0px;  /* Remove scrollbar space */
@@ -13,7 +15,9 @@ html {
 
 body{
     height: 100%;
-    font-family: "europa", "Arial", Icons;
+    font-family: europa, sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 
@@ -164,8 +168,8 @@ body{
     font-size: 1.4rem;
     /* font-weight: 400; */
     color: #003CFF;
-    font-family: "europa", Icons;
-    font-style: normal;
+    /* font-family: "europa", Icons;
+    font-style: normal; */
     line-height: 1.5;
     width: 40%;
     min-width: 400px;
@@ -182,8 +186,8 @@ body{
     font-size: 1.4rem;
     font-weight: 400;
     color: #003CFF;
-    font-family: "europa", Icons;
-    font-style: normal;
+    /* font-family: "europa", Icons;
+    font-style: normal; */
     line-height: 1.5;
     
     
@@ -229,8 +233,8 @@ body{
     font-size: 1.4rem;
     font-weight: 400;
     color: #003CFF;
-    font-family: "europa", Icons;
-    font-style: normal;
+    /* font-family: "europa", Icons;
+    font-style: normal; */
     line-height: 1.5;
     
     
@@ -258,8 +262,8 @@ body{
     font-size: 1.4rem;
     font-weight: 400;
     color: #003CFF;
-    font-family: "europa", Icons;
-    font-style: normal;
+    /* font-family: "europa", Icons;
+    font-style: normal; */
     line-height: 1.5;
     
     
