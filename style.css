@@ -114,30 +114,16 @@ body{
     display: none;
 }
 
-#techExpCont{
+#projectsMain{
     display: none;
 }
 
-#techProdCont{
+
+#otherProjects{
     display: none;
 
 }
-#techSysCont{
-    display: none;
-}
 
-#analGraphCont{
-    display: none;
-}
-
-#analProdCont{
-    display: none;
-
-}
-#analSysCont{
-    display: none;
-
-}
 
 .row {
     display: inline-flex;
@@ -265,6 +251,54 @@ body{
     background-position: center;
 }
 
+#wrct {
+    background-image: url("WRCT.png");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#bees {
+    background-image: url("Pollinators.png");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#light {
+    background-image: url("light.jpg");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#vote {
+    background-image: url("Jane.png");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+#futures {
+    background-image: url("futuresthumbnail.png");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#cardboard {
+    background-image: url("card.jpg");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#newtech {
+    background-image: url("newt.png");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 
 
 .chat_wrapper2 {
@@ -324,7 +358,7 @@ body{
     width: 100%;
     height: 90%;
     padding-bottom: 70%;
-    background-image: url(https://i.imgur.com/ZikNxUf.jpg);
+    background-image: url("mephoto.gif");
     background-size:cover;
     background-repeat: no-repeat;
     background-position: center;
