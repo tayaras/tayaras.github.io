@@ -57,23 +57,23 @@
                     <div class="row justify-content-center" id="techExpBox">
                         <div class="col" id="tbnail">
                             <div class="container content_padding">
-                                <div class="chat chat_wrapper" contenteditable="false">
-                                    <img src="https://i.imgur.com/GBOOTTb.jpg" alt="HP">
+                                <div class="chat chat_wrapper" id="hp" contenteditable="false">
+                                    HP Interactive Experience
                                 </div>
                             </div>
                         </div>
                         <div class="col" id="tbnail">
                             <div class="container content_padding">
-                                <div class="chat chat_wrapper" contenteditable="false">
-                                    storycorps proj
+                                <div class="chat chat_wrapper" id="storycorps" contenteditable="false">
+                                    Anthropocene Pollution Exhibit
                                 </div>
                             </div>
                         </div>
 
                         <div class="col" id="tbnail">
                             <div class="container content_padding">
-                                <div class="chat chat_wrapper" contenteditable="false">
-                                    phipps ar
+                                <div class="chat chat_wrapper" id="phipps" contenteditable="false">
+                                    Phipps AR Experience
                                 </div>
                             </div>
                         </div>
@@ -83,22 +83,22 @@
                     <div class="row justify-content-center" id="techProdBox">
                         <div class="col" id="tbnail">
                             <div class="container content_padding">
-                                <div class="chat chat_wrapper" contenteditable="false">
-                                    Microsoft Signals
+                                <div class="chat chat_wrapper" id="ms1" contenteditable="false">
+                                    Microsoft | Data Explorer
                                 </div>
                             </div>
                         </div>
                         <div class="col" id="tbnail">
                             <div class="container content_padding">
-                                <div class="chat chat_wrapper" contenteditable="false">
-                                    Microsoft Migration
+                                <div class="chat chat_wrapper" id="ms2" contenteditable="false">
+                                    Microsoft | Hybrid-Cloud Migration
                                 </div>
                             </div>
                         </div>
                         <div class="col" id="tbnail">
                             <div class="container content_padding">
-                                <div class="chat chat_wrapper" contenteditable="false">
-                                    Microsoft CK
+                                <div class="chat chat_wrapper" id="ms3" contenteditable="false">
+                                    Microsoft | Customer Key
                                 </div>
                             </div>
                         </div>
@@ -107,15 +107,15 @@
                     <div class="row justify-content-center" id="techProdBox2">
                         <div class="col" id="tbnail">
                             <div class="container content_padding">
-                                <div class="chat chat_wrapper" contenteditable="false">
-                                    Compass
+                                <div class="chat chat_wrapper" id="compass" contenteditable="false">
+                                    Adventure! Compass
                                 </div>
                             </div>
                         </div>
                         <div class="col" id="tbnail">
                             <div class="container content_padding">
-                                <div class="chat chat_wrapper" contenteditable="false">
-                                    another one
+                                <div class="chat chat_wrapper" id="connectmore" contenteditable="false">
+                                    ConnectMore
                                 </div>
                             </div>
                         </div>
@@ -127,7 +127,7 @@
                     <div class="row justify-content-center" id="techSysBox">
                         <div class="col" id="tbnail">
                             <div class="container content_padding">
-                                <div class="chat chat_wrapper" contenteditable="false">
+                                <div class="chat chat_wrapper" id="humancomp" contenteditable="false">
                                     Human Computer Virtuosity
                                 </div>
                             </div>
@@ -135,8 +135,8 @@
 
                         <div class="col" id="tbnail">
                             <div class="container content_padding">
-                                <div class="chat chat_wrapper" contenteditable="false">
-                                    Robot Car Vid
+                                <div class="chat chat_wrapper" id="robotcar" contenteditable="false">
+                                    Understanding the Implications of Autonomous Vehicles
                                 </div>
                             </div>
                         </div>
@@ -269,6 +269,20 @@
                     $(".blur2").css('-webkit-backdrop-filter', '');
                 }
             );
+
+        $(".chat_wrapper")
+            .css('cursor', 'pointer')
+            .hover(
+                function () {
+                    // $(this).css('text-shadow', '1px 1px #8f8f8f');
+                    $(this).css('color', '#ffffff');
+                },
+                function () {
+                    // $(this).css('text-shadow', '');
+                    $(this).css('color', '');
+                }
+            );            
+
 
 
 

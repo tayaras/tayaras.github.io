@@ -185,7 +185,6 @@ body{
     padding-right: 1rem ;
     font-size: 1.4rem;
     font-weight: 400;
-    color: #003CFF;
     /* font-family: "europa", Icons;
     font-style: normal; */
     line-height: 1.5;
@@ -193,9 +192,80 @@ body{
     
 }
 
-.chat_wrapper img {
-    height: 70%;
+
+
+#hp {
+    background-image: url(https://i.imgur.com/GBOOTTb.jpg);
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
+
+#storycorps {
+    background-image: url("room6.png");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#phipps {
+    background-image: url("phipps.gif");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#ms1 {
+    background-image: url("dataexplore");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#ms2 {
+    background-image: url("hybridcloud.png");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#ms3 {
+    background-image: url("customerreport.png");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#compass {
+    background-image: url("comp.png");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#anotherone {
+    background-image: url(https://i.imgur.com/GBOOTTb.jpg);
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    
+}
+
+#humancomp {
+    background-image: url("eye.gif");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#robotcar {
+    background-image: url("ccc.png");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
 
 .chat_wrapper2 {
     box-sizing: border-box;
@@ -217,11 +287,18 @@ body{
     width: 100%;
     height: 0;
     padding-bottom: 70%;
-    background: rgba(255, 255, 255, 0.137);
+    /* background: rgba(255, 255, 255, 0.137);
     backdrop-filter: blur(0.1px);
-    -webkit-backdrop-filter: blur(0.1px);
+    -webkit-backdrop-filter: blur(0.1px); */
     z-index: 2;
+    color: #ffffff00;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    /* text-shadow: 1px 1px #8f8f8f00; */
+    
+
 }
+
 
 
 
@@ -236,6 +313,7 @@ body{
     /* font-family: "europa", Icons;
     font-style: normal; */
     line-height: 1.5;
+
     
     
 }
@@ -247,8 +325,9 @@ body{
     height: 90%;
     padding-bottom: 70%;
     background-image: url(https://i.imgur.com/ZikNxUf.jpg);
-    background-size: 100%;
+    background-size:cover;
     background-repeat: no-repeat;
+    background-position: center;
     
 
 }
@@ -283,7 +362,16 @@ body{
 
 }
 
+.chat2 {
+    border: 2px solid #003cff00;
+    border-radius: 25px;
+    position: relative;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    /* overflow-y: hidden;  */
 
+}
 
 
 .chat {
