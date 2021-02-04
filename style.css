@@ -75,10 +75,13 @@ body{
     z-index: 0;
 
 
-
-
-    
 }
+
+.circle img {
+    width: 100%;
+}
+
+
 
 
 

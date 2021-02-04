@@ -13,7 +13,9 @@
 
 
         <div class="blur2" id="blurs2">
-            <div class="circle" id="circles"></div>
+            <div class="circle" id="circles">
+                <img src="C:\Users\tayar\Documents\WEBSITE\circletest.gif" alt="yeet">
+            </div>
         </div>
         <div class="blur" id="blurs">
             <div class="total">
@@ -223,14 +225,24 @@
             .css('cursor', 'pointer')
             .click(
                 function clicker() {
-                    var x = document.getElementById("blurs");
-                    var y = document.getElementById("blurs2");
-                    if (x.style.display == "none") {
-                        y.style.display = "none"
-                        x.style.display = "block";
+                    var content = $("#blurs");
+                    var circle = $("#blurs2");
+                    if (content.css("display") === "none") {
+                        circle.css("display", "none");
+                        content.css("display", "block");
                     } else {
-                        x.style.display = "none";
+                        content.css("display", "none");
+
                     }
+                    console.log('hit')
+                    // var x = document.getElementById("blurs");
+                    // var y = document.getElementById("blurs2");
+                    // if (x.style.display == "none") {
+                    //     y.style.display = "none"
+                    //     x.style.display = "block";
+                    // } else {
+                    //     x.style.display = "none";
+                    // }
                 }
             )
             .hover(
@@ -243,6 +255,7 @@
                     $(".blur2").css('background', '#ffffff4d;');
                     $(".blur2").css('-webkit-backdrop-filter', 'blur(25px)');
                     $(".blur2").css('backdrop-filter', 'blur(25px)');
+                    $(".circle img").css('display', 'none');
 
                 },
                 function () {
@@ -251,10 +264,13 @@
                     $(this).css('-webkit-backdrop-filter', '');
                     $(this).css('border', '');
                     $(".blur2").css('background', '');
+                    $(".circle img").css('display', '');
                     $(".blur2").css('backdrop-filter', '');
                     $(".blur2").css('-webkit-backdrop-filter', '');
                 }
             );
+
+
 
 
         let buttons = [
