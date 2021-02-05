@@ -197,7 +197,7 @@ p {
 
 
 #hp {
-    background-image: url(https://i.imgur.com/GBOOTTb.jpg);
+    background-image: url("HP.gif");
     background-size:cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -267,8 +267,8 @@ p {
     background-position: center;
 }
 
-#wrct {
-    background-image: url("WRCT.png");
+#bear {
+    background-image: url("BEAR.jpg");
     background-size:cover;
     background-repeat: no-repeat;
     background-position: center;
