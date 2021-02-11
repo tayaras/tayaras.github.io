@@ -218,28 +218,28 @@ p {
 }
 
 #ms1 {
-    background-image: url("dataexplore");
+    background-image: url("Data\ Explorer\ v3.png");
     background-size:cover;
     background-repeat: no-repeat;
     background-position: center;
 }
 
 #ms2 {
-    background-image: url("hybridcloud.png");
+    background-image: url("Hybrid\ Cloud\ v2.png");
     background-size:cover;
     background-repeat: no-repeat;
     background-position: center;
 }
 
 #ms3 {
-    background-image: url("customerreport.png");
+    background-image: url("CK\ Thumb\ v2.png");
     background-size:cover;
     background-repeat: no-repeat;
     background-position: center;
 }
 
 #compass {
-    background-image: url("comp.png");
+    background-image: url("Compass\ v3.png");
     background-size:cover;
     background-repeat: no-repeat;
     background-position: center;
