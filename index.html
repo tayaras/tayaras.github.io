@@ -20,12 +20,12 @@
         </div> -->
         <div class="blur" id="blurs">
             <div class="total">
-                <div class="container main_content_padding">
+                <div class="container main_content_padding">    
                     <div class="chat chat_wrapper2" contenteditable="false">
                         <div class="chat_interior">
                             <div class="chat_output" id=chat_output>
                                 <div class="agent">
-                                    Hey, it's Tay! 👋 Welcome to my website!!!
+                                    Hey, it's Tay! 👋 Welcome to my website!!!<br> 🚧(Still Under Construction)🚧
                                 </div>
                             </div>
                             <div class="chat_input" id="chat_input">
@@ -63,7 +63,7 @@
                                         experiences and interactions.
                                     </p>
                                     <p>
-                                        I have worked as an intern at Microsoft the last four years, most recently as a
+                                        I have worked as an intern at Microsoft the last five years, most recently as a
                                         Program Manager and UX Design Intern. Check out my resume below to see more of
                                         my background and work
                                         experience.
@@ -95,9 +95,7 @@
                     <div class="row justify-content-center" id="techExpBox">
                         <div class="col" id="tbnail">
                             <div class="container content_padding">
-                                <div onclick="window.open('http://www.tayaras.myportfolio.com/hp','mywindow');"
-                                    style="cursor: pointer;" class="chat chat_wrapper" id="hp" contenteditable="false">
-
+                                <div onclick="window.open('http://www.tayaras.myportfolio.com/hp','mywindow');" style="cursor: pointer;" class="chat chat_wrapper" id="hp" contenteditable="false">
                                     HP Interactive Experience
                                 </div>
                             </div>
@@ -105,7 +103,7 @@
                         <div class="col" id="tbnail">
                             <div class="container content_padding">
                                 <div onclick="window.open('http://www.tayaras.myportfolio.com/dataexplorer','mywindow');" style="cursor: pointer;" class="chat chat_wrapper" id="ms1" contenteditable="false">
-                                    Microsoft | Data Explorer
+                                    Putting Things in Perspective
                                 </div>
                             </div>
                         </div>
@@ -114,7 +112,7 @@
                         <div class="col" id="tbnail">
                             <div class="container content_padding">
                                 <div onclick="window.open('http://www.tayaras.myportfolio.com/phipps','mywindow');" style="cursor: pointer;" class="chat chat_wrapper" id="phipps" contenteditable="false">
-                                    Phipps AR Experience
+                                    Orbit | Growing Together
                                 </div>
                             </div>
                         </div>
@@ -123,21 +121,21 @@
                         <div class="col" id="tbnail">
                             <div class="container content_padding">
                                 <div onclick="window.open('http://www.tayaras.myportfolio.com/hybridcloud','mywindow');" style="cursor: pointer;" class="chat chat_wrapper" id="ms2" contenteditable="false">
-                                    Microsoft | Hybrid-Cloud Migration
+                                    Microsoft
                                 </div>
                             </div>
                         </div>
                         <div class="col" id="tbnail">
                             <div class="container content_padding">
                                 <div onclick="window.open('http://www.tayaras.myportfolio.com/hcv','mywindow');" style="cursor: pointer;" class="chat chat_wrapper" id="humancomp" contenteditable="false">
-                                    Human Computer Virtuosity
+                                    Beamer | Intelligence in Spaces
                                 </div>
                             </div>
                         </div>
                         <div class="col" id="tbnail">
                             <div class="container content_padding">
                                 <div onclick="window.open('http://www.tayaras.myportfolio.com/customerkey','mywindow');" style="cursor: pointer;" class="chat chat_wrapper" id="ms3" contenteditable="false">
-                                    Microsoft | Customer Key
+                                    AR/MR Experimentation
                                 </div>
                             </div>
                         </div>
@@ -154,7 +152,7 @@
                         <div class="col" id="tbnail">
                             <div class="container content_padding">
                                 <div onclick="window.open('http://www.tayaras.myportfolio.com/redefinecars','mywindow');" style="cursor: pointer;" class="chat chat_wrapper" id="robotcar" contenteditable="false">
-                                    Understanding the Implications of Autonomous Vehicles
+                                    Human-Computer Virtuosity
                                 </div>
                             </div>
                         </div>
@@ -164,6 +162,13 @@
 
                 <div class="container1" id="otherProjects">
                     <div class="row justify-content-center" id="analProdBox">
+                        <div class="col" id="tbnail">
+                            <div class="container content_padding">
+                                <div onclick="window.open('http://www.tayaras.myportfolio.com/phipps','mywindow');" style="cursor: pointer;" class="chat chat_wrapper" id="phipps" contenteditable="false">
+                                    Phipps AR
+                                </div>
+                            </div>
+                        </div>
                         <div class="col" id="tbnail">
                             <div class="container content_padding">
                                 <div onclick="window.open('http://www.tayaras.myportfolio.com/cardboard','mywindow');" style="cursor: pointer;" class="chat chat_wrapper" id="cardboard" contenteditable="false">
@@ -295,7 +300,7 @@
             '<button class="buttoninput" onclick="updateChat(\'highlights\')" id="Highlights">Highlights</button>',
             '<button class="buttoninput" onclick="updateChat(\'aboutMe\')" id="About Me">Who are you?</button>',
             '<button class="buttoninput" onclick="updateChat(\'homeState\')" id="Nevermind">Nevermind</button>',
-            '<button class="buttoninput" onclick="updateChat(\'other\')" id="Other">Other fun stuff</button>',
+            '<button class="buttoninput" onclick="updateChat(\'other\')" id="Other">Archive</button>',
             '<button class="buttoninput" onclick="updateChat(\'projQ\')" id="projQ">What are these?</button>',
             '<button class="buttoninput" onclick="updateChat(\'otherQ\')" id="otherQ">What are these?</button>',
         ];
@@ -333,7 +338,7 @@
             'projQ': {
                 'buttons': [4, 3],
                 'userMessage': "What are all of these projects?",
-                'botMessage': ["All of these projects are ones that revolve around my core interests of creating technology based experiences, through, Professional Work, Speculative Projects, Branded Experiences and more!"],
+                'botMessage': ["All of these projects are ones that revolve around my core interests of creating technology based experiences, be it through Professional Work, Speculative Projects, Branded Experiences and more!"],
                 'moreQuestions': false,
                 'thumbnails': "projectsMain"
             },
@@ -449,6 +454,8 @@
     </script>
     <script src="horizontalscroll.js"></script>
     <!--<script src="./app.js"></script>-->
+
+
 </body>
 
 </html>
