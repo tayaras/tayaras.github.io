@@ -193,36 +193,22 @@ p {
     background-position: center;
 }
 
-#storycorps {
-    background-image: url("room6.png");
+#orbit {
+    background-image: url("OrbitThumb.gif");
     background-size:cover;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-#phipps {
-    background-image: url("phipps.gif");
+#PITP {
+    background-image: url("PITPThumb.gif");
     background-size:cover;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-#ms1 {
-    background-image: url("Data\ Explorer\ v3.png");
-    background-size:cover;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-#ms2 {
-    background-image: url("Hybrid\ Cloud\ v2.png");
-    background-size:cover;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-#ms3 {
-    background-image: url("CK\ Thumb\ v2.png");
+#microsoft {
+    background-image: url("Microsoft.png");
     background-size:cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -243,19 +229,15 @@ p {
     
 }
 
-#humancomp {
-    background-image: url("eye.gif");
+#xr {
+    background-image: url("XR.png");
     background-size:cover;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-#robotcar {
-    background-image: url("ccc.png");
-    background-size:cover;
-    background-repeat: no-repeat;
-    background-position: center;
-}
+
+
 
 #bear {
     background-image: url("BEAR.jpg");
