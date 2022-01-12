@@ -25,7 +25,7 @@
                         <div class="chat_interior">
                             <div class="chat_output" id=chat_output>
                                 <div class="agent">
-                                    Hey, it's Tay! 👋 Welcome to my website!!!<br> 🚧(Still Under Construction, Links will be broken or redirect incorrectly)🚧
+                                    <b>Hey, it's Tay!</b> 👋 Welcome to my website!!!<br> 🚧(Still Under Construction, Links will be broken or redirect incorrectly)🚧
                                 </div>
                             </div>
                             <div class="chat_input" id="chat_input">
@@ -37,57 +37,36 @@
                 <div class="container1" id="aboutCont">
 
                     <div class="row" id="aboutBox">
-                        <div class="col" id="aboutPhoto">
+                        <div class="col">
                             <div class="container about1_content_padding">
                                 <div class="chat about1_chat_wrapper" contenteditable="false">
                                 </div>
                             </div>
                         </div>
-                        <div class="col" id="aboutContent">
-                            <div class="container about2_content_padding">
-                                <div class="chat about2_chat_wrapper" contenteditable="false">
-                                    <br>
-                                    <h1> HEY! I'M TAY ARAS </h1>
-                                    <br>
-                                    <p>
-                                        I am an <span class="blue"> Experience Designer & Creative Technologist</span>,
-                                        currently finishing
-                                        Carnegie Mellon's <span class="orange">Bachelor of Design</span> program, where
-                                        I am working on the design
-                                        of <span class="blue">Smart Products</span> within the context of <span
-                                            class="blue">Intelligent Environments</span>.
-                                    </P>
-                                    <p>
-                                        I'm intrigued by Augmented Reality and Automation/Robotics and the role that
-                                        they and other speculative technologies will play in shaping our future
-                                        experiences and interactions.
-                                    </p>
-                                    <p>
-                                        I have worked as an intern at Microsoft the last five years, most recently as a
-                                        Program Manager and UX Design Intern. Check out my resume below to see more of
-                                        my background and work
-                                        experience.
-                                    </p>
-                                    <br>
-                                    <h3>
-                                        <a href="https://drive.google.com/file/d/1boiZhZjsFkkIRnEgT_69Y-cKSeShVGZW/view"
-                                            target="_blank"><span class="orange">RESUME</span></a>
-                                    </h3>
-                                    <br>
-                                    <p>
-                                        I have only two classes left to complete my
-                                        Bachelor of Design degree, just one
-                                        every semester, which gives me ample time to work on real-world design projects.
-                                        <span class="blue">I am currently looking for work, so if you happen to be
-                                            looking for a designer, feel free to contact me at</span> <span
-                                            class="orange">tayaras@outlook.com</span>
-                                    </p>
-                                    <br>
+                    
+                    </div>
+                </div>
 
+                <div class="container3" id="resumeCont">
+
+                    <div class="row" id="resumeBox">
+                        <div class="col" id="resumePhoto">
+                            <div class="container resume1_content_padding">
+                                <div class="chat resume1_chat_wrapper" contenteditable="false">
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="row" id="resumeContent">
+                        <div class="container resume2_content_padding">
+                            <div class="chat resume2_chat_wrapper" contenteditable="false">
+                                <br>
+                                    <a href="https://drive.google.com/file/d/1boiZhZjsFkkIRnEgT_69Y-cKSeShVGZW/view"
+                                        target="_blank">Link to PDF</a>
+                            </div>
+                        </div>
+                    </div>
+            
                 </div>
 
                 <div class="container1" id="projectsMain">
@@ -292,30 +271,32 @@
 
         let buttons = [
             '<button class="buttoninput" onclick="updateChat(\'projects\')" id="Projects">Projects</button>',
-            '<button class="buttoninput" onclick="updateChat(\'highlights\')" id="Highlights">Highlights</button>',
+            '<button class="buttoninput" onclick="updateChat(\'experience\')" id="experience">Work Experience</button>',
             '<button class="buttoninput" onclick="updateChat(\'aboutMe\')" id="About Me">Who are you?</button>',
             '<button class="buttoninput" onclick="updateChat(\'homeState\')" id="Nevermind">Nevermind</button>',
             '<button class="buttoninput" onclick="updateChat(\'other\')" id="Other">Archive</button>',
             '<button class="buttoninput" onclick="updateChat(\'projQ\')" id="projQ">What are these?</button>',
             '<button class="buttoninput" onclick="updateChat(\'otherQ\')" id="otherQ">What are these?</button>',
+            '<button class="buttoninput" onclick="updateChat(\'resume\')" id="resume">Resume</button>',
+            '<button class="buttoninput" onclick="updateChat(\'contact\')" id="contact">Contact</button>',
         ];
 
         let stateSpace = {
             'startState': {
-                'buttons': [0, 1, 2],
+                'buttons': [0, 2],
                 'botMessage': 'What would you like to see?',
                 'moreQuestions': false
             },
 
             'homeState': {
-                'buttons': [0, 1, 2],
+                'buttons': [0, 2],
                 'botMessage': 'Would you like to see anything else?',
                 'userMessage': "Actually, nevermind lmao",
                 'moreQuestions': false
             },
 
             'projects': {
-                'buttons': [5, 4, 3],
+                'buttons': [5, 4, 2],
                 'botMessage': ["For sure, here are my main projects! Scroll down to see them all"],
                 'userMessage': "Show me the goods!!! 👀",
                 'moreQuestions': true,
@@ -323,7 +304,7 @@
             },
 
             'other': {
-                'buttons': [0, 6, 3],
+                'buttons': [0, 6, 2],
                 'userMessage': "Do you have any other fun stuff I can look at ?",
                 'botMessage': ["Sure! Here they are, specially made for your viewing pleasure"],
                 'moreQuestions': false,
@@ -331,34 +312,49 @@
             },
 
             'projQ': {
-                'buttons': [4, 3],
+                'buttons': [4, 2],
                 'userMessage': "What are all of these projects?",
-                'botMessage': ["All of these projects are ones that revolve around my core interests of creating technology based experiences, be it through Professional Work, Speculative Projects, Branded Experiences and more!"],
+                'botMessage': ["All of these projects are ones that revolve around my core interests of creating <b>technology based experiences</b>, be it through Professional Work, Speculative Projects, Branded Experiences and more!"],
                 'moreQuestions': false,
                 'thumbnails': "projectsMain"
             },
 
             'otherQ': {
-                'buttons': [0, 3],
+                'buttons': [0, 2],
                 'userMessage': "What are all of these projects?",
                 'botMessage': ["Thes are some of my past projects, random graphics, fun stuff, miscellaneous projects and professional work that I've kept around"],
                 'moreQuestions': false,
                 'thumbnails': "otherProjects"
             },
 
-            'highlights': {
-                'buttons': [0, 1, 2],
-                'userMessage': "I'd like to see some of your highlights please",
-                'botMessage': "Highlights video coming soon 🙏",
+            'experience': {
+                'buttons': [0, 7, 8],
+                'userMessage': "What your job experience like?",
+                'botMessage': "I have worked as an intern at <b>Microsoft</b> the last five years, most recently as a <b>Program Manager & UX Design Intern</b>. I've also served as a Freelance Designer on and off since 2017.",
                 'moreQuestions': true
             },
 
             'aboutMe': {
-                'buttons': [0, 1],
+                'buttons': [0, 1, 7, 8],
                 'userMessage': "Tell me more about yourself!",
-                'botMessage': "Sure! My name is Tay Aras and I'm a Creative Technologist and Experience Designer from the 🌲PNW🏞️ currently focusing on the design of <b>Smart Products</b> within the context of <b>Intelligent Environments.</b>",
+                'botMessage': "Sure! My name is Tay Aras and I'm a Creative Technologist and Experience Designer from the 🌲PNW🏞️ currently studying the design of <b>Smart Products</b> within the context of <b>Intelligent Environments</b> at Carnegie Mellon University",
                 'moreQuestions': false,
                 'thumbnails': "aboutCont"
+            },
+
+            'resume': {
+                'buttons': [0, 1, 2, 8],
+                'userMessage': "Can I see your resume?",
+                'botMessage': "Look below to see my resume. There's a link there too if you would like to download a copy of the PDF",
+                'moreQuestions': false,
+                'thumbnails': "resumeCont"
+            },
+
+            'contact': {
+                'buttons': [0, 1, 2, 7],
+                'userMessage': "How can I contact you?",
+                'botMessage': "The fastest way to contact me is by emailing me at <b>tayaras@outlook.com</b>",
+                'moreQuestions': false,
             },
         };
 
@@ -404,6 +400,7 @@
             document.getElementById("projectsMain").style.display = "none";
             document.getElementById("otherProjects").style.display = "none";
             document.getElementById("aboutCont").style.display = "none";
+            document.getElementById("resumeCont").style.display = "none";
 
         }
 
@@ -433,6 +430,10 @@
 
             if (["aboutMe"].includes(nextState)) {
                 await botType("I am primarily interested in designing for future technologies and solving interaction problems in spaces such as <b>mixed reality experiences, automation/robotics, hybrid environments and more.</b>");
+            }
+
+            if (["experience"].includes(nextState)) {
+                await botType("I've also served as a <b>Teaching Assistant</b> at the <b>Carnegie Mellon University School of Design</b>, giving students an introduction into the Environments Design Track by helping teach the basics of spatial experience prototyping, designing for hybrid environments, and prototyping mixed reality interactions. ");
             }
 
             if (!["startState", "projects", "highlights", "homeState"].includes(nextState)) {

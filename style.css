@@ -109,16 +109,42 @@ p {
 }
 
 #aboutPhoto {
-    max-width: 33%;
+    max-width: 100%;
 }
 
 #aboutContent {
-    max-width: 66%;
+    max-width: 10%;
 }
+
 
 #aboutCont {
     display: none;
 }
+
+
+.container3 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: 100%;
+    text-align: center;
+}
+
+#resumePhoto {
+    max-width: 100%;
+}
+
+#resumeContent {
+    max-width: 10%;
+}
+
+#resumeCont {
+    display: none;
+}
+
+
+
+
+
 
 #projectsMain{
     display: none;
@@ -331,6 +357,7 @@ p {
     padding-right: 1rem ;
     font-size: 1.4rem;
     font-weight: 400;
+    max-width: 33%;
     color: #003CFF;
     /* font-family: "europa", Icons;
     font-style: normal; */
@@ -340,14 +367,10 @@ p {
     
 }
 .about1_chat_wrapper {
-    box-sizing: border-box;
-    display: block;
-    position: relative;
-    width: 100%;
-    height: 70%;
-    padding-bottom: 70%;
-    background-image: url("mephoto.gif");
-    background-size:cover;
+    max-height: 100%;
+    padding-bottom: 120%;
+    background-image: url("TayPhoto1.jpg");
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
 
@@ -380,9 +403,55 @@ p {
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     z-index: 2;
+}
+
+
+
+
+
+.resume1_content_padding {
+
+    padding-bottom: 4.5rem;
+    color: #003CFF;
+    height: auto;
+}
+
+.resume1_chat_wrapper {
+
+    min-height: 100%;
+    padding-bottom: 120%;
+    background-image: url("Tay\ Aras\ -\ Resume.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center,center;
 
 
 }
+
+
+.resume2_content_padding {
+    padding-top: 1rem ;
+    padding-bottom: 4rem ;
+    padding-left: 1rem ;
+    padding-right: 1rem ;
+    font-weight: 400;
+    color: #003CFF;
+    line-height: 1;
+    
+    
+}
+.resume2_chat_wrapper {
+    box-sizing: border-box;
+    display: block;
+    position: relative;
+    padding-bottom: 10%;
+    background-color: #ffffff81;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 2;
+}
+
+
 
 @media screen and (min-width: 601px) {
     div.about2_chat_wrapper {
