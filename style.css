@@ -131,12 +131,12 @@ p {
     text-align: center;
 }
 
-
+/*
 .total {
     max-width: 1920px;
 }
 
-
+*/
 
 .main_content_padding {
     padding-bottom: 2.5rem /*!main_margin*/;
@@ -536,6 +536,7 @@ p {
     flex-shrink: 0;
     line-height: 2rem;
     text-align: center;
+    
 }       
 
 .chat_input::-webkit-scrollbar {
