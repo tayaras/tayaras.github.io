@@ -451,7 +451,7 @@ p {
     border-radius: 15px;
     display: inline-block;
     font-size: medium;
-    background: rgba(255, 255, 255, .6);
+    background: rgba(255, 255, 255, .8);
     z-index: 3;
 }
 
