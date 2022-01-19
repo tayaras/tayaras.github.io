@@ -6,6 +6,7 @@ html {
     font-family: europa, sans-serif;
     font-weight: 400;
     font-style: normal;
+    scrollbar-width: none;
 }
 ::-webkit-scrollbar {
     width: 0px;  /* Remove scrollbar space */
@@ -39,7 +40,8 @@ p {
 
 
 .box {
-    background-image: url("https://i.imgur.com/HbJfvDU.png");
+   /* background-image: url("https://i.imgur.com/HbJfvDU.png");*/
+    background-image: url("BlurredBackground.png");
     background-size: 90%;
     background-repeat: no-repeat;
     background-position: top;
@@ -49,9 +51,9 @@ p {
 }
 
 .blur {
-    background: #ffffff4d;
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
+    background: #ffffff2c;
+    /*backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);*/
     height: auto;
     min-height: 100%;
     z-index: 0;
@@ -266,8 +268,8 @@ p {
     height: 0;
     padding-bottom: 70%;
     background: rgba(255, 255, 255, 0.137);
-    backdrop-filter: blur(0.1px);
-    -webkit-backdrop-filter: blur(0.1px);
+    backdrop-filter: blur(0.2px);
+    -webkit-backdrop-filter: blur(0.2px);
     z-index: 2;
 }
 
@@ -449,7 +451,7 @@ p {
     border-radius: 15px;
     display: inline-block;
     font-size: medium;
-    background: rgba(255, 255, 255, .8);
+    background: rgba(255, 255, 255, .6);
     z-index: 3;
 }
 
