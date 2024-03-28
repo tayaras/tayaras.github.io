@@ -149,7 +149,6 @@ p {
     font-size: 1.4rem;
     color: #003CFF;
     line-height: 1.5;
-    width: 55%;
     min-width: 600px;
     padding-top: 5rem;
     z-index: 1;
@@ -385,19 +384,28 @@ p {
     z-index: 2;
 }
 
-
+@media screen and (max-width: 600px) {
+    .main_content_padding {
+        max-width: 80%;
+    }
+}
 
 @media screen and (min-width: 601px) {
-    div.about2_chat_wrapper {
-      font-size: 20px;
+    .main_content_padding {
+        max-width: 55%;
     }
 }
-  
-@media screen and (max-width: 600px) {
-    div.about2_chat_wrapper {
-      font-size: 10px;
-    }
+
+
+
+
+
+
+#bootstrap-overrides .container h1 {
+    /* Higher priority due to the ID */
+    width: 55%; /* Your custom line height */
 }
+
 
 .chat2 {
     border: 2px solid #003cff00;
@@ -641,3 +649,4 @@ p {
     
 
 }
+
