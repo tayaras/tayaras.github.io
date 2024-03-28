@@ -8,11 +8,11 @@
 </HEAD>
 <title>Tay Aras</title>
 <link rel="shortcut icon" type="image/png" href="bluecircl3.png"/>
+          <!--   <body>
 
-    <body>
     Site under reconstruction - check in later 😎
-</body> 
-<!-- 
+        
+</body> -->
 <body>
     <div class="box">
         <div class="blur" id="blurs">
@@ -20,9 +20,23 @@
                 <div class="container main_content_padding">    
                     <div class="chat chat_wrapper2" contenteditable="false">
                         <div class="chat_interior">
+                            <div class="chat_header" id="chat_header">
+                                <div class="profilepic">
+                                </div>
+                                <div class="profiletext">
+                                    <b>Tay Aras</b>
+                                </div>
+                                <div class="profiletext2">
+                                     Active now (kinda)
+                                </div>
+                            </div>
                             <div class="chat_output" id=chat_output>
                                 <div class="agent">
-                                    <b>Hello! I'm Tay Aras 👋 Welcome to my website!!! 🥳🥳🥳</b><br>
+                                    <b>Hello! I'm Tay Aras 👋 Welcome to my website!!! 🥳🥳🥳</b> 
+                                    
+                                </div>
+                                <div class="agent">
+                                    🚧 This website is undergoing reconstruction so some items may be missing
                                 </div>
                             </div>
                             <div class="chat_input" id="chat_input">
@@ -214,20 +228,22 @@
             );
 
         let buttons = [
-            '<button class="buttoninput" onclick="updateChat(\'projects\')" id="Projects">Projects</button>',
-            '<button class="buttoninput" onclick="updateChat(\'experience\')" id="experience">Work Experience</button>',
+            '<button class="buttoninput" onclick="updateChat(\'projects\')" id="projects">Portfolio</button>',
+            '<button class="buttoninput" onclick="updateChat(\'experience\')" id="experience">Experience</button>',
             '<button class="buttoninput" onclick="updateChat(\'aboutMe\')" id="About Me">Who are you?</button>',
             '<button class="buttoninput" onclick="updateChat(\'homeState\')" id="Nevermind">Nevermind</button>',
             '<button class="buttoninput" onclick="updateChat(\'other\')" id="Other">Archive</button>',
-            '<button class="buttoninput" onclick="updateChat(\'projQ\')" id="projQ">What are these?</button>',
+            '<button class="buttoninput" onclick="updateChat(\'projQ\')" id="projQ">Current Work</button>',
             '<button class="buttoninput" onclick="updateChat(\'otherQ\')" id="otherQ">What are these?</button>',
             '<button class="buttoninput" onclick="updateChat(\'resume\')" id="resume">Resume</button>',
             '<button class="buttoninput" onclick="updateChat(\'contact\')" id="contact">Contact</button>',
+            '<button class="buttoninput" onclick="updateChat(\'fun\')" id="fun">Life</button>',
+
         ];
 
         let stateSpace = {
             'startState': {
-                'buttons': [0, 2],
+                'buttons': [5, 0, 2],
                 'botMessage': 'What would you like to see?',
                 'moreQuestions': false
             },
@@ -241,63 +257,70 @@
 
             'projects': {
                 'buttons': [5, 4, 2],
-                'botMessage': ["For sure, here are my main projects! Scroll down to see them all"],
+                'botMessage': ["So sorry! 🙇🙇🙇 I'm currently working on refactoring and replacing some projects, so you'll have to come back later to check them out :)"],
                 'userMessage': "Show me the goods!!! 👀",
                 'moreQuestions': true,
-                'thumbnails': "projectsMain"
+                //'thumbnails': "projectsMain"
             },
 
             'other': {
                 'buttons': [0, 6, 2],
-                'userMessage': "Do you have any other fun stuff I can look at ?",
-                'botMessage': ["Sure! Here they are, specially made for your viewing pleasure"],
+                'userMessage': "Do you have any other fun stuff I can look at?",
+                'botMessage': ["Sure! If you've asked this and projects appear below the chat window, that means you're lucky and I've forgotten to take the projects out while update the site ;) If not, they'll be back soon."],
                 'moreQuestions': false,
-                'thumbnails': "otherProjects"
+                //'thumbnails': "otherProjects"
             },
 
             'projQ': {
-                'buttons': [4, 2],
-                'userMessage': "What are all of these projects?",
-                'botMessage': ["All of these projects are ones that revolve around my core interests of creating <b>technology based experiences</b>, be it through Professional Work, Speculative Projects, Branded Experiences and more!"],
+                'buttons': [0, 4, 2],
+                'userMessage': "What are you currently working on??",
+                'botMessage': ["I'm currently a Product Manager at Microsoft in charge of the <b>ACS WebUI Library</b>. This UI library makes it easy to build visual communication experiences through prebuilt composites and components. "],
                 'moreQuestions': false,
-                'thumbnails': "projectsMain"
+               // 'thumbnails': "projectsMain"
             },
 
             'otherQ': {
                 'buttons': [0, 2],
                 'userMessage': "What are all of these projects?",
-                'botMessage': ["Thes are some of my past projects, random graphics, fun stuff, miscellaneous projects and professional work that I've kept around"],
+                'botMessage': ["These are some past projects from early college. It's a mix of prototypes, graphics, and other fun stuff from early on in my design journey that I've kept around. It's always nice to look back to the past every once in a little while :)"],
                 'moreQuestions': false,
-                'thumbnails': "otherProjects"
+                //'thumbnails': "otherProjects"
             },
 
             'experience': {
                 'buttons': [0, 7, 8],
                 'userMessage': "What your job experience like?",
-                'botMessage': "I have worked as an intern at <b>Microsoft</b> the last five years, most recently as a <b>Program Manager & UX Design Intern</b>. I've also served as a Freelance Designer on and off since 2017.",
+                'botMessage': "<b>I've been full-time at Microsoft as a PM for about two years</b>. I've been at Microsoft for 7+ years, previously interning 5 times as a PM & UX Design Intern across various teams within M365.",
                 'moreQuestions': true
             },
 
             'aboutMe': {
-                'buttons': [0, 1, 7, 8],
+                'buttons': [0, 1, 8, 9],
                 'userMessage': "Tell me more about yourself!",
-                'botMessage': "Sure! My name is <b>Tay Aras</b> and I'm a Creative Technologist and Experience Designer from the 🌲PNW🏞️ currently studying the design of <b>Smart Products</b> within the context of <b>Intelligent Environments</b> at Carnegie Mellon University",
+                'botMessage': "Sure! as I mentioned before, my name is <b>Tay</b> (it's not short for anything)",
                 'moreQuestions': false,
                 'thumbnails': "aboutCont"
             },
 
             'resume': {
-                'buttons': [0, 1, 2, 8],
+                'buttons': [0, 1, 2, 8, 9],
                 'userMessage': "Can I see your resume?",
-                'botMessage': "Look below to see my resume. There's a link there too if you would like to download a copy of the PDF",
+                'botMessage': "It's currently being updated! Check back later to see it ;)",
                 'moreQuestions': false,
-                'thumbnails': "resumeCont"
+               // 'thumbnails': "resumeCont"
             },
 
             'contact': {
-                'buttons': [0, 1, 2, 7],
+                'buttons': [0, 1, 2, 7, 9],
                 'userMessage': "How can I contact you?",
-                'botMessage': "The fastest way to contact me is by emailing me at <b>tayaras@outlook.com</b>",
+                'botMessage': "The fastest way to contact me is by email at <b>tayaras@outlook.com</b>",
+                'moreQuestions': false,
+            },
+
+            'fun': {
+                'buttons': [0, 1, 2, 7],
+                'userMessage': "What do you do in your free time??",
+                'botMessage': "I do a lot of different things! I love spending time outside ⛰️🌲- hiking, bouldering, sport climbing, camping, backpacking... I've recently been trying to get into 🏄surfing🏄 (I'm terrible). I also grew up playing soccer ⚽ and am a supporter of my hometown Seattle Sounders FC.",
                 'moreQuestions': false,
             },
         };
@@ -314,6 +337,11 @@
         }
 
         function newBotMessage(messageText) {
+            let text = "You can read more about on our Storybook";    
+
+            if (messageText == "UI Library Storybook") { 
+                messageText = text.link("https://azure.github.io/communication-ui-library/?path=/story/overview--page");
+            }
 
             var $input = $('<div class="agent">' + messageText + '</div>')
             $input.appendTo($('#chat_output'));
@@ -321,6 +349,7 @@
         }
 
         function newUserMessage(messageText) {
+
             var $input = $('<div class="user">' + messageText + '</div>')
             $input.appendTo($('#chat_output'));
             $("#chat_output").scrollTop($("#chat_output")[0].scrollHeight);
@@ -367,11 +396,24 @@
             toggler(stateSpace[nextState]["thumbnails"]);
 
             if (["aboutMe"].includes(nextState)) {
-                await botType("I am primarily interested in designing for future technologies and solving interaction problems in spaces such as <b>mixed reality experiences, automation/robotics, hybrid environments and more.</b>");
+                await botType("I’m originally from the 🌲PNW🏞️ (still primarily based here!) but have been somewhat transient across the USA in the past few years.");
+                await botType("I’m currently a <b>Product Manager</b> at <b>Microsoft</b> in charge of the <b>ACS Web UI Library</b>, where we’re building an open source UI SDK that will enable healthcare organizations to more easily build out virtual appointment experiences.");
+                await botType("I was previously at <b>Carnegie Mellon University</b> where I was studying <i>Hybrid Environments Design</i>, focusing on building interactive devices and experiences that span virtual and physical spaces.");
+
             }
 
             if (["experience"].includes(nextState)) {
+                await botType("I've also been a <b>Freelance Design Consultant</b> since 2017, advising on design strategy, branding, product conceptualization and prototyping. Some of my clients include 0xPARC, Microsoft, New Tech, Computing Kids, various stealth startups, and more.");
                 await botType("I've also served twice as a <b>Teaching Assistant</b> at the <b>CMU School of Design Environments Prototyping Lab</b>, giving students an introduction into the Environments Design Track by helping teach the basics of spatial experience prototyping, designing for hybrid environments, and prototyping mixed reality interactions. ");
+            }
+
+            if (["projQ"].includes(nextState)) {
+                await botType("Since joining, I've spearheaded the implementation of 20+ (and counting) features in the UI Library, with a particular emphasis on accessibility, especially in virtual appointment contexts like Virtual Healthcare and Virtual Hospital Visits, where it sees primary usage. I am the main driver for accessibility efforts across both Native and Web UI Library teams.");
+                await botType("UI Library Storybook");
+            }
+
+            if (["fun"].includes(nextState)) {
+                await botType("I love music - I am an avid concert goer (saw over 90 different artists in 2023) and play guitar in my spare time. Contact me to hear more about my other interests! I could go on and on ");
             }
 
             if (!["startState", "projects", "highlights", "homeState"].includes(nextState)) {
@@ -388,6 +430,6 @@
     </script>
     <script src="horizontalscroll.js"></script>
 
-</body> -->
+</body>
 
 </html>

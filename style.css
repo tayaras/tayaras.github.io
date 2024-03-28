@@ -19,7 +19,6 @@ body{
     font-family: europa, sans-serif;
     font-weight: 400;
     font-style: normal;
-    padding-top: 10%;
     text-align: center;
 }
 
@@ -438,6 +437,7 @@ p {
     padding: 1rem;
     display: flex;
     flex-direction: column;
+    background: rgba(255,255,255, 0.4);
 }
 
 .chat .input_area {
@@ -446,6 +446,7 @@ p {
     line-height: 3.4rem;
     display: flex;
 }
+
 
 .chat .agent {
     text-align: left;
@@ -524,6 +525,73 @@ p {
     border-radius: 100%;
 }
 
+.chat_header {
+    display: block;
+    font: inherit;
+    height: 70px;
+    width: 100%;
+    border: 0;
+    margin: 0;
+    margin-left: auto;
+    margin-right: auto;
+    padding:  0.4rem;
+    padding-left: 1rem;
+    overflow-x: auto;
+    white-space: nowrap;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    border-bottom: 2px solid #003CFF;
+    flex-shrink: 0;
+    line-height: 2rem;
+    text-align: left;
+    background: rgba(255,255,255, 0.6);
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    
+}     
+
+
+.profilepic {
+    text-align: left;
+    margin-right: auto;
+    padding: 25px;
+    background-image: url("tayphoto3.jpg");
+    background-size: 50px;
+    background-position: center;
+    border: 2px solid #003CFF;
+    border-radius: 50%;
+    display: inline-block;
+    font-size: medium;
+    z-index: 3;
+    align-self: left;
+    float: left;
+}
+
+.profiletext {
+    text-align: left;
+    margin-right: auto;
+    z-index: 3;
+    align-self: left;
+    padding-left: 1rem;
+    padding-left: 4rem;
+    padding-bottom: 0;
+    height: 45%;
+}
+
+.profiletext2 {
+    text-align: left;
+    margin-right: auto;
+    z-index: 3;
+    align-self: left;
+    padding-top: 0;
+    margin-top: 0;
+    padding-left: 4rem;
+    font-size: medium;
+    color: grey;
+
+}
+
+
 
 .chat_input {
     display: block;
@@ -543,6 +611,9 @@ p {
     flex-shrink: 0;
     line-height: 2rem;
     text-align: center;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    background: rgba(255,255,255, 0.6);
     
 }       
 
