@@ -397,11 +397,17 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
 .hero-img img,
 .work-img-main img,
 .work-img-sm img,
-.impact-img-block img,
-.dark-cta-img img {
+.impact-img-block img {
   width: 100%;
   height: auto;
   display: block;
+}
+
+.dark-cta-img img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
 }
 
 /* Subtle shadow so screenshots separate from page background */
