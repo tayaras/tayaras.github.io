@@ -343,7 +343,7 @@ h3 {
   line-height: 1.2;
 }
 
-p { font-size: 14px; line-height: 1.65; color: #333; }
+p { font-size: 14px; line-height: 1.65; color: var(--black); }
 p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
 
 /* Large intro paragraph used at the top of each case study overview */
@@ -593,7 +593,7 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
   color: var(--black);
 }
 
-.impact-desc { font-size: 12px; line-height: 1.6; color: #444; max-width: 280px; }
+.impact-desc { font-size: 12px; line-height: 1.6; color: var(--mid); max-width: 280px; }
 
 .impact-img { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
 .impact-img-block {
@@ -723,12 +723,12 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
 
 .spec-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); padding-top: 3px; }
 .spec-card h3 { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
-.spec-desc { font-size: 12px; line-height: 1.55; color: #444; }
+.spec-desc { font-size: 12px; line-height: 1.55; color: var(--mid); }
 .spec-owned { font-family: var(--mono); font-size: 10px; color: var(--mid); margin-top: 8px; display: block; letter-spacing: 0.04em; }
 
 /* ─── STAKES BOX ─── */
 .stakes { margin-top: 32px; padding: 24px; border: 1px solid var(--line); }
-.stakes p { font-size: 13px; line-height: 1.65; color: #444; }
+.stakes p { font-size: 13px; line-height: 1.65; color: var(--mid); }
 
 /* ─── DID GRID ─── */
 .did { border-bottom: 1px solid var(--line); }
@@ -779,7 +779,7 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
   margin-top: 0;
 }
 
-.index-tagline p { font-size: 15px; line-height: 1.65; color: #444; max-width: 480px; }
+.index-tagline p { font-size: 15px; line-height: 1.65; color: var(--mid); max-width: 480px; }
 
 /* Elsewhere section */
 .elsewhere { border-bottom: 1px solid var(--line); }
@@ -830,7 +830,7 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
 .about-left .label { margin-bottom: 32px; }
 .about-left h1 { font-size: clamp(40px, 5vw, 72px); margin-bottom: 40px; }
 .about-left p + p { margin-top: 20px; }
-.about-left p { font-size: 15px; line-height: 1.7; color: #333; }
+.about-left p { font-size: 15px; line-height: 1.7; color: var(--black); }
 
 .about-right { padding-top: 64px; }
 
@@ -887,7 +887,7 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
 }
 .interest-cell:last-child { border-right: none; }
 .interest-cell .label { margin-bottom: 16px; }
-.interest-cell p { font-size: 13px; line-height: 1.6; color: #444; }
+.interest-cell p { font-size: 13px; line-height: 1.6; color: var(--mid); }
 
 .about-contact {
   max-width: var(--max);
