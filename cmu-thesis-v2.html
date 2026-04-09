@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Physicalization of AR/XR Experiences — Tay Aras</title>
+  <meta name="description" content="CMU Bachelor of Design capstone. A research-driven set of physicalized prototyping tools for augmented reality, covering image mapping, 3D masking, shader effects, and physical sensor inputs.">
+  <script>try{var t=localStorage.getItem('tayTheme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+
+    /* ─────────────────────────────
+       RESPONSIVE — hero title on small screens
+    ───────────────────────────── */
+
+    /* ─────────────────────────────
+       TOOLS — 2×3 grid
+    ───────────────────────────── */
+    .v2-tools { border-top: 1px solid var(--line); }
+    .v2-tools-hd {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 24px var(--pad);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+    }
+    .v2-tools-hd .label { margin: 0; }
+    .v2-tools-count {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--mid);
+      letter-spacing: 0.06em;
+    }
+
+    .v2-proto-grid {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 64px var(--pad) 80px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 64px 32px;
+    }
+
+    .v2-proto-video {
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: #e8e5de;
+      margin-bottom: 18px;
+      position: relative;
+      cursor: pointer;
+    }
+    .v2-proto-video video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .v2-proto-video .vid-btn {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.16);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+      z-index: 2;
+    }
+    .v2-proto-video .vid-btn svg {
+      width: 40px;
+      height: 40px;
+      fill: #fff;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+      transition: transform 0.15s;
+    }
+    .v2-proto-video .vid-btn:hover svg { transform: scale(1.1); }
+    .v2-proto-video .vid-btn .icon-pause { display: none; }
+    .v2-proto-video.vid-playing .vid-btn { background: transparent; opacity: 0; }
+    .v2-proto-video.vid-playing:hover .vid-btn { opacity: 1; background: rgba(0,0,0,0.1); }
+    .v2-proto-video.vid-playing .vid-btn .icon-play  { display: none; }
+    .v2-proto-video.vid-playing .vid-btn .icon-pause { display: block; }
+
+    .v2-proto-meta {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .v2-proto-num {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--mid);
+      letter-spacing: 0.06em;
+    }
+    .v2-proto-tag {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--mid);
+    }
+    .v2-proto-h {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+    .v2-proto-p {
+      font-size: 12px;
+      line-height: 1.7;
+      color: #444;
+    }
+
+    /* System diagram */
+    .v2-diagram {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 56px var(--pad);
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+    .v2-diagram .label { margin-bottom: 28px; display: block; }
+    .v2-diagram img { width: 100%; display: block; }
+    .v2-diagram-overview { margin-bottom: 24px; }
+    .v2-diagram-components {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 24px;
+    }
+    @media (max-width: 768px) {
+      .v2-diagram-components { grid-template-columns: 1fr; gap: 32px; }
+    }
+
+    /* ─────────────────────────────
+       PRINCIPLES — bordered card grid
+    ───────────────────────────── */
+    .v2-principles { border-top: 1px solid var(--line); background: #eae8e2; }
+    .v2-principles-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 80px var(--pad) 88px;
+    }
+    .v2-principles-inner .label { margin-bottom: 48px; display: block; }
+    .v2-principles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--line);
+    }
+    .v2-principle {
+      padding: 48px 40px;
+      border-right: 1px solid var(--line);
+    }
+    .v2-principle:last-child { border-right: none; }
+    .v2-principle-n {
+      font-size: 60px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 28px;
+      opacity: 0.09;
+      letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
+    }
+    .v2-principle h3 {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 12px;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+    .v2-principle p {
+      font-size: 14px;
+      line-height: 1.65;
+      color: #333;
+    }
+
+    /* ─────────────────────────────
+       CONTEXT — section-row + full-bleed image
+    ───────────────────────────── */
+    .v2-context-text h2 { margin-bottom: 28px; }
+    .v2-context-text .lede { margin-bottom: 16px; }
+    .v2-context-text p + p { margin-top: 12px; }
+    .v2-context-img {
+      overflow: hidden;
+      max-height: 540px;
+    }
+    .v2-context-img img {
+      width: 100%;
+      height: 100%;
+      max-height: 540px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ─────────────────────────────
+       PROCESS — unified left-label layout
+    ───────────────────────────── */
+    .v2-process { border-top: 1px solid var(--line); background: #eae8e2; }
+    .v2-process-hd {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 24px var(--pad);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+    }
+    .v2-process-hd .label { margin: 0; }
+
+    .v2-process-chapter {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      border-bottom: 1px solid var(--line);
+    }
+    .v2-process-chapter:last-child { border-bottom: none; }
+
+    .v2-process-chap-label {
+      padding: 32px var(--pad);
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 6px;
+    }
+    .v2-process-chap-label .label { margin: 0; }
+    .v2-process-chap-label small {
+      font-size: 10px;
+      color: var(--mid);
+      letter-spacing: 0.04em;
+      line-height: 1.4;
+    }
+
+    .v2-process-strip { display: flex; }
+    .v2-process-strip.wrap { flex-wrap: wrap; }
+    .v2-process-item {
+      flex: 1;
+      min-width: 0;
+      border-right: 1px solid var(--line);
+      overflow: hidden;
+      aspect-ratio: 1;
+      background: #e8e5de;
+    }
+    .v2-process-item:last-child { border-right: none; }
+    .v2-process-strip.wrap .v2-process-item { flex: 0 0 33.333%; }
+    .v2-process-strip.wrap .v2-process-item:nth-child(3n) { border-right: none; }
+    .v2-process-strip.wrap .v2-process-item:nth-child(n+4) { border-top: 1px solid var(--line); }
+    .v2-process-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ─────────────────────────────
+       STATS — uses shared .impact classes
+    ───────────────────────────── */
+
+    /* ─────────────────────────────
+       FINAL IMAGE
+    ───────────────────────────── */
+    .v2-final {
+      overflow: hidden;
+      max-height: 560px;
+      border-bottom: 1px solid var(--line);
+    }
+    .v2-final img {
+      width: 100%;
+      max-height: 560px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ─────────────────────────────
+       DARK MODE
+    ───────────────────────────── */
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .v2-proto-video { background: #252422; }
+      html:not([data-theme="light"]) .v2-process-item { background: #252422; }
+      html:not([data-theme="light"]) .v2-principles { background: #1e1d1b; }
+      html:not([data-theme="light"]) .v2-process { background: #1e1d1b; }
+    }
+    html[data-theme="dark"] .v2-proto-video { background: #252422; }
+    html[data-theme="dark"] .v2-process-item { background: #252422; }
+    html[data-theme="dark"] .v2-principles { background: #1e1d1b; }
+    html[data-theme="dark"] .v2-process { background: #1e1d1b; }
+
+    /* ─────────────────────────────
+       RESPONSIVE
+    ───────────────────────────── */
+    @media (max-width: 900px) {
+      .v2-proto-grid { grid-template-columns: repeat(2, 1fr); gap: 48px 24px; }
+      .v2-principles-grid { grid-template-columns: 1fr; }
+      .v2-principle { border-right: none; border-bottom: 1px solid var(--line); }
+      .v2-principle:last-child { border-bottom: none; }
+      .v2-process-chapter { grid-template-columns: 1fr; }
+      .v2-process-chap-label { border-right: none; border-bottom: 1px solid var(--line); flex-direction: row; align-items: baseline; gap: 12px; }
+      .v2-process-strip.wrap .v2-process-item { flex: 0 0 50%; }
+      .v2-process-strip.wrap .v2-process-item:nth-child(3n) { border-right: 1px solid var(--line); }
+      .v2-process-strip.wrap .v2-process-item:nth-child(2n) { border-right: none; }
+      .v2-process-strip.wrap .v2-process-item:nth-child(n+4) { border-top: 1px solid var(--line); }
+    }
+    @media (max-width: 600px) {
+      .v2-proto-grid { grid-template-columns: 1fr; gap: 40px; }
+      .v2-process-strip { flex-wrap: wrap; }
+      .v2-process-item { flex: 0 0 50%; border-right: 1px solid var(--line); }
+      .v2-process-item:nth-child(2n) { border-right: none; }
+      .v2-process-item:nth-child(n+3) { border-top: 1px solid var(--line); }
+    }
+  </style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="site-header" id="navigation">
+  <div class="header-bar">
+    <a class="brand" href="index.html">Tay Aras</a>
+    <div class="string-zone" id="singleZone" tabindex="0" aria-label="Interactive guitar string — click or drag to play">
+      <svg class="string-svg" id="singleSVG" viewBox="0 0 1100 36" preserveAspectRatio="none">
+        <path id="singlePath" class="string-path" d="M0 19 Q 550 19 1100 19"/>
+      </svg>
+    </div>
+    <button class="mute-btn" id="muteBtn" aria-label="Toggle sound" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path class="sound-on" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-on" d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-off" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"/>
+        <line class="sound-off" x1="15" y1="9" x2="21" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+        <line class="sound-off" x1="21" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+      </svg>
+    </button>
+    <button class="expand-btn" id="expandBtn" aria-expanded="false" aria-controls="stringsPanel" style="display:none" aria-hidden="true">
+      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      more
+    </button>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html" class="current">Work</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="mobile-nav">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none">
+          <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html" class="current">Work</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </div>
+  <div class="strings-panel" id="stringsPanel" hidden>
+    <div class="strings-grid" id="stringsGrid"></div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- Hero -->
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-l">Carnegie Mellon University · Bachelor of Design</span>
+      <span class="hero-eyebrow-r">2021–2022</span>
+    </div>
+    <div class="hero-title w">
+      <h1>Physicalization<br>of AR/XR<br>Experiences</h1>
+    </div>
+    <div class="hero-img" role="img" aria-label="Augmented reality prototyping tools — CMU capstone">
+      <img src="images/capstone/Process/image13.jpg" alt="Augmented reality prototyping tools — CMU capstone">
+    </div>
+  </section>
+
+  <!-- Meta strip -->
+  <div class="meta-strip">
+    <div class="meta-strip-inner meta-strip-inner--4col">
+      <div class="meta-cell"><span class="label">Institution</span><div class="meta-val">Carnegie Mellon University</div></div>
+      <div class="meta-cell"><span class="label">Program</span><div class="meta-val">Bachelor of Design · Hybrid Environments</div></div>
+      <div class="meta-cell"><span class="label">Collaborator</span><div class="meta-val">Franklin Guttman</div></div>
+      <div class="meta-cell"><span class="label">Tools</span><div class="meta-val">Unity · Cinema 4D · Arduino · ESP32 · Raspberry Pi · Laser cutting · 3D printing</div></div>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">Overview</p></div>
+      <div>
+        <p class="overview-p">Most augmented reality in 2021 was designed as a digital layer placed on top of the physical world: overlays floating above surfaces, anchored to objects but separate from them. This thesis explored one question: what does it mean to physicalize AR? To move from augmented reality as something applied to the world, to AR as something embedded within it?</p>
+        <p class="overview-p" style="margin-top:20px;">We built six physical prototyping tools, one per AR mechanic: image mapping, 3D masking, shader effects, and sensor inputs. Each tool is a physical object built to surface what its mechanic requires of the physical world. With image mapping, surface material and contrast determine whether tracking holds: the finish is a design decision, not a given. With 3D masking, the scale and form of a physical object set the quality of the illusion when the camera renders it invisible and replaces it with a virtual interior. Shader effects reveal what it takes to treat a physical surface as though it has optical properties. Sensor inputs test how to make the physical environment an active participant: blocking a light sensor changes a virtual lamp, turning a dial controls a virtual fan. Together the tools map what each mechanic requires, where it fails, and what conditions bring the digital and physical into the same space.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- The Six Tools -->
+  <section class="v2-tools" aria-label="The Prototyping Tools">
+    <div class="v2-tools-hd">
+      <p class="label">The Prototyping Tools</p>
+      <span class="v2-tools-count">06 tools</span>
+    </div>
+
+    <div class="v2-proto-grid">
+
+      <div class="v2-proto-cell">
+        <div class="v2-proto-video">
+          <video muted loop playsinline aria-label="Single image mapping prototype">
+            <source src="images/SingleImageClipv1.mp4" type="video/mp4">
+          </video>
+          <button class="vid-btn" aria-label="Play video">
+            <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          </button>
+        </div>
+        <div class="v2-proto-meta"><span class="v2-proto-num">01</span><span class="v2-proto-tag">Image Mapping</span></div>
+        <h3 class="v2-proto-h">Single Image Mapping</h3>
+        <p class="v2-proto-p">Surface finish determines whether AR tracking holds. We tested a range of materials as image tracking anchors, evaluating contrast and reliability. The physical material becomes a design decision with direct consequences for digital behavior.</p>
+      </div>
+
+      <div class="v2-proto-cell">
+        <div class="v2-proto-video">
+          <video muted loop playsinline aria-label="3D masking prototype">
+            <source src="images/3DMaskClipv1.mp4" type="video/mp4">
+          </video>
+          <button class="vid-btn" aria-label="Play video">
+            <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          </button>
+        </div>
+        <div class="v2-proto-meta"><span class="v2-proto-num">02</span><span class="v2-proto-tag">3D Masking</span></div>
+        <h3 class="v2-proto-h">3D Masking</h3>
+        <p class="v2-proto-p">The tool renders a physical object invisible to the camera and replaces it with a virtual interior. Scale and material of the physical form shape the illusion and determine its failure points.</p>
+      </div>
+
+      <div class="v2-proto-cell">
+        <div class="v2-proto-video">
+          <video muted loop playsinline aria-label="Multiple image mapping prototype">
+            <source src="images/MultiImageClipv1.mp4" type="video/mp4">
+          </video>
+          <button class="vid-btn" aria-label="Play video">
+            <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          </button>
+        </div>
+        <div class="v2-proto-meta"><span class="v2-proto-num">03</span><span class="v2-proto-tag">Image Mapping</span></div>
+        <h3 class="v2-proto-h">Multiple Image Mapping</h3>
+        <p class="v2-proto-p">Simultaneous tracking across multiple image targets. We tested how overlays relate spatially when they share a frame, and how physical design choices in target size and contrast affect coherence across the layout.</p>
+      </div>
+
+      <div class="v2-proto-cell">
+        <div class="v2-proto-video">
+          <video muted loop playsinline aria-label="Processing effects glass prototype">
+            <source src="images/GlassClipv1.mp4" type="video/mp4">
+          </video>
+          <button class="vid-btn" aria-label="Play video">
+            <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          </button>
+        </div>
+        <div class="v2-proto-meta"><span class="v2-proto-num">04</span><span class="v2-proto-tag">Processing Effects</span></div>
+        <h3 class="v2-proto-h">Processing Effects: Glass</h3>
+        <p class="v2-proto-p">Real-time shader effects applied directly to the live camera feed. A glass refraction effect treats the physical surface as though it has optical properties, changing how the camera reads it without altering the underlying geometry.</p>
+      </div>
+
+      <div class="v2-proto-cell">
+        <div class="v2-proto-video">
+          <video muted loop playsinline aria-label="Reactive lighting light sensor prototype">
+            <source src="images/LightSensorClipv1.mp4" type="video/mp4">
+          </video>
+          <button class="vid-btn" aria-label="Play video">
+            <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          </button>
+        </div>
+        <div class="v2-proto-meta"><span class="v2-proto-num">05</span><span class="v2-proto-tag">Physical Input</span></div>
+        <h3 class="v2-proto-h">Reactive Lighting: Light Sensor</h3>
+        <p class="v2-proto-p">A light sensor connected via Arduino to Bluetooth controls a virtual lamp in real time. Covering the sensor toggles it, making natural sunlight an active design input.</p>
+      </div>
+
+      <div class="v2-proto-cell">
+        <div class="v2-proto-video">
+          <video muted loop playsinline aria-label="Physical control potentiometer prototype">
+            <source src="images/PotSensorClipv1.mp4" type="video/mp4">
+          </video>
+          <button class="vid-btn" aria-label="Play video">
+            <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          </button>
+        </div>
+        <div class="v2-proto-meta"><span class="v2-proto-num">06</span><span class="v2-proto-tag">Physical Input</span></div>
+        <h3 class="v2-proto-h">Physical Control: Potentiometer</h3>
+        <p class="v2-proto-p">A dial wired through the same Arduino-to-Bluetooth stack controls the speed of a virtual fan. An analog gesture maps directly to a digital animation parameter, with no abstraction between the two.</p>
+      </div>
+
+    </div>
+
+    <!-- System diagram -->
+    <div class="v2-diagram">
+      <span class="label">System View</span>
+      <img class="v2-diagram-overview" src="images/capstone/image-2-1.png" alt="Isometric diagram of all six prototyping tools: single image mapping, 3D masking, multiple image mapping, processing effects glass, sensor ambient light, sensor physical input">
+      <div class="v2-diagram-components">
+        <img src="images/capstone/image-3-3.png" alt="Component diagrams for tools 01 and 02: single image mapping and 3D masking">
+        <img src="images/capstone/image-3-4.png" alt="Component diagrams for tools 03 and 04: multiple image mapping and processing effects glass">
+        <img src="images/capstone/image-4-2.png" alt="Component diagrams for tools 05 and 06: sensor ambient light and sensor physical input">
+      </div>
+    </div>
+
+  </section>
+
+  <!-- What We Learned -->
+  <div class="v2-principles">
+    <div class="v2-principles-inner">
+      <span class="label">What We Learned</span>
+      <div class="v2-principles-grid">
+        <div class="v2-principle">
+          <div class="v2-principle-n">01</div>
+          <h3>Material is part of the design</h3>
+          <p>In every tool, surface finish, form factor, and contrast directly determined how the digital layer behaved. Tracking reliability, occlusion quality, and sensor performance all follow from physical decisions. The material is an input, not a backdrop.</p>
+        </div>
+        <div class="v2-principle">
+          <div class="v2-principle-n">02</div>
+          <h3>Build to understand</h3>
+          <p>Each tool revealed constraints and failure modes that were invisible before construction. Documentation describes AR mechanics; building with them teaches what they actually do. The building was the research.</p>
+        </div>
+        <div class="v2-principle">
+          <div class="v2-principle-n">03</div>
+          <h3>Each mechanic has a physical signature</h3>
+          <p>Image mapping, 3D masking, shader effects, and sensor inputs each impose different requirements on the physical environment. Understanding those requirements is what makes AR design decisions actually designable.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How It Started -->
+  <div class="section-row">
+    <div class="section-row-inner v2-context-text">
+      <div class="section-label-col"><p class="label">How It Started</p></div>
+      <div>
+        <h2>You can't design with a tool you don't understand</h2>
+        <p class="lede">The project started as an attempt to design finished AR experiences. Building with the tools quickly made something clear: the gap between imagining an AR experience and building one wasn't just technical. The way AR was designed kept the digital layer separate from the physical world, placed on top of surfaces rather than part of them.</p>
+        <p>The first prototype reframed that. We built modular cubes using 3D masking and image mapping, each face a window into a virtual interior that came from inside the physical object rather than floating above it. Most of what we learned was about what the materials required.</p>
+        <p>The thesis shifted to follow that question. One physicalized prototyping tool per AR mechanic, each designed to test what it takes for AR to feel embedded in the physical world rather than applied to it.</p>
+      </div>
+    </div>
+  </div>
+  <div class="v2-context-img">
+    <img src="images/capstone/Process/image30.jpg" alt="All six prototyping tools laid out on cutting mat with all components">
+  </div>
+
+  <!-- Process -->
+  <section class="v2-process" aria-label="Process">
+    <div class="v2-process-hd">
+      <p class="label">Process</p>
+    </div>
+
+    <!-- Form -->
+    <div class="v2-process-chapter">
+      <div class="v2-process-chap-label">
+        <span class="label">Form</span>
+        <small>Modeling the cube</small>
+      </div>
+      <div class="v2-process-strip">
+        <div class="v2-process-item"><img src="images/capstone/Process/image58.png" alt="Unity editor: early flat-geometry 3D masking model"></div>
+        <div class="v2-process-item"><img src="images/capstone/Process/image59.png" alt="Twelve cube form iterations rendered in 3D"></div>
+        <div class="v2-process-item"><img src="images/capstone/Process/image62.png" alt="Two rendered cube cluster configurations"></div>
+        <div class="v2-process-item"><img src="images/capstone/Process/image43.jpg" alt="Cinema 4D: cube forms with window and door cutouts"></div>
+        <div class="v2-process-item"><img src="images/capstone/Process/image45.jpg" alt="Wireframe cube form variations"></div>
+      </div>
+    </div>
+
+    <!-- Material -->
+    <div class="v2-process-chapter">
+      <div class="v2-process-chap-label">
+        <span class="label">Material</span>
+        <small>Surface and finish testing</small>
+      </div>
+      <div class="v2-process-strip">
+        <div class="v2-process-item"><img src="images/capstone/Process/image35.jpg" alt="Range of image mapping card materials and finishes"></div>
+        <div class="v2-process-item"><img src="images/capstone/Process/image36.jpg" alt="Wooden cube forms and laser-cut image mapping cards"></div>
+        <div class="v2-process-item"><img src="images/capstone/Process/image14.jpg" alt="Wooden laser-etched cube forms stacked on cutting mat"></div>
+        <div class="v2-process-item"><img src="images/capstone/image-3-2.png" alt="Full range of material finishes tested as image tracking anchors"></div>
+      </div>
+    </div>
+
+    <!-- Assembly -->
+    <div class="v2-process-chapter">
+      <div class="v2-process-chap-label">
+        <span class="label">Assembly</span>
+        <small>Building the six tools</small>
+      </div>
+      <div class="v2-process-strip">
+        <div class="v2-process-item"><img src="images/capstone/Process/image20.jpg" alt="Assembled wooden cube cluster on cutting mat"></div>
+        <div class="v2-process-item"><img src="images/capstone/Process/image29.jpg" alt="Cube prototype iterations including 3D printed forms"></div>
+        <div class="v2-process-item"><img src="images/capstone/Process/image26.jpg" alt="Five prototype tools laid out on cutting mat"></div>
+        <div class="v2-process-item"><img src="images/capstone/Process/image30.jpg" alt="All six finished prototyping tools on cutting mat"></div>
+        <div class="v2-process-item"><img src="images/capstone/Process/image28.jpg" alt="All six tools with Arduino components and image mapping materials"></div>
+      </div>
+    </div>
+
+    <!-- In Use -->
+    <div class="v2-process-chapter">
+      <div class="v2-process-chap-label">
+        <span class="label">In Use</span>
+        <small>AR in the field</small>
+      </div>
+      <div class="v2-process-strip wrap">
+        <div class="v2-process-item"><img src="images/capstone/Process/image42.png" alt="AR content visible through physical box outdoors"></div>
+        <div class="v2-process-item"><img src="images/capstone/Process/image51.jpg" alt="3D masking test at outdoor scale"></div>
+        <div class="v2-process-item"><img src="images/capstone/Process/image56.jpg" alt="Dark office scene visible through physical box outdoors"></div>
+        <div class="v2-process-item"><img src="images/capstone/Process/image44.gif" alt="Prototype components with AR content cycling"></div>
+        <div class="v2-process-item"><img src="images/capstone/Process/image50.gif" alt="3D masking with virtual interior"></div>
+        <div class="v2-process-item"><img src="images/capstone/Process/image55.gif" alt="AR prototype in use"></div>
+        <div class="v2-process-item"><img src="images/capstone/Process/image57.gif" alt="Virtual content through physical box"></div>
+        <div class="v2-process-item"><img src="images/capstone/Process/image60.gif" alt="Image mapping with virtual content tracked to surface"></div>
+        <div class="v2-process-item"><img src="images/capstone/Process/image61.gif" alt="AR prototype demonstration"></div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Outcomes -->
+  <div class="impact">
+    <div class="impact-header"><p class="label">Outcomes</p></div>
+    <div class="impact-grid" style="grid-template-columns: repeat(3,1fr);">
+      <div class="impact-cell">
+        <p class="impact-n">6</p>
+        <p class="impact-desc">Physicalized prototyping tools covering image mapping, 3D masking, shader effects, and physical sensor inputs. A reference set for designing with AR constraints firsthand.</p>
+      </div>
+      <div class="impact-cell">
+        <p class="impact-n">4</p>
+        <p class="impact-desc">Disciplines bridged across the project: visual design, physical fabrication, electronics prototyping, and real-time software development. Each tool required all four.</p>
+      </div>
+      <div class="impact-cell">
+        <p class="impact-n">1</p>
+        <p class="impact-desc">Live capstone exhibition where viewers tested each mechanic firsthand. The tools served as both research output and communication artifacts.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Final image -->
+  <div class="v2-final">
+    <img src="images/capstone/Process/image28.jpg" alt="All six prototyping tools arranged on cutting mat alongside Arduino components and image mapping materials">
+  </div>
+
+  <!-- Next project CTA -->
+  <div class="dark-cta">
+    <div class="dark-cta-inner">
+      <div>
+        <p class="label">Next Project</p>
+        <h2>Nowhere<br>Interesting LLC</h2>
+        <p>Independent studio running since 2018. Branding, consulting, and futures work across design and strategy.</p>
+        <a href="nowhere.html" class="dark-link">View project →</a>
+      </div>
+      <div class="dark-cta-img">
+        NOWHERE INTERESTING PREVIEW
+        <small>A frame from the studio's branding or consulting work</small>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html">Work</a>
+        <a href="acs.html">ACS</a>
+        <a href="collective-iq.html">Collective IQ</a>
+        <a href="cmu-thesis.html">CMU Thesis</a>
+        <a href="extras.html">Extras</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+    <span class="footer-copy">© 2026 Tay Aras</span>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+  document.querySelectorAll('.v2-proto-video').forEach(function(wrap) {
+    var video = wrap.querySelector('video');
+    var btn = wrap.querySelector('.vid-btn');
+    if (!video || !btn) return;
+
+    function sync() {
+      wrap.classList.toggle('vid-playing', !video.paused);
+      btn.setAttribute('aria-label', video.paused ? 'Play video' : 'Pause video');
+    }
+
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      video.paused ? video.play() : video.pause();
+    });
+
+    video.addEventListener('play', sync);
+    video.addEventListener('pause', sync);
+    video.addEventListener('ended', sync);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Tay Aras</title>
+  <meta name="description" content="Tay Aras — product lead, designer, bassist. Based in Seattle.">
+  <script>try{var t=localStorage.getItem('tayTheme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+
+    /* ── Bio section ── */
+    .who-wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 96px var(--pad) 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: stretch;
+    }
+
+    .who-bio { width: 100%; }
+
+    .who-side-photo {
+      background: #d8d4cc;
+      height: 100%;
+      overflow: hidden;
+      transition: opacity 0.2s ease;
+      position: relative;
+    }
+    .who-side-photo.hidden { opacity: 0; }
+
+    .who-side-photo img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    @media (max-width: 768px) {
+      .who-wrap { grid-template-columns: 1fr; }
+      .who-side-photo { aspect-ratio: 4 / 3; }
+    }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .who-side-photo { background: #2a2826; }
+    }
+    html[data-theme="dark"] .who-side-photo { background: #2a2826; }
+
+    .who-bio p {
+      font-size: 22px;
+      line-height: 1.65;
+      color: var(--black);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+    .who-bio p + p {
+      margin-top: 32px;
+    }
+
+    /* Hoverable keyword */
+    .kw {
+      cursor: default;
+      border-bottom: 1px solid var(--black);
+      transition: opacity 0.15s;
+      text-decoration: none;
+      color: inherit;
+    }
+    a.kw { cursor: pointer; }
+    .kw:hover { opacity: 0.4; }
+
+    .who-links {
+      margin-top: 64px;
+      display: flex;
+      gap: 40px;
+    }
+    .who-link {
+      font-size: 13px;
+      color: var(--black);
+      text-decoration: none;
+      border-bottom: 1px solid var(--black);
+      padding-bottom: 2px;
+      transition: opacity 0.15s;
+    }
+    .who-link:hover { opacity: 0.4; }
+
+    /* ── CV ── */
+    .who-cv {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 64px var(--pad) 96px;
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 80px;
+    }
+    .who-cv > .label { margin-bottom: 20px; }
+
+    /* ── Scattered hover photos ── */
+    .scatter-stage {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 200;
+    }
+
+    .scatter-link-text {
+      position: fixed;
+      pointer-events: none;
+      z-index: 200;
+      font-family: 'Pacifico', cursive;
+      font-size: 96px;
+      color: #c0392b;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .scatter-link-text.visible {
+      opacity: 1;
+    }
+
+    .scatter-img {
+      position: absolute;
+      background: #d8d4cc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.05em;
+      color: #aaa;
+      opacity: 0;
+      transform: scale(0.94) rotate(var(--rot, 0deg));
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      overflow: hidden;
+    }
+    .scatter-img.visible {
+      opacity: 1;
+      transform: scale(1) rotate(var(--rot, 0deg));
+    }
+    .scatter-img.visible img { pointer-events: auto; cursor: zoom-in; }
+    .scatter-img img {
+      width: 100%; height: auto; display: block;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .who-wrap { padding: 48px var(--pad) 40px; }
+      .who-bio p { font-size: 17px; }
+      .who-cv { grid-template-columns: 1fr; }
+      .who-cv > * { grid-column: 1 !important; grid-row: auto !important; }
+      .scatter-stage { display: none; }
+    }
+    @media (max-width: 480px) {
+      .who-bio p { font-size: 15px; }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .scatter-img { background: #252422; }
+    }
+    html[data-theme="dark"] .scatter-img { background: #252422; }
+  </style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- Scatter photo stage -->
+<div class="scatter-stage" id="scatterStage" aria-hidden="true"></div>
+
+<header class="site-header" id="navigation">
+  <div class="header-bar">
+    <a class="brand" href="index.html">Tay Aras</a>
+    <div class="string-zone" id="singleZone" tabindex="0" aria-label="Interactive guitar string — click or drag to play">
+      <svg class="string-svg" id="singleSVG" viewBox="0 0 1100 36" preserveAspectRatio="none">
+        <path id="singlePath" class="string-path" d="M0 19 Q 550 19 1100 19"/>
+      </svg>
+    </div>
+    <button class="mute-btn" id="muteBtn" aria-label="Toggle sound" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path class="sound-on" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-on" d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-off" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"/>
+        <line class="sound-off" x1="15" y1="9" x2="21" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+        <line class="sound-off" x1="21" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+      </svg>
+    </button>
+    <button class="expand-btn" id="expandBtn" aria-expanded="false" aria-controls="stringsPanel" style="display:none" aria-hidden="true">
+      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      more
+    </button>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html">Work</a>
+      <a href="about.html" class="current">About</a>
+    </nav>
+    <div class="mobile-nav">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none">
+          <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Work</a>
+        <a href="about.html" class="current">About</a>
+      </div>
+    </div>
+  </div>
+  <div class="strings-panel" id="stringsPanel" hidden>
+    <div class="strings-grid" id="stringsGrid"></div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="who-wrap">
+    <div class="who-bio">
+
+      <p>
+        Tay Aras is a designer and product lead with 8+ years of experience, focused on emergent and creative technologies, <span class="kw" data-photos="spatial">hybrid environments</span>, and interaction design. His work explores how technology shapes our interactions with each other, and our connections to both the tangible and digital worlds. He studied <span class="kw" data-photos="spatial">Hybrid Environments Design</span> at <a class="kw" data-photos="spatial" href="https://design.cmu.edu/" target="_blank" rel="noopener">Carnegie Mellon University</a>.
+      </p>
+      <p>
+        Currently <a class="kw" data-photos="microsoft" href="https://microsoft.com" target="_blank" rel="noopener">@Microsoft</a>, building virtual communication platforms and experimental multimodal experiences. Also <a class="kw" data-photos="nowhere" href="https://nowhereinteresting.online" target="_blank" rel="noopener">@Nowhere Interesting</a>, a creative Design Studio &amp; Lab exploring how what we make shapes how we live.
+      </p>
+      <p>
+        Outside of work, he enjoys <span class="kw" data-photos="shows">live music</span>, <span class="kw" data-photos="outdoors">climbing rocks</span>, <span class="kw" data-photos="bass">playing guitar and bass</span>, eating pasta (and gnocchi), finding cool jackets, and discovering new artists.
+      </p>
+
+    </div>
+
+    <div class="who-side-photo" id="whoSidePhoto">
+      <img src="images/main/IMG_4965.jpeg" alt="">
+      <img src="images/main/IMG_0085.jpeg" alt="">
+      <img src="images/main/IMG_0211.jpg" alt="">
+    </div>
+
+    <div class="who-links" style="grid-column: 1 / -1;">
+      <a class="who-link" href="mailto:tayaras@outlook.com">Email</a>
+      <a class="who-link" href="https://www.linkedin.com/in/tayaras/" target="_blank" rel="noopener">LinkedIn ↗</a>
+<!-- <a class="who-link" href="resume.pdf" target="_blank" rel="noopener">Resume ↗</a> -->
+      <a class="who-link" href="https://nowhereinteresting.online" target="_blank" rel="noopener" style="margin-left:auto">Studio ↗</a>
+    </div>
+  </div>
+
+  <!-- CV — flat grid so rows align across both columns -->
+  <div class="who-cv">
+
+    <!-- Col 1: Experience label + 6 rows (grid-rows 1–7) -->
+    <p class="label" style="grid-column:1; grid-row:1">Experience</p>
+    <div class="cv-row" style="grid-column:1; grid-row:2">
+      <div>
+        <div class="cv-title">Design Lead, New IQ Experiences — Microsoft</div>
+        <div class="cv-sub">IC3 · Microsoft 365 Copilot</div>
+      </div>
+      <span class="cv-date">2026 – Present</span>
+    </div>
+    <div class="cv-row" style="grid-column:1; grid-row:3">
+      <div>
+        <div class="cv-title">Product Lead, Web Experiences — Microsoft</div>
+        <div class="cv-sub">Azure Communication Services · UI Library + Calling SDK + Interop</div>
+      </div>
+      <span class="cv-date">2025 – Present</span>
+    </div>
+    <div class="cv-row" style="grid-column:1; grid-row:4">
+      <div>
+        <div class="cv-title">Product Lead, UI Library — Microsoft</div>
+        <div class="cv-sub">Azure Communication Services · UI Library</div>
+      </div>
+      <span class="cv-date">2022 – 2025</span>
+    </div>
+    <div class="cv-row" style="grid-column:1; grid-row:5">
+      <div>
+        <div class="cv-title">Studio Director — Nowhere Interesting</div>
+        <div class="cv-sub">Strategy · Futures · Conceptualization · Workshops</div>
+      </div>
+      <span class="cv-date">2018 – Present</span>
+    </div>
+    <div class="cv-row" style="grid-column:1; grid-row:6">
+      <div>
+        <div class="cv-title">Design / PM Intern — Microsoft</div>
+        <div class="cv-sub">Various Teams · 5 internships</div>
+      </div>
+      <span class="cv-date">2017 – 2021</span>
+    </div>
+    <div class="cv-row" style="grid-column:1; grid-row:7">
+      <div>
+        <div class="cv-title">Teaching Assistant — Carnegie Mellon University</div>
+        <div class="cv-sub">Environments Design Prototyping Lab I and II</div>
+      </div>
+      <span class="cv-date">2021 – 2022</span>
+    </div>
+
+    <!-- Col 2: Education at top, Skills label floated to bottom of row 4, Skills rows 5–7 -->
+    <p class="label" style="grid-column:2; grid-row:1">Education</p>
+    <div class="cv-row" style="grid-column:2; grid-row:2">
+      <div>
+        <div class="cv-title">Bachelor of Design, Hybrid Environments</div>
+        <div class="cv-sub">Carnegie Mellon University · Thesis: Physicalization of AR/XR</div>
+      </div>
+      <span class="cv-date">2018 – 2022</span>
+    </div>
+
+    <p class="label" style="grid-column:2; grid-row:4; margin:0; align-self:end; padding-bottom:14px">Skills</p>
+    <div class="cv-row" style="grid-column:2; grid-row:5">
+      <div><div class="cv-title">Product</div><div class="cv-sub">Strategy · Roadmap · Stakeholder Engagement · Specs · User Research</div></div>
+    </div>
+    <div class="cv-row" style="grid-column:2; grid-row:6">
+      <div><div class="cv-title">Design</div><div class="cv-sub">Prototyping · Design Systems · Accessibility · Interaction · Conceptualization</div></div>
+    </div>
+    <div class="cv-row" style="grid-column:2; grid-row:7; border-bottom: 1px solid var(--line);">
+      <div><div class="cv-title">Technical</div><div class="cv-sub">Front End & React · SDK/API experience · Web standards · AR/XR · Creative Technology</div></div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html">Work</a>
+        <a href="acs.html">UI Library</a>
+        <a href="collective-iq.html">Collective IQ</a>
+        <a href="cmu-thesis.html">XR Experiences</a>
+        <a href="orbit.html">Orbit</a>
+        <a href="hp.html">HP Experience</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+    <span class="footer-copy">© 2026 Tay Aras</span>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+(function () {
+
+  // Photo configs: each key maps to an array of scatter positions + sizes
+  // pos: [top%, left%], w/h in px, rot in degrees
+  const configs = {
+    'designer': [
+      { top:  '8%', left: '55%', w: 380, h: 280, rot: '-2deg', label: 'design work' },
+      { top: '45%', left: '68%', w: 300, h: 360, rot:  '3deg', label: 'product work' },
+      { top: '15%', left: '78%', w: 260, h: 200, rot: '-4deg', label: 'process' },
+      { top: '68%', left: '55%', w: 320, h: 220, rot:  '2deg', label: 'sketch / prototype' },
+    ],
+    'microsoft': [
+      { top:  '8%', left: '55%', w: 400, h: 280, rot: '-2deg', label: 'Microsoft campus' },
+      { top: '48%', left: '70%', w: 300, h: 380, rot:  '3deg', label: 'office / team' },
+      { top: '20%', left: '80%', w: 260, h: 200, rot: '-3deg', label: 'product shipped' },
+      { top: '70%', left: '57%', w: 340, h: 240, rot:  '2deg', label: 'ACS demo' },
+    ],
+    'acs': [
+      { top: '10%', left: '56%', w: 420, h: 260, rot: '-1deg', label: 'UI Library' },
+      { top: '52%', left: '66%', w: 300, h: 220, rot:  '3deg', label: 'calling SDK' },
+      { top: '25%', left: '78%', w: 260, h: 320, rot: '-3deg', label: 'component library' },
+      { top: '70%', left: '55%', w: 360, h: 240, rot:  '2deg', label: 'sample builder' },
+    ],
+    'spatial': [
+      { src: 'images/hybrid-environment/20200115_104243.jpg',          caption: '' },
+      { src: 'images/hybrid-environment/20211110_170439.jpg',          caption: '' },
+      { src: 'images/hybrid-environment/20211208_174036.jpg',          caption: '' },
+      { src: 'images/hybrid-environment/received_280650697485810.jpeg', caption: '' },
+      { src: 'images/hybrid-environment/received_469885241504021.jpeg', caption: '' },
+    ],
+    'bass': [
+      { src: 'images/guitar-bass/DSCN0830.jpg', caption: '' },
+      { src: 'images/guitar-bass/DSCN0982.jpg', caption: '' },
+      { src: 'images/guitar-bass/DSCN0738.jpg', caption: '' },
+      { src: 'images/guitar-bass/IMG_2529.jpg', caption: '' },
+      { src: 'images/guitar-bass/IMG_9192.jpg', caption: '' },
+    ],
+    'shows': [
+      { src: 'images/live-music/IMG_2143.jpeg', caption: 'Native Sun · Bowery Ballroom · 2026' },
+      { src: 'images/live-music/IMG_2174.jpeg', caption: 'Cab Ellis · Bowery Ballroom · 2026' },
+      { src: 'images/live-music/IMG_3408.jpg',  caption: 'Telescreens · Irving Plaza · 2025' },
+      { src: 'images/live-music/IMG_4485.jpg',  caption: 'The Dare · Baby\'s All Right · 2025' },
+      { src: 'images/live-music/bw-crowd.jpeg', caption: 'Geese · Brooklyn Paramount · 2025' },
+    ],
+    'places': [
+      { top:  '8%', left: '55%', w: 360, h: 260, rot: '-1deg', label: 'Pittsburgh' },
+      { top: '48%', left: '67%', w: 300, h: 380, rot:  '2deg', label: 'Chicago' },
+      { top: '20%', left: '78%', w: 280, h: 220, rot: '-3deg', label: 'San Francisco' },
+      { top: '68%', left: '55%', w: 380, h: 260, rot:  '3deg', label: 'Seattle' },
+    ],
+    'nowhere': [
+      { top:  '8%', left: '55%', w: 400, h: 280, rot:  '2deg', label: 'Nowhere Interesting branding' },
+      { top: '48%', left: '68%', w: 300, h: 360, rot: '-2deg', label: 'studio project' },
+      { top: '20%', left: '78%', w: 280, h: 220, rot:  '4deg', label: 'client work' },
+      { top: '68%', left: '56%', w: 340, h: 240, rot: '-3deg', label: 'futures workshop' },
+    ],
+    'outdoors': [
+      { src: 'images/climb/IMG_7417-2.jpg', caption: 'Mt. St. Helens · Summit · 2024' },
+      { src: 'images/climb/IMG_7603-2.jpg', caption: 'Mt. St. Helens · Above the Clouds · 2024' },
+      { src: 'images/climb/IMG_6573.jpg',   caption: 'Cascade Pass · 2024' },
+      { src: 'images/climb/IMG_6991.jpg',   caption: 'Snoqualmie Area · 2024' },
+      { src: 'images/climb/IMG_0211.jpg',   caption: 'Oahu · 2024' },
+    ],
+  };
+
+  // Zone layouts: 5 scattered positions across full page, no overlaps
+  // Zones: top-left, top-right, mid-left, mid-right, bottom-center
+  const zoneLayouts = {
+    'spatial': [
+      { top:  5, left:  6, w: 235, rot: -2 },
+      { top:  4, left: 74, w: 252, rot:  2 },
+      { top: 45, left:  8, w: 228, rot:  3 },
+      { top: 47, left: 73, w: 245, rot: -1 },
+      { top: 57, left: 40, w: 238, rot:  2 },
+    ],
+    'bass': [
+      { top:  5, left:  7, w: 230, rot: -3 },
+      { top:  4, left: 73, w: 248, rot:  2 },
+      { top: 46, left:  9, w: 224, rot:  2 },
+      { top: 48, left: 72, w: 240, rot: -2 },
+      { top: 58, left: 39, w: 234, rot:  1 },
+    ],
+    'shows': [
+      { top:  5, left:  6, w: 232, rot: -1 },
+      { top:  4, left: 75, w: 250, rot:  3 },
+      { top: 44, left:  8, w: 226, rot: -3 },
+      { top: 47, left: 74, w: 242, rot:  2 },
+      { top: 58, left: 41, w: 236, rot: -2 },
+    ],
+    'outdoors': [
+      { top:  5, left:  7, w: 234, rot:  2 },
+      { top:  3, left: 74, w: 249, rot: -2 },
+      { top: 45, left:  8, w: 227, rot: -2 },
+      { top: 46, left: 73, w: 242, rot:  3 },
+      { top: 56, left: 40, w: 236, rot: -1 },
+    ],
+  };
+
+  function shuffled(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function jitter(base, range) {
+    return base + (Math.random() - 0.5) * 2 * range;
+  }
+
+  const stage     = document.getElementById('scatterStage');
+  const sidePhoto = document.getElementById('whoSidePhoto');
+
+  // Pick a random main photo on each page load
+  (function () {
+    const imgs = sidePhoto.querySelectorAll('img');
+    const idx  = Math.floor(Math.random() * imgs.length);
+    imgs[idx].style.opacity = '1';
+  })();
+
+  // Create the "that's a link!" text element
+  const linkText = document.createElement('div');
+  linkText.className = 'scatter-link-text';
+  linkText.textContent = "that's a link!";
+  stage.appendChild(linkText);
+
+  // Pre-create all scatter images
+  const pools = {};
+  Object.entries(configs).forEach(([key, items]) => {
+    pools[key] = items.map(cfg => {
+      const el = document.createElement('div');
+      el.className = 'scatter-img';
+      if (cfg.rot) el.style.setProperty('--rot', cfg.rot);
+      if (cfg.top)  el.style.top   = cfg.top;
+      if (cfg.left) el.style.left  = cfg.left;
+      if (cfg.w)    el.style.width = cfg.w + 'px';
+      if (cfg.h && !cfg.src) el.style.height = cfg.h + 'px';
+      if (cfg.src) {
+        const img = document.createElement('img');
+        img.src = cfg.src;
+        img.alt = cfg.caption || '';
+        img.dataset.caption = cfg.caption || '';
+        el.appendChild(img);
+      } else {
+        el.textContent = cfg.label;
+      }
+      stage.appendChild(el);
+      return el;
+    });
+  });
+
+  function applyZoneLayout(key) {
+    const zones = shuffled(zoneLayouts[key]);
+    pools[key].forEach((el, i) => {
+      const z = zones[i];
+      const hasImg = !!el.querySelector('img');
+      el.style.top    = jitter(z.top,  1)  + '%';
+      el.style.left   = jitter(z.left, 1)  + '%';
+      el.style.width  = jitter(z.w,    10) + 'px';
+      el.style.height = hasImg ? 'auto' : jitter(z.h || 300, 10) + 'px';
+      el.style.setProperty('--rot', jitter(z.rot, 1.5) + 'deg');
+    });
+  }
+
+  let activeKey = null;
+  let pinnedKey = null;
+
+  // ── Lightbox ──
+  const lightbox = document.createElement('div');
+  lightbox.id = 'scatter-lightbox';
+  lightbox.style.cssText = [
+    'position:fixed', 'inset:0', 'z-index:10000',
+    'display:flex', 'align-items:center', 'justify-content:center',
+    'background:rgba(0,0,0,0.75)', 'opacity:0',
+    'transition:opacity 0.2s ease', 'cursor:zoom-out',
+    'pointer-events:none',
+  ].join(';');
+  const lightboxInner = document.createElement('div');
+  lightboxInner.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:16px;';
+  const lightboxImg = document.createElement('img');
+  lightboxImg.style.cssText = [
+    'max-width:90vw', 'max-height:85vh', 'object-fit:contain',
+    'transform:scale(0.92)', 'transition:transform 0.25s ease',
+    'display:block', 'box-shadow:0 24px 80px rgba(0,0,0,0.6)',
+  ].join(';');
+  const lightboxCaption = document.createElement('p');
+  lightboxCaption.style.cssText = [
+    'color:rgba(255,255,255,0.7)', 'font-family:var(--mono)',
+    'font-size:11px', 'letter-spacing:0.08em', 'text-align:center',
+    'transform:scale(0.92)', 'transition:transform 0.25s ease',
+  ].join(';');
+  lightboxInner.appendChild(lightboxImg);
+  lightboxInner.appendChild(lightboxCaption);
+  lightbox.appendChild(lightboxInner);
+  document.body.appendChild(lightbox);
+
+  function openLightbox(src, caption) {
+    lightboxImg.src = src;
+    lightboxCaption.textContent = caption || '';
+    lightbox.style.pointerEvents = 'auto';
+    lightbox.style.opacity = '1';
+    lightboxImg.style.transform = 'scale(1)';
+    lightboxCaption.style.transform = 'scale(1)';
+  }
+  function closeLightbox() {
+    lightbox.style.opacity = '0';
+    lightboxImg.style.transform = 'scale(0.92)';
+    lightboxCaption.style.transform = 'scale(0.92)';
+    lightbox.style.pointerEvents = 'none';
+  }
+  lightbox.addEventListener('click', closeLightbox);
+
+  function unpin() {
+    if (!pinnedKey) return;
+    pools[pinnedKey].forEach(el => el.classList.remove('visible'));
+    pinnedKey = null;
+    activeKey = null;
+    sidePhoto.classList.remove('hidden');
+  }
+
+  // Clicking a scatter photo with a real image opens lightbox (for pinned photos)
+  Object.values(pools).forEach(pool => {
+    pool.forEach(el => {
+      const img = el.querySelector('img');
+      if (!img) return;
+      img.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openLightbox(img.src, img.dataset.caption);
+      });
+    });
+  });
+
+  document.querySelectorAll('.kw').forEach(kw => {
+    const key = kw.dataset.photos;
+    const isLink = kw.tagName === 'A';
+
+    kw.addEventListener('mouseenter', () => {
+      // If a different key is pinned, unpin it first
+      if (pinnedKey && pinnedKey !== key) unpin();
+      sidePhoto.classList.add('hidden');
+      if (isLink) {
+        const top  = 15 + Math.random() * 55;
+        const left = 30 + Math.random() * 45;
+        const rot  = (Math.random() * 24) - 12;
+        linkText.style.top       = top + '%';
+        linkText.style.left      = left + '%';
+        linkText.style.transform = `rotate(${rot}deg)`;
+        linkText.classList.add('visible');
+      } else {
+        if (!pools[key]) return;
+        activeKey = key;
+        if (zoneLayouts[key]) applyZoneLayout(key);
+        pools[key].forEach(el => el.classList.add('visible'));
+      }
+    });
+
+    kw.addEventListener('mouseleave', () => {
+      if (isLink) {
+        linkText.classList.remove('visible');
+        sidePhoto.classList.remove('hidden');
+      } else {
+        // Only hide if not pinned
+        if (pinnedKey === key) return;
+        if (!pools[key]) return;
+        pools[key].forEach(el => el.classList.remove('visible'));
+        activeKey = null;
+        sidePhoto.classList.remove('hidden');
+      }
+    });
+
+    // Click any non-link kw with real photos to pin/unpin
+    const hasRealPhotos = pools[key] && pools[key].some(el => el.querySelector('img'));
+    if (!isLink && hasRealPhotos) {
+      kw.addEventListener('click', () => {
+        if (pinnedKey === key) {
+          unpin();
+        } else {
+          if (pinnedKey) unpin();
+          pinnedKey = key;
+          activeKey = key;
+          pools[key].forEach(el => el.classList.add('visible'));
+          sidePhoto.classList.add('hidden');
+        }
+      });
+    }
+  });
+
+  // Click anywhere on the page (not on scatter imgs or a pinnable kw) to unpin
+  document.addEventListener('click', (e) => {
+    if (!pinnedKey) return;
+    if (e.target.closest('.scatter-img img') || e.target.closest('.kw')) return;
+    unpin();
+  });
+
+})();
+</script>
+</body>
+</html>

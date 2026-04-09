@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Extras — Tay Aras</title>
+  <meta name="description" content="Personal projects, photos, and other things — Tay Aras.">
+  <script>try{var t=localStorage.getItem('tayTheme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+
+    /* ── Photo grid ── */
+    .photo-grid {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 48px var(--pad);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+
+    .photo-cell {
+      background: #e0ddd6;
+      aspect-ratio: 4 / 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      color: var(--mid);
+      flex-direction: column;
+      gap: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Alternating placeholder tones for visual variety */
+    .photo-cell:nth-child(2n) { background: #d8d5cc; }
+    .photo-cell:nth-child(3n) { background: #e8e5de; }
+
+    .photo-cell small {
+      font-size: 9px;
+      color: #aaa;
+      text-align: center;
+      max-width: 140px;
+      line-height: 1.5;
+    }
+
+    .photo-cell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+    }
+
+    /* ── Fun projects — lighter than case study work items ── */
+    .extras-projects {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .extras-project {
+      border-bottom: 1px solid var(--line);
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 40px var(--pad);
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .extras-project:last-child { border-bottom: none; }
+
+    .extras-project-label {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .extras-project-num {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--mid);
+      letter-spacing: 0.06em;
+    }
+
+    .extras-project-tag {
+      font-family: var(--sans);
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--black);
+      max-width: 120px;
+      line-height: 1.6;
+    }
+
+    .extras-project-content h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    .extras-project-content > p {
+      max-width: 600px;
+      margin-bottom: 28px;
+    }
+
+    .extras-project-img {
+      background: #e0ddd6;
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--mid);
+      flex-direction: column;
+      gap: 8px;
+      letter-spacing: 0.06em;
+    }
+    .extras-project-img small {
+      font-size: 10px;
+      color: #aaa;
+      text-align: center;
+      max-width: 240px;
+    }
+
+    /* ── Misc / other ── */
+    .extras-misc {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 64px var(--pad);
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .extras-misc-items {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+
+    .extras-misc-item h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .extras-misc-item p {
+      font-size: 13px;
+      line-height: 1.65;
+      color: #444;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .photo-grid { grid-template-columns: repeat(2, 1fr); padding: 32px var(--pad); }
+      .extras-project { grid-template-columns: 1fr; gap: 24px; padding: 32px var(--pad); }
+      .extras-misc { grid-template-columns: 1fr; gap: 32px; padding: 40px var(--pad); }
+      .extras-misc-items { grid-template-columns: 1fr 1fr; gap: 24px; }
+    }
+
+    @media (max-width: 480px) {
+      .photo-grid { grid-template-columns: 1fr; }
+      .extras-misc-items { grid-template-columns: 1fr; }
+    }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .photo-cell { background: #2a2826; }
+      html:not([data-theme="light"]) .photo-cell:nth-child(2n) { background: #242220; }
+      html:not([data-theme="light"]) .photo-cell:nth-child(3n) { background: #252321; }
+      html:not([data-theme="light"]) .extras-project-img { background: #252422; }
+    }
+    html[data-theme="dark"] .photo-cell { background: #2a2826; }
+    html[data-theme="dark"] .photo-cell:nth-child(2n) { background: #242220; }
+    html[data-theme="dark"] .photo-cell:nth-child(3n) { background: #252321; }
+    html[data-theme="dark"] .extras-project-img { background: #252422; }
+  </style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- Header -->
+<header class="site-header" id="navigation">
+  <div class="header-bar">
+    <a class="brand" href="index.html">Tay Aras</a>
+    <div class="string-zone" id="singleZone" tabindex="0" aria-label="Interactive guitar string — click or drag to play">
+      <svg class="string-svg" id="singleSVG" viewBox="0 0 1100 36" preserveAspectRatio="none">
+        <path id="singlePath" class="string-path" d="M0 19 Q 550 19 1100 19"/>
+      </svg>
+    </div>
+    <button class="mute-btn" id="muteBtn" aria-label="Toggle sound" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path class="sound-on" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-on" d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-off" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"/>
+        <line class="sound-off" x1="15" y1="9" x2="21" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+        <line class="sound-off" x1="21" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+      </svg>
+    </button>
+    <button class="expand-btn" id="expandBtn" aria-expanded="false" aria-controls="stringsPanel" style="display:none" aria-hidden="true">
+      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      more
+    </button>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html">Work</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="mobile-nav">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none">
+          <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Work</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </div>
+  <div class="strings-panel" id="stringsPanel" hidden>
+    <div class="strings-grid" id="stringsGrid"></div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- Hero — page title -->
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-l">Music · Climbing · Instruments · Photos · Builds</span>
+      <span class="hero-eyebrow-r">Ongoing</span>
+    </div>
+    <div class="hero-title w">
+      <h1>Extras</h1>
+    </div>
+  </section>
+
+  <!-- Photos — personal and candid images -->
+  <section aria-label="Photos">
+    <div class="section-row" style="border-bottom:none;">
+      <div class="section-row-inner">
+        <div class="section-label-col"><p class="label">Photos</p></div>
+        <div>
+          <p style="max-width:520px;margin-bottom:0;">Shows, places, gear, and life.</p>
+        </div>
+      </div>
+    </div>
+    <div class="photo-grid">
+      <div class="photo-cell"><small>Photo placeholder</small></div>
+      <div class="photo-cell"><small>Photo placeholder</small></div>
+      <div class="photo-cell"><small>Photo placeholder</small></div>
+      <div class="photo-cell"><small>Photo placeholder</small></div>
+      <div class="photo-cell"><small>Photo placeholder</small></div>
+      <div class="photo-cell"><small>Photo placeholder</small></div>
+    </div>
+  </section>
+
+  <!-- Fun projects — personal builds, circuits, instruments, etc. -->
+  <section aria-label="Fun Projects">
+    <div class="work-section">
+      <div class="work-section-header">
+        <p class="label">Projects</p>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--mid);">Personal builds</span>
+      </div>
+
+      <div class="extras-projects">
+        <div class="extras-project">
+          <div class="extras-project-label">
+            <span class="extras-project-num">01</span>
+            <span class="extras-project-tag">Add a category</span>
+          </div>
+          <div class="extras-project-content">
+            <h3>Project name</h3>
+            <p>Describe the project — what it is, why you built it, what was interesting about it.</p>
+            <div class="extras-project-img">
+              IMAGE PLACEHOLDER
+              <small>Replace with a photo or screenshot</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="extras-project">
+          <div class="extras-project-label">
+            <span class="extras-project-num">02</span>
+            <span class="extras-project-tag">Add a category</span>
+          </div>
+          <div class="extras-project-content">
+            <h3>Project name</h3>
+            <p>Describe the project — what it is, why you built it, what was interesting about it.</p>
+            <div class="extras-project-img">
+              IMAGE PLACEHOLDER
+              <small>Replace with a photo or screenshot</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Other — miscellaneous things that don't fit elsewhere -->
+  <section aria-label="Other">
+    <div style="border-bottom: 1px solid var(--line);">
+      <div class="extras-misc">
+        <div class="section-label-col"><p class="label">Other</p></div>
+        <div class="extras-misc-items">
+          <div class="extras-misc-item">
+            <h3>Category</h3>
+            <p>A short description of this thing — a hobby, interest, ongoing project, or collection.</p>
+          </div>
+          <div class="extras-misc-item">
+            <h3>Category</h3>
+            <p>A short description of this thing — a hobby, interest, ongoing project, or collection.</p>
+          </div>
+          <div class="extras-misc-item">
+            <h3>Category</h3>
+            <p>A short description of this thing — a hobby, interest, ongoing project, or collection.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html">Work</a>
+        <a href="acs.html">UI Library</a>
+        <a href="collective-iq.html">Collective IQ</a>
+        <a href="cmu-thesis.html">XR Experiences</a>
+        <a href="extras.html">Extras</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+    <span class="footer-copy">© 2025 Tay Aras</span>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+</body>
+</html>

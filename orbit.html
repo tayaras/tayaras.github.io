@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orbit: Growing Together — Tay Aras</title>
+  <meta name="description" content="Orbit is an interactive wall speaker that lets two people collaboratively build a visual record of their relationship through music sharing and emotional reaction over time.">
+  <script>try{var t=localStorage.getItem('tayTheme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    /* ── Vimeo / video embed ── */
+    .vimeo-wrap {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      background: #111;
+    }
+    .vimeo-wrap iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: 0;
+    }
+
+    /* ── Demo section ── */
+    .demo-section {
+      border-bottom: 1px solid var(--line);
+    }
+    .demo-section-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 48px var(--pad);
+    }
+    .demo-label {
+      margin-bottom: 24px;
+    }
+
+    /* ── Experience walkthrough (slide grid) ── */
+    .walkthrough-section {
+      border-bottom: 1px solid var(--line);
+    }
+    .walkthrough-header {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 24px var(--pad);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid var(--line);
+    }
+    .walkthrough-count {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--mid);
+      letter-spacing: 0.06em;
+    }
+    /* Journey map — full-width, natural height, no crop */
+    .walkthrough-main {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 32px var(--pad) 0;
+    }
+    .walkthrough-main img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .walkthrough-intro {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 32px var(--pad) 0;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    .walkthrough-intro p {
+      max-width: 600px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .walkthrough-sublabel {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 32px var(--pad) 16px;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 48px;
+      align-items: baseline;
+    }
+    .walkthrough-sublabel p {
+      font-size: 13px;
+      line-height: 1.65;
+      color: #555;
+      max-width: 560px;
+    }
+    @media (max-width: 768px) {
+      .walkthrough-intro,
+      .walkthrough-sublabel { grid-template-columns: 1fr; gap: 12px; }
+    }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .walkthrough-sublabel p { color: #999; }
+    }
+    html[data-theme="dark"] .walkthrough-sublabel p { color: #999; }
+    .walkthrough-grid {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 var(--pad) 48px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .walkthrough-cell {
+      background: #f0ede8;
+      overflow: hidden;
+    }
+    .walkthrough-cell img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+    .walkthrough-stack {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 var(--pad) 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .walkthrough-stack .walkthrough-cell img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    @media (max-width: 600px) {
+      .walkthrough-grid { grid-template-columns: 1fr; }
+    }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .walkthrough-cell { background: #1e1c1a; }
+    }
+    html[data-theme="dark"] .walkthrough-cell { background: #1e1c1a; }
+
+    /* ── Visual system section ── */
+    .visual-system {
+      border-bottom: 1px solid var(--line);
+    }
+    .visual-system-header {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 24px var(--pad);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid var(--line);
+    }
+    .visual-system-intro {
+      max-width: min(760px, calc(100vw - 96px));
+      margin: 0 auto;
+      padding: 48px var(--pad) 32px;
+    }
+    .visual-system-intro h2 { margin-bottom: 20px; }
+    .visual-system-intro .lede { margin-bottom: 16px; }
+    .visual-system-intro p + p { margin-top: 14px; }
+    .emotion-grid {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 var(--pad) 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .emotion-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .emotion-gif {
+      overflow: hidden;
+      background: #1a1a1a;
+    }
+    .emotion-gif img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .emotion-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .emotion-gif { background: #111; }
+    }
+    html[data-theme="dark"] .emotion-gif { background: #111; }
+
+    /* ── Physical form section ── */
+    .physical-section {
+      border-bottom: 1px solid var(--line);
+    }
+    .physical-header {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 24px var(--pad);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid var(--line);
+    }
+    .physical-body {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 48px var(--pad);
+    }
+    .physical-main {
+      overflow: hidden;
+      background: #e0ddd6;
+      margin-bottom: 8px;
+    }
+    .physical-main img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .physical-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .physical-sm {
+      overflow: hidden;
+      background: #e8e5de;
+    }
+    .physical-sm img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    @media (max-width: 600px) {
+      .physical-row { grid-template-columns: 1fr; }
+    }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .physical-main,
+      html:not([data-theme="light"]) .physical-sm { background: #252422; }
+    }
+    html[data-theme="dark"] .physical-main,
+    html[data-theme="dark"] .physical-sm { background: #252422; }
+
+    /* ── Lightbox ── */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .lightbox-img {
+      max-width: min(90vw, 1200px);
+      max-height: 85vh;
+      object-fit: contain;
+      display: block;
+      user-select: none;
+    }
+    .lightbox-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.8);
+      font-family: var(--mono);
+      font-size: 18px;
+      width: 48px;
+      height: 64px;
+      cursor: pointer;
+      transition: background 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+    }
+    .lightbox-btn:hover { background: rgba(255, 255, 255, 0.15); }
+    .lightbox-prev { left: 24px; }
+    .lightbox-next { right: 24px; }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 20px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px;
+      transition: color 0.15s;
+    }
+    .lightbox-close:hover { color: rgba(255, 255, 255, 0.9); }
+    .lightbox-counter {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.4);
+    }
+    /* Make grid cells show they're clickable */
+    .walkthrough-grid .walkthrough-cell {
+      cursor: zoom-in;
+    }
+    .walkthrough-grid .walkthrough-cell img {
+      transition: opacity 0.15s;
+    }
+    .walkthrough-grid .walkthrough-cell:hover img {
+      opacity: 0.85;
+    }
+
+    /* ── Systems diagram section ── */
+    .systems-section {
+      border-bottom: 1px solid var(--line);
+    }
+    .systems-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 48px var(--pad);
+    }
+    .systems-inner .label { margin-bottom: 24px; display: block; }
+    .systems-diagram {
+      width: 100%;
+      overflow: hidden;
+      background: #e0ddd6;
+    }
+    .systems-diagram img {
+      width: 100%;
+      display: block;
+    }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .systems-diagram { background: #252422; }
+      html:not([data-theme="light"]) .systems-inner p,
+      html:not([data-theme="light"]) .physical-body > div p { color: #999; }
+    }
+    html[data-theme="dark"] .systems-diagram { background: #252422; }
+    html[data-theme="dark"] .systems-inner p,
+    html[data-theme="dark"] .physical-body > div p { color: #999; }
+  </style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="site-header" id="navigation">
+  <div class="header-bar">
+    <a class="brand" href="index.html">Tay Aras</a>
+    <div class="string-zone" id="singleZone" tabindex="0" aria-label="Interactive guitar string — click or drag to play">
+      <svg class="string-svg" id="singleSVG" viewBox="0 0 1100 36" preserveAspectRatio="none">
+        <path id="singlePath" class="string-path" d="M0 19 Q 550 19 1100 19"/>
+      </svg>
+    </div>
+    <button class="mute-btn" id="muteBtn" aria-label="Toggle sound" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path class="sound-on" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-on" d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-off" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"/>
+        <line class="sound-off" x1="15" y1="9" x2="21" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+        <line class="sound-off" x1="21" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+      </svg>
+    </button>
+    <button class="expand-btn" id="expandBtn" aria-expanded="false" aria-controls="stringsPanel" style="display:none" aria-hidden="true">
+      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      more
+    </button>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html" class="current">Work</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="mobile-nav">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none">
+          <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html" class="current">Work</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </div>
+  <div class="strings-panel" id="stringsPanel" hidden>
+    <div class="strings-grid" id="stringsGrid"></div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- Hero -->
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-l">Carnegie Mellon University · Interaction Design</span>
+      <span class="hero-eyebrow-r">2021</span>
+    </div>
+    <div class="hero-title w">
+      <h1>Orbit:<br>Growing Together</h1>
+    </div>
+    <div class="hero-img" role="img" aria-label="Orbit speaker showing light animation">
+      <img src="images/orbit/hero.gif" alt="Orbit speaker glowing with abstract light patterns representing emotional states">
+    </div>
+  </section>
+
+  <!-- Meta strip -->
+  <div class="meta-strip">
+    <div class="meta-strip-inner meta-strip-inner--4col">
+      <div class="meta-cell">
+        <span class="label">Role</span>
+        <div class="meta-val">Interaction Design · Concept Development · Physical Prototyping</div>
+      </div>
+      <div class="meta-cell">
+        <span class="label">Collaborators</span>
+        <div class="meta-val">Dorcas Lin · Franklin Guttman</div>
+      </div>
+      <div class="meta-cell">
+        <span class="label">Year</span>
+        <div class="meta-val">2021</div>
+      </div>
+      <div class="meta-cell">
+        <span class="label">Tools</span>
+        <div class="meta-val">Arduino · TinkerCad · Solidworks · Adobe CC · Figma</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">Overview</p></div>
+      <div>
+        <p class="overview-p">Orbit is an interactive wall speaker for two people to connect and bond over music: discovering songs together, sharing reactions, and building a physical record of the relationship over time.</p>
+        <p class="overview-p" style="margin-top: 24px;">The project began with a question: <em>how might we preserve close relationships impacted by a lack of in-person interaction?</em> With distance a persistent reality for many friendships, we wanted to design something that made the emotional texture of a relationship visible and lasting. A shared artifact that accumulates meaning as the relationship does.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Demo video -->
+  <div class="demo-section">
+    <div class="demo-section-inner">
+      <p class="label demo-label">Demo</p>
+      <div class="vimeo-wrap">
+        <iframe src="https://player.vimeo.com/video/527938920?autoplay=0&title=0&byline=0&portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Orbit — Growing Together demo video"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Experience walkthrough -->
+  <section class="walkthrough-section" aria-label="Experience Walkthrough">
+    <div class="walkthrough-header">
+      <p class="label">Experience Walkthrough</p>
+    </div>
+    <div class="walkthrough-intro">
+      <div></div>
+      <p>Orbit is built around a two-person loop: one person shares a song, the other reacts with an emotion. Each exchange is recorded and visualized as a light pattern on the speaker, building a physical record of the relationship over time. The journey map below traces that full arc, from discovering a new song to the tapestry it becomes part of.</p>
+    </div>
+    <!-- Journey map: main overview item -->
+    <div class="walkthrough-main">
+      <img src="images/orbit/journey-map.webp" alt="User journey map — full Orbit experience flow">
+    </div>
+    <!-- Slide breakdown -->
+    <div class="walkthrough-sublabel">
+      <p class="label">Step-by-step breakdown</p>
+      <p>Each slide details a specific moment in the experience: from opening the app and discovering a shared song, to reacting and watching the speaker respond in real time.</p>
+    </div>
+    <div class="walkthrough-grid">
+      <div class="walkthrough-cell">
+        <img src="images/orbit/slide-01.webp" alt="Orbit experience — step 1">
+      </div>
+      <div class="walkthrough-cell">
+        <img src="images/orbit/slide-02.webp" alt="Orbit experience — step 2">
+      </div>
+      <div class="walkthrough-cell">
+        <img src="images/orbit/slide-03.webp" alt="Orbit experience — step 3">
+      </div>
+      <div class="walkthrough-cell">
+        <img src="images/orbit/slide-05.webp" alt="Orbit experience — step 5">
+      </div>
+      <div class="walkthrough-cell">
+        <img src="images/orbit/slide-06.webp" alt="Orbit experience — step 6">
+      </div>
+      <div class="walkthrough-cell">
+        <img src="images/orbit/slide-07.webp" alt="Orbit experience — step 7">
+      </div>
+    </div>
+
+    <!-- Spotify UI -->
+    <div class="walkthrough-sublabel" style="padding-top: 48px; border-top: 1px solid var(--line); margin-top: 48px;">
+      <p class="label">App Interface: Spotify Integration</p>
+      <p>Orbit plugs into Spotify as the music layer. Users share songs directly from their existing library, and the companion interface surfaces what's been shared, who sent it, and what emotion it received, keeping the music context intact rather than building a separate catalog from scratch.</p>
+    </div>
+    <div class="walkthrough-stack">
+      <div class="walkthrough-cell">
+        <img src="images/orbit/slide-04.webp" alt="Spotify UI: song sharing interface">
+      </div>
+      <div class="walkthrough-cell">
+        <img src="images/orbit/slide-08.webp" alt="Spotify UI: app screens">
+      </div>
+      <div class="walkthrough-cell">
+        <img src="images/orbit/slide-09.webp" alt="Spotify UI: additional screens">
+      </div>
+    </div>
+  </section>
+
+  <!-- Visual system -->
+  <section class="visual-system" aria-label="Visual System">
+    <div class="visual-system-header">
+      <p class="label">Visual System</p>
+    </div>
+    <div class="visual-system-intro">
+      <h2>Emotions made visible</h2>
+      <p class="lede">Each reaction a user sends to a shared song maps to a distinct visual state, a living light pattern that the Orbit speaker displays.</p>
+      <p>Over time, the accumulated reactions build a visual history of the relationship: which songs moved you, when, and how. The speaker becomes a record as much as it is a speaker.</p>
+      <p>Five emotional states are encoded into the system, each with its own animation language: speed, color temperature, and movement pattern are all considered together.</p>
+    </div>
+    <div class="emotion-grid">
+      <div class="emotion-cell">
+        <div class="emotion-gif">
+          <img src="images/orbit/emotion-01.gif" alt="Visual state — emotion mapping">
+        </div>
+        <span class="emotion-label">Emotion</span>
+      </div>
+      <div class="emotion-cell">
+        <div class="emotion-gif">
+          <img src="images/orbit/emotion-02.gif" alt="Visual state — sending & receiving">
+        </div>
+        <span class="emotion-label">Sharing</span>
+      </div>
+      <div class="emotion-cell">
+        <div class="emotion-gif">
+          <img src="images/orbit/emotion-03.gif" alt="Visual state — tapestry growth over time">
+        </div>
+        <span class="emotion-label">Growth</span>
+      </div>
+      <div class="emotion-cell">
+        <div class="emotion-gif">
+          <img src="images/orbit/emotion-04.gif" alt="Visual state — tone of music">
+        </div>
+        <span class="emotion-label">Tone</span>
+      </div>
+      <div class="emotion-cell">
+        <div class="emotion-gif">
+          <img src="images/orbit/emotion-05.gif" alt="Visual state — relationship size from songs shared">
+        </div>
+        <span class="emotion-label">Connection</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Systems diagram -->
+  <div class="systems-section">
+    <div class="systems-inner">
+      <div style="display: grid; grid-template-columns: 200px 1fr; gap: 48px; align-items: start; margin-bottom: 32px;">
+        <p class="label" style="padding-top: 4px;">Systems Diagram</p>
+        <p style="font-size: 13px; line-height: 1.7; color: #555; max-width: 560px;">The system connects two physical speakers across distance through a shared Spotify layer. When one person reacts to a song, the emotion signal travels through the app and is rendered as a light animation on both speakers simultaneously, making the exchange feel present even across distance.</p>
+      </div>
+      <div class="systems-diagram" role="img" aria-label="Systems diagram showing how Orbit components connect">
+        <img src="images/orbit/systems-diagram.webp" alt="Systems diagram — Orbit architecture">
+      </div>
+    </div>
+  </div>
+
+  <!-- Physical form -->
+  <section class="physical-section" aria-label="Physical Form">
+    <div class="physical-header">
+      <p class="label">Physical Form</p>
+    </div>
+    <div class="physical-body">
+      <div style="display: grid; grid-template-columns: 200px 1fr; gap: 48px; align-items: start; margin-bottom: 40px;">
+        <div></div>
+        <p style="font-size: 13px; line-height: 1.7; color: #555; max-width: 560px;">The speaker form was prototyped using TinkerCad and Solidworks, with the physical shell designed to sit flush against a wall like a piece of art. Visible and permanent. Inside, an Arduino controls the LED array that generates the light animations. The enclosure material was chosen to diffuse light evenly, so emotional states read as ambient glow rather than harsh pattern.</p>
+      </div>
+      <div class="physical-main">
+        <img src="images/orbit/physical-01.webp" alt="Orbit speaker — physical prototype front view">
+      </div>
+      <div class="physical-row">
+        <div class="physical-sm">
+          <img src="images/orbit/physical-02.webp" alt="Orbit speaker — detail view">
+        </div>
+        <div class="physical-sm">
+          <img src="images/orbit/physical-03.webp" alt="Orbit speaker — side view">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Next project CTA -->
+  <div class="dark-cta">
+    <div class="dark-cta-inner">
+      <div>
+        <p class="label">Next Project</p>
+        <h2>HP<br>Sustainability Experience</h2>
+        <p>A physical pop-up experience using animatronic plants and sensor-driven interaction to connect HP's sustainability work to its brand identity.</p>
+        <a href="hp.html" class="dark-link">View project →</a>
+      </div>
+      <div class="dark-cta-img">
+        <img src="images/hp/exterior.webp" alt="HP Sustainability Experience exterior rendering">
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html">Work</a>
+        <a href="acs.html">UI Library</a>
+        <a href="collective-iq.html">Collective IQ</a>
+        <a href="cmu-thesis.html">XR Experiences</a>
+        <a href="orbit.html">Orbit</a>
+        <a href="hp.html">HP Experience</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+    <span class="footer-copy">© 2026 Tay Aras</span>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+// Respect prefers-reduced-motion: show still instead of hero GIF
+(function () {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var heroImg = document.querySelector('.hero-img img');
+    if (heroImg) heroImg.src = 'images/orbit/hero-still.webp';
+  }
+})();
+</script>
+<script>
+(function () {
+  const grid = document.querySelector('.walkthrough-grid');
+  if (!grid) return;
+
+  const imgs = Array.from(grid.querySelectorAll('.walkthrough-cell img'));
+  let current = 0;
+
+  // Build lightbox DOM
+  const lb = document.createElement('div');
+  lb.className = 'lightbox';
+  lb.setAttribute('role', 'dialog');
+  lb.setAttribute('aria-modal', 'true');
+  lb.setAttribute('aria-label', 'Image gallery');
+  lb.innerHTML =
+    '<button class="lightbox-close" aria-label="Close gallery">✕</button>' +
+    '<button class="lightbox-btn lightbox-prev" aria-label="Previous image">←</button>' +
+    '<img class="lightbox-img" src="" alt="">' +
+    '<button class="lightbox-btn lightbox-next" aria-label="Next image">→</button>' +
+    '<span class="lightbox-counter"></span>';
+  document.body.appendChild(lb);
+
+  const lbImg     = lb.querySelector('.lightbox-img');
+  const lbCounter = lb.querySelector('.lightbox-counter');
+
+  function show(index) {
+    current = (index + imgs.length) % imgs.length;
+    lbImg.src = imgs[current].src;
+    lbImg.alt = imgs[current].alt;
+    lbCounter.textContent = (current + 1) + ' / ' + imgs.length;
+  }
+
+  function open(index) {
+    show(index);
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    lb.querySelector('.lightbox-close').focus();
+  }
+
+  function close() {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Open on cell click or keyboard
+  imgs.forEach(function (img, i) {
+    var cell = img.closest('.walkthrough-cell');
+    cell.setAttribute('tabindex', '0');
+    cell.setAttribute('role', 'button');
+    cell.setAttribute('aria-label', img.alt || 'View image');
+    cell.addEventListener('click', function () { open(i); });
+    cell.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); }
+    });
+  });
+
+  lb.querySelector('.lightbox-prev').addEventListener('click', function (e) {
+    e.stopPropagation();
+    show(current - 1);
+  });
+  lb.querySelector('.lightbox-next').addEventListener('click', function (e) {
+    e.stopPropagation();
+    show(current + 1);
+  });
+  lb.querySelector('.lightbox-close').addEventListener('click', close);
+
+  // Close on backdrop click
+  lb.addEventListener('click', function (e) {
+    if (e.target === lb) close();
+  });
+
+  // Keyboard nav
+  document.addEventListener('keydown', function (e) {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape')      close();
+    if (e.key === 'ArrowLeft')   show(current - 1);
+    if (e.key === 'ArrowRight')  show(current + 1);
+  });
+})();
+</script>
+</body>
+</html>

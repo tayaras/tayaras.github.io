@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nowhere Interesting LLC — Tay Aras</title>
+  <meta name="description" content="Nowhere Interesting LLC — independent design studio for branding, futures consulting, and startup advisory.">
+  <script>try{var t=localStorage.getItem('tayTheme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-bottom: 1px solid var(--line);
+    }
+    .service-cell {
+      border-right: 1px solid var(--line);
+      padding: 40px 32px;
+    }
+    .service-cell:last-child { border-right: none; }
+    .service-cell .label { margin-bottom: 20px; }
+    .service-cell h3 { font-size: 16px; font-weight: 500; margin-bottom: 12px; }
+    .service-cell p { font-size: 13px; line-height: 1.6; color: #444; }
+
+    .selected-work-grid {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+    .selected-row {
+      display: grid;
+      grid-template-columns: 80px 1fr 1fr;
+      border-bottom: 1px solid var(--line);
+      padding: 0 var(--pad);
+      align-items: start;
+    }
+    .selected-row-num { padding: 32px 0; font-family: var(--mono); font-size: 10px; color: var(--mid); }
+    .selected-row-meta { padding: 32px 40px 32px 0; border-right: 1px solid var(--line); }
+    .selected-row-meta h3 { font-size: 16px; font-weight: 500; margin-bottom: 8px; }
+    .selected-row-meta .label { margin-bottom: 8px; }
+    .selected-row-desc { padding: 32px 0 32px 40px; }
+    .selected-row-desc p { font-size: 13px; line-height: 1.6; color: #444; }
+
+    .studio-img {
+      background: #e4e1d8;
+      height: 360px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--mid);
+      flex-direction: column;
+      gap: 8px;
+      letter-spacing: 0.06em;
+    }
+    .studio-img small { font-size: 10px; color: #aaa; text-align: center; max-width: 200px; }
+
+    /* Services section wrapper and header */
+    .services-section { border-bottom: 1px solid var(--line); }
+    .services-header {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 24px var(--pad) 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .services-grid { max-width: var(--max); margin: 0 auto; }
+
+    @media (max-width: 768px) {
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .service-cell:nth-child(2n) { border-right: none; }
+      .service-cell:nth-child(n+3) { border-top: 1px solid var(--line); }
+      .selected-row { grid-template-columns: 60px 1fr; }
+      .selected-row-meta { border-right: none; padding-right: 0; grid-column: 2; }
+      .selected-row-desc { grid-column: 2; padding-top: 0; padding-left: 0; }
+    }
+    @media (max-width: 480px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .service-cell:nth-child(2n) { border-right: none; }
+      .service-cell { border-bottom: 1px solid var(--line); }
+    }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .studio-img { background: #252422; }
+    }
+    html[data-theme="dark"] .studio-img { background: #252422; }
+  </style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="site-header" id="navigation">
+  <div class="header-bar">
+    <a class="brand" href="index.html">Tay Aras</a>
+    <div class="string-zone" id="singleZone" tabindex="0" aria-label="Interactive guitar string — click or drag to play">
+      <svg class="string-svg" id="singleSVG" viewBox="0 0 1100 36" preserveAspectRatio="none">
+        <path id="singlePath" class="string-path" d="M0 19 Q 550 19 1100 19"/>
+      </svg>
+    </div>
+    <button class="mute-btn" id="muteBtn" aria-label="Toggle sound" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path class="sound-on" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-on" d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-off" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"/>
+        <line class="sound-off" x1="15" y1="9" x2="21" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+        <line class="sound-off" x1="21" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+      </svg>
+    </button>
+    <button class="expand-btn" id="expandBtn" aria-expanded="false" aria-controls="stringsPanel" style="display:none" aria-hidden="true">
+      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      more
+    </button>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html" class="current">Work</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="mobile-nav">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none">
+          <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html" class="current">Work</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </div>
+  <div class="strings-panel" id="stringsPanel" hidden>
+    <div class="strings-grid" id="stringsGrid"></div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- Hero — studio title and hero image -->
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-l">Nowhere Interesting LLC · Independent Studio</span>
+      <span class="hero-eyebrow-r">2018 – Present</span>
+    </div>
+    <div class="hero-title w">
+      <h1>Nowhere<br>Interesting</h1>
+    </div>
+    <div class="hero-img" role="img" aria-label="Studio work hero placeholder">
+      STUDIO WORK OVERVIEW
+      <small>Replace with a strong branding or workshop image</small>
+    </div>
+  </section>
+
+  <!-- Meta strip — entity, type, services, active since -->
+  <div class="meta-strip">
+    <div class="meta-strip-inner meta-strip-inner--4col">
+      <div class="meta-cell"><span class="label">Entity</span><div class="meta-val">Nowhere Interesting LLC</div></div>
+      <div class="meta-cell"><span class="label">Type</span><div class="meta-val">Independent Design Studio</div></div>
+      <div class="meta-cell"><span class="label">Services</span><div class="meta-val">Branding · Futures · Advisory · Workshops</div></div>
+      <div class="meta-cell"><span class="label">Active</span><div class="meta-val">Since 2018 · Ongoing</div></div>
+    </div>
+  </div>
+
+  <!-- Overview — what the studio is and does -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">Overview</p></div>
+      <div>
+        <p class="overview-p">Nowhere Interesting LLC is the container for everything that doesn't fit inside a job description. It started in 2018 as a way to take on branding and graphic design work alongside school and internships. It's grown into a more intentional practice that spans visual identity, futures consulting, startup advisory, and design and product workshops. Most client work is confidential. The studio is the other side of the same practice as the Microsoft work — more speculative, more personal, more willing to be weird.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Services — four practice areas -->
+  <div class="services-section">
+    <div class="services-header">
+      <p class="label">What the Studio Does</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-cell">
+        <p class="label">Branding</p>
+        <h3>Visual Identity</h3>
+        <p>Brand strategy, logo design, visual systems, and identity guidelines. Primarily for independent musicians, small businesses, and early-stage startups where the brand has to do real work fast.</p>
+      </div>
+      <div class="service-cell">
+        <p class="label">Graphic Design</p>
+        <h3>Print & Digital</h3>
+        <p>Posters, merch, editorial design, and digital assets. A lot of this work is for the independent music community — show flyers, album artwork, zines.</p>
+      </div>
+      <div class="service-cell">
+        <p class="label">Futures</p>
+        <h3>Consulting & Foresight</h3>
+        <p>Trend mapping, scenario planning, and product futures for companies thinking about what their category looks like in 5–10 years. The spatial computing and music backgrounds make this more grounded than most futures work.</p>
+      </div>
+      <div class="service-cell">
+        <p class="label">Advisory</p>
+        <h3>Startup & Product</h3>
+        <p>Early-stage product advisory for founders who need a PM or design perspective without a full hire. Especially useful for companies building developer tools, hardware, or community-dependent products.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Selected engagements — three representative projects -->
+  <section aria-label="Selected Work">
+    <div class="work-section">
+      <div class="work-section-header">
+        <p class="label">Selected Engagements</p>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--mid);">Confidential details omitted</span>
+      </div>
+
+      <div class="work-item">
+        <div class="work-item-inner">
+          <div class="work-tag-col">
+            <span class="work-num">01</span>
+            <span class="work-tag">Branding · Music</span>
+          </div>
+          <div class="work-content">
+            <h3>Independent Artist Identities</h3>
+            <p>Visual identity systems for independent musicians across rock, electronic, and experimental music. The constraint that makes this interesting: the identity has to work across a poster at 18" × 24", a phone screen at 375px wide, a band tee printed at 72 dpi, and a stage backdrop at 12 feet. Most brand systems aren't designed for that kind of resolution range. These have to be.</p>
+            <div class="work-img-main">ARTIST IDENTITY SYSTEM<small>A strong frame from a visual identity — logo, color, type, and layout in context</small></div>
+            <div class="work-img-row">
+              <div class="work-img-sm">POSTER APPLICATION<small>Show poster using the identity system</small></div>
+              <div class="work-img-sm">DIGITAL APPLICATION<small>Social media and streaming assets</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-item">
+        <div class="work-item-inner">
+          <div class="work-tag-col">
+            <span class="work-num">02</span>
+            <span class="work-tag">Futures · Tech</span>
+          </div>
+          <div class="work-content">
+            <h3>Product Futures Workshop</h3>
+            <p>A half-day futures workshop run for a tech company's product team, focused on scenario planning for their category over a 5-year horizon. The format: four plausible futures mapped across two axes of uncertainty, stress-tested against the company's current roadmap. The output wasn't a prediction — it was a set of strategic options and the conditions under which each would become relevant.</p>
+            <div class="work-img-main">SCENARIO MAP<small>The four futures plotted across the uncertainty axes</small></div>
+            <div class="work-img-row">
+              <div class="work-img-sm">WORKSHOP SESSION<small>Team working through scenario implications</small></div>
+              <div class="work-img-sm">OUTPUT DOCUMENT<small>Strategic options brief delivered post-workshop</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-item">
+        <div class="work-item-inner">
+          <div class="work-tag-col">
+            <span class="work-num">03</span>
+            <span class="work-tag">Advisory · Hardware</span>
+          </div>
+          <div class="work-content">
+            <h3>Music Hardware Startup Advisory</h3>
+            <p>Ongoing advisory for an early-stage company building hardware at the intersection of music and consumer electronics. The engagement focuses on product strategy, community-building, and go-to-market for a category where distribution and trust are built through enthusiast communities before mass channels. My background as a bassist and DIY show organizer makes the community dynamics legible in a way that most product advisors miss.</p>
+            <div class="work-img-main">ADVISORY ENGAGEMENT<small>Product strategy session or hardware prototype review</small></div>
+            <div class="work-img-row">
+              <div class="work-img-sm">COMMUNITY MAPPING<small>Audience and distribution channel analysis</small></div>
+              <div class="work-img-sm">ROADMAP SESSION<small>Product prioritization work</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Studio at a glance — founded, years active, status -->
+  <section aria-label="Studio overview">
+    <div class="impact">
+      <div class="impact-header"><p class="label">Studio at a Glance</p></div>
+      <div class="impact-grid">
+        <div class="impact-cell">
+          <p class="impact-n">2018</p>
+          <p class="impact-desc">Studio founded while at CMU. Started with branding and graphic design; expanded scope as expertise grew.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">7+</p>
+          <p class="impact-desc">Years running in parallel with full-time school and work. Built to be sustainable alongside other commitments, not instead of them.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">Open</p>
+          <p class="impact-desc">Currently taking on new engagements. Particularly interested in music, outdoor gear, climate, and independent businesses with a clear point of view.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA — contact prompt for new engagements -->
+  <div class="dark-cta">
+    <div class="dark-cta-inner">
+      <div>
+        <p class="label">Work Together</p>
+        <h2>Let's talk<br>about your project.</h2>
+        <p>Nowhere Interesting takes on a small number of engagements at a time. If you're working on something in music, outdoor gear, hardware, or any independent business that needs design and product thinking, reach out.</p>
+        <a href="mailto:tayaras@outlook.com" class="dark-link">tayaras@outlook.com →</a>
+      </div>
+      <div class="dark-cta-img">
+        nowhereinteresting.online
+        <small>The studio's online presence</small>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html">Work</a>
+        <a href="acs.html">ACS</a>
+        <a href="collective-iq.html">Collective IQ</a>
+        <a href="cmu-thesis.html">CMU Thesis</a>
+        <a href="extras.html">Extras</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+    <span class="footer-copy">© 2025 Tay Aras</span>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+</body>
+</html>
