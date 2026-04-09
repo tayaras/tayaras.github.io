@@ -1172,7 +1172,7 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
   :root:not([data-theme="light"]) {
     --black: #edeae3;
     --white: #141312;
-    --mid: #807d78;
+    --mid: #a8a49f;
     --line: #272422;
     --accent: #38b2a5;
     --accent-light: #0d1f1e;
@@ -1183,7 +1183,7 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
 [data-theme="dark"] {
   --black: #edeae3;
   --white: #141312;
-  --mid: #807d78;
+  --mid: #a8a49f;
   --line: #272422;
   --accent: #38b2a5;
   --accent-light: #0d1f1e;
