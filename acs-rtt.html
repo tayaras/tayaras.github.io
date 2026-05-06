@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!sessionStorage.getItem("ta_auth"))document.documentElement.style.visibility="hidden";</script>
+  <script src="auth.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-Time Text (RTT) · ACS UI Library · Tay Aras</title>
+  <meta name="description" content="Sub-case study: Real-Time Text (RTT) in the ACS UI Library — the first RTT implementation across Microsoft, designed from scratch for simultaneous in-call text streams.">
+  <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .meta-link { color: inherit; text-decoration: none; }
+    .meta-link:hover { text-decoration: underline; }
+    .inline-link { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+    .inline-link:hover { opacity: 0.6; }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      max-width: var(--max); margin: 0 auto; padding: 20px var(--pad) 0;
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--mid);
+    }
+    .breadcrumb a { color: var(--mid); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--fg); }
+
+    /* Design decision callout */
+    .design-decision {
+      border-left: 2px solid var(--accent); padding: 20px 24px;
+      margin: 28px 0; background: var(--accent-light);
+    }
+    .design-decision .label { display: block; margin-bottom: 10px; }
+    .design-decision p { font-size: 13px; line-height: 1.7; color: var(--mid); max-width: 640px; }
+
+    /* Context two-col */
+    .context-inner {
+      max-width: var(--max); margin: 0 auto; padding: 80px var(--pad);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+    }
+    .context-left .label { margin-bottom: 24px; }
+    .context-left h2 { margin-bottom: 24px; }
+    .context-left p + p { margin-top: 16px; }
+    .context-img {
+      background: #ede9e2; aspect-ratio: 4/3;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 11px; color: var(--mid);
+      flex-direction: column; gap: 8px; letter-spacing: 0.06em; overflow: hidden;
+    }
+    .context-img small { font-size: 10px; color: var(--mid); text-align: center; max-width: 220px; }
+    .context-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .context-img:has(img) { aspect-ratio: unset; overflow: hidden; }
+
+    /* Compliance band */
+    .compliance-band { border-bottom: 1px solid var(--line); }
+    .compliance-band-inner {
+      max-width: var(--max); margin: 0 auto; padding: 64px var(--pad);
+      display: grid; grid-template-columns: 240px 1fr; gap: 80px;
+    }
+    .standard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .standard-cell { border: 1px solid var(--line); padding: 20px 18px; }
+    .standard-name {
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
+      font-weight: 600; display: block; margin-bottom: 6px;
+    }
+    .standard-desc { font-size: 12px; line-height: 1.6; color: var(--mid); }
+
+    /* Sub-case nav */
+    .subcase-nav { border-top: 1px solid var(--line); }
+    .subcase-nav-inner {
+      max-width: var(--max); margin: 0 auto; padding: 40px var(--pad);
+      display: flex; justify-content: space-between; align-items: center; gap: 24px;
+    }
+    .subcase-nav-link { display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: inherit; }
+    .subcase-nav-link:hover h3 { text-decoration: underline; text-underline-offset: 2px; }
+    .subcase-nav-link .nav-dir { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; color: var(--mid); }
+    .subcase-nav-link h3 { font-size: 15px; }
+    .subcase-nav-link.next { text-align: right; }
+
+    @media (max-width: 768px) {
+      .context-inner { grid-template-columns: 1fr; gap: 40px; padding: 40px var(--pad); }
+      .compliance-band-inner { grid-template-columns: 1fr; gap: 32px; padding: 40px var(--pad); }
+      .standard-grid { grid-template-columns: 1fr; }
+      .subcase-nav-inner { flex-direction: column; align-items: flex-start; }
+      .subcase-nav-link.next { text-align: left; }
+    }
+        html[data-theme="dark"] .context-img { background: #252422; }
+  </style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="site-header" id="navigation">
+  <div class="header-bar">
+    <a class="brand" href="index.html">Tay Aras</a>
+    <div class="string-zone" id="singleZone" tabindex="0" aria-label="Interactive guitar string — click or drag to play">
+      <svg class="string-svg" id="singleSVG" viewBox="0 0 1100 36" preserveAspectRatio="none">
+        <path id="singlePath" class="string-path" d="M0 19 Q 550 19 1100 19"/>
+      </svg>
+    </div>
+    <button class="mute-btn" id="muteBtn" aria-label="Toggle sound" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path class="sound-on" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-on" d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-off" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"/>
+        <line class="sound-off" x1="15" y1="9" x2="21" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+        <line class="sound-off" x1="21" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+      </svg>
+    </button>
+    <button class="expand-btn" id="expandBtn" aria-expanded="false" aria-controls="stringsPanel" style="display:none" aria-hidden="true">
+      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      more
+    </button>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html" class="current">Work</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="mobile-nav">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none">
+          <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html" class="current">Work</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </div>
+  <div class="strings-panel" id="stringsPanel" hidden>
+    <div class="strings-grid" id="stringsGrid"></div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="breadcrumb"><a href="acs-overview.html">ACS UI Library</a> / Sub-Case 01</div>
+
+  <!-- Hero -->
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-l">Microsoft · ACS UI Library · Accessibility &amp; Compliance</span>
+      <span class="hero-eyebrow-r">FY25 · Shipped</span>
+    </div>
+    <div class="hero-title w">
+      <h1>Real-Time<br>Text (RTT)</h1>
+    </div>
+    <div class="hero-img" role="img" aria-label="RTT panel open during an active call">
+      <!-- PHOTO: acs-rtt-panel.png — the RTT panel open during a call with real-time text appearing. This is the shipped UI and the best proof of the final design. If possible, crop to show both the video gallery and the RTT panel in frame simultaneously, so the spatial relationship between AI/text layer and calling layer is visible. -->
+      <img src="images/acs/acs-rtt-panel.png" alt="RTT panel open during an active call — real-time text alongside video gallery">
+    </div>
+  </section>
+
+  <!-- Meta strip -->
+  <div class="meta-strip">
+    <div class="meta-strip-inner meta-strip-inner--5col">
+      <div class="meta-cell"><span class="label">Type</span><div class="meta-val">Accessibility · Compliance</div></div>
+      <div class="meta-cell"><span class="label">My role</span><div class="meta-val">Design direction · PM · Spec · Cross-functional coordination</div></div>
+      <div class="meta-cell"><span class="label">Surfaces</span><div class="meta-val">Web · iOS · Android<br>Teams interop</div></div>
+      <div class="meta-cell"><span class="label">Partners</span><div class="meta-val">IC3 · Teams · ACS DevRel<br>Accessibility team</div></div>
+      <div class="meta-cell"><span class="label">Outcome</span><div class="meta-val">First RTT across Microsoft<br>5 accessibility standards</div></div>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">The challenge</p></div>
+      <div>
+        <p class="overview-p">RTT (Real-Time Text) transmits text character-by-character as it's typed — not as completed messages. It's the communication mode that lets someone who is deaf or has a speech disability participate in a live voice call in real time. ACS had no RTT capability across any surface. The EU Accessibility Act imposed a hard enforcement deadline of June 2025.</p>
+        <p class="overview-p" style="margin-top: 20px;">The interaction model was unlike anything else in the UI Library: text appearing mid-thought, from multiple speakers at once, inside a live call that already has video, audio, and call controls competing for space. There was no prior art to adapt. I argued this belonged in the call layer — not chat — took ownership, and designed the model from scratch. It became the first RTT implementation shipped across Microsoft.</p>
+        <p class="overview-p" style="margin-top: 20px; font-size: 14px; color: var(--mid);">I designed the RTT interaction model and the panel component in Figma. Jessica Downey and the design team were partners on visual refinement and platform-specific execution across iOS and Android.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Context — the accessibility case and why it went in the call layer -->
+  <div class="section-row" style="border-top: none;">
+    <div class="context-inner">
+      <div class="context-left">
+        <p class="label">Why the call layer</p>
+        <h2>RTT is session-scoped, not message-scoped</h2>
+        <p>When RTT surfaced in planning, it was pointed toward the chat team. Chat handles real-time communication — it seemed like a natural fit. I pushed back: RTT is fundamentally different from chat. It doesn't produce messages. It produces a live stream of character-by-character input that disappears when the call ends. It has no threading, no history, no "send" action. Sending it through the ChatComposite would have meant building an abstraction on top of a completely wrong model.</p>
+        <p>More practically: the users who need RTT are on a voice call. They're not switching to a chat window. The interface has to be present inside the call, at the same level of persistence as captions — visible, responsive, dismissible without ending the session.</p>
+        <p>I made the case, took cross-team ownership, and built the scope for web, iOS, and Android simultaneously, coordinating across IC3, Teams, and ACS DevRel on the transmission protocol and Teams interop behavior.</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap: 16px;">
+        <div class="context-img" role="img" aria-label="EU Accessibility Act context">
+          <!-- PHOTO: A slide or annotated document showing the EU Accessibility Act scope and compliance requirements for real-time communication. Could be from the RTT spec's compliance section, showing the specific standards (ETSI EN 301 549, EU EAA) and the June 2025 deadline. Showing the compliance pressure gives the design work stakes and urgency. Clean table or list format is ideal. -->
+          <span>PHOTO</span>
+          <small>EU Accessibility Act compliance scope — standards requirements and June 2025 enforcement deadline from the RTT spec</small>
+        </div>
+        <div class="context-img" role="img" aria-label="RTT within the calling UI — spatial context">
+          <!-- PHOTO: A Figma frame or annotated screenshot showing where RTT lives spatially within the calling composite — the panel anchored to one side, its relationship to the video gallery, and how it coexists with captions and the control bar. This doesn't need to be the final UI — an early exploration frame showing the layout options considered (side panel vs. overlay vs. bottom band) would be even more valuable here. -->
+          <span>PHOTO</span>
+          <small>Early layout exploration — RTT panel placement options within the calling composite (side panel vs. overlay vs. bottom band)</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Before -->
+  <section aria-label="Before RTT">
+    <div class="work-section">
+      <div class="work-section-header">
+        <p class="label">Before</p>
+      </div>
+      <div class="work-item" style="border-bottom: none;">
+        <div class="work-item-inner">
+          <div class="work-tag-col">
+            <span class="work-num">—</span>
+            <span class="work-tag">The gap</span>
+          </div>
+          <div class="work-content">
+            <h3>What users who needed RTT had to work around</h3>
+            <p>Before this shipped, a person who is deaf or has a speech disability joining an ACS-powered call had two options — neither designed for their actual use case. Captions worked one way: they could read what others were saying, but had no real-time channel to respond in kind during the live conversation. The chat panel existed, but it's an asynchronous message thread — wrong model for a live exchange, and requires leaving the call context to use it.</p>
+            <p>The workaround was essentially: type in chat, hope the other person is watching it, lose the thread of the live conversation. For a telehealth appointment or a financial consultation, that's not a viable experience. RTT was never in ACS because no one had scoped it to the right layer — it kept getting treated as a chat feature rather than a calling feature, which is why it had never shipped.</p>
+            <div class="work-img-main">
+              <div style="background:#ede9e2; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; font-family:var(--mono); font-size:11px; color:var(--mid); letter-spacing:0.06em;" role="img" aria-label="Before RTT — calling UI without RTT option">
+                <!-- PHOTO: A screenshot of the ACS calling composite BEFORE RTT shipped — specifically the call settings/more options menu showing captions available but no RTT option. This is the "gap" made visible: accessibility features existed, but RTT wasn't among them. If you have a pre-RTT build, capture the menu. Alternatively, annotate the current menu to show what was absent. The goal is a concrete visual of the problem state, not a generic "before" mockup. -->
+                <span>PHOTO</span>
+                <small>Pre-RTT calling composite — call settings menu showing captions available but no RTT option. The gap made visible.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Work -->
+  <section aria-label="The Work">
+    <div class="work-section">
+      <div class="work-section-header">
+        <p class="label">Design decisions</p>
+      </div>
+
+      <!-- Decision 1: The interaction model -->
+      <div class="work-item">
+        <div class="work-item-inner">
+          <div class="work-tag-col">
+            <span class="work-num">01</span>
+            <span class="work-tag">The Interaction Model</span>
+          </div>
+          <div class="work-content">
+            <h3>Two people thinking out loud, simultaneously, during a call</h3>
+            <p>The interaction state RTT creates is genuinely novel in calling UI. Two participants can be typing at the same time. Neither has finished a thought. Both streams are visible to everyone in the call. And the text updates continuously — not in discrete message events but character by character, in real time.</p>
+            <p>The panel had to solve this without adding noise. The video gallery already carries a lot. Captions can be on. The control bar is always present. Every element I added to this environment had to justify itself visually and not compete with the call itself.</p>
+            <div class="work-img-main">
+              <img src="images/acs/acs-rtt-panel.png" alt="RTT panel — real-time text from two participants visible simultaneously">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decision 2: The core design problem — color vs. opacity -->
+      <div class="work-item">
+        <div class="work-item-inner">
+          <div class="work-tag-col">
+            <span class="work-num">02</span>
+            <span class="work-tag">The Core<br>Design Decision</span>
+          </div>
+          <div class="work-content">
+            <h3>The solution that survives theming</h3>
+            <p>The first approach used color: in-progress text in a muted hue, completed text in the standard foreground. Clear in isolation. It solved the "which text is finished?" problem elegantly in a controlled environment.</p>
+            <p>The problem: color doesn't survive deployment. The UI Library ships white-label — customers apply their own brand tokens. A bank uses their primary blue. A hospital uses their green. A tech company uses their dark theme. Color-coded text states look fine in Figma and break the moment they're rendered inside a custom theme. The hue I chose for "in progress" is now someone's brand primary — the distinction disappears.</p>
+            <div class="design-decision">
+              <span class="label">The opacity model</span>
+              <p>In-progress text renders at reduced opacity and snaps to full weight when the speaker pauses. Opacity is a rendering property, not a color token — it survives any theme, any brand palette, any dark-mode inversion. It also carries a secondary meaning: the subdued weight signals "this thought isn't complete yet" in a way that reads naturally even without prior knowledge of RTT. When the text snaps to full weight, there's a felt sense of completion even before you read the words.</p>
+            </div>
+            <div class="work-img-main">
+              <div style="background:#ede9e2; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; font-family:var(--mono); font-size:11px; color:var(--mid); letter-spacing:0.06em;" role="img" aria-label="Color vs. opacity design exploration placeholder">
+                <!-- PHOTO: The most important image in this sub-case. A side-by-side Figma comparison showing: (left) the color-based approach — in-progress text in a muted accent color, finished text in foreground — overlaid on a customer-themed dark background to show where it breaks; (right) the opacity-based model — in-progress text at ~40% opacity, finished text at 100% — on the same background showing it still reads. The "aha" of this comparison should be visible at a glance. If you have the exploration frames, export this as one wide image. If not, two side-by-side screenshots work. -->
+                <span>PHOTO</span>
+                <small>Design exploration — color-based approach (left, breaks under customer theming) vs. opacity model (right, theme-agnostic). Show both on a dark customer-branded background.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decision 3: Enable + notify -->
+      <div class="work-item">
+        <div class="work-item-inner">
+          <div class="work-tag-col">
+            <span class="work-num">03</span>
+            <span class="work-tag">Enable &amp; Notify</span>
+          </div>
+          <div class="work-content">
+            <h3>Opt-in, in-call, without leaving the UI</h3>
+            <p>RTT is opt-in — not everyone in a call needs it, and not every call uses it. I designed the entry point from the call settings menu so that someone who needs RTT can activate it mid-call without navigating away or interrupting the session. When RTT turns on, participants who didn't initiate it get a notification banner so they know what's happening and can respond in kind.</p>
+            <div class="work-img-row" style="grid-template-columns: repeat(3, 1fr);">
+              <div class="work-img-sm"><img src="images/acs/acs-rtt-menu.png" alt="RTT settings menu — enable real-time text from call controls"></div>
+              <div class="work-img-sm"><img src="images/acs/acs-rtt-in-call.png" alt="RTT enabled — active state in call"></div>
+              <div class="work-img-sm"><img src="images/acs/acs-rtt-notification.png" alt="RTT notification banner — in-call alert when a participant enables RTT"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decision 4: Cross-surface consistency -->
+      <div class="work-item">
+        <div class="work-item-inner">
+          <div class="work-tag-col">
+            <span class="work-num">04</span>
+            <span class="work-tag">Three Surfaces,<br>One Model</span>
+          </div>
+          <div class="work-content">
+            <h3>Web, iOS, and Android — and Teams interop</h3>
+            <p>The opacity model had to hold up across three platforms with different rendering environments and different input modalities. On mobile the RTT panel competes with an even smaller viewport — the same spatial decisions that worked on desktop had to be re-evaluated for one-handed use and smaller screens. I coordinated the cross-surface work with the iOS and Android teams to keep the interaction model consistent while allowing each platform to express it in its own native idioms.</p>
+            <p>Teams interop added a second layer: RTT in a Teams interop call means one participant is on ACS, another is in Teams. The transmission protocol and how RTT text is rendered had to be coordinated with the IC3 and Teams teams to ensure the feature worked correctly at the boundary.</p>
+            <div class="work-img-main">
+              <div style="background:#ede9e2; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; font-family:var(--mono); font-size:11px; color:var(--mid); letter-spacing:0.06em;" role="img" aria-label="Cross-surface coverage placeholder">
+                <!-- PHOTO: Three-panel layout showing RTT on web (left), iOS (center), and Android (right) — the same interaction model expressed across platforms. Each panel should show the RTT panel open with in-progress text visible, at the appropriate screen size and form factor. Ideally these are screenshots from the shipped product on each platform, cropped to the same height and placed side by side. A Teams interop screenshot as a fourth panel would be a strong addition if available. -->
+                <span>PHOTO</span>
+                <small>RTT across three platforms — Web, iOS, Android — same opacity model, same panel structure, adapted to each form factor. Add a Teams interop scenario as a fourth panel if available.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Compliance standards -->
+  <section aria-label="Compliance outcomes">
+    <div class="compliance-band">
+      <div class="compliance-band-inner">
+        <div>
+          <p class="label">Compliance</p>
+          <p style="margin-top: 16px; font-size: 13px; line-height: 1.65; color: var(--mid); max-width: 180px;">Five international accessibility standards met at launch.</p>
+        </div>
+        <div>
+          <h2 style="margin-bottom: 32px;">What this had to clear</h2>
+          <div class="standard-grid">
+            <div class="standard-cell">
+              <span class="standard-name">EU Accessibility Act</span>
+              <p class="standard-desc">The compliance driver with a hard June 2025 enforcement deadline for communication products in EU markets. RTT was required to meet it.</p>
+            </div>
+            <div class="standard-cell">
+              <span class="standard-name">ETSI EN 301 549</span>
+              <p class="standard-desc">European ICT accessibility standard with specific RTT requirements for real-time communication products — the technical spec behind the EU EAA.</p>
+            </div>
+            <div class="standard-cell">
+              <span class="standard-name">WCAG 2.1 AA</span>
+              <p class="standard-desc">Web Content Accessibility Guidelines — the baseline for all UI Library component work, including color contrast, keyboard operability, and focus management in the RTT panel.</p>
+            </div>
+            <div class="standard-cell">
+              <span class="standard-name">Section 508</span>
+              <p class="standard-desc">US federal accessibility requirements — relevant for government and enterprise customers in the US market, several of whom were on the UI Library.</p>
+            </div>
+            <div class="standard-cell">
+              <span class="standard-name">Microsoft Accessibility Standard</span>
+              <p class="standard-desc">Internal MAS criteria covering captions, real-time communication features, and specific UI behavior requirements that extended beyond WCAG baseline.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section aria-label="Results">
+    <div class="impact">
+      <div class="impact-header"><p class="label">Results</p></div>
+      <div class="impact-grid">
+        <div class="impact-cell">
+          <p class="impact-n">1st</p>
+          <p class="impact-desc">First RTT implementation shipped across Microsoft — not a port or adaptation, but a model designed from scratch for simultaneous in-call text streams.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">5</p>
+          <p class="impact-desc">International accessibility standards met at launch. The opacity model was specifically what cleared MAS review — color-based approaches had failed because they couldn't guarantee contrast requirements across customer-applied brand themes.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">3</p>
+          <p class="impact-desc">Platforms delivered simultaneously — Web, iOS, Android — plus Teams interop scenarios, coordinated across IC3, Teams, and ACS DevRel.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">Jun '25</p>
+          <p class="impact-desc">Shipped on the EU Accessibility Act enforcement deadline. The hard external date shaped the entire delivery scope and timeline from the first planning conversation.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">FY25Q2</p>
+          <p class="impact-desc">Featured in the ACS quarterly portfolio newsletter as a key accessibility milestone — described as a more accessible and immediate communication method now available across UI Library composites and components.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">↗</p>
+          <p class="impact-desc">The opacity model set a system precedent: "use rendering properties, not color tokens, for semantic states that must survive customer theming." That constraint now informs how the design team approaches any feature where state needs to be communicated through visual weight.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sub-case nav -->
+  <div class="subcase-nav">
+    <div class="subcase-nav-inner">
+      <a class="subcase-nav-link" href="acs-overview.html">
+        <span class="nav-dir">← Back to overview</span>
+        <h3>ACS UI Library</h3>
+      </a>
+      <a class="subcase-nav-link next" href="acs-call-summary.html">
+        <span class="nav-dir">Next sub-case →</span>
+        <h3>Transcription &amp; Call Summary</h3>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html">Work</a>
+        <a href="acs-overview.html">UI Library</a>
+        <a href="acs-rtt.html">RTT</a>
+        <a href="acs-call-summary.html">Call Summary</a>
+        <a href="collective-iq.html">Collective IQ</a>
+        <a href="cmu-thesis-v2.html">XR Experiences</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+    <span class="footer-copy">© 2026 Tay Aras</span>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+</body>
+</html>

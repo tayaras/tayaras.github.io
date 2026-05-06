@@ -5,9 +5,9 @@
   <script>if(!sessionStorage.getItem("ta_auth"))document.documentElement.style.visibility="hidden";</script>
   <script src="auth.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Orbit: Growing Together — Tay Aras</title>
+  <title>Orbit — Tay Aras</title>
   <meta name="description" content="Orbit is an interactive wall speaker that lets two people collaboratively build a visual record of their relationship through music sharing and emotional reaction over time.">
-  <script>try{var t=localStorage.getItem('tayTheme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+  <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
   <link rel="stylesheet" href="shared.css">
   <style>
     /* ── Vimeo / video embed ── */
@@ -42,15 +42,6 @@
     .walkthrough-section {
       border-bottom: 1px solid var(--line);
     }
-    .walkthrough-header {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 24px var(--pad);
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      border-bottom: 1px solid var(--line);
-    }
     .walkthrough-count {
       font-family: var(--mono);
       font-size: 10px;
@@ -79,7 +70,7 @@
     }
     .walkthrough-intro p {
       max-width: 600px;
-      font-size: 14px;
+      font-size: 16px;
       line-height: 1.7;
     }
     .walkthrough-sublabel {
@@ -101,10 +92,7 @@
       .walkthrough-intro,
       .walkthrough-sublabel { grid-template-columns: 1fr; gap: 12px; }
     }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .walkthrough-sublabel p { color: #999; }
-    }
-    html[data-theme="dark"] .walkthrough-sublabel p { color: #999; }
+        html[data-theme="dark"] .walkthrough-sublabel p { color: var(--mid); }
     .walkthrough-grid {
       max-width: var(--max);
       margin: 0 auto;
@@ -114,7 +102,7 @@
       gap: 8px;
     }
     .walkthrough-cell {
-      background: #f0ede8;
+      background: #ede9e2;
       overflow: hidden;
     }
     .walkthrough-cell img {
@@ -139,22 +127,10 @@
     @media (max-width: 600px) {
       .walkthrough-grid { grid-template-columns: 1fr; }
     }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .walkthrough-cell { background: #1e1c1a; }
-    }
-    html[data-theme="dark"] .walkthrough-cell { background: #1e1c1a; }
+        html[data-theme="dark"] .walkthrough-cell { background: #1e1c1a; }
 
     /* ── Visual system section ── */
     .visual-system {
-      border-bottom: 1px solid var(--line);
-    }
-    .visual-system-header {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 24px var(--pad);
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
       border-bottom: 1px solid var(--line);
     }
     .visual-system-intro {
@@ -164,6 +140,7 @@
     }
     .visual-system-intro h2 { margin-bottom: 20px; }
     .visual-system-intro .lede { margin-bottom: 16px; }
+    .visual-system-intro p { font-size: 16px; line-height: 1.7; }
     .visual-system-intro p + p { margin-top: 14px; }
     .emotion-grid {
       max-width: var(--max);
@@ -187,29 +164,10 @@
       height: auto;
       display: block;
     }
-    .emotion-label {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--mid);
-    }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .emotion-gif { background: #111; }
-    }
-    html[data-theme="dark"] .emotion-gif { background: #111; }
+        html[data-theme="dark"] .emotion-gif { background: #111; }
 
     /* ── Physical form section ── */
     .physical-section {
-      border-bottom: 1px solid var(--line);
-    }
-    .physical-header {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 24px var(--pad);
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
       border-bottom: 1px solid var(--line);
     }
     .physical-body {
@@ -219,8 +177,11 @@
     }
     .physical-main {
       overflow: hidden;
-      background: #e0ddd6;
-      margin-bottom: 8px;
+      background: #ede9e2;
+      margin-bottom: 24px;
+      border-radius: var(--radius-card);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-card);
     }
     .physical-main img {
       width: 100%;
@@ -230,12 +191,15 @@
     .physical-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 8px;
+      gap: 16px;
+      margin-top: 0;
     }
     .physical-sm {
       overflow: hidden;
-      background: #e8e5de;
+      background: #ede9e2;
+      border-radius: var(--radius-card);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-card);
     }
     .physical-sm img {
       width: 100%;
@@ -245,11 +209,7 @@
     @media (max-width: 600px) {
       .physical-row { grid-template-columns: 1fr; }
     }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .physical-main,
-      html:not([data-theme="light"]) .physical-sm { background: #252422; }
-    }
-    html[data-theme="dark"] .physical-main,
+        html[data-theme="dark"] .physical-main,
     html[data-theme="dark"] .physical-sm { background: #252422; }
 
     /* ── Lightbox ── */
@@ -345,20 +305,17 @@
     .systems-diagram {
       width: 100%;
       overflow: hidden;
-      background: #e0ddd6;
+      background: #ede9e2;
+      border-radius: var(--radius-card);
+      border: 1px solid var(--line);
     }
     .systems-diagram img {
       width: 100%;
       display: block;
     }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .systems-diagram { background: #252422; }
-      html:not([data-theme="light"]) .systems-inner p,
-      html:not([data-theme="light"]) .physical-body > div p { color: #999; }
-    }
-    html[data-theme="dark"] .systems-diagram { background: #252422; }
+        html[data-theme="dark"] .systems-diagram { background: #252422; }
     html[data-theme="dark"] .systems-inner p,
-    html[data-theme="dark"] .physical-body > div p { color: #999; }
+    html[data-theme="dark"] .physical-body > div p { color: var(--mid); }
   </style>
 </head>
 <body>
@@ -417,10 +374,10 @@
       <span class="hero-eyebrow-r">2021</span>
     </div>
     <div class="hero-title w">
-      <h1>Orbit:<br>Growing Together</h1>
+      <h1>Orbit</h1>
     </div>
     <div class="hero-img" role="img" aria-label="Orbit speaker showing light animation">
-      <img src="images/orbit/hero.gif" alt="Orbit speaker glowing with abstract light patterns representing emotional states">
+      <img loading="lazy" src="images/orbit/hero.gif" alt="Orbit speaker glowing with abstract light patterns representing emotional states">
     </div>
   </section>
 
@@ -469,7 +426,7 @@
 
   <!-- Experience walkthrough -->
   <section class="walkthrough-section" aria-label="Experience Walkthrough">
-    <div class="walkthrough-header">
+    <div class="cs-section-head">
       <p class="label">Experience Walkthrough</p>
     </div>
     <div class="walkthrough-intro">
@@ -478,7 +435,7 @@
     </div>
     <!-- Journey map: main overview item -->
     <div class="walkthrough-main">
-      <img src="images/orbit/journey-map.webp" alt="User journey map — full Orbit experience flow">
+      <img loading="lazy" src="images/orbit/journey-map.webp" alt="User journey map — full Orbit experience flow">
     </div>
     <!-- Slide breakdown -->
     <div class="walkthrough-sublabel">
@@ -487,22 +444,22 @@
     </div>
     <div class="walkthrough-grid">
       <div class="walkthrough-cell">
-        <img src="images/orbit/slide-01.webp" alt="Orbit experience — step 1">
+        <img loading="lazy" src="images/orbit/slide-01.webp" alt="Orbit experience — step 1">
       </div>
       <div class="walkthrough-cell">
-        <img src="images/orbit/slide-02.webp" alt="Orbit experience — step 2">
+        <img loading="lazy" src="images/orbit/slide-02.webp" alt="Orbit experience — step 2">
       </div>
       <div class="walkthrough-cell">
-        <img src="images/orbit/slide-03.webp" alt="Orbit experience — step 3">
+        <img loading="lazy" src="images/orbit/slide-03.webp" alt="Orbit experience — step 3">
       </div>
       <div class="walkthrough-cell">
-        <img src="images/orbit/slide-05.webp" alt="Orbit experience — step 5">
+        <img loading="lazy" src="images/orbit/slide-05.webp" alt="Orbit experience — step 5">
       </div>
       <div class="walkthrough-cell">
-        <img src="images/orbit/slide-06.webp" alt="Orbit experience — step 6">
+        <img loading="lazy" src="images/orbit/slide-06.webp" alt="Orbit experience — step 6">
       </div>
       <div class="walkthrough-cell">
-        <img src="images/orbit/slide-07.webp" alt="Orbit experience — step 7">
+        <img loading="lazy" src="images/orbit/slide-07.webp" alt="Orbit experience — step 7">
       </div>
     </div>
 
@@ -513,20 +470,20 @@
     </div>
     <div class="walkthrough-stack">
       <div class="walkthrough-cell">
-        <img src="images/orbit/slide-04.webp" alt="Spotify UI: song sharing interface">
+        <img loading="lazy" src="images/orbit/slide-04.webp" alt="Spotify UI: song sharing interface">
       </div>
       <div class="walkthrough-cell">
-        <img src="images/orbit/slide-08.webp" alt="Spotify UI: app screens">
+        <img loading="lazy" src="images/orbit/slide-08.webp" alt="Spotify UI: app screens">
       </div>
       <div class="walkthrough-cell">
-        <img src="images/orbit/slide-09.webp" alt="Spotify UI: additional screens">
+        <img loading="lazy" src="images/orbit/slide-09.webp" alt="Spotify UI: additional screens">
       </div>
     </div>
   </section>
 
   <!-- Visual system -->
   <section class="visual-system" aria-label="Visual System">
-    <div class="visual-system-header">
+    <div class="cs-section-head">
       <p class="label">Visual System</p>
     </div>
     <div class="visual-system-intro">
@@ -538,33 +495,33 @@
     <div class="emotion-grid">
       <div class="emotion-cell">
         <div class="emotion-gif">
-          <img src="images/orbit/emotion-01.gif" alt="Visual state — emotion mapping">
+          <img loading="lazy" src="images/orbit/emotion-01.gif" alt="Visual state — emotion mapping">
         </div>
-        <span class="emotion-label">Emotion</span>
+        <span class="cs-caption">Emotion</span>
       </div>
       <div class="emotion-cell">
         <div class="emotion-gif">
-          <img src="images/orbit/emotion-02.gif" alt="Visual state — sending & receiving">
+          <img loading="lazy" src="images/orbit/emotion-02.gif" alt="Visual state — sending & receiving">
         </div>
-        <span class="emotion-label">Sharing</span>
+        <span class="cs-caption">Sharing</span>
       </div>
       <div class="emotion-cell">
         <div class="emotion-gif">
-          <img src="images/orbit/emotion-03.gif" alt="Visual state — tapestry growth over time">
+          <img loading="lazy" src="images/orbit/emotion-03.gif" alt="Visual state — tapestry growth over time">
         </div>
-        <span class="emotion-label">Growth</span>
+        <span class="cs-caption">Growth</span>
       </div>
       <div class="emotion-cell">
         <div class="emotion-gif">
-          <img src="images/orbit/emotion-04.gif" alt="Visual state — tone of music">
+          <img loading="lazy" src="images/orbit/emotion-04.gif" alt="Visual state — tone of music">
         </div>
-        <span class="emotion-label">Tone</span>
+        <span class="cs-caption">Tone</span>
       </div>
       <div class="emotion-cell">
         <div class="emotion-gif">
-          <img src="images/orbit/emotion-05.gif" alt="Visual state — relationship size from songs shared">
+          <img loading="lazy" src="images/orbit/emotion-05.gif" alt="Visual state — relationship size from songs shared">
         </div>
-        <span class="emotion-label">Connection</span>
+        <span class="cs-caption">Connection</span>
       </div>
     </div>
   </section>
@@ -577,14 +534,14 @@
         <p style="font-size: 13px; line-height: 1.7; color: var(--mid); max-width: 560px;">The system connects two physical speakers across distance through a shared Spotify layer. When one person reacts to a song, the emotion signal travels through the app and is rendered as a light animation on both speakers simultaneously, making the exchange feel present even across distance.</p>
       </div>
       <div class="systems-diagram" role="img" aria-label="Systems diagram showing how Orbit components connect">
-        <img src="images/orbit/systems-diagram.webp" alt="Systems diagram — Orbit architecture">
+        <img loading="lazy" src="images/orbit/systems-diagram.webp" alt="Systems diagram — Orbit architecture">
       </div>
     </div>
   </div>
 
   <!-- Physical form -->
   <section class="physical-section" aria-label="Physical Form">
-    <div class="physical-header">
+    <div class="cs-section-head">
       <p class="label">Physical Form</p>
     </div>
     <div class="physical-body">
@@ -593,14 +550,14 @@
         <p style="font-size: 13px; line-height: 1.7; color: var(--mid); max-width: 560px;">The speaker form was prototyped using TinkerCad and Solidworks, with the physical shell designed to sit flush against a wall like a piece of art. Visible and permanent. Inside, an Arduino controls the LED array that generates the light animations. The enclosure material was chosen to diffuse light evenly, so emotional states read as ambient glow rather than harsh pattern.</p>
       </div>
       <div class="physical-main">
-        <img src="images/orbit/physical-01.webp" alt="Orbit speaker — physical prototype front view">
+        <img loading="lazy" src="images/orbit/physical-01.webp" alt="Orbit speaker — physical prototype front view">
       </div>
       <div class="physical-row">
         <div class="physical-sm">
-          <img src="images/orbit/physical-02.webp" alt="Orbit speaker — detail view">
+          <img loading="lazy" src="images/orbit/physical-02.webp" alt="Orbit speaker — detail view">
         </div>
         <div class="physical-sm">
-          <img src="images/orbit/physical-03.webp" alt="Orbit speaker — side view">
+          <img loading="lazy" src="images/orbit/physical-03.webp" alt="Orbit speaker — side view">
         </div>
       </div>
     </div>
@@ -611,12 +568,12 @@
     <div class="dark-cta-inner">
       <div>
         <p class="label">Next Project</p>
-        <h2>HP<br>Sustainability Experience</h2>
+        <p class="dark-cta-title">HP<br>Sustainability Experience</p>
         <p>A physical pop-up experience using animatronic plants and sensor-driven interaction to connect HP's sustainability work to its brand identity.</p>
         <a href="hp.html" class="dark-link">View project →</a>
       </div>
       <div class="dark-cta-img">
-        <img src="images/hp/exterior.webp" alt="HP Sustainability Experience exterior rendering">
+        <img loading="lazy" src="images/hp/exterior.webp" alt="HP Sustainability Experience exterior rendering">
       </div>
     </div>
   </div>
@@ -630,7 +587,7 @@
         <a href="index.html">Work</a>
         <a href="acs.html">UI Library</a>
         <a href="collective-iq.html">Collective IQ</a>
-        <a href="cmu-thesis.html">XR Experiences</a>
+        <a href="cmu-thesis-v2.html">XR Experiences</a>
         <a href="orbit.html">Orbit</a>
         <a href="hp.html">HP Experience</a>
         <a href="about.html">About</a>
@@ -667,7 +624,7 @@
   lb.innerHTML =
     '<button class="lightbox-close" aria-label="Close gallery">✕</button>' +
     '<button class="lightbox-btn lightbox-prev" aria-label="Previous image">←</button>' +
-    '<img class="lightbox-img" src="" alt="">' +
+    '<img loading="lazy" class="lightbox-img" src="" alt="">' +
     '<button class="lightbox-btn lightbox-next" aria-label="Next image">→</button>' +
     '<span class="lightbox-counter"></span>';
   document.body.appendChild(lb);

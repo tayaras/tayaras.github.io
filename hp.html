@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HP Sustainability Experience — Tay Aras</title>
   <meta name="description" content="A physical pop-up experience designed to connect HP's sustainability efforts to their brand identity, using animatronic plants and sensor-driven interaction.">
-  <script>try{var t=localStorage.getItem('tayTheme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+  <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
   <link rel="stylesheet" href="shared.css">
   <style>
     /* ── YouTube embed ── */
@@ -27,15 +27,6 @@
 
     /* ── Experience steps ── */
     .exp-section {
-      border-bottom: 1px solid var(--line);
-    }
-    .exp-header {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 24px var(--pad);
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
       border-bottom: 1px solid var(--line);
     }
     .exp-step-num {
@@ -70,6 +61,8 @@
       width: 100%;
       height: auto;
       display: block;
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
     }
 
     /* ── 2-up image row ── */
@@ -79,13 +72,15 @@
       padding: 0 var(--pad) 48px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 16px;
     }
     .img-row img {
       width: 100%;
       height: 400px;
       object-fit: cover;
       display: block;
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
     }
     @media (max-width: 600px) {
       .img-row { grid-template-columns: 1fr; }
@@ -104,10 +99,7 @@
       color: var(--mid);
       max-width: 580px;
     }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .context-note p { color: #999; }
-    }
-    html[data-theme="dark"] .context-note p { color: #999; }
+        html[data-theme="dark"] .context-note p { color: var(--mid); }
 
     /* ── Key Insights grid ── */
     .insights-section { border-bottom: 1px solid var(--line); }
@@ -143,10 +135,7 @@
       .insight-cell { border-right: none; border-bottom: 1px solid var(--line); }
       .insight-cell:last-child { border-bottom: none; }
     }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .insight-cell p { color: #999; }
-    }
-    html[data-theme="dark"] .insight-cell p { color: #999; }
+        html[data-theme="dark"] .insight-cell p { color: var(--mid); }
 
     /* ── Video screens strip ── */
     .screen-strip {
@@ -155,13 +144,15 @@
       padding: 0 var(--pad) 48px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      gap: 16px;
     }
     .screen-strip img {
       width: 100%;
       height: 340px;
       object-fit: cover;
       display: block;
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
     }
     @media (max-width: 600px) {
       .screen-strip { grid-template-columns: 1fr; }
@@ -170,15 +161,6 @@
 
     /* ── Process section ── */
     .process-section {
-      border-bottom: 1px solid var(--line);
-    }
-    .process-header {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 24px var(--pad);
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
       border-bottom: 1px solid var(--line);
     }
     .process-intro {
@@ -190,10 +172,14 @@
       gap: 64px;
       align-items: start;
     }
-    .process-intro p { max-width: 580px; }
+    .process-intro p { max-width: 580px; font-size: 16px; line-height: 1.7; }
     @media (max-width: 768px) {
       .process-intro { grid-template-columns: 1fr; gap: 16px; padding: 32px var(--pad) 24px; }
     }
+
+    /* ── Reflection body paragraphs ── */
+    .reflection-p { margin-top: 16px; font-size: 16px; line-height: 1.7; }
+    .overview-p + .reflection-p { margin-top: 24px; }
 
     /* ── Lightbox ── */
     .lightbox {
@@ -265,10 +251,7 @@
     img[data-gallery]:hover { opacity: 0.85; }
 
     /* ── Dark mode for image backgrounds ── */
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .yt-wrap { background: #111; }
-    }
-    html[data-theme="dark"] .yt-wrap { background: #111; }
+        html[data-theme="dark"] .yt-wrap { background: #111; }
   </style>
 </head>
 <body>
@@ -330,7 +313,7 @@
       <h1>HP<br>Sustainability Experience</h1>
     </div>
     <div class="hero-img" role="img" aria-label="HP pop-up experience exterior rendering">
-      <img src="images/hp/exterior.webp" alt="HP Sustainability Experience exterior rendering from Forbes Avenue">
+      <img loading="lazy" src="images/hp/exterior.webp" alt="HP Sustainability Experience exterior rendering from Forbes Avenue">
     </div>
   </section>
 
@@ -363,15 +346,15 @@
       <div>
         <p class="overview-p">HP has an 80-year history of technology innovation, but its sustainability efforts are largely invisible. The work is real and substantial. The public awareness hasn't followed.</p>
         <p class="overview-p" style="margin-top: 24px;">This project responds with a physical pop-up experience designed to close that gap: a dark, sensor-driven room full of real plants that react to visitors, and die when they try to photograph them. The goal was to make the environmental stakes visceral.</p>
-        <p style="margin-top: 24px; font-size: 14px; line-height: 1.7;">Two research questions drove the response: how do you remind people to think about sustainability when buying technology, and how do you connect a brand's existing environmental work to its public identity?</p>
+        <p class="overview-p" style="margin-top: 24px;">Two research questions drove the response: how do you remind people to think about sustainability when buying technology, and how do you connect a brand's existing environmental work to its public identity?</p>
       </div>
     </div>
   </div>
   <div class="full-img">
-    <img src="images/hp/hp-laptop.webp" alt="HP laptop representing the technology product context" data-gallery="overview">
+    <img loading="lazy" src="images/hp/hp-laptop.webp" alt="HP laptop representing the technology product context" data-gallery="overview">
   </div>
   <div class="full-img" style="padding-bottom: 0;">
-    <img src="images/hp/stat-75.webp" alt="HP sustainability statistic" data-gallery="overview">
+    <img loading="lazy" src="images/hp/stat-75.webp" alt="HP sustainability statistic" data-gallery="overview">
   </div>
 
   <!-- Key Insights -->
@@ -402,7 +385,7 @@
 
   <!-- 01 Excitement -->
   <section class="exp-section" aria-label="01 Excitement">
-    <div class="exp-header">
+    <div class="cs-section-head">
       <p class="label">Experience Walkthrough</p>
       <span class="exp-step-num">01 of 05</span>
     </div>
@@ -418,25 +401,25 @@
       </div>
     </div>
     <div class="full-img">
-      <img src="images/hp/walkaround.webp" alt="HP pop-up walkaround view showing all sides" data-gallery="exterior">
+      <img loading="lazy" src="images/hp/walkaround.webp" alt="HP pop-up walkaround view showing all sides" data-gallery="exterior">
     </div>
     <div class="full-img">
-      <img src="images/hp/location.webp" alt="Location diagram showing pop-up position in Schenley Plaza" data-gallery="exterior">
+      <img loading="lazy" src="images/hp/location.webp" alt="Location diagram showing pop-up position in Schenley Plaza" data-gallery="exterior">
     </div>
     <!-- Slat screens -->
     <div class="context-note">
       <p>As visitors walk along the adjacent path, angled slats in the sides of the building reveal hidden screens. The screens shift as people move, creating a parallax effect that shows different content depending on angle. The content links HP to natural imagery and hints at what's inside.</p>
     </div>
     <div class="screen-strip">
-      <img src="images/hp/video-outside.webp" alt="Video screen on exterior front face" data-gallery="exterior">
-      <img src="images/hp/video-side-01.webp" alt="Angled slat screen — side view 1" data-gallery="exterior">
-      <img src="images/hp/video-side-02.webp" alt="Angled slat screen — side view 2" data-gallery="exterior">
+      <img loading="lazy" src="images/hp/video-outside.webp" alt="Video screen on exterior front face" data-gallery="exterior">
+      <img loading="lazy" src="images/hp/video-side-01.webp" alt="Angled slat screen — side view 1" data-gallery="exterior">
+      <img loading="lazy" src="images/hp/video-side-02.webp" alt="Angled slat screen — side view 2" data-gallery="exterior">
     </div>
   </section>
 
   <!-- 02 Entry -->
   <section class="exp-section" aria-label="02 Entry">
-    <div class="exp-header">
+    <div class="cs-section-head">
       <p class="label">Experience Walkthrough</p>
       <span class="exp-step-num">02 of 05</span>
     </div>
@@ -452,14 +435,14 @@
       </div>
     </div>
     <div class="img-row">
-      <img src="images/hp/step-02.webp" alt="Entry queue and staff managing visitor flow" data-gallery="entry">
-      <img src="images/hp/step-03.webp" alt="Visitors entering the experience space" data-gallery="entry">
+      <img loading="lazy" src="images/hp/step-02.webp" alt="Entry queue and staff managing visitor flow" data-gallery="entry">
+      <img loading="lazy" src="images/hp/step-03.webp" alt="Visitors entering the experience space" data-gallery="entry">
     </div>
   </section>
 
   <!-- 03 Engagement -->
   <section class="exp-section" aria-label="03 Engagement">
-    <div class="exp-header">
+    <div class="cs-section-head">
       <p class="label">Experience Walkthrough</p>
       <span class="exp-step-num">03 of 05</span>
     </div>
@@ -481,16 +464,16 @@
       </div>
     </div>
     <div class="full-img">
-      <img src="images/hp/step-01.webp" alt="Interior view showing animatronic plants and visitor interaction" data-gallery="engagement">
+      <img loading="lazy" src="images/hp/step-01.webp" alt="Interior view showing animatronic plants and visitor interaction" data-gallery="engagement">
     </div>
     <div class="full-img">
-      <img src="images/hp/animation-01.webp" alt="Interaction animation showing plant response" data-gallery="engagement">
+      <img loading="lazy" src="images/hp/animation-01.webp" alt="Interaction animation showing plant response" data-gallery="engagement">
     </div>
   </section>
 
   <!-- 04 Exit -->
   <section class="exp-section" aria-label="04 Exit">
-    <div class="exp-header">
+    <div class="cs-section-head">
       <p class="label">Experience Walkthrough</p>
       <span class="exp-step-num">04 of 05</span>
     </div>
@@ -506,13 +489,13 @@
       </div>
     </div>
     <div class="full-img">
-      <img src="images/hp/step-04.webp" alt="Exit scene showing collapsed plant state after interaction" data-gallery="exit">
+      <img loading="lazy" src="images/hp/step-04.webp" alt="Exit scene showing collapsed plant state after interaction" data-gallery="exit">
     </div>
   </section>
 
   <!-- 05 Extension -->
   <section class="exp-section" aria-label="05 Extension">
-    <div class="exp-header">
+    <div class="cs-section-head">
       <p class="label">Experience Walkthrough</p>
       <span class="exp-step-num">05 of 05</span>
     </div>
@@ -528,13 +511,13 @@
       </div>
     </div>
     <div class="full-img">
-      <img src="images/hp/seed-card.webp" alt="HP seed card with QR code and sustainability messaging" data-gallery="extension">
+      <img loading="lazy" src="images/hp/seed-card.webp" alt="HP seed card with QR code and sustainability messaging" data-gallery="extension">
     </div>
   </section>
 
   <!-- Process -->
   <section class="process-section" aria-label="Process">
-    <div class="process-header">
+    <div class="cs-section-head">
       <p class="label">Process</p>
     </div>
     <div class="process-intro">
@@ -542,18 +525,18 @@
       <p>The exterior form was developed iteratively between physical cardboard prototypes and Sketchup models. The goal was to carry HP's structured design language into a spatial form that still felt at odds with its park setting. Final geometry was refined in Blender. A laser-cut wood and acrylic physical model helped pressure-test the interior layout before committing to final dimensions.</p>
     </div>
     <div class="img-row" style="padding-bottom: 32px;">
-      <img src="images/hp/model-01.webp" alt="Physical model — exterior form" data-gallery="process">
-      <img src="images/hp/model-05.webp" alt="Physical model — interior layout" data-gallery="process">
+      <img loading="lazy" src="images/hp/model-01.webp" alt="Physical model — exterior form" data-gallery="process">
+      <img loading="lazy" src="images/hp/model-05.webp" alt="Physical model — interior layout" data-gallery="process">
     </div>
     <div class="process-intro" style="padding-top: 0; border-top: 1px solid var(--line);">
       <p class="label" style="padding-top: 4px;">Sketches and Storyboards</p>
       <p>Early concept work included storyboards and moodboards pulling from HP's existing design language, natural environments, and comparable experiential installations. The storyboard was used to communicate the full interaction arc to collaborators and evaluate pacing before any physical work began.</p>
     </div>
     <div class="full-img">
-      <img src="images/hp/process-01.webp" alt="Concept storyboard and moodboard" data-gallery="process">
+      <img loading="lazy" src="images/hp/process-01.webp" alt="Concept storyboard and moodboard" data-gallery="process">
     </div>
     <div class="full-img" style="padding-bottom: 48px;">
-      <img src="images/hp/process-02.webp" alt="Interaction flowchart and early ideation" data-gallery="process">
+      <img loading="lazy" src="images/hp/process-02.webp" alt="Interaction flowchart and early ideation" data-gallery="process">
     </div>
   </section>
 
@@ -563,10 +546,10 @@
       <div class="section-label-col"><p class="label">Reflection</p></div>
       <div>
         <p class="overview-p">The core mechanic worked. Designing for a behavioral trigger people already have, taking photos, made the interaction feel discovered rather than instructed. That's harder to achieve than it looks.</p>
-        <p style="margin-top: 24px; font-size: 14px; line-height: 1.7;">If I were to extend the project, I'd push harder on the digital layer. The seed card gesture is strong but the QR code destination was underdeveloped. The off-ramp from the physical experience into HP's actual sustainability content is where the brand connection could land more durably.</p>
-        <p style="margin-top: 16px; font-size: 14px; line-height: 1.7;">I'd also spend more time on the reset sequence. A room that recovers in full view of the next group waiting outside could itself become part of the experience, making the cycle of damage and recovery visible as a metaphor rather than a logistical necessity.</p>
-        <p style="margin-top: 16px; font-size: 14px; line-height: 1.7;">What this project clarified for me: the most effective sustainability communication implicates its audience. People already know this matters. They need a moment that makes them feel it.</p>
-        <p style="margin-top: 16px; font-size: 14px; line-height: 1.7;">One dimension the project never addressed: transportability. A pop-up that only works in one city limits the reach of both the experience and the brand investment. Thinking through how the structure breaks down into shippable components, how the animatronics pack and reassemble without recalibration, and how the interior can adapt to different footprints would have been a worthwhile design constraint from the start, not an afterthought.</p>
+        <p class="reflection-p">If I were to extend the project, I'd push harder on the digital layer. The seed card gesture is strong but the QR code destination was underdeveloped. The off-ramp from the physical experience into HP's actual sustainability content is where the brand connection could land more durably.</p>
+        <p class="reflection-p">I'd also spend more time on the reset sequence. A room that recovers in full view of the next group waiting outside could itself become part of the experience, making the cycle of damage and recovery visible as a metaphor rather than a logistical necessity.</p>
+        <p class="reflection-p">What this project clarified for me: the most effective sustainability communication implicates its audience. People already know this matters. They need a moment that makes them feel it.</p>
+        <p class="reflection-p">One dimension the project never addressed: transportability. A pop-up that only works in one city limits the reach of both the experience and the brand investment. Thinking through how the structure breaks down into shippable components, how the animatronics pack and reassemble without recalibration, and how the interior can adapt to different footprints would have been a worthwhile design constraint from the start, not an afterthought.</p>
       </div>
     </div>
   </div>
@@ -576,12 +559,12 @@
     <div class="dark-cta-inner">
       <div>
         <p class="label">Next Project</p>
-        <h2>Orbit:<br>Growing Together</h2>
+        <p class="dark-cta-title">Orbit</p>
         <p>An interactive wall speaker that lets two people build a physical record of their relationship through music sharing over time.</p>
         <a href="orbit.html" class="dark-link">View project →</a>
       </div>
       <div class="dark-cta-img">
-        <img src="images/orbit/hero-still.webp" alt="Orbit speaker showing light animation">
+        <img loading="lazy" src="images/orbit/hero-still.webp" alt="Orbit speaker showing light animation">
       </div>
     </div>
   </div>
@@ -595,7 +578,7 @@
         <a href="index.html">Work</a>
         <a href="acs.html">UI Library</a>
         <a href="collective-iq.html">Collective IQ</a>
-        <a href="cmu-thesis.html">XR Experiences</a>
+        <a href="cmu-thesis-v2.html">XR Experiences</a>
         <a href="orbit.html">Orbit</a>
         <a href="hp.html">HP Experience</a>
         <a href="about.html">About</a>
@@ -616,7 +599,7 @@
   lb.innerHTML =
     '<button class="lightbox-close" aria-label="Close">✕</button>' +
     '<button class="lightbox-btn lightbox-prev" aria-label="Previous">←</button>' +
-    '<img class="lightbox-img" src="" alt="">' +
+    '<img loading="lazy" class="lightbox-img" src="" alt="">' +
     '<button class="lightbox-btn lightbox-next" aria-label="Next">→</button>' +
     '<span class="lightbox-counter"></span>';
   document.body.appendChild(lb);

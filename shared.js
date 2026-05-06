@@ -267,8 +267,11 @@ class ThemeManager {
     this.pref = (() => { try { return localStorage.getItem('tayTheme') || 'system'; } catch(e) { return 'system'; } })();
     this.btn = this.createButton();
     this.insertButton();
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-      if (this.pref === 'system') this.updateIcon();
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (this.pref === 'system') {
+        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+        this.updateIcon();
+      }
     });
   }
 
@@ -338,7 +341,17 @@ class PortfolioApp {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => new PortfolioApp());
+document.addEventListener('DOMContentLoaded', () => {
+  new PortfolioApp();
+
+  // Mark cs-img-wrap loaded once each image finishes fetching
+  document.querySelectorAll('.cs-img-wrap > .cs-img').forEach(img => {
+    const wrap = img.parentElement;
+    const mark = () => wrap.classList.add('img-loaded');
+    if (img.complete && img.naturalWidth > 0) { mark(); }
+    else { img.addEventListener('load', mark); img.addEventListener('error', mark); }
+  });
+});
 
 document.addEventListener('visibilitychange', () => {
   if (!audioCtx) return;
@@ -350,12 +363,17 @@ document.addEventListener('visibilitychange', () => {
   const overlay = document.createElement('div');
   overlay.id = 'img-lightbox';
   const lbImg = document.createElement('img');
+  const lbCaption = document.createElement('p');
+  lbCaption.id = 'img-lightbox-caption';
   overlay.appendChild(lbImg);
+  overlay.appendChild(lbCaption);
   document.body.appendChild(overlay);
 
-  function open(src, alt) {
+  function open(src, altOrCaption) {
     lbImg.src = src;
-    lbImg.alt = alt || '';
+    lbImg.alt = altOrCaption || '';
+    lbCaption.textContent = altOrCaption || '';
+    lbCaption.style.display = altOrCaption ? '' : 'none';
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
@@ -365,13 +383,15 @@ document.addEventListener('visibilitychange', () => {
     lbImg.src = '';
   }
 
+  window.__lbOpen = open;
+
   document.addEventListener('click', function (e) {
     const img = e.target.closest('img');
     if (!img) return;
     if (img.closest('.hero-img')) return;
     if (img.closest('.brand')) return;
     if (img.closest('a[href]')) return;
-    open(img.src, img.alt);
+    open(img.src, img.dataset.caption || img.alt);
   });
 
   overlay.addEventListener('click', close);

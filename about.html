@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About — Tay Aras</title>
   <meta name="description" content="Tay Aras — product lead, designer, bassist. Based in Seattle.">
-  <script>try{var t=localStorage.getItem('tayTheme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+  <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
   <link rel="stylesheet" href="shared.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
@@ -32,6 +32,8 @@
       overflow: hidden;
       transition: opacity 0.2s ease;
       position: relative;
+      border-radius: var(--radius-card);
+      border: 1px solid var(--line);
     }
     .who-side-photo.hidden { opacity: 0; }
 
@@ -51,17 +53,14 @@
       .who-wrap { grid-template-columns: 1fr; }
       .who-side-photo { aspect-ratio: 4 / 3; }
     }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .who-side-photo { background: #2a2826; }
-    }
-    html[data-theme="dark"] .who-side-photo { background: #2a2826; }
+        html[data-theme="dark"] .who-side-photo { background: #2a2826; }
 
     .who-bio p {
       font-size: 22px;
       line-height: 1.65;
       color: var(--black);
       font-weight: 400;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
     }
     .who-bio p + p {
       margin-top: 32px;
@@ -85,9 +84,9 @@
     }
     .who-link {
       font-size: 13px;
-      color: var(--black);
+      color: var(--mid-600);
       text-decoration: none;
-      border-bottom: 1px solid var(--black);
+      border-bottom: 1px solid var(--line);
       padding-bottom: 2px;
       transition: opacity 0.15s;
     }
@@ -130,14 +129,14 @@
 
     .scatter-img {
       position: absolute;
-      background: #d8d4cc;
+      background: #ede9e2;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: var(--mono);
       font-size: 9px;
       letter-spacing: 0.05em;
-      color: #aaa;
+      color: var(--mid);
       opacity: 0;
       transform: scale(0.94) rotate(var(--rot, 0deg));
       transition: opacity 0.2s ease, transform 0.2s ease;
@@ -164,10 +163,7 @@
       .who-bio p { font-size: 15px; }
     }
 
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .scatter-img { background: #252422; }
-    }
-    html[data-theme="dark"] .scatter-img { background: #252422; }
+        html[data-theme="dark"] .scatter-img { background: #252422; }
   </style>
 </head>
 <body>
@@ -224,23 +220,24 @@
 
   <div class="who-wrap">
     <div class="who-bio">
+      <h1 class="sr-only">About Tay Aras</h1>
 
       <p>
         Tay Aras is a designer and product lead with 8+ years of experience, focused on emergent and creative technologies, <span class="kw" data-photos="spatial">hybrid environments</span>, and interaction design. His work explores how technology shapes our interactions with each other, and our connections to both the tangible and digital worlds. He studied <span class="kw" data-photos="spatial">Hybrid Environments Design</span> at <a class="kw" data-photos="spatial" href="https://design.cmu.edu/" target="_blank" rel="noopener">Carnegie Mellon University</a>.
       </p>
       <p>
-        Currently <a class="kw" data-photos="microsoft" href="https://microsoft.com" target="_blank" rel="noopener">@Microsoft</a>, building virtual communication platforms and experimental multimodal experiences. Also <a class="kw" data-photos="nowhere" href="https://nowhereinteresting.online" target="_blank" rel="noopener">@Nowhere Interesting</a>, a creative Design Studio &amp; Lab exploring how what we make shapes how we live.
+        Currently <a class="kw" data-photos="microsoft" href="https://microsoft.com" target="_blank" rel="noopener">@Microsoft</a>, building <a href="acs.html">virtual communication platforms</a> and <a href="collective-iq.html">experimental multimodal experiences</a>. Also <a class="kw" data-photos="nowhere" href="https://nowhereinteresting.online" target="_blank" rel="noopener">@Nowhere Interesting</a>, a creative Design Studio &amp; Lab exploring how what we make shapes how we live.
       </p>
       <p>
-        Outside of work, he enjoys <span class="kw" data-photos="shows">live music</span>, <span class="kw" data-photos="outdoors">climbing rocks</span>, <span class="kw" data-photos="bass">playing guitar and bass</span>, eating pasta (and gnocchi), finding cool jackets, and discovering new artists.
+        Outside of work, he plays in bands and organizes DIY shows across Seattle, Chicago, and Pittsburgh. He also enjoys <span class="kw" data-photos="shows">live music</span>, <span class="kw" data-photos="outdoors">climbing rocks</span>, <span class="kw" data-photos="bass">playing guitar and bass</span>, eating pasta (and gnocchi), finding cool jackets, and discovering new artists.
       </p>
 
     </div>
 
     <div class="who-side-photo" id="whoSidePhoto">
-      <img src="images/main/IMG_4965.jpeg" alt="">
-      <img src="images/main/IMG_0085.jpeg" alt="">
-      <img src="images/main/IMG_0211.jpg" alt="">
+      <img loading="lazy" src="images/main/IMG_4965.jpeg" alt="">
+      <img loading="lazy" src="images/main/IMG_0085.jpeg" alt="">
+      <img loading="lazy" src="images/main/IMG_0211.jpg" alt="">
     </div>
 
     <div class="who-links" style="grid-column: 1 / -1;">
@@ -258,7 +255,7 @@
     <p class="label" style="grid-column:1; grid-row:1">Experience</p>
     <div class="cv-row" style="grid-column:1; grid-row:2">
       <div>
-        <div class="cv-title">Design Lead, New IQ Experiences — Microsoft</div>
+        <div class="cv-title">Design Lead, Collective IQ — Microsoft</div>
         <div class="cv-sub">IC3 · Microsoft 365 Copilot</div>
       </div>
       <span class="cv-date">2026 – Present</span>
@@ -331,7 +328,7 @@
         <a href="index.html">Work</a>
         <a href="acs.html">UI Library</a>
         <a href="collective-iq.html">Collective IQ</a>
-        <a href="cmu-thesis.html">XR Experiences</a>
+        <a href="cmu-thesis-v2.html">XR Experiences</a>
         <a href="orbit.html">Orbit</a>
         <a href="hp.html">HP Experience</a>
         <a href="about.html">About</a>
@@ -511,51 +508,6 @@
   let activeKey = null;
   let pinnedKey = null;
 
-  // ── Lightbox ──
-  const lightbox = document.createElement('div');
-  lightbox.id = 'scatter-lightbox';
-  lightbox.style.cssText = [
-    'position:fixed', 'inset:0', 'z-index:10000',
-    'display:flex', 'align-items:center', 'justify-content:center',
-    'background:rgba(0,0,0,0.75)', 'opacity:0',
-    'transition:opacity 0.2s ease', 'cursor:zoom-out',
-    'pointer-events:none',
-  ].join(';');
-  const lightboxInner = document.createElement('div');
-  lightboxInner.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:16px;';
-  const lightboxImg = document.createElement('img');
-  lightboxImg.style.cssText = [
-    'max-width:90vw', 'max-height:85vh', 'object-fit:contain',
-    'transform:scale(0.92)', 'transition:transform 0.25s ease',
-    'display:block', 'box-shadow:0 24px 80px rgba(0,0,0,0.6)',
-  ].join(';');
-  const lightboxCaption = document.createElement('p');
-  lightboxCaption.style.cssText = [
-    'color:rgba(255,255,255,0.7)', 'font-family:var(--mono)',
-    'font-size:11px', 'letter-spacing:0.08em', 'text-align:center',
-    'transform:scale(0.92)', 'transition:transform 0.25s ease',
-  ].join(';');
-  lightboxInner.appendChild(lightboxImg);
-  lightboxInner.appendChild(lightboxCaption);
-  lightbox.appendChild(lightboxInner);
-  document.body.appendChild(lightbox);
-
-  function openLightbox(src, caption) {
-    lightboxImg.src = src;
-    lightboxCaption.textContent = caption || '';
-    lightbox.style.pointerEvents = 'auto';
-    lightbox.style.opacity = '1';
-    lightboxImg.style.transform = 'scale(1)';
-    lightboxCaption.style.transform = 'scale(1)';
-  }
-  function closeLightbox() {
-    lightbox.style.opacity = '0';
-    lightboxImg.style.transform = 'scale(0.92)';
-    lightboxCaption.style.transform = 'scale(0.92)';
-    lightbox.style.pointerEvents = 'none';
-  }
-  lightbox.addEventListener('click', closeLightbox);
-
   function unpin() {
     if (!pinnedKey) return;
     pools[pinnedKey].forEach(el => el.classList.remove('visible'));
@@ -564,14 +516,14 @@
     sidePhoto.classList.remove('hidden');
   }
 
-  // Clicking a scatter photo with a real image opens lightbox (for pinned photos)
+  // Clicking a scatter photo with a real image opens the shared lightbox
   Object.values(pools).forEach(pool => {
     pool.forEach(el => {
       const img = el.querySelector('img');
       if (!img) return;
       img.addEventListener('click', (e) => {
         e.stopPropagation();
-        openLightbox(img.src, img.dataset.caption);
+        if (window.__lbOpen) window.__lbOpen(img.src, img.dataset.caption);
       });
     });
   });

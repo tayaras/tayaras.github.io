@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!sessionStorage.getItem("ta_auth"))document.documentElement.style.visibility="hidden";</script>
+  <script src="auth.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACS UI Library — Case Study · Tay Aras</title>
+  <meta name="description" content="Product design case study for the ACS UI Library and Sample Builder — designing the platform layer that 200+ businesses inherited. Product lead, 2022–present.">
+  <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .context-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 80px var(--pad);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .context-left .label { margin-bottom: 24px; }
+    .context-left h2 { margin-bottom: 28px; }
+    .context-left .lede { margin-bottom: 28px; }
+    .context-left p + p { margin-top: 16px; }
+    .context-img {
+      background: #ede9e2;
+      aspect-ratio: 4 / 3;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 11px; color: var(--mid);
+      flex-direction: column; gap: 8px; letter-spacing: 0.06em; overflow: hidden;
+    }
+    .context-img small { font-size: 10px; color: var(--mid); text-align: center; max-width: 220px; }
+    .context-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .context-img:has(img) { aspect-ratio: unset; overflow: hidden; }
+    .meta-link { color: inherit; text-decoration: none; }
+    .meta-link:hover { text-decoration: underline; }
+    .inline-link { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+    .inline-link:hover { opacity: 0.6; }
+
+    /* Sub-cases grid */
+    .sub-cases { border-bottom: 1px solid var(--line); }
+    .sub-cases-inner { max-width: var(--max); margin: 0 auto; padding: 64px var(--pad); }
+    .sub-cases-header { margin-bottom: 48px; }
+    .sub-cases-header h2 { margin-bottom: 12px; }
+    .sub-cases-header p { font-size: 15px; line-height: 1.65; color: var(--mid); max-width: 560px; }
+    .sub-cases-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+
+    .sub-case-card { display: block; text-decoration: none; color: inherit; }
+    .sub-case-img {
+      background: #ede9e2; overflow: hidden; margin-bottom: 20px;
+      aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 11px; color: var(--mid);
+      flex-direction: column; gap: 8px; letter-spacing: 0.06em;
+      transition: opacity 0.15s;
+    }
+    .sub-case-img small { font-size: 10px; color: var(--mid); text-align: center; max-width: 180px; }
+    .sub-case-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .sub-case-img:has(img) { aspect-ratio: unset; }
+    .sub-case-card:hover .sub-case-img { opacity: 0.8; }
+
+    .sub-case-eyebrow {
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--mid); display: block; margin-bottom: 8px;
+    }
+    .sub-case-title { font-size: 17px; font-weight: 600; display: block; margin-bottom: 8px; }
+    .sub-case-card:hover .sub-case-title { text-decoration: underline; text-underline-offset: 3px; }
+    .sub-case-desc { font-size: 13px; line-height: 1.65; color: var(--mid); }
+
+    /* What I did grid */
+    .what-i-did { border-bottom: 1px solid var(--line); }
+    .what-i-did-inner {
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--pad);
+      display: grid; grid-template-columns: 200px 1fr; gap: 80px; align-items: start;
+    }
+    .what-i-did-label { padding: 40px 0; border-right: 1px solid var(--line); }
+    .did-list {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border-left: 1px solid var(--line);
+    }
+    .did-entry {
+      padding: 32px 28px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+      font-size: 13px; line-height: 1.6; color: var(--black);
+    }
+    .did-entry:nth-child(3n) { border-right: none; }
+    .did-entry:nth-child(n+7) { border-bottom: none; }
+    .did-entry strong { display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px; }
+
+    @media (max-width: 768px) {
+      .context-inner { grid-template-columns: 1fr; gap: 40px; padding: 40px var(--pad); }
+      .sub-cases-grid { grid-template-columns: 1fr; }
+      .sub-cases-inner { padding: 40px var(--pad); }
+      .what-i-did-inner { grid-template-columns: 1fr; gap: 0; }
+      .what-i-did-label { border-right: none; border-bottom: 1px solid var(--line); padding: 32px 0; }
+      .did-list { border-left: none; grid-template-columns: 1fr; }
+      .did-entry { border-right: none; }
+    }
+        html[data-theme="dark"] .context-img { background: #252422; }
+    html[data-theme="dark"] .sub-case-img { background: #252422; }
+  </style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="site-header" id="navigation">
+  <div class="header-bar">
+    <a class="brand" href="index.html">Tay Aras</a>
+    <div class="string-zone" id="singleZone" tabindex="0" aria-label="Interactive guitar string — click or drag to play">
+      <svg class="string-svg" id="singleSVG" viewBox="0 0 1100 36" preserveAspectRatio="none">
+        <path id="singlePath" class="string-path" d="M0 19 Q 550 19 1100 19"/>
+      </svg>
+    </div>
+    <button class="mute-btn" id="muteBtn" aria-label="Toggle sound" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path class="sound-on" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-on" d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-off" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"/>
+        <line class="sound-off" x1="15" y1="9" x2="21" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+        <line class="sound-off" x1="21" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+      </svg>
+    </button>
+    <button class="expand-btn" id="expandBtn" aria-expanded="false" aria-controls="stringsPanel" style="display:none" aria-hidden="true">
+      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      more
+    </button>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html" class="current">Work</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="mobile-nav">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none">
+          <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html" class="current">Work</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </div>
+  <div class="strings-panel" id="stringsPanel" hidden>
+    <div class="strings-grid" id="stringsGrid"></div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- Hero -->
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-l">Microsoft · Azure Communication Services · UI Library + Sample Builder</span>
+      <span class="hero-eyebrow-r">2022 – Present</span>
+    </div>
+    <div class="hero-title w">
+      <h1>ACS UI Library<br>&amp; Sample Builder</h1>
+    </div>
+    <div class="hero-img" role="img" aria-label="ACS UI Library — calling composite">
+      <!-- PHOTO: Full-bleed hero. Best option: a wide crop of the CallComposite in an active call — video gallery with 3–5 participants, control bar visible, clean and polished. acs-gallery-view.png is the strongest candidate if it reads well at 16:9. Alternatively, the ui-library-banner.png if it was designed as a wide hero asset. Goal: immediately communicate "video calling product" with production-quality UI. -->
+      <img src="images/acs/acs-gallery-view.png" alt="ACS UI Library — video gallery composite with active call participants">
+    </div>
+  </section>
+
+  <!-- Meta strip -->
+  <div class="meta-strip">
+    <div class="meta-strip-inner meta-strip-inner--5col">
+      <div class="meta-cell"><span class="label">Company</span><div class="meta-val"><a href="https://www.microsoft.com" target="_blank" rel="noopener" class="meta-link">Microsoft ↗</a><br><a href="https://azure.microsoft.com/en-us/products/communication-services" target="_blank" rel="noopener" class="meta-link">Azure Communication Services ↗</a></div></div>
+      <div class="meta-cell"><span class="label">Role</span><div class="meta-val">Intern · Summer 2021<br>Product Lead · 2022 – Present</div></div>
+      <div class="meta-cell"><span class="label">Scope</span><div class="meta-val">UI Library + Sample Builder<br>→ Calling SDK (2025)</div></div>
+      <div class="meta-cell"><span class="label">Team</span><div class="meta-val">Alex Pereira, Jessica Downey,<br>Danielle Hibbs (Design) · Alex Kwan (EM)</div></div>
+      <div class="meta-cell"><span class="label">Links</span><div class="meta-val"><a href="https://azure.github.io/communication-ui-library/" target="_blank" rel="noopener" class="meta-link">Storybook ↗</a><br><a href="https://www.figma.com/community/file/1095841357293210472" target="_blank" rel="noopener" class="meta-link">Figma Kit ↗</a></div></div>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">Overview</p></div>
+      <div>
+        <p class="overview-p">The <a href="https://azure.github.io/communication-ui-library/" target="_blank" rel="noopener" class="inline-link">ACS UI Library</a> is a set of production-ready React composites and UI components for web, iOS, and Android — the interface layer that lets development teams ship branded calling experiences on Microsoft infrastructure without building from scratch. From 2022 I was the product lead: setting design direction, writing specs, managing roadmap, and shipping 40+ features end to end with a team of 20+ engineers.</p>
+        <p class="overview-p" style="margin-top: 20px;">The defining constraint was designing through defaults. I wasn't designing for any single company's call — I was designing the CallComposite, the VideoGallery, the control bar, the pre-call device setup — and each one shipped once and was inherited by 200+ businesses across healthcare, finance, automotive, and retail. A telehealth patient joining a virtual appointment, a financial advisor on a regulated call, a call-center agent in a contact center: the same defaults had to hold up across all of them.</p>
+        <p class="overview-p" style="margin-top: 20px;">My role sits at the intersection of product design and product management. I set the interaction model, made the visual design calls, and wrote the specs — while also owning strategy, roadmap, and customer work for the same features. The design team (Alex Pereira, Jessica Downey, Danielle Hibbs) were close partners on visual execution. The decisions about what to design and why were mine.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Context — the product and the tension -->
+  <div class="section-row" style="border-top: none;">
+    <div class="context-inner">
+      <div class="context-left">
+        <p class="label">Context</p>
+        <h2>Three entry points, one infrastructure, one design layer</h2>
+        <p class="lede">The ACS UI Library sits between the raw Calling SDK and the no-code Sample Builder — close enough to the platform to be credible, abstracted enough to be usable without deep engineering expertise. Everything is built on Fluent UI, which meant design decisions had to work within Microsoft's design system while remaining white-label enough for a bank, a hospital, and a car company to all call it their own.</p>
+        <div class="spectrum">
+          <div class="spec-card">
+            <span class="spec-tag">Pro-code</span>
+            <div>
+              <h3>Calling SDK</h3>
+              <p class="spec-desc">Full control, high complexity floor. Teams need significant engineering depth to build on the raw SDK. Owned from 2025.</p>
+              <a class="spec-link" href="https://azure.microsoft.com/en-us/products/communication-services" target="_blank" rel="noopener">ACS website ↗</a>
+            </div>
+          </div>
+          <div class="spec-card owned">
+            <span class="spec-tag">Low-code</span>
+            <div>
+              <h3>UI Library</h3>
+              <p class="spec-desc">Accessible, Fluent-based React composites and components. Two abstraction levels: Composites for turn-key scenarios, UI Components for custom builds.</p>
+              <span class="spec-owned">↑ Built &amp; owned from 2022</span>
+              <a class="spec-link" href="https://azure.github.io/communication-ui-library/" target="_blank" rel="noopener">Storybook ↗</a>
+            </div>
+          </div>
+          <div class="spec-card owned">
+            <span class="spec-tag">No/low-code</span>
+            <div>
+              <h3>Sample Builder</h3>
+              <p class="spec-desc">A no-code Azure Portal wizard that packages ACS Calling, Rooms, and the UI Library into a deployable demo in minutes. The AI showcase layer.</p>
+              <span class="spec-owned">↑ Contributed 2021 · Owned from 2022</span>
+            </div>
+          </div>
+        </div>
+        <div class="stakes">
+          <p>The people using what I shipped are patients in telehealth appointments, veterans in mental health sessions, customers in financial consultations. In those situations, the interface has to work. Designing good defaults — for a video gallery, a pre-call setup, a control bar — is how you make that reliable when you can't control the deployment context.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap: 16px;">
+        <div class="context-img" role="img" aria-label="UI Library in context">
+          <!-- PHOTO: The most polished single screenshot you have — ideally acs-context-mock.png (iPhone with gallery) or acs-iphone-mock.png. Should show a real-looking call with participants visible, in a clean device frame. This is the hero image for the context section, meant to immediately communicate "production-quality mobile calling UI." -->
+          <img src="images/acs/acs-context-mock.png" alt="ACS UI Library — mobile calling UI in an active call">
+        </div>
+        <div class="context-img" role="img" aria-label="UI Library component system placeholder">
+          <!-- PHOTO: The Fluent UI / component relationship diagram (acs-fluent-relationship.png if it exists and is readable) — or a screenshot from Storybook showing the component-to-composite hierarchy. This visualizes the two-level abstraction (Composites → UI Components) that's central to the product's design architecture. If acs-fluent-relationship.png is a clean diagram, use it here; if not, pull a Storybook screenshot showing CallComposite and its constituent components. -->
+          <img src="images/acs/acs-fluent-relationship.png" alt="UI Library component hierarchy — Composites built from UI Components on Fluent UI">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- What I did -->
+  <div class="what-i-did">
+    <div class="what-i-did-inner">
+      <div class="what-i-did-label">
+        <p class="label">What I did</p>
+        <p style="margin-top: 12px; font-size: 12px; line-height: 1.6; color: var(--mid);">Design decisions and product ownership on the same features — not separate tracks.</p>
+      </div>
+      <div class="did-list">
+        <div class="did-entry"><strong>Interaction design</strong>Designed the interaction models end to end — the RTT panel behavior, the Call Summary information hierarchy, the control bar overflow structure, the pre-call device setup flow. In Figma with the design team.</div>
+        <div class="did-entry"><strong>Visual design direction</strong>Set the visual direction on every feature: the opacity model for RTT text states, the progressive reveal for post-call AI, the component density and layout decisions across Web, iOS, and Android.</div>
+        <div class="did-entry"><strong>Design strategy + roadmap</strong>Shaped what got designed and when — balancing accessibility compliance deadlines (EU EAA), customer adoption gaps (Teams parity, customization), and platform evolution toward AI.</div>
+        <div class="did-entry"><strong>Customer research</strong>Identified adoption blockers — missing features, insufficient branding control, workflow mismatch — through direct customer interviews with Teladoc, CVS, OP Bank, and others. Translated findings into design priorities.</div>
+        <div class="did-entry"><strong>Design leadership across platforms</strong>Led design execution across Web, iOS, and Android simultaneously, coordinating visual consistency across different rendering environments, input modalities, and engineering teams.</div>
+        <div class="did-entry"><strong>AI design strategy</strong>Defined the design model for AI features in ACS — post-call summarization, Sample Builder as showcase layer — establishing the patterns that subsequent AI work would build on.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <section aria-label="Results">
+    <div class="impact">
+      <div class="impact-header"><p class="label">Results</p></div>
+      <div class="impact-grid">
+        <div class="impact-cell">
+          <p class="impact-n">11.1M+</p>
+          <p class="impact-desc">Monthly minutes on the UI Library by end of 2025. Up from 2M at the start of the year — 90% of all lifetime usage came in that single twelve-month period.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">5×</p>
+          <p class="impact-desc">Growth in a single year. Over 100M total minutes added in FY25. Three years of compounding platform investment reaching scale.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">265M</p>
+          <p class="impact-desc">Quarterly minutes on the Calling SDK, with 21% QoQ growth. Over 1B lifetime minutes in the first year of expanded ownership.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">200+</p>
+          <p class="impact-desc">Businesses onboarded across healthcare, finance, automotive, and retail. Each inherited the defaults I shipped.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">40+</p>
+          <p class="impact-desc">Features owned end to end across accessibility, AI, mobile, and developer tooling. From first Figma frame to public release.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">1st</p>
+          <p class="impact-desc">First RTT implementation across Microsoft. First AI feature in ACS. Both in a single year.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sub-case studies -->
+  <section aria-label="Sub-case studies">
+    <div class="sub-cases">
+      <div class="sub-cases-inner">
+        <div class="sub-cases-header">
+          <p class="label" style="margin-bottom: 16px;">Deep Dives</p>
+          <h2>Two workstreams that defined the platform's direction</h2>
+          <p style="margin-top: 12px;">From an accessibility deadline that forced a novel interaction model, to the first AI feature in ACS — each one a different kind of hard design problem.</p>
+        </div>
+        <div class="sub-cases-grid">
+
+          <a class="sub-case-card" href="acs-rtt.html">
+            <div class="sub-case-img" role="img" aria-label="RTT sub-case — real-time text in an active call">
+              <img src="images/acs/acs-rtt-panel.png" alt="RTT panel — real-time text appearing alongside video gallery">
+            </div>
+            <span class="sub-case-eyebrow">01 · Accessibility &amp; Compliance</span>
+            <span class="sub-case-title">Real-Time Text (RTT)</span>
+            <p class="sub-case-desc">Character-by-character text, from multiple speakers, during a live call — and a hard EU Accessibility Act deadline. The first RTT implementation across Microsoft, designed from scratch.</p>
+          </a>
+
+          <a class="sub-case-card" href="acs-call-summary.html">
+            <div class="sub-case-img" role="img" aria-label="Call Summary — AI-generated post-call summary">
+              <img src="images/acs/acs-post-call-transcription.png" alt="Post-call view — AI-generated call summary with transcript below">
+            </div>
+            <span class="sub-case-eyebrow">02 · AI / First Value</span>
+            <span class="sub-case-title">Transcription &amp; Call Summary</span>
+            <p class="sub-case-desc">The first AI feature in ACS. Designing for the gap between when a call ends and when the summary is ready — and for summaries that mean something different in a telehealth room than in a financial consultation.</p>
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Next project CTA -->
+  <div class="dark-cta">
+    <div class="dark-cta-inner">
+      <div>
+        <p class="label">Next Project</p>
+        <h2>Physicalization<br>of AR/XR</h2>
+        <p>CMU Bachelor of Design thesis. A system of haptic and physical proxies that extend augmented reality interactions into the real world, bridging digital and material space at the interaction layer.</p>
+        <a href="cmu-thesis-v2.html" class="dark-link">View case study →</a>
+      </div>
+      <div class="dark-cta-img">
+        <img src="images/capstone/Process/image13.jpg" alt="CMU thesis — physicalization of AR, testing setup">
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html">Work</a>
+        <a href="acs-overview.html">UI Library</a>
+        <a href="acs-rtt.html">RTT</a>
+        <a href="acs-call-summary.html">Call Summary</a>
+        <a href="collective-iq.html">Collective IQ</a>
+        <a href="cmu-thesis-v2.html">XR Experiences</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+    <span class="footer-copy">© 2026 Tay Aras</span>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+</body>
+</html>

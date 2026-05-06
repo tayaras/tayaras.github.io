@@ -7,16 +7,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tay Aras — Product Lead & Designer</title>
   <meta name="description" content="Tay Aras is a designer and product lead at Microsoft, focused on future experiences, communication products, and interaction design.">
-  <script>try{var t=localStorage.getItem('tayTheme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+  <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
   <link rel="stylesheet" href="shared.css">
   <style>
     .index-hero {
-      min-height: calc(100vh - var(--header-h) - 48px);
+      max-width: var(--max);
+      margin: 0 auto;
+      min-height: calc(84vh - var(--header-h));
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
+      padding: 0 var(--pad);
     }
-    .index-hero h1 { font-size: clamp(72px, 10vw, 140px); margin-bottom: 48px; }
+    .index-hero h1 { font-size: clamp(72px, 10vw, 140px); margin-bottom: 48px; letter-spacing: -0.045em; line-height: 0.95; }
     .also-grid {
       max-width: var(--max);
       margin: 0 auto;
@@ -101,7 +104,13 @@
       display: inline-block;
     }
     @media (max-width: 768px) {
-      .index-hero h1 { font-size: clamp(48px, 12vw, 72px); margin-bottom: 32px; }
+      .index-hero {
+        min-height: 0;
+        padding: 20px var(--pad) 0;
+      }
+      .index-hero h1 { font-size: clamp(40px, 11vw, 72px); margin-bottom: 32px; letter-spacing: -0.045em; }
+      nobr { white-space: normal; }
+      #citySlot { white-space: normal; }
       .also-grid { grid-template-columns: 1fr; }
       .also-card { border-right: none; border-bottom: 1px solid var(--line); }
       .also-card:last-child { border-bottom: none; }
@@ -121,7 +130,7 @@
     .project-cards .project-card-title {
       font-size: clamp(24px, 3vw, 48px);
       margin-bottom: 16px;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.04em;
     }
     .project-cards .project-card-tags {
       margin-top: 6px;
@@ -131,12 +140,13 @@
     @media (max-width: 600px) {
       .project-cards .project-card-thumb { height: 280px; }
     }
+    .project-card-thumb--sm { background: #111820; }
 
     /* ── Bottom sections: Studio (NI) + Archive side by side ── */
     .bottom-sections {
       max-width: var(--max);
       margin: 0 auto;
-      padding: 0 0 80px;
+      padding: 0 var(--pad) 80px;
       display: grid;
       grid-template-columns: 1fr 2fr;
       gap: 0 40px;
@@ -166,9 +176,10 @@
       height: 220px;
       position: relative;
       overflow: hidden;
-      border-radius: 10px;
+      border-radius: var(--radius-card);
       background: #2a2826;
-      box-shadow: inset 0 0 28px rgba(0,0,0,0.22);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-card);
     }
     .more-card-thumb img {
       width: 100%; height: 100%;
@@ -214,7 +225,7 @@
     .more-card-title {
       font-size: clamp(16px, 1.6vw, 22px);
       font-weight: 500;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
       color: var(--black);
       margin-bottom: 8px;
       line-height: 1.15;
@@ -314,7 +325,7 @@
     <!-- 01 ACS -->
     <a href="acs.html" class="project-card">
       <div class="project-card-thumb project-card-thumb--acs">
-        <img class="thumb-img" src="images/acs/acs-thumb.png" alt="ACS UI Library — video calling UI on desktop">
+        <img loading="lazy" class="thumb-img" src="images/acs/acs-thumb.png" alt="ACS UI Library — video calling UI on desktop">
         <div class="card-dark-overlay"></div>
         <div class="project-card-meta">
           <div class="project-card-meta-left">
@@ -327,6 +338,7 @@
                 <span class="project-tag">Design Systems</span>
                 <span class="project-tag">2022–Present</span>
               </div>
+              <p class="project-card-overview">A design system and component library for Azure Communication Services — covering video calling, chat, and real-time collaboration. Built to let product teams ship accessible, production-ready communication features without starting from scratch.</p>
             </div>
           </div>
           <span class="project-card-arrow" aria-hidden="true">→</span>
@@ -337,7 +349,7 @@
     <!-- 02 Collective IQ -->
     <a href="collective-iq.html" class="project-card">
       <div class="project-card-thumb project-card-thumb--ciq">
-        <img class="thumb-img" src="images/acs/copilot-thumb.png" alt="Microsoft 365 Copilot — agent builder UI">
+        <img loading="lazy" class="thumb-img" src="images/acs/copilot-thumb.png" alt="Microsoft 365 Copilot — agent builder UI">
         <div class="card-dark-overlay"></div>
         <div class="project-card-meta">
           <div class="project-card-meta-left">
@@ -351,6 +363,7 @@
                 <span class="project-tag nda-tag">NDA</span>
                 <span class="project-tag">In Progress</span>
               </div>
+              <p class="project-card-overview">An internal Microsoft initiative at the intersection of AI and team collaboration — exploring how conversational AI and collective intelligence can reshape how people work together. Currently in progress and under NDA.</p>
             </div>
           </div>
           <span class="project-card-arrow" aria-hidden="true">→</span>
@@ -359,21 +372,182 @@
     </a>
 
     <!-- 03 CMU Thesis -->
-    <a href="cmu-thesis.html" class="project-card">
+    <a href="cmu-thesis-v2.html" class="project-card">
       <div class="project-card-thumb project-card-thumb--cmu">
-        <img class="thumb-img" src="images/capstone/Process/image13.jpg" alt="Physicalization of AR/XR — capstone prototyping tools">
+        <img loading="lazy" class="thumb-img" src="images/capstone/Process/image13.jpg" alt="Physicalization of AR/XR — capstone prototyping tools">
         <div class="card-dark-overlay"></div>
         <div class="project-card-meta">
           <div class="project-card-meta-left">
             <span class="project-card-num">03</span>
             <div class="project-card-body">
-              <h2 class="project-card-title">Physicalization of<br>AR/XR Experiences</h2>
+              <h2 class="project-card-title">Physicalization of AR/XR Experiences</h2>
               <div class="project-card-tags">
                 <span class="project-tag">CMU</span>
                 <span class="project-tag">Spatial Computing</span>
                 <span class="project-tag">Research</span>
                 <span class="project-tag">2021–2022</span>
               </div>
+              <p class="project-card-overview">Graduate thesis research into the physicalization of AR — the design challenge of moving augmented reality from a digital layer on top of the physical world to experiences genuinely embedded within physical materials, spaces, and objects.</p>
+            </div>
+          </div>
+          <span class="project-card-arrow" aria-hidden="true">→</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- 04 Now Here -->
+    <a href="now-here.html" class="project-card" style="display: none;">
+      <div class="project-card-thumb project-card-thumb--nh">
+        <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;">
+          <rect width="800" height="400" fill="#efece7"/>
+          <rect x="0" y="75" width="800" height="11" fill="#e2dfd8"/>
+          <rect x="0" y="195" width="800" height="7" fill="#e2dfd8"/>
+          <rect x="0" y="295" width="800" height="11" fill="#e2dfd8"/>
+          <rect x="88" y="0" width="7" height="400" fill="#e2dfd8"/>
+          <rect x="198" y="0" width="12" height="400" fill="#e2dfd8"/>
+          <rect x="328" y="0" width="7" height="400" fill="#e2dfd8"/>
+          <rect x="448" y="0" width="12" height="400" fill="#e2dfd8"/>
+          <rect x="568" y="0" width="7" height="400" fill="#e2dfd8"/>
+          <rect x="678" y="0" width="12" height="400" fill="#e2dfd8"/>
+          <rect x="20" y="20" width="58" height="44" rx="2" fill="#d4cfc6"/>
+          <rect x="108" y="20" width="80" height="46" rx="2" fill="#d4cfc6"/>
+          <rect x="210" y="22" width="106" height="42" rx="2" fill="#d4cfc6"/>
+          <rect x="338" y="20" width="100" height="44" rx="2" fill="#d4cfc6"/>
+          <rect x="460" y="22" width="98" height="42" rx="2" fill="#d4cfc6"/>
+          <rect x="578" y="20" width="90" height="44" rx="2" fill="#d4cfc6"/>
+          <rect x="692" y="22" width="88" height="42" rx="2" fill="#d4cfc6"/>
+          <rect x="20" y="96" width="58" height="88" rx="2" fill="#d4cfc6"/>
+          <rect x="108" y="96" width="80" height="86" rx="2" fill="#d4cfc6"/>
+          <rect x="210" y="96" width="106" height="86" rx="2" fill="#d4cfc6"/>
+          <rect x="460" y="96" width="98" height="86" rx="2" fill="#d4cfc6"/>
+          <rect x="578" y="96" width="90" height="86" rx="2" fill="#d4cfc6"/>
+          <rect x="692" y="96" width="88" height="86" rx="2" fill="#d4cfc6"/>
+          <rect x="20" y="206" width="58" height="78" rx="2" fill="#d4cfc6"/>
+          <rect x="108" y="206" width="80" height="76" rx="2" fill="#d4cfc6"/>
+          <rect x="210" y="206" width="106" height="76" rx="2" fill="#d4cfc6"/>
+          <rect x="338" y="206" width="100" height="76" rx="2" fill="#d4cfc6"/>
+          <rect x="460" y="206" width="98" height="76" rx="2" fill="#d4cfc6"/>
+          <rect x="578" y="206" width="90" height="76" rx="2" fill="#d4cfc6"/>
+          <rect x="20" y="308" width="58" height="72" rx="2" fill="#d4cfc6"/>
+          <rect x="108" y="308" width="80" height="72" rx="2" fill="#d4cfc6"/>
+          <rect x="210" y="308" width="106" height="72" rx="2" fill="#d4cfc6"/>
+          <rect x="338" y="308" width="100" height="72" rx="2" fill="#d4cfc6"/>
+          <rect x="460" y="308" width="98" height="72" rx="2" fill="#d4cfc6"/>
+          <circle cx="400" cy="200" r="130" fill="rgba(232,87,42,0.22)"/>
+          <circle cx="400" cy="200" r="72" fill="none" stroke="#E8572A" stroke-width="1.5" opacity="0.35"/>
+          <circle cx="400" cy="200" r="46" fill="none" stroke="#E8572A" stroke-width="1.5" opacity="0.55"/>
+          <circle cx="400" cy="200" r="24" fill="#E8572A" stroke="white" stroke-width="3"/>
+          <circle cx="400" cy="200" r="7" fill="white"/>
+          <circle cx="160" cy="138" r="9" fill="#16A34A" stroke="white" stroke-width="2.5"/>
+          <circle cx="278" cy="262" r="9" fill="#2563EB" stroke="white" stroke-width="2.5"/>
+          <circle cx="548" cy="152" r="9" fill="#D97706" stroke="white" stroke-width="2.5"/>
+          <circle cx="648" cy="270" r="9" fill="#16A34A" stroke="white" stroke-width="2.5"/>
+          <circle cx="170" cy="330" r="9" fill="#E8572A" stroke="white" stroke-width="2.5"/>
+          <circle cx="628" cy="64" r="9" fill="#2563EB" stroke="white" stroke-width="2.5"/>
+        </svg>
+      </div>
+      <div class="project-card-meta">
+        <div class="project-card-meta-left">
+          <span class="project-card-num">04</span>
+          <div class="project-card-body">
+            <h2 class="project-card-title">Now Here</h2>
+            <div class="project-card-tags">
+              <span class="project-tag">Concept Project</span>
+              <span class="project-tag">Product Design</span>
+              <span class="project-tag">Mobile</span>
+              <span class="project-tag">2024</span>
+            </div>
+          </div>
+        </div>
+        <span class="project-card-arrow" aria-hidden="true">→</span>
+      </div>
+      <div class="project-card-drawer">
+        <p class="project-card-overview">A real-time, location-first event discovery app for the moment you're already out. The map is the home screen, your location is the only required input, and a three-layer data model surfaces everything from ticketed shows to a flyer someone scanned ten minutes ago.</p>
+      </div>
+    </a>
+
+    <!-- 05 Soundmap -->
+    <a href="soundmap.html" class="project-card">
+      <div class="project-card-thumb project-card-thumb--sm">
+        <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;">
+          <!-- Dark night city grid -->
+          <rect width="800" height="400" fill="#111820"/>
+          <rect x="0" y="80" width="800" height="1" fill="#1c2a30"/>
+          <rect x="0" y="160" width="800" height="1" fill="#1c2a30"/>
+          <rect x="0" y="240" width="800" height="1" fill="#1c2a30"/>
+          <rect x="0" y="320" width="800" height="1" fill="#1c2a30"/>
+          <rect x="100" y="0" width="1" height="400" fill="#1c2a30"/>
+          <rect x="200" y="0" width="1" height="400" fill="#1c2a30"/>
+          <rect x="300" y="0" width="1" height="400" fill="#1c2a30"/>
+          <rect x="400" y="0" width="1" height="400" fill="#1c2a30"/>
+          <rect x="500" y="0" width="1" height="400" fill="#1c2a30"/>
+          <rect x="600" y="0" width="1" height="400" fill="#1c2a30"/>
+          <rect x="700" y="0" width="1" height="400" fill="#1c2a30"/>
+          <!-- City blocks -->
+          <rect x="20" y="20" width="60" height="48" rx="2" fill="#192330"/>
+          <rect x="110" y="20" width="78" height="48" rx="2" fill="#192330"/>
+          <rect x="212" y="22" width="76" height="44" rx="2" fill="#192330"/>
+          <rect x="312" y="20" width="76" height="48" rx="2" fill="#192330"/>
+          <rect x="412" y="22" width="76" height="44" rx="2" fill="#192330"/>
+          <rect x="512" y="20" width="76" height="48" rx="2" fill="#192330"/>
+          <rect x="612" y="22" width="76" height="44" rx="2" fill="#192330"/>
+          <rect x="712" y="20" width="68" height="48" rx="2" fill="#192330"/>
+          <rect x="20" y="98" width="60" height="52" rx="2" fill="#192330"/>
+          <rect x="110" y="98" width="78" height="52" rx="2" fill="#192330"/>
+          <rect x="412" y="98" width="76" height="52" rx="2" fill="#192330"/>
+          <rect x="512" y="98" width="76" height="50" rx="2" fill="#192330"/>
+          <rect x="612" y="98" width="76" height="52" rx="2" fill="#192330"/>
+          <rect x="712" y="98" width="68" height="52" rx="2" fill="#192330"/>
+          <rect x="20" y="178" width="60" height="52" rx="2" fill="#192330"/>
+          <rect x="110" y="178" width="78" height="50" rx="2" fill="#192330"/>
+          <rect x="212" y="178" width="76" height="50" rx="2" fill="#192330"/>
+          <rect x="312" y="180" width="76" height="48" rx="2" fill="#192330"/>
+          <rect x="412" y="178" width="76" height="50" rx="2" fill="#192330"/>
+          <rect x="712" y="178" width="68" height="52" rx="2" fill="#192330"/>
+          <rect x="20" y="258" width="60" height="52" rx="2" fill="#192330"/>
+          <rect x="212" y="258" width="76" height="52" rx="2" fill="#192330"/>
+          <rect x="312" y="260" width="76" height="50" rx="2" fill="#192330"/>
+          <rect x="512" y="258" width="76" height="52" rx="2" fill="#192330"/>
+          <rect x="612" y="258" width="76" height="52" rx="2" fill="#192330"/>
+          <rect x="712" y="260" width="68" height="50" rx="2" fill="#192330"/>
+          <rect x="20" y="338" width="60" height="44" rx="2" fill="#192330"/>
+          <rect x="110" y="338" width="78" height="44" rx="2" fill="#192330"/>
+          <rect x="212" y="338" width="76" height="44" rx="2" fill="#192330"/>
+          <rect x="312" y="338" width="76" height="44" rx="2" fill="#192330"/>
+          <rect x="512" y="338" width="76" height="44" rx="2" fill="#192330"/>
+          <rect x="612" y="338" width="76" height="44" rx="2" fill="#192330"/>
+          <!-- Sound wave rings centered at Bushwick cluster -->
+          <circle cx="260" cy="200" r="110" fill="rgba(15,76,58,0.18)"/>
+          <circle cx="260" cy="200" r="72" fill="none" stroke="#0f4c3a" stroke-width="1" opacity="0.5"/>
+          <circle cx="260" cy="200" r="44" fill="none" stroke="#0f4c3a" stroke-width="1.5" opacity="0.7"/>
+          <circle cx="260" cy="200" r="20" fill="#0f4c3a" stroke="#1a3a2e" stroke-width="2"/>
+          <circle cx="260" cy="200" r="6" fill="#5ecba1"/>
+          <!-- Sound wave rings at SoHo cluster -->
+          <circle cx="580" cy="180" r="70" fill="rgba(30,60,90,0.2)"/>
+          <circle cx="580" cy="180" r="44" fill="none" stroke="#1e3c5a" stroke-width="1" opacity="0.5"/>
+          <circle cx="580" cy="180" r="22" fill="#1e3c5a" stroke="#0f1e2e" stroke-width="2"/>
+          <circle cx="580" cy="180" r="7" fill="#6ea8d8"/>
+          <!-- Additional pins -->
+          <circle cx="160" cy="130" r="7" fill="#5ecba1" stroke="#111820" stroke-width="2"/>
+          <circle cx="340" cy="278" r="7" fill="#5ecba1" stroke="#111820" stroke-width="2"/>
+          <circle cx="660" cy="290" r="7" fill="#6ea8d8" stroke="#111820" stroke-width="2"/>
+          <circle cx="480" cy="120" r="7" fill="#6ea8d8" stroke="#111820" stroke-width="2"/>
+          <circle cx="140" cy="290" r="6" fill="#a67c5e" stroke="#111820" stroke-width="2"/>
+          <circle cx="700" cy="130" r="6" fill="#a67c5e" stroke="#111820" stroke-width="2"/>
+        </svg>
+        <div class="card-dark-overlay"></div>
+        <div class="project-card-meta">
+          <div class="project-card-meta-left">
+            <span class="project-card-num">05</span>
+            <div class="project-card-body">
+              <h2 class="project-card-title">Soundmap</h2>
+              <div class="project-card-tags">
+                <span class="project-tag">Concept Project</span>
+                <span class="project-tag">Product Design</span>
+                <span class="project-tag">Mobile</span>
+                <span class="project-tag">2025</span>
+              </div>
+              <p class="project-card-overview">A map-based music experience that treats place as the primary interface for discovery. Every neighborhood has a sound identity — Soundmap makes those identities explorable and rewards you for going there.</p>
             </div>
           </div>
           <span class="project-card-arrow" aria-hidden="true">→</span>
@@ -393,7 +567,7 @@
       </div>
       <a href="https://nowhereinteresting.online" target="_blank" rel="noopener" class="more-card">
         <div class="more-card-thumb more-card-thumb--ni">
-          <img src="images/ni-thumb.png" alt="Nowhere Interesting — Design Studio &amp; Lab">
+          <img loading="lazy" src="images/ni-thumb.png" alt="Nowhere Interesting — Design Studio &amp; Lab">
         </div>
         <div class="more-card-caption">
           <div>
@@ -419,7 +593,7 @@
         <!-- Orbit -->
         <a href="orbit.html" class="more-card">
           <div class="more-card-thumb more-card-thumb--orbit">
-            <img id="orbitThumb" src="images/orbit/hero-still.webp" data-still="images/orbit/hero-still.webp" data-gif="images/orbit/hero.gif" alt="Orbit — interactive wall speaker">
+            <img loading="lazy" id="orbitThumb" src="images/orbit/hero-still.webp" data-still="images/orbit/hero-still.webp" data-gif="images/orbit/hero.gif" alt="Orbit — interactive wall speaker">
           </div>
           <div class="more-card-caption">
             <div>
@@ -439,7 +613,7 @@
         <!-- HP Sustainability Experience -->
         <a href="hp.html" class="more-card">
           <div class="more-card-thumb more-card-thumb--hp">
-            <img id="hpThumb" src="images/hp/hero-still.webp" data-still="images/hp/hero-still.webp" data-gif="images/hp/hero.gif" alt="HP Sustainability Experience — animatronic plant room">
+            <img loading="lazy" id="hpThumb" src="images/hp/hero-still.webp" data-still="images/hp/hero-still.webp" data-gif="images/hp/hero.gif" alt="HP Sustainability Experience — animatronic plant room">
           </div>
           <div class="more-card-caption">
             <div>
@@ -470,7 +644,7 @@
         <a href="index.html">Work</a>
         <a href="acs.html">UI Library</a>
         <a href="collective-iq.html">Collective IQ</a>
-        <a href="cmu-thesis.html">XR Experiences</a>
+        <a href="cmu-thesis-v2.html">XR Experiences</a>
         <a href="orbit.html">Orbit</a>
         <a href="hp.html">HP Experience</a>
         <a href="about.html">About</a>

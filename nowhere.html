@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nowhere Interesting LLC — Tay Aras</title>
   <meta name="description" content="Nowhere Interesting LLC — independent design studio for branding, futures consulting, and startup advisory.">
-  <script>try{var t=localStorage.getItem('tayTheme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+  <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
   <link rel="stylesheet" href="shared.css">
   <style>
     .services-grid {
@@ -22,7 +22,7 @@
     .service-cell:last-child { border-right: none; }
     .service-cell .label { margin-bottom: 20px; }
     .service-cell h3 { font-size: 16px; font-weight: 500; margin-bottom: 12px; }
-    .service-cell p { font-size: 13px; line-height: 1.6; color: #444; }
+    .service-cell p { font-size: 13px; line-height: 1.6; color: var(--mid); }
 
     .selected-work-grid {
       max-width: var(--max);
@@ -40,7 +40,7 @@
     .selected-row-meta h3 { font-size: 16px; font-weight: 500; margin-bottom: 8px; }
     .selected-row-meta .label { margin-bottom: 8px; }
     .selected-row-desc { padding: 32px 0 32px 40px; }
-    .selected-row-desc p { font-size: 13px; line-height: 1.6; color: #444; }
+    .selected-row-desc p { font-size: 13px; line-height: 1.6; color: var(--mid); }
 
     .studio-img {
       background: #e4e1d8;
@@ -55,7 +55,7 @@
       gap: 8px;
       letter-spacing: 0.06em;
     }
-    .studio-img small { font-size: 10px; color: #aaa; text-align: center; max-width: 200px; }
+    .studio-img small { font-size: 10px; color: var(--mid); text-align: center; max-width: 200px; }
 
     /* Services section wrapper and header */
     .services-section { border-bottom: 1px solid var(--line); }
@@ -80,10 +80,7 @@
       .service-cell:nth-child(2n) { border-right: none; }
       .service-cell { border-bottom: 1px solid var(--line); }
     }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .studio-img { background: #252422; }
-    }
-    html[data-theme="dark"] .studio-img { background: #252422; }
+        html[data-theme="dark"] .studio-img { background: #252422; }
   </style>
 </head>
 <body>
@@ -309,12 +306,12 @@
         <a href="index.html">Work</a>
         <a href="acs.html">ACS</a>
         <a href="collective-iq.html">Collective IQ</a>
-        <a href="cmu-thesis.html">CMU Thesis</a>
+        <a href="cmu-thesis-v2.html">CMU Thesis</a>
         <a href="extras.html">Extras</a>
         <a href="about.html">About</a>
       </nav>
     </div>
-    <span class="footer-copy">© 2025 Tay Aras</span>
+    <span class="footer-copy">© 2026 Tay Aras</span>
   </div>
 </footer>
 

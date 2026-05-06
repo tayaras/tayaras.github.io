@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Extras — Tay Aras</title>
   <meta name="description" content="Personal projects, photos, and other things — Tay Aras.">
-  <script>try{var t=localStorage.getItem('tayTheme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+  <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
   <link rel="stylesheet" href="shared.css">
   <style>
 
@@ -43,7 +43,7 @@
 
     .photo-cell small {
       font-size: 9px;
-      color: #aaa;
+      color: var(--mid);
       text-align: center;
       max-width: 140px;
       line-height: 1.5;
@@ -122,7 +122,7 @@
     }
     .extras-project-img small {
       font-size: 10px;
-      color: #aaa;
+      color: var(--mid);
       text-align: center;
       max-width: 240px;
     }
@@ -168,13 +168,7 @@
       .photo-grid { grid-template-columns: 1fr; }
       .extras-misc-items { grid-template-columns: 1fr; }
     }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .photo-cell { background: #2a2826; }
-      html:not([data-theme="light"]) .photo-cell:nth-child(2n) { background: #242220; }
-      html:not([data-theme="light"]) .photo-cell:nth-child(3n) { background: #252321; }
-      html:not([data-theme="light"]) .extras-project-img { background: #252422; }
-    }
-    html[data-theme="dark"] .photo-cell { background: #2a2826; }
+        html[data-theme="dark"] .photo-cell { background: #2a2826; }
     html[data-theme="dark"] .photo-cell:nth-child(2n) { background: #242220; }
     html[data-theme="dark"] .photo-cell:nth-child(3n) { background: #252321; }
     html[data-theme="dark"] .extras-project-img { background: #252422; }
@@ -336,12 +330,12 @@
         <a href="index.html">Work</a>
         <a href="acs.html">UI Library</a>
         <a href="collective-iq.html">Collective IQ</a>
-        <a href="cmu-thesis.html">XR Experiences</a>
+        <a href="cmu-thesis-v2.html">XR Experiences</a>
         <a href="extras.html">Extras</a>
         <a href="about.html">About</a>
       </nav>
     </div>
-    <span class="footer-copy">© 2025 Tay Aras</span>
+    <span class="footer-copy">© 2026 Tay Aras</span>
   </div>
 </footer>
 

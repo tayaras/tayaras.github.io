@@ -6,231 +6,37 @@
   <script src="auth.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Collective IQ — Tay Aras</title>
-  <meta name="description" content="Collective IQ — lead designer on an AI-powered Microsoft 365 product in private preview. Details available under NDA.">
-  <script>try{var t=localStorage.getItem('tayTheme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+  <meta name="description" content="Collective IQ: designing how organizations remember. Lead Product Designer on Microsoft's AI-powered meeting knowledge system, 2025–2026.">
   <link rel="stylesheet" href="shared.css">
+  <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
   <style>
+    /* Page-specific: hero, 5-col flow grid, list, decisions */
+    .ciq-hero h1 { font-size: clamp(52px, 7vw, 96px); line-height: 0.95; letter-spacing: -0.045em; }
+    .ciq-hero-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); margin-bottom: 24px; }
+    .ciq-hero-sub { font-size: 1.5rem; letter-spacing: -0.04em; white-space: nowrap; margin-top: 24px; color: var(--mid); }
+    @media (min-width: 768px) { .ciq-hero-sub { font-size: 2.25rem; } }
+    .ciq-hero-tagline { margin-top: 16px; font-size: 1.125rem; color: var(--mid); max-width: 36rem; line-height: 1.6; }
+    .ciq-hero-img-wrap { margin-top: 64px; border-radius: var(--radius-card); border: 1px solid var(--line); box-shadow: var(--shadow-card); background: #2a2520; overflow: hidden; aspect-ratio: 16 / 9; }
+    .ciq-hero-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cs-list { list-style: none; padding-left: 0; margin-top: 20px; border-top: 1px solid var(--line); }
+    .cs-list li { font-size: 1.125rem; line-height: 1.6; color: var(--mid-600); padding: 14px 0; border-bottom: 1px solid var(--line); display: flex; gap: 16px; align-items: baseline; }
+    .cs-list li::before { content: '—'; color: var(--mid); flex-shrink: 0; font-size: 0.875rem; }
 
-    /* ── NDA HERO override ── */
-    .ciq-hero {
-      background: #0a0a0a;
-      border-bottom: 1px solid #1f1f1f;
-    }
-    .ciq-hero .hero-eyebrow { border-bottom: 1px solid #1f1f1f; }
-    .ciq-hero .hero-eyebrow-l,
-    .ciq-hero .hero-eyebrow-r { color: rgba(255,255,255,0.55); }
-    .ciq-hero .hero-title h1 { color: #edeae3; }
+    .cs-flow-grid { display: grid; grid-template-columns: 1fr; gap: 16px; font-size: 0.875rem; }
+    @media (min-width: 768px) { .cs-flow-grid { grid-template-columns: repeat(5, 1fr); } }
 
-    .ciq-hero-body {
-      background: #0a0a0a;
-      padding-top: 48px;
-    }
-
-    .ciq-hero-status {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 20px var(--pad);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-top: 1px solid #1f1f1f;
-    }
-
-    .ciq-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--accent);
-      flex-shrink: 0;
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.35; }
-    }
-
-    .ciq-status-text {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.55);
-    }
-
-    .ciq-hero-img {
-      margin-top: 0;
-      aspect-ratio: 16 / 9;
-      background: #111;
-      position: relative;
-      overflow: hidden;
-    }
-    .ciq-hero-img-photo {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
-      display: block;
-      opacity: 0.45;
-    }
-    .ciq-hero-img-lock { display: none; }
-    .ciq-hero-img-label { display: none; }
-
-    /* ── NDA banner ── */
-    .nda-banner {
-      background: #0e1a19;
-      border-bottom: 1px solid var(--accent);
-    }
-    .nda-banner-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 20px var(--pad);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 40px;
-    }
-    .nda-banner-left {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .nda-badge {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      border: 1px solid var(--accent);
-      padding: 4px 8px;
-      flex-shrink: 0;
-    }
-    .nda-banner-text {
-      font-size: 13px;
-      line-height: 1.5;
-      color: rgba(255,255,255,0.55);
-    }
-    .nda-banner-cta {
-      font-family: var(--sans);
-      font-size: 10px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--accent);
-      border: 1px solid var(--accent);
-      padding: 10px 16px;
-      white-space: nowrap;
-      transition: background 0.15s;
-      flex-shrink: 0;
-    }
-    .nda-banner-cta:hover { background: var(--accent); color: white; }
-
-    /* ── Overview content ── */
-    .ciq-content-note {
-      margin-top: 8px;
-      margin-bottom: 48px;
-      color: var(--mid);
-    }
-    .ciq-section-label { margin-bottom: 20px; }
-
-    /* ── What I did bullets ── */
-    .ciq-bullets {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 48px;
-    }
-    .ciq-bullets li {
-      display: flex;
-      gap: 14px;
-      padding: 14px 0;
-      border-top: 1px solid var(--line);
-    }
-    .ciq-bullets li::before {
-      content: '·';
-      color: var(--mid);
-      font-family: var(--mono);
-      font-size: 11px;
-      flex-shrink: 0;
-      padding-top: 2px;
-    }
-
-    /* ── Why this was hard ── */
-    .ciq-why {
-      padding-top: 32px;
-      border-top: 1px solid var(--line);
-    }
-    .ciq-why .label { margin-bottom: 16px; }
-    .ciq-why p { color: var(--mid); }
-    .ciq-why p + p { margin-top: 16px; }
-
-    /* ── Contact CTA ── */
-    .ciq-contact {
-      background: var(--black);
-      color: var(--white);
-    }
-    .ciq-contact-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 80px var(--pad);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
-    .ciq-contact .label { color: rgba(255,255,255,0.5); margin-bottom: 20px; }
-    .ciq-contact h2 { color: var(--white); margin-bottom: 20px; }
-    .ciq-contact p { color: rgba(255,255,255,0.6); font-size: 15px; line-height: 1.7; max-width: 420px; }
-
-    .ciq-contact-links {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .ciq-contact-link {
-      display: flex;
-      align-items: baseline;
-      gap: 16px;
-      padding: 16px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      color: inherit;
-      text-decoration: none;
-    }
-    .ciq-contact-link:last-child { border-bottom: none; }
-    .ciq-contact-link:hover .ciq-contact-link-val { color: white; }
-    .ciq-contact-link-label {
-      font-family: var(--sans);
-      font-size: 9px;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      min-width: 60px;
-    }
-    .ciq-contact-link-val {
-      font-size: 14px;
-      color: rgba(255,255,255,0.5);
-      transition: color 0.15s;
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 768px) {
-      .section-row-inner   { grid-template-columns: 1fr; gap: 24px; padding: 40px var(--pad); }
-      .nda-banner-inner    { flex-direction: column; align-items: flex-start; gap: 16px; }
-      .ciq-contact-inner   { grid-template-columns: 1fr; gap: 48px; padding: 40px var(--pad); }
-    }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .ciq-contact { background: #0c0b0a; }
-      html:not([data-theme="light"]) .ciq-contact h2 { color: #edeae3; }
-      html:not([data-theme="light"]) .ciq-contact-link-val { color: rgba(255,255,255,0.6); }
-    }
-    html[data-theme="dark"] .ciq-contact { background: #0c0b0a; }
-    html[data-theme="dark"] .ciq-contact h2 { color: #edeae3; }
-    html[data-theme="dark"] .ciq-contact-link-val { color: rgba(255,255,255,0.6); }
+    /* Dark mode — page-specific selectors only */
+        [data-theme="dark"] .cs-list              { border-color: var(--line); }
+    [data-theme="dark"] .cs-list li          { border-color: var(--line); color: #b0aca6; }
+    [data-theme="dark"] .ciq-hero-img-wrap   { border-color: var(--line); background: #1a1a18; }
+    [data-theme="dark"] .ciq-hero-sub        { color: var(--mid); }
+    [data-theme="dark"] .ciq-hero-tagline    { color: var(--mid); }
   </style>
 </head>
 <body>
 <a href="#main" class="skip-link">Skip to main content</a>
 
-<!-- Header -->
+<!-- ─── SITE HEADER (unchanged) ─── -->
 <header class="site-header" id="navigation">
   <div class="header-bar">
     <a class="brand" href="index.html">Tay Aras</a>
@@ -275,120 +81,409 @@
   </div>
 </header>
 
+<!-- ─── HERO ─── -->
+<section aria-label="Introduction">
+  <div class="cs-wrap ciq-hero" style="padding-top: 128px; padding-bottom: 128px; min-height: 90vh;">
+    <p class="ciq-hero-eyebrow">02 · Microsoft · IC3 · M365 Copilot</p>
+    <h1>Collective IQ</h1>
+    <p class="ciq-hero-sub">Designing how organizations remember.</p>
+    <div class="ciq-hero-img-wrap">
+      <img src="images/acs/copilot-thumb.png" alt="Collective IQ — meeting intelligence interface on laptop"
+           onerror="this.style.display='none'">
+    </div>
+    <div class="hero-shots">
+      <img src="images/ciq/MVP/mvp6/mvpv6_CIQ Summary.png" alt="Summary review — read what's being shared before acting" loading="lazy" onerror="this.closest('.hero-shots').removeChild(this)">
+      <img src="images/ciq/MVP/mvp6/mvpv6_CIQ Manage Users Decline.png" alt="Share, scope, or decline — contributor controls" loading="lazy" onerror="this.closest('.hero-shots').removeChild(this)">
+      <img src="images/ciq/MVP/mvp6/mvpv6_CIQ Manage Users Select.png" alt="Select audience — share broadly or restrict by person" loading="lazy" onerror="this.closest('.hero-shots').removeChild(this)">
+    </div>
+  </div>
+</section>
+
 <main id="main">
 
-  <!-- Hero — dark treatment with NDA status indicator -->
-  <section class="ciq-hero" aria-label="Collective IQ">
-    <div class="hero-eyebrow">
-      <span class="hero-eyebrow-l">Microsoft · M365 Copilot</span>
-      <span class="hero-eyebrow-r">2026 – Present</span>
-    </div>
-    <div class="ciq-hero-body">
-      <div class="hero-title w">
-        <h1>Collective IQ</h1>
-      </div>
-      <div class="ciq-hero-status">
-        <span class="ciq-dot"></span>
-        <span class="ciq-status-text">Active · Unreleased · Under NDA</span>
-      </div>
-      <div class="ciq-hero-img">
-        <img class="ciq-hero-img-photo" src="images/acs/copilot-hero.png" alt="Microsoft 365 Copilot — agent builder UI">
+  <!-- OVERVIEW ─────────────────────────────────── -->
+  <section class="cs-section" aria-label="Overview">
+    <div class="cs-wrap">
+      <div class="cs-grid">
+        <div class="cs-col-kicker">
+          <p class="cs-kicker">Overview</p>
+        </div>
+        <div class="cs-col-body">
+          <h2 class="cs-heading">Copilot's intelligence is bounded by individual participation.</h2>
+          <div class="cs-body">
+            <p>An account team of eight people each hold a piece of a customer relationship — meetings attended, calls taken, emails exchanged — and none of that context reaches anyone else on the team. Collective IQ was designed to close that gap: to extract organizational knowledge from communication artifacts and make it available as trusted grounding data for Copilot.</p>
+            <p>The design challenge wasn't building a sharing feature. It was creating a new category of trust-governed behavior that felt safe enough for individuals to opt into and legitimate enough for organizations to govern — without making private conversations feel like a liability.</p>
+            <p class="muted">I owned the interaction model from scratch, working from a general strategic direction to six full design approaches across different surfaces and modalities. The approach that advanced to MVP was mine; the others are carrying into phases 2 and 3. I drove design execution across the complete contributor experience — from pre-meeting transparency through post-meeting sharing, receipts, governance, and the pull surfaces that surface knowledge gaps over time.</p>
+          </div>
+          <div class="cs-meta-grid">
+            <div class="cs-meta-card">
+              <p class="cs-meta-label">Role</p>
+              <p class="cs-meta-val">Lead Product Designer</p>
+            </div>
+            <div class="cs-meta-card">
+              <p class="cs-meta-label">Company</p>
+              <p class="cs-meta-val">Microsoft</p>
+            </div>
+            <div class="cs-meta-card">
+              <p class="cs-meta-label">Domain</p>
+              <p class="cs-meta-val">Enterprise AI, Copilot</p>
+            </div>
+            <div class="cs-meta-card">
+              <p class="cs-meta-label">Focus</p>
+              <p class="cs-meta-val">Trust, sharing, governance</p>
+            </div>
+          </div>
+          <div class="cs-img-grid-3 cs-fig--mt-lg">
+            <figure class="cs-fig">
+              <div class="cs-img-wrap" data-src="images/ciq/MVP/mvp6/mvpv6_CIQ Preferred Main.png">
+                <img loading="lazy" class="cs-img" src="images/ciq/MVP/mvp6/mvpv6_CIQ Preferred Main.png" alt="CIQ feed card — AI summary at the point of decision"
+                     onerror="this.closest('.cs-img-wrap').classList.add('missing')">
+              </div>
+              <figcaption class="cs-caption">The feed card — AI summary surfaces after the meeting ends.</figcaption>
+            </figure>
+            <figure class="cs-fig">
+              <div class="cs-img-wrap" data-src="images/ciq/MVP/mvp6/mvpv6_CIQ Summary.png">
+                <img loading="lazy" class="cs-img" src="images/ciq/MVP/mvp6/mvpv6_CIQ Summary.png" alt="Summary review modal — contributor reads before acting"
+                     onerror="this.closest('.cs-img-wrap').classList.add('missing')">
+              </div>
+              <figcaption class="cs-caption">Summary review — read what's being shared before any action.</figcaption>
+            </figure>
+            <figure class="cs-fig">
+              <div class="cs-img-wrap" data-src="images/ciq/MVP/mvp6/mvpv6_CIQ Manage Users Decline.png">
+                <img loading="lazy" class="cs-img" src="images/ciq/MVP/mvp6/mvpv6_CIQ Manage Users Decline.png" alt="Share, scope, or decline — contributor controls"
+                     onerror="this.closest('.cs-img-wrap').classList.add('missing')">
+              </div>
+              <figcaption class="cs-caption">Share broadly, restrict access, or decline — control is explicit.</figcaption>
+            </figure>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- NDA banner — explains what can and can't be shared -->
-  <div class="nda-banner" role="note" aria-label="NDA notice">
-    <div class="nda-banner-inner">
-      <div class="nda-banner-left">
-        <span class="nda-badge">NDA</span>
-        <p class="nda-banner-text">This project is under active NDA. What follows is limited to what can be shared publicly.</p>
-      </div>
-      <a href="mailto:tayaras@outlook.com" class="nda-banner-cta">Request details →</a>
-    </div>
-  </div>
-
-  <!-- Meta strip — project, role, status, details -->
-  <div class="meta-strip">
-    <div class="meta-strip-inner meta-strip-inner--4col">
-      <div class="meta-cell">
-        <span class="label">Company</span>
-        <div class="meta-val">Microsoft · IC3 M365 Copilot</div>
-      </div>
-      <div class="meta-cell">
-        <span class="label">Role</span>
-        <div class="meta-val">Lead Designer · Jan 2026 – Present</div>
-      </div>
-      <div class="meta-cell">
-        <span class="label">Status</span>
-        <div class="meta-val">In progress · Internal Private Preview</div>
-      </div>
-      <div class="meta-cell">
-        <span class="label">Details</span>
-        <div class="meta-val">Available under NDA</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Overview -->
-  <div class="section-row">
-    <div class="section-row-inner">
-      <div class="section-label-col">
-        <p class="label">Overview</p>
-      </div>
-      <div>
-        <p class="lede">Collective IQ is an AI-powered product for Microsoft 365 and Teams, currently in private preview. I joined as the sole designer at the start of the project and have owned the full design process, from early product framing through component-level execution, working directly with engineering and stakeholders across rapid iteration cycles.</p>
-        <p class="ciq-content-note">Because the project hasn't shipped publicly, detailed case study content is available by request.</p>
-
-        <p class="label ciq-section-label">What I did</p>
-        <ul class="ciq-bullets">
-          <li>Led 0-to-1 design on an enterprise-facing AI product embedded in Microsoft Teams, building the end-to-end information architecture from scratch</li>
-          <li>Designed complex interaction patterns for an AI-mediated workflow involving multiple user roles, permission states, and asynchronous actions</li>
-          <li>Built and extended a component system in Figma using Fluent UI v9, including custom components where the existing library had gaps</li>
-          <li>Designed across the full contributor experience: from in-product triggers through confirmation states, receipts, and edge cases</li>
-        </ul>
-
-        <div class="ciq-why">
-          <p class="label">Why this was hard</p>
-          <p>Enterprise AI UX is a different problem than consumer AI. The people using this product aren't choosing to be there. They're embedded in existing workflows, with limited attention and high expectations around trust and control. Designing for that context meant making AI feel predictable and low-friction while still giving it enough surface area to be genuinely useful.</p>
-          <p>A lot of the work was figuring out where AI should be invisible and where it needed to earn trust explicitly. That line moves depending on the action, the user's role, and the stakes of what the AI is doing. Getting it wrong in either direction breaks the product's usefulness in ways that are hard to recover from.</p>
+  <!-- CONTEXT ──────────────────────────────────── -->
+  <section class="cs-section" aria-label="Context">
+    <div class="cs-wrap">
+      <div class="cs-grid">
+        <div class="cs-col-kicker">
+          <p class="cs-kicker">Context</p>
+        </div>
+        <div class="cs-col-body">
+          <h2 class="cs-heading">From individual meeting rooms to shared organizational memory.</h2>
+          <div class="cs-body">
+            <p>The strategic gap CIQ addresses was already proven externally. Gong and Glean had established that organizations would pay for AI that knows what the organization knows — not just what a single user knows. The opportunity inside Microsoft was real: valuable customer context lived in each participant's private data envelope, invisible to the rest of the account team, even when sharing it would make every subsequent customer interaction meaningfully better.</p>
+            <p>Sales was chosen as the first segment because customer-brief scenarios expose the gap most clearly. When preparing for any significant customer meeting, an account team needs cross-channel context: who else has talked to this customer, what was discussed, what was decided, what's still pending. That information exists in individual meeting histories. CIQ was designed to make it accessible.</p>
+            <p class="muted">Each touchpoint had a different role in the system:</p>
+            <ul class="cs-list">
+              <li>Meetings create raw context through conversation</li>
+              <li>The Teams feed surfaces AI summaries and prompts contribution</li>
+              <li>Sharing defines visibility and access across the organization</li>
+              <li>Copilot retrieves and uses this context in future workflows</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Contact CTA — prompt to set up an NDA walkthrough -->
-  <div class="ciq-contact">
-    <div class="ciq-contact-inner">
-      <div>
-        <p class="label">Interested in the work?</p>
-        <h2>Let's set up<br>a walkthrough.</h2>
-        <p>I'm happy to walk through the full case study with anyone in a hiring process or able to sign an NDA. Design decisions, process, artifacts, and outcomes. Reach out and we'll find time.</p>
+  <!-- CONTRIBUTION MODEL ───────────────────────── -->
+  <section class="cs-section" aria-label="Contribution model">
+    <div class="cs-wrap">
+      <p class="cs-body" style="max-width: 48rem; margin-bottom: 0;">This system introduces a new step between communication and knowledge: a deliberate act of contribution.</p>
+      <div class="cs-diagram" role="list">
+        <span class="cs-diagram-label">Contribution model</span>
+        <div class="cs-flow-grid">
+          <div class="cs-flow-card" role="listitem">
+            <span class="cs-flow-num">01</span>
+            <p class="cs-flow-title">Private communication</p>
+            <p class="cs-flow-desc">Meeting context begins inside an implicit trust boundary.</p>
+          </div>
+          <div class="cs-flow-card" role="listitem">
+            <span class="cs-flow-num">02</span>
+            <p class="cs-flow-title">AI summary</p>
+            <p class="cs-flow-desc">The raw conversation is transformed into a reduced artifact.</p>
+          </div>
+          <div class="cs-flow-card active" role="listitem">
+            <span class="cs-flow-num">03</span>
+            <p class="cs-flow-title">Contributor decision</p>
+            <p class="cs-flow-desc">The user reviews, approves, scopes, or declines sharing.</p>
+          </div>
+          <div class="cs-flow-card" role="listitem">
+            <span class="cs-flow-num">04</span>
+            <p class="cs-flow-title">Shared knowledge</p>
+            <p class="cs-flow-desc">Approved context becomes available to the selected audience.</p>
+          </div>
+          <div class="cs-flow-card" role="listitem">
+            <span class="cs-flow-num">05</span>
+            <p class="cs-flow-title">Copilot grounding</p>
+            <p class="cs-flow-desc">Future answers can draw from trusted organizational context.</p>
+          </div>
+        </div>
       </div>
-      <div class="ciq-contact-links">
-        <a class="ciq-contact-link" href="mailto:tayaras@outlook.com">
-          <span class="ciq-contact-link-label">Email</span>
-          <span class="ciq-contact-link-val">tayaras@outlook.com</span>
-        </a>
-        <a class="ciq-contact-link" href="https://www.linkedin.com/in/tayaras/" target="_blank" rel="noopener">
-          <span class="ciq-contact-link-label">LinkedIn</span>
-          <span class="ciq-contact-link-val">linkedin.com/in/tayaras ↗</span>
-        </a>
-        <a class="ciq-contact-link" href="cmu-thesis.html">
-          <span class="ciq-contact-link-label">Previous</span>
-          <span class="ciq-contact-link-val">CMU Thesis: Physicalization of AR/XR →</span>
-        </a>
-        <a class="ciq-contact-link" href="acs.html">
-          <span class="ciq-contact-link-label">Also</span>
-          <span class="ciq-contact-link-val">View the ACS case study →</span>
-        </a>
+    </div>
+  </section>
+
+  <!-- PROBLEM ──────────────────────────────────── -->
+  <section class="cs-section" aria-label="Problem">
+    <div class="cs-wrap">
+      <div class="cs-grid">
+        <div class="cs-col-kicker">
+          <p class="cs-kicker">Problem</p>
+        </div>
+        <div class="cs-col-body">
+          <h2 class="cs-heading">Communication is sensitive by default.</h2>
+          <div class="cs-body">
+            <p>Conversations include negotiation, uncertainty, and early thinking. Sharing them introduces risk, especially in customer-facing scenarios where context directly impacts decisions.</p>
+            <p>The hardest part of this project was balancing contributor control with system usefulness. Too much control reduces contribution. Too little breaks trust.</p>
+            <p class="muted">At the same time, this system needed to exist across multiple touchpoints in Microsoft Teams and Copilot. Knowledge is created in meetings, surfaced in feeds, and later retrieved in entirely different contexts like search or AI responses.</p>
+          </div>
+          <figure class="cs-fig cs-fig--mt-lg">
+            <div class="cs-img-wrap" data-src="images/ciq/MVP/mvp4/mvpv4_Review Queue.png">
+              <img loading="lazy" class="cs-img" src="images/ciq/MVP/mvp4/mvpv4_Review Queue.png" alt="Contribution queue — pending, approved, rejected, and expired summaries across accounts"
+                   onerror="this.closest('.cs-img-wrap').classList.add('missing')">
+            </div>
+            <figcaption class="cs-caption">The contribution queue — summaries across accounts with pending review, expiring deadlines, and bulk action controls.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY THIS WAS HARD ────────────────────────── -->
+  <section class="cs-section" aria-label="Why this was hard">
+    <div class="cs-wrap">
+      <div class="cs-grid">
+        <div class="cs-col-kicker">
+          <p class="cs-kicker">Why this was hard</p>
+        </div>
+        <div class="cs-col-body">
+          <h2 class="cs-heading">The product definition was still evolving as I was designing it.</h2>
+          <div class="cs-body">
+            <p>What the MVP should include, who should own the sharing action, how topics and categories should work — these were open, contested questions throughout. I was setting the interaction model while the product model beneath it was still being defined.</p>
+            <p>Compliance wasn't a constraint that arrived at the end. I worked directly with legal and compliance review throughout — copy choices, card states, data model decisions, and consent prompt timing were all shaped by compliance requirements as much as by UX preference.</p>
+            <p class="muted">The design brief held two scales simultaneously: build for Teams meetings now, and build something that eventually generalizes to email, channels, and chats. Every structural decision — the contributor/beneficiary model, the summary-scoped sharing, the governance layer — had to work at both scales without collapsing into something too specific to extend.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESIGN ───────────────────────────────────── -->
+  <section class="cs-section" aria-label="Design">
+    <div class="cs-wrap">
+      <div class="cs-grid">
+        <div class="cs-col-kicker">
+          <p class="cs-kicker">Design</p>
+        </div>
+        <div class="cs-col-body">
+          <h2 class="cs-heading">A post-meeting decision moment.</h2>
+          <div class="cs-body">
+            <p>This moment determines whether private context becomes shared organizational knowledge.</p>
+            <p class="muted">Without this step, the system either shares too much or becomes unusable.</p>
+            <p class="muted">This is the point where trust is maintained or broken.</p>
+          </div>
+
+          <figure class="cs-fig cs-fig--mt-lg">
+            <div class="cs-img-wrap" data-src="images/ciq/MVP/mvp6/mvpv6_CIQ%20Preferred%20Main.png">
+              <img loading="lazy" class="cs-img" src="images/ciq/MVP/mvp6/mvpv6_CIQ%20Preferred%20Main.png" alt="Feed card: AI summary at the point of decision"
+                   onerror="this.closest('.cs-img-wrap').classList.add('missing')">
+            </div>
+            <figcaption class="cs-caption">AI summary enters the workflow at the point of decision.</figcaption>
+          </figure>
+
+          <figure class="cs-fig">
+            <div class="cs-img-wrap" data-src="images/ciq/MVP/mvp6/mvpv6_CIQ%20Summary.png">
+              <img loading="lazy" class="cs-img" src="images/ciq/MVP/mvp6/mvpv6_CIQ%20Summary.png" alt="Preview modal: contributor reviews summary before any action"
+                   onerror="this.closest('.cs-img-wrap').classList.add('missing')">
+            </div>
+            <figcaption class="cs-caption">Contributors review the summary before any action is taken.</figcaption>
+          </figure>
+
+          <figure class="cs-fig">
+            <div class="cs-img-wrap" data-src="images/ciq/MVP/mvp6/mvpv6_CIQ%20Manage%20Users%20Decline.png">
+              <img loading="lazy" class="cs-img" src="images/ciq/MVP/mvp6/mvpv6_CIQ%20Manage%20Users%20Decline.png" alt="Share actions: share broadly, scope access, or decline"
+                   onerror="this.closest('.cs-img-wrap').classList.add('missing')">
+            </div>
+            <figcaption class="cs-caption">Control is expressed through the interaction: share broadly, scope access, or decline.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SYSTEM ───────────────────────────────────── -->
+  <section class="cs-section" aria-label="System">
+    <div class="cs-wrap">
+      <div class="cs-grid">
+        <div class="cs-col-kicker">
+          <p class="cs-kicker">System</p>
+        </div>
+        <div class="cs-col-body">
+          <h2 class="cs-heading">Control is expressed through the interaction.</h2>
+          <div class="cs-img-grid-2">
+            <figure class="cs-fig">
+              <div class="cs-img-wrap" data-src="images/ciq/MVP/mvp6/mvpv6_CIQ%20Manage%20Users%20Everyone.png">
+                <img loading="lazy" class="cs-img" src="images/ciq/MVP/mvp6/mvpv6_CIQ%20Manage%20Users%20Everyone.png" alt="Share with everyone state"
+                     onerror="this.closest('.cs-img-wrap').classList.add('missing')">
+              </div>
+              <figcaption class="cs-caption">Share broadly.</figcaption>
+            </figure>
+            <figure class="cs-fig">
+              <div class="cs-img-wrap" data-src="images/ciq/MVP/mvp6/mvpv6_CIQ%20Manage%20Users%20Select.png">
+                <img loading="lazy" class="cs-img" src="images/ciq/MVP/mvp6/mvpv6_CIQ%20Manage%20Users%20Select.png" alt="Restrict access to selected users"
+                     onerror="this.closest('.cs-img-wrap').classList.add('missing')">
+              </div>
+              <figcaption class="cs-caption">Or restrict access.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DECISIONS ────────────────────────────────── -->
+  <section class="cs-section" aria-label="Decisions">
+    <div class="cs-wrap">
+      <div class="cs-grid">
+        <div class="cs-col-kicker">
+          <p class="cs-kicker">Decisions</p>
+        </div>
+        <div class="cs-col-body">
+          <h2 class="cs-heading">Key tradeoffs defined the product.</h2>
+          <div>
+
+            <div class="cs-decision">
+              <h3 class="cs-sub-heading">Summaries instead of transcripts</h3>
+              <div class="cs-body">
+                <p>Sharing transcripts would expose negotiation, uncertainty, and incomplete thinking. This would reduce trust and block adoption.</p>
+                <p>Summaries reduce exposure while preserving enough context to be useful. This tradeoff made sharing viable.</p>
+              </div>
+              <figure class="cs-fig cs-fig--mt-sm">
+                <div class="cs-img-wrap" data-src="images/ciq/MVP/mvp1/mvpv1_Share%20Recap%201.png">
+                  <img loading="lazy" class="cs-img" src="images/ciq/MVP/mvp1/mvpv1_Share%20Recap%201.png" alt="Earlier direction: full transcript sharing increased exposure"
+                       onerror="this.closest('.cs-img-wrap').classList.add('missing')">
+                </div>
+                <figcaption class="cs-caption">Earlier direction emphasized full transcripts, which increased exposure.</figcaption>
+              </figure>
+            </div>
+
+            <div class="cs-decision">
+              <h3 class="cs-sub-heading">Friction for trust</h3>
+              <div class="cs-body">
+                <p>Automatic sharing would increase coverage but remove control. This would break trust quickly.</p>
+                <p>A deliberate review step ensures contributors remain in control, making the system acceptable to the people whose participation it depends on.</p>
+              </div>
+              <figure class="cs-fig cs-fig--mt-sm">
+                <div class="cs-img-wrap" data-src="images/ciq/MVP/mvp5/mvpv5_Collective%20IQ%20Chat%20Card.png">
+                  <img loading="lazy" class="cs-img" src="images/ciq/MVP/mvp5/mvpv5_Collective%20IQ%20Chat%20Card.png" alt="Earlier exploration: automatic sharing removed user control"
+                       onerror="this.closest('.cs-img-wrap').classList.add('missing')">
+                </div>
+                <figcaption class="cs-caption">Earlier exploration: automatic sharing removed user control.</figcaption>
+              </figure>
+            </div>
+
+            <div class="cs-decision">
+              <h3 class="cs-sub-heading">Simplification over flexibility</h3>
+              <div class="cs-body">
+                <p>Introducing more roles, categories, and review surfaces increased flexibility but created cognitive overhead that stalled contribution.</p>
+                <p>Reducing system complexity — fewer states, a single primary action, a clearer scope model — made contribution easier to understand and more likely to happen.</p>
+              </div>
+              <figure class="cs-fig cs-fig--mt-sm">
+                <div class="cs-img-wrap" data-src="images/ciq/MVP/mvp4/mvpv4_Dashboard.png">
+                  <img loading="lazy" class="cs-img" src="images/ciq/MVP/mvp4/mvpv4_Dashboard.png" alt="Earlier direction: dashboard with archive, queue, and multi-surface navigation"
+                       onerror="this.closest('.cs-img-wrap').classList.add('missing')">
+                </div>
+                <figcaption class="cs-caption">An earlier direction: a full dashboard with archive, queue, and multi-surface navigation — eventually simplified to the feed-first model.</figcaption>
+              </figure>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATES ───────────────────────────────────── -->
+  <section class="cs-section" aria-label="States">
+    <div class="cs-wrap">
+      <div class="cs-grid">
+        <div class="cs-col-kicker">
+          <p class="cs-kicker">States</p>
+        </div>
+        <div class="cs-col-body">
+          <h2 class="cs-heading">The system reflects real conditions.</h2>
+          <div class="cs-img-grid-3">
+            <figure class="cs-fig">
+              <div class="cs-img-wrap" data-src="images/ciq/MVP/mvp6/mvpv6_CIQ%20Summary%20Error.png">
+                <img loading="lazy" class="cs-img" src="images/ciq/MVP/mvp6/mvpv6_CIQ%20Summary%20Error.png" alt="Summary error state"
+                     onerror="this.closest('.cs-img-wrap').classList.add('missing')">
+              </div>
+              <figcaption class="cs-caption">Summary error.</figcaption>
+            </figure>
+            <figure class="cs-fig">
+              <div class="cs-img-wrap" data-src="images/ciq/MVP/mvp6/mvpv6_CIQ%20Sharing%20Error.png">
+                <img loading="lazy" class="cs-img" src="images/ciq/MVP/mvp6/mvpv6_CIQ%20Sharing%20Error.png" alt="Sharing error state"
+                     onerror="this.closest('.cs-img-wrap').classList.add('missing')">
+              </div>
+              <figcaption class="cs-caption">Sharing error.</figcaption>
+            </figure>
+            <figure class="cs-fig">
+              <div class="cs-img-wrap" data-src="images/ciq/MVP/mvp6/mvpv6_CIQ%20Preferred%20Main-1.png">
+                <img loading="lazy" class="cs-img" src="images/ciq/MVP/mvp6/mvpv6_CIQ%20Preferred%20Main-1.png" alt="Expired content state"
+                     onerror="this.closest('.cs-img-wrap').classList.add('missing')">
+              </div>
+              <figcaption class="cs-caption">Expired content.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT ───────────────────────────────────── -->
+  <section class="cs-section" aria-label="Impact">
+    <div class="cs-wrap">
+      <div class="cs-grid">
+        <div class="cs-col-kicker">
+          <p class="cs-kicker">Impact</p>
+        </div>
+        <div class="cs-col-body">
+          <h2 class="cs-heading">A new category of organizational behavior, made viable.</h2>
+          <div class="cs-body">
+            <p>Before this, communication remained participant-scoped. An account team's customer context existed in individual meeting histories and never reached the people who needed it most.</p>
+            <p>The contribution model made it possible to share AI-summarized meeting context without exposing sensitive detail — creating a foundation for Copilot to ground its answers in trusted organizational knowledge rather than just the current user's data.</p>
+            <p class="muted">In practice: account teams could walk into customer meetings with full context on prior conversations, even ones they weren't part of. Knowledge stopped being locked to the individuals in the room.</p>
+          </div>
+          <figure class="cs-fig cs-fig--mt-lg">
+            <div class="cs-img-wrap" data-src="images/ciq/MVP/mvp6/mvpv6_CIQ Preferred Status.png">
+              <img loading="lazy" class="cs-img" src="images/ciq/MVP/mvp6/mvpv6_CIQ Preferred Status.png" alt="Feed showing contribution status across meetings — shared, declined, and managed"
+                   onerror="this.closest('.cs-img-wrap').classList.add('missing')">
+            </div>
+            <figcaption class="cs-caption">The feed reflects real contribution decisions — shared with selected users, declined, and manageable after the fact.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEXT PROJECT CTA ─────────────────────────── -->
+  <div class="dark-cta">
+    <div class="dark-cta-inner">
+      <div>
+        <p class="label">Next Project</p>
+        <h2>Physicalization<br>of AR/XR</h2>
+        <p>CMU Bachelor of Design thesis. A system of haptic and physical proxies that extend augmented reality interactions into the real world, bridging digital and material space at the interaction layer.</p>
+        <a href="cmu-thesis-v2.html" class="dark-link">View case study →</a>
+      </div>
+      <div class="dark-cta-img">
+        <img src="images/capstone/Process/image13.jpg" alt="CMU thesis AR physicalization research">
       </div>
     </div>
   </div>
 
 </main>
 
-<!-- Footer -->
+<!-- ─── SITE FOOTER (unchanged) ─── -->
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-left">
@@ -396,7 +491,7 @@
         <a href="index.html">Work</a>
         <a href="acs.html">UI Library</a>
         <a href="collective-iq.html">Collective IQ</a>
-        <a href="cmu-thesis.html">XR Experiences</a>
+        <a href="cmu-thesis-v2.html">XR Experiences</a>
         <a href="orbit.html">Orbit</a>
         <a href="hp.html">HP Experience</a>
         <a href="about.html">About</a>

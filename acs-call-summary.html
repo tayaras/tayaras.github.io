@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!sessionStorage.getItem("ta_auth"))document.documentElement.style.visibility="hidden";</script>
+  <script src="auth.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transcription &amp; Call Summary · ACS UI Library · Tay Aras</title>
+  <meta name="description" content="Sub-case study: Transcription and AI Call Summary in the ACS UI Library and Sample Builder — the first AI feature in ACS, designed for Azure AI Speech and Azure AI Language.">
+  <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .meta-link { color: inherit; text-decoration: none; }
+    .meta-link:hover { text-decoration: underline; }
+    .inline-link { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+    .inline-link:hover { opacity: 0.6; }
+    .work-link-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: -12px; margin-bottom: 28px; margin-right: 8px;
+      padding: 9px 16px; border: 1px solid var(--line);
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em;
+      color: var(--black); text-decoration: none;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+    }
+    .work-link-pill:hover { border-color: var(--black); background: var(--black); color: var(--white); }
+        html[data-theme="dark"] .work-link-pill { border-color: #555; color: var(--black); }
+    html[data-theme="dark"] .work-link-pill:hover { border-color: var(--black); background: var(--black); color: var(--white); }
+
+    /* Video thumbnail */
+    .video-thumb {
+      display: block; position: relative; text-decoration: none; overflow: hidden; margin-top: 12px;
+    }
+    .video-thumb img { width: 100%; display: block; }
+    .video-thumb-play {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px; height: 60px; background: rgba(0,0,0,0.7); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none; transition: background 0.15s, transform 0.15s;
+    }
+    .video-thumb-play svg { width: 22px; height: 22px; fill: #fff; margin-left: 3px; }
+    .video-thumb:hover .video-thumb-play { background: rgba(0,0,0,0.9); transform: translate(-50%,-50%) scale(1.1); }
+
+    /* Design decision callout */
+    .design-decision {
+      border-left: 2px solid var(--accent); padding: 20px 24px;
+      margin: 28px 0; background: var(--accent-light);
+    }
+    .design-decision .label { display: block; margin-bottom: 10px; }
+    .design-decision p { font-size: 13px; line-height: 1.7; color: var(--mid); max-width: 640px; }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      max-width: var(--max); margin: 0 auto; padding: 20px var(--pad) 0;
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--mid);
+    }
+    .breadcrumb a { color: var(--mid); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--fg); }
+
+    /* Context two-col */
+    .context-inner {
+      max-width: var(--max); margin: 0 auto; padding: 80px var(--pad);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+    }
+    .context-left .label { margin-bottom: 24px; }
+    .context-left h2 { margin-bottom: 24px; }
+    .context-left p + p { margin-top: 16px; }
+    .context-img {
+      background: #ede9e2; aspect-ratio: 4/3;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 11px; color: var(--mid);
+      flex-direction: column; gap: 8px; letter-spacing: 0.06em; overflow: hidden;
+    }
+    .context-img small { font-size: 10px; color: var(--mid); text-align: center; max-width: 220px; }
+    .context-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .context-img:has(img) { aspect-ratio: unset; overflow: hidden; }
+
+    /* AI stack band */
+    .stack-band { border-bottom: 1px solid var(--line); }
+    .stack-band-inner {
+      max-width: var(--max); margin: 0 auto; padding: 56px var(--pad);
+      display: grid; grid-template-columns: 200px 1fr; gap: 80px; align-items: start;
+    }
+    .stack-label { padding-top: 4px; }
+    .stack-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+    .stack-item { border: 1px solid var(--line); padding: 22px 20px; }
+    .stack-item h3 { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    .stack-item p { font-size: 12px; line-height: 1.6; color: var(--mid); }
+    .stack-layer {
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--mid); display: block; margin-bottom: 10px;
+    }
+
+    /* Sub-case nav */
+    .subcase-nav { border-top: 1px solid var(--line); }
+    .subcase-nav-inner {
+      max-width: var(--max); margin: 0 auto; padding: 40px var(--pad);
+      display: flex; justify-content: space-between; align-items: center; gap: 24px;
+    }
+    .subcase-nav-link { display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: inherit; }
+    .subcase-nav-link:hover h3 { text-decoration: underline; text-underline-offset: 2px; }
+    .subcase-nav-link .nav-dir { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; color: var(--mid); }
+    .subcase-nav-link h3 { font-size: 15px; }
+    .subcase-nav-link.next { text-align: right; }
+
+    @media (max-width: 768px) {
+      .context-inner { grid-template-columns: 1fr; gap: 40px; padding: 40px var(--pad); }
+      .stack-band-inner { grid-template-columns: 1fr; gap: 32px; padding: 40px var(--pad); }
+      .stack-grid { grid-template-columns: 1fr; }
+      .subcase-nav-inner { flex-direction: column; align-items: flex-start; }
+      .subcase-nav-link.next { text-align: left; }
+    }
+        html[data-theme="dark"] .context-img { background: #252422; }
+  </style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="site-header" id="navigation">
+  <div class="header-bar">
+    <a class="brand" href="index.html">Tay Aras</a>
+    <div class="string-zone" id="singleZone" tabindex="0" aria-label="Interactive guitar string — click or drag to play">
+      <svg class="string-svg" id="singleSVG" viewBox="0 0 1100 36" preserveAspectRatio="none">
+        <path id="singlePath" class="string-path" d="M0 19 Q 550 19 1100 19"/>
+      </svg>
+    </div>
+    <button class="mute-btn" id="muteBtn" aria-label="Toggle sound" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path class="sound-on" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-on" d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-off" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"/>
+        <line class="sound-off" x1="15" y1="9" x2="21" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+        <line class="sound-off" x1="21" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+      </svg>
+    </button>
+    <button class="expand-btn" id="expandBtn" aria-expanded="false" aria-controls="stringsPanel" style="display:none" aria-hidden="true">
+      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      more
+    </button>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html" class="current">Work</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="mobile-nav">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none">
+          <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html" class="current">Work</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </div>
+  <div class="strings-panel" id="stringsPanel" hidden>
+    <div class="strings-grid" id="stringsGrid"></div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="breadcrumb"><a href="acs-overview.html">ACS UI Library</a> / Sub-Case 02</div>
+
+  <!-- Hero -->
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-l">Microsoft · ACS UI Library · AI / First Value</span>
+      <span class="hero-eyebrow-r">FY25 · Shipped</span>
+    </div>
+    <div class="hero-title w">
+      <h1>Transcription<br>&amp; Call Summary</h1>
+    </div>
+    <div class="hero-img" role="img" aria-label="Post-call summary view">
+      <!-- PHOTO: acs-post-call-transcription.png — the final post-call view showing the AI-generated summary at the top and the transcript below. This is the most important hero image because it shows the completed design: summary above, transcript below, the information hierarchy decision visible at a glance. Crop to show as much of the summary section as possible in the 16:9 frame. -->
+      <img src="images/acs/acs-post-call-transcription.png" alt="Post-call view — AI-generated summary with full transcript accessible below">
+    </div>
+  </section>
+
+  <!-- Meta strip -->
+  <div class="meta-strip">
+    <div class="meta-strip-inner meta-strip-inner--5col">
+      <div class="meta-cell"><span class="label">Type</span><div class="meta-val">AI Feature · Sample Builder</div></div>
+      <div class="meta-cell"><span class="label">My role</span><div class="meta-val">Design direction · PM · Spec · Launch</div></div>
+      <div class="meta-cell"><span class="label">AI stack</span><div class="meta-val">Azure AI Speech (transcription)<br>Azure AI Language (summarization)</div></div>
+      <div class="meta-cell"><span class="label">Partners</span><div class="meta-val">Azure AI · Nuance · DevRel · Design</div></div>
+      <div class="meta-cell"><span class="label">Launch</span><div class="meta-val"><a href="https://techcommunity.microsoft.com/blog/azurecommunicationservicesblog/bringing-ai-to-meetings-with-the-sample-builder/4414730" target="_blank" rel="noopener" class="meta-link">Blog post ↗</a><br>Microsoft Build demo</div></div>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">The challenge</p></div>
+      <div>
+        <p class="overview-p">The first AI feature in ACS had two design problems that weren't obvious from the outside. The first: the call ends before the summary is ready. Azure AI Speech converts speech to transcript in real time, but Azure AI Language's summarization runs after the call — there's a gap between "call ended" and "summary available." How do you design a post-call screen for a moment when the most important thing isn't there yet?</p>
+        <p class="overview-p" style="margin-top: 20px;">The second: a telehealth note, a financial consultation record, and an enterprise meeting summary are three different documents. They come from the same transcript. But what a physician needs to see at the top — symptoms, decisions, follow-up — is completely different from what a financial advisor needs. The summary structure had to serve radically different customers without becoming so generic it served none of them.</p>
+        <p class="overview-p" style="margin-top: 20px; font-size: 14px; color: var(--mid);">I designed the post-call screen, the loading state model, and the summary information hierarchy in Figma. Danielle Hibbs was the design partner on visual execution and the Sample Builder configuration UI.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tech stack context -->
+  <section aria-label="Technology stack">
+    <div class="stack-band">
+      <div class="stack-band-inner">
+        <div class="stack-label"><p class="label">The AI stack</p></div>
+        <div class="stack-grid">
+          <div class="stack-item">
+            <span class="stack-layer">Transcription</span>
+            <h3>Azure AI Speech</h3>
+            <p>Converts speech to text in real time, with speaker attribution so the transcript knows who said what. Supports multilingual teams and post-meeting translation.</p>
+          </div>
+          <div class="stack-item">
+            <span class="stack-layer">Summarization</span>
+            <h3>Azure AI Language</h3>
+            <p>Runs on the completed transcript post-call, generating structured output: main discussion points, decisions made, and action items with next steps.</p>
+          </div>
+          <div class="stack-item">
+            <span class="stack-layer">Delivery layer</span>
+            <h3>Sample Builder</h3>
+            <p>No-code Azure Portal integration — developers configure transcription and summary as toggles, deploy to a Rooms-based calling experience without writing AI infrastructure code.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Work -->
+  <section aria-label="The Work">
+    <div class="work-section">
+      <div class="work-section-header">
+        <p class="label">Design decisions</p>
+      </div>
+
+      <!-- Decision 1: In-call enablement -->
+      <div class="work-item">
+        <div class="work-item-inner">
+          <div class="work-tag-col">
+            <span class="work-num">01</span>
+            <span class="work-tag">In-Call<br>Enablement</span>
+          </div>
+          <div class="work-content">
+            <h3>Starting transcription mid-call without breaking the call</h3>
+            <p>Transcription is opt-in — not automatically active, and not all customers want it enabled for all calls. The entry point lives in the call settings menu, which keeps it accessible without surfacing it as a default. When recording and transcription are active, the in-call state indicators confirm it's running — critical for compliance in regulated contexts where participants need to know they're being recorded.</p>
+            <a class="work-link-pill" href="https://techcommunity.microsoft.com/blog/azurecommunicationservicesblog/bringing-ai-to-meetings-with-the-sample-builder/4414730" target="_blank" rel="noopener">Bringing AI to Meetings with the Sample Builder ↗</a>
+            <div class="work-img-row">
+              <div class="work-img-sm"><img src="images/acs/acs-transcription-menu.png" alt="Transcription settings — enable during call from the call menu"></div>
+              <div class="work-img-sm"><img src="images/acs/acs-recording-transcription.png" alt="Recording and transcription active — in-call indicator states"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decision 2: The loading state -->
+      <div class="work-item">
+        <div class="work-item-inner">
+          <div class="work-tag-col">
+            <span class="work-num">02</span>
+            <span class="work-tag">The Loading<br>State Problem</span>
+          </div>
+          <div class="work-content">
+            <h3>Designing for the gap between "call ended" and "summary ready"</h3>
+            <p>Azure AI Language's summarization runs post-call. There's a window — typically 15–30 seconds — where the transcript is finalizing and the summary hasn't generated yet. A user who hits "end call" has an immediate expectation: they're done with the call, they want to see what came from it. A blank screen with a spinner and no timeline is a trust problem. It communicates nothing about what's happening or when it will end.</p>
+            <div class="design-decision">
+              <span class="label">Progressive reveal over a blocking wait</span>
+              <p>I designed the post-call screen to show transcript lines as they finalize — speaker by speaker, as Azure AI Speech completes its attribution pass. Users have something real to read immediately. The summary section appears above the transcript once it's ready, sliding in without displacing the content already visible. You never see an empty page. The wait is productive rather than passive.</p>
+            </div>
+            <div class="work-img-main">
+              <div style="background:#ede9e2; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; font-family:var(--mono); font-size:11px; color:var(--mid); letter-spacing:0.06em;" role="img" aria-label="Post-call loading state placeholder">
+                <!-- PHOTO: The post-call loading state — the moment right after the call ends while the summary is still generating. Should show: a placeholder section at the top where the summary will appear (loading/skeleton treatment), and transcript lines already rendered below it, appearing progressively. This is the middle state between "call ended" and "summary ready" — the most important design state in this feature. Export from Figma loading state frames or capture from a working prototype. -->
+                <span>PHOTO</span>
+                <small>Post-call loading state — summary section in skeleton/loading treatment at top, transcript lines already visible below. The progressive reveal before the summary is ready.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decision 3: Information hierarchy -->
+      <div class="work-item">
+        <div class="work-item-inner">
+          <div class="work-tag-col">
+            <span class="work-num">03</span>
+            <span class="work-tag">Information<br>Hierarchy</span>
+          </div>
+          <div class="work-content">
+            <h3>Summary above transcript. Synthesis before record.</h3>
+            <p>The transcript is the complete record — every word, speaker-attributed, searchable. The summary is the distillation — discussion points, decisions, action items. These serve two different needs at two different times: the summary is useful immediately after the call, the transcript is useful later when you need to verify something specific.</p>
+            <p>I structured the post-call view with the summary at the top, transcript below. This isn't just visual hierarchy — it's a position on what the primary job of this screen is. Most users, most of the time, want to quickly understand what happened and what comes next. The transcript is the safety net, not the entry point. The structure makes both accessible without forcing a choice.</p>
+            <p>The Azure AI Language output includes three structured sections: main discussion points, decisions made, and action items. I preserved that three-part structure in the summary view — it gives the output shape and scannability regardless of how long the call was or what domain it came from.</p>
+            <div class="work-img-main">
+              <img src="images/acs/acs-post-call-transcription.png" alt="Post-call view — AI-generated summary at top, full transcript accessible below">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decision 4: Sample Builder + the demo surface -->
+      <div class="work-item">
+        <div class="work-item-inner">
+          <div class="work-tag-col">
+            <span class="work-num">04</span>
+            <span class="work-tag">No-Code<br>Delivery</span>
+          </div>
+          <div class="work-content">
+            <h3>Configurable through the Sample Builder — no AI infrastructure required</h3>
+            <p>The Sample Builder packaged transcription and call summary as toggles in the Azure Portal wizard. A developer, PM, or field team member could enable AI call summary without writing a line of Azure AI SDK code — the Sample Builder wired up the Azure AI Speech and Azure AI Language integrations behind the scenes. This was the "5-minutes-to-wow" motion: pair the AI capability with a frictionless demo experience so customers and internal teams could see it working before committing to a production implementation.</p>
+            <p>I worked with design and DevRel on a Sample Builder walkthrough video to relaunch the builder on YouTube and anchor the Build conference demo for transcription and meeting summary.</p>
+            <div class="work-img-main">
+              <img src="images/acs/sample-builder-landing.png" alt="Sample Builder — configuration wizard with live preview of the virtual appointment experience">
+            </div>
+            <a class="video-thumb" href="https://www.youtube.com/watch?v=5o4LcIiVLb4&t=3s" target="_blank" rel="noopener" aria-label="Watch Sample Builder AI call summary walkthrough on YouTube">
+              <img src="https://img.youtube.com/vi/5o4LcIiVLb4/maxresdefault.jpg" alt="Video: Sample Builder AI Call Summary walkthrough — Build demo">
+              <span class="video-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+              </span>
+            </a>
+            <p class="work-img-caption" style="margin-top: 10px;">Sample Builder walkthrough video produced for Build and YouTube relaunch.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decision 5: Scenario specificity -->
+      <div class="work-item">
+        <div class="work-item-inner">
+          <div class="work-tag-col">
+            <span class="work-num">05</span>
+            <span class="work-tag">Scenario<br>Fit</span>
+          </div>
+          <div class="work-content">
+            <h3>The same transcript produces a different document in each vertical</h3>
+            <p>Healthcare, financial services, and education were the three verticals I focused on when scoping what a "good summary" meant. For a telehealth appointment, the physician needs to see the patient's reported symptoms, what was decided, and what the follow-up instructions are — in that order. For a financial consultation, the advisor needs decisions made, account references, and compliance-relevant commitments. For an education context, the summary is more about accessibility — giving students a searchable record of a session.</p>
+            <p>Azure AI Language's three-part structure (discussion points → decisions → action items) maps reasonably well to all three scenarios, but the implementation left room for the Sample Builder to expose configuration options for what gets included and how it's labeled. This gave customers a path toward scenario-specific summaries without requiring the library to hard-code industry-specific logic.</p>
+            <div class="work-img-main">
+              <div style="background:#ede9e2; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; font-family:var(--mono); font-size:11px; color:var(--mid); letter-spacing:0.06em;" role="img" aria-label="Scenario comparison placeholder">
+                <!-- PHOTO: Side-by-side comparison showing the same three-section summary structure applied to two different scenarios — ideally a telehealth call (left) and a financial consultation (right). Shows how the same AI output structure produces different-feeling documents depending on the content. Could be Figma comps or representative screenshots with realistic-looking (not real) content. The goal is to make visible that "summary" isn't one thing — it takes on the shape of the context it lives in. -->
+                <span>PHOTO</span>
+                <small>Scenario comparison — same AI summary structure applied to a telehealth appointment (left) and a financial consultation (right), showing how context shapes the output</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section aria-label="Results">
+    <div class="impact">
+      <div class="impact-header"><p class="label">Results</p></div>
+      <div class="impact-grid">
+        <div class="impact-cell">
+          <p class="impact-n">1st</p>
+          <p class="impact-desc">First AI feature shipped in ACS — set the pattern for AI-enabled experiences in the platform and established the Sample Builder as the AI showcase layer.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">Build</p>
+          <p class="impact-desc">Shipped in preview at Microsoft Build alongside Azure AI and Nuance — the flagship demo of ACS's AI strategy for that conference cycle.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">0 code</p>
+          <p class="impact-desc">Azure AI Speech + Azure AI Language fully configurable through the Sample Builder wizard. The progressive reveal loading state meant the no-code experience felt immediate rather than broken — no blank screen during the summarization window.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">3</p>
+          <p class="impact-desc">Industry verticals the information hierarchy was validated against — healthcare, financial services, education. The three-section structure (discussion points → decisions → action items) maps to each without vertical-specific logic.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">Pattern</p>
+          <p class="impact-desc">Established the Sample Builder as the right surface to ship AI features before committing them to the production composite API. The design strategy — prove the UX model first, then decide what enters the library — carried into every AI feature that followed.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">FY25Q1</p>
+          <p class="impact-desc">Featured in the ACS quarterly newsletter as the "5-minutes-to-wow" motion — the summary structure and loading state design were specifically what made the Build demo work as a live showcase.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sub-case nav -->
+  <div class="subcase-nav">
+    <div class="subcase-nav-inner">
+      <a class="subcase-nav-link" href="acs-rtt.html">
+        <span class="nav-dir">← Previous sub-case</span>
+        <h3>Real-Time Text (RTT)</h3>
+      </a>
+      <a class="subcase-nav-link next" href="acs-overview.html">
+        <span class="nav-dir">↑ Back to</span>
+        <h3>ACS UI Library Overview</h3>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html">Work</a>
+        <a href="acs-overview.html">UI Library</a>
+        <a href="acs-rtt.html">RTT</a>
+        <a href="acs-call-summary.html">Call Summary</a>
+        <a href="collective-iq.html">Collective IQ</a>
+        <a href="cmu-thesis-v2.html">XR Experiences</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+    <span class="footer-copy">© 2026 Tay Aras</span>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+</body>
+</html>

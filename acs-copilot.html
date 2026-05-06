@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!sessionStorage.getItem("ta_auth"))document.documentElement.style.visibility="hidden";</script>
+  <script src="auth.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Copilot in Rooms · ACS UI Library · Tay Aras</title>
+  <meta name="description" content="Sub-case study: Copilot in Rooms calls and the Sample Builder as AI showcase layer — designing for in-call AI presence and using the portal as a design validation surface.">
+  <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .meta-link { color: inherit; text-decoration: none; }
+    .meta-link:hover { text-decoration: underline; }
+    .inline-link { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+    .inline-link:hover { opacity: 0.6; }
+
+    /* Design decision callout */
+    .design-decision {
+      border-left: 2px solid var(--accent); padding: 20px 24px;
+      margin: 28px 0; background: var(--accent-light);
+    }
+    .design-decision .label { display: block; margin-bottom: 10px; }
+    .design-decision p { font-size: 13px; line-height: 1.7; color: var(--mid); max-width: 640px; }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      max-width: var(--max); margin: 0 auto; padding: 20px var(--pad) 0;
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--mid);
+    }
+    .breadcrumb a { color: var(--mid); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--fg); }
+
+    /* Context two-col */
+    .context-inner {
+      max-width: var(--max); margin: 0 auto; padding: 80px var(--pad);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+    }
+    .context-left .label { margin-bottom: 24px; }
+    .context-left h2 { margin-bottom: 24px; }
+    .context-left p + p { margin-top: 16px; }
+    .context-img {
+      background: #ede9e2; aspect-ratio: 4/3;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 11px; color: var(--mid);
+      flex-direction: column; gap: 8px; letter-spacing: 0.06em; overflow: hidden;
+    }
+    .context-img small { font-size: 10px; color: var(--mid); text-align: center; max-width: 220px; }
+    .context-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .context-img:has(img) { aspect-ratio: unset; overflow: hidden; }
+
+    /* Evolution band */
+    .evolution-band { border-bottom: 1px solid var(--line); }
+    .evolution-band-inner {
+      max-width: var(--max); margin: 0 auto; padding: 56px var(--pad);
+      display: grid; grid-template-columns: 200px 1fr; gap: 80px;
+    }
+    .evolution-steps { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; }
+    .evolution-step {
+      padding: 24px 28px; border-left: 1px solid var(--line);
+    }
+    .evolution-step:first-child { border-left: none; padding-left: 0; }
+    .evolution-step-num {
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+      color: var(--mid); display: block; margin-bottom: 10px;
+    }
+    .evolution-step h3 { margin-bottom: 8px; }
+    .evolution-step p { font-size: 13px; line-height: 1.65; color: var(--mid); }
+    .evolution-step.current { border-left-color: var(--fg); }
+    .evolution-step.current h3 { color: var(--fg); }
+
+    /* Sub-case nav */
+    .subcase-nav { border-top: 1px solid var(--line); }
+    .subcase-nav-inner {
+      max-width: var(--max); margin: 0 auto; padding: 40px var(--pad);
+      display: flex; justify-content: space-between; align-items: center; gap: 24px;
+    }
+    .subcase-nav-link { display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: inherit; }
+    .subcase-nav-link:hover h3 { text-decoration: underline; text-underline-offset: 2px; }
+    .subcase-nav-link .nav-dir { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; color: var(--mid); }
+    .subcase-nav-link h3 { font-size: 15px; }
+    .subcase-nav-link.next { text-align: right; }
+
+    @media (max-width: 768px) {
+      .context-inner { grid-template-columns: 1fr; gap: 40px; padding: 40px var(--pad); }
+      .evolution-band-inner { grid-template-columns: 1fr; gap: 32px; padding: 40px var(--pad); }
+      .evolution-steps { grid-template-columns: 1fr; }
+      .evolution-step { border-left: none; border-top: 1px solid var(--line); padding-left: 0; }
+      .evolution-step:first-child { border-top: none; }
+      .subcase-nav-inner { flex-direction: column; align-items: flex-start; }
+      .subcase-nav-link.next { text-align: left; }
+    }
+        html[data-theme="dark"] .context-img { background: #252422; }
+  </style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="site-header" id="navigation">
+  <div class="header-bar">
+    <a class="brand" href="index.html">Tay Aras</a>
+    <div class="string-zone" id="singleZone" tabindex="0" aria-label="Interactive guitar string — click or drag to play">
+      <svg class="string-svg" id="singleSVG" viewBox="0 0 1100 36" preserveAspectRatio="none">
+        <path id="singlePath" class="string-path" d="M0 19 Q 550 19 1100 19"/>
+      </svg>
+    </div>
+    <button class="mute-btn" id="muteBtn" aria-label="Toggle sound" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path class="sound-on" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-on" d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-off" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"/>
+        <line class="sound-off" x1="15" y1="9" x2="21" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+        <line class="sound-off" x1="21" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+      </svg>
+    </button>
+    <button class="expand-btn" id="expandBtn" aria-expanded="false" aria-controls="stringsPanel" style="display:none" aria-hidden="true">
+      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      more
+    </button>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html" class="current">Work</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="mobile-nav">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none">
+          <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html" class="current">Work</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </div>
+  <div class="strings-panel" id="stringsPanel" hidden>
+    <div class="strings-grid" id="stringsGrid"></div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="breadcrumb"><a href="acs-overview.html">ACS UI Library</a> / Sub-Case 03</div>
+
+  <!-- Hero -->
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-l">Microsoft · ACS UI Library · AI / In-Call Exploration</span>
+      <span class="hero-eyebrow-r">FY25 H2 · Spec complete</span>
+    </div>
+    <div class="hero-title w">
+      <h1>Copilot in Rooms<br>&amp; Sample Builder AI</h1>
+    </div>
+    <div class="hero-img" role="img" aria-label="Copilot in a Rooms call — in-call AI presence">
+      <!-- PHOTO: copilot-hero.png — the Copilot hero image. This should communicate "AI is present during a call" rather than "AI is available after." If copilot-hero.png shows the side pane alongside the call UI, that's ideal. If it reads as a generic Copilot brand image rather than a calling-specific UI, consider pairing it with a mockup showing the side pane in context. The hero should feel forward-looking, not yet fully shipped — this is an exploration. -->
+      <img src="images/acs/copilot-hero.png" alt="Copilot in Rooms — AI assistant present during a live call">
+    </div>
+  </section>
+
+  <!-- Meta strip -->
+  <div class="meta-strip">
+    <div class="meta-strip-inner meta-strip-inner--5col">
+      <div class="meta-cell"><span class="label">Type</span><div class="meta-val">AI Feature · Exploratory</div></div>
+      <div class="meta-cell"><span class="label">My role</span><div class="meta-val">Design direction · PM · Spec authorship</div></div>
+      <div class="meta-cell"><span class="label">Surfaces</span><div class="meta-val">UI Library composites · Sample Builder · Azure Portal</div></div>
+      <div class="meta-cell"><span class="label">Partners</span><div class="meta-val">IC3 · Teams · Copilot Studio · DevRel</div></div>
+      <div class="meta-cell"><span class="label">Status</span><div class="meta-val">Full spec complete · Sample Builder experimentation surface</div></div>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">The question</p></div>
+      <div>
+        <p class="overview-p">Call Summary put AI after the call. Copilot in Rooms asked a harder question: what does AI presence look like during the call itself? Not as post-processing, not as a parallel chat window — as an active, responsive assistant inside the calling composite while the call is live.</p>
+        <p class="overview-p" style="margin-top: 20px;">The spatial problem was interesting. Calling UIs already carry a lot: video gallery, control bar, captions, participants panel. Adding an AI layer to that environment required a model that was present when needed, invisible when not, and couldn't disrupt the primary experience of the call. I designed a Copilot side pane with a toggle model — opt-in, collapsible, living at the same level as the participants panel — and scoped it explicitly to the Sample Builder as a validation surface before committing it to the production component API.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product evolution context -->
+  <section aria-label="Product evolution">
+    <div class="evolution-band">
+      <div class="evolution-band-inner">
+        <div><p class="label">Product arc</p></div>
+        <div class="evolution-steps">
+          <div class="evolution-step">
+            <span class="evolution-step-num">Stage 1</span>
+            <h3>Platform foundation</h3>
+            <p>Broad UI Library maturation — CallComposite, VideoGallery, mobile, accessibility foundations. Getting the component layer reliable and adoptable across 200+ customers.</p>
+          </div>
+          <div class="evolution-step">
+            <span class="evolution-step-num">Stage 2</span>
+            <h3>Post-call AI value</h3>
+            <p>Transcription and Call Summary — first AI features in ACS, delivered through the Sample Builder. AI as a finishing layer that processes the call after it ends.</p>
+          </div>
+          <div class="evolution-step current">
+            <span class="evolution-step-num">Stage 3 — This work</span>
+            <h3>In-call AI presence</h3>
+            <p>Copilot in Rooms — AI available during the call, not just after. The Sample Builder as the surface to prove the pattern before it enters the production API.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Work -->
+  <section aria-label="The Work">
+    <div class="work-section">
+      <div class="work-section-header">
+        <p class="label">Design decisions</p>
+      </div>
+
+      <!-- Decision 1: The spatial question -->
+      <div class="work-item">
+        <div class="work-item-inner">
+          <div class="work-tag-col">
+            <span class="work-num">01</span>
+            <span class="work-tag">The Spatial<br>Question</span>
+          </div>
+          <div class="work-content">
+            <h3>Where does AI live inside a calling interface?</h3>
+            <p>I considered four spatial models before landing on the side pane. An overlay floats on top of the video gallery — it blocks participants and competes with the primary content of the call. A bottom band pushes the gallery up and reflows the layout — it changes the experience for everyone in the call, including people who haven't opted in to AI assistance. A floating panel is flexible but creates a persistent element with no stable relationship to the rest of the UI. A side pane slots into the same spatial category as the participants panel and captions — a panel that opens from the edge, takes a predictable portion of the layout, and closes without affecting what remains.</p>
+            <p>The side pane model also had a practical advantage: the OPS/contact-center workstream had already established a side pane pattern for supplementary call surfaces (dialpad, OBO selection, supervisor controls). Copilot fits that category — it's a contextual surface, not a primary control. Reusing the pattern reduces cognitive overhead for developers building on the library and for end users navigating the call.</p>
+            <div class="work-img-main">
+              <div style="background:#ede9e2; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; font-family:var(--mono); font-size:11px; color:var(--mid); letter-spacing:0.06em;" role="img" aria-label="Spatial model exploration placeholder">
+                <!-- PHOTO: Four-panel or annotated Figma exploration showing the spatial options considered: overlay (rejected — blocks video), bottom band (rejected — affects everyone), floating panel (rejected — no stable position), side pane (chosen — matches existing panel pattern). Each option should be shown at the same screen scale so the spatial tradeoffs are directly comparable. This is the design exploration proof that makes the final decision legible. -->
+                <span>PHOTO</span>
+                <small>Spatial model exploration — overlay, bottom band, floating panel, side pane — showing why each was considered and why the side pane was chosen. Four panels at the same scale.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decision 2: The toggle model -->
+      <div class="work-item">
+        <div class="work-item-inner">
+          <div class="work-tag-col">
+            <span class="work-num">02</span>
+            <span class="work-tag">Ambient,<br>Not Default</span>
+          </div>
+          <div class="work-content">
+            <h3>Opt-in with a toggle, collapsible without ending the session</h3>
+            <p>Copilot shouldn't be on by default for a call. Not every call needs it, and presenting AI assistance as a persistent element of the calling UI changes the default character of the product — it becomes an AI product, not a calling product. The toggle model keeps Copilot ambient: available but not present unless explicitly opened.</p>
+            <div class="design-decision">
+              <span class="label">The toggle design</span>
+              <p>A Copilot button in the call control bar opens the side pane. The pane is collapsible — closing it returns the gallery to full width without a state transition that feels disruptive. When the pane is closed but Copilot has been activated in the call, I designed a small persistent indicator in the control bar to confirm the session is still active. The pane can be reopened from that indicator at any point. The call continues regardless of whether the pane is open or closed.</p>
+            </div>
+            <div class="work-img-row">
+              <div class="work-img-sm">
+                <div style="background:#ede9e2; aspect-ratio:4/3; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:6px; font-family:var(--mono); font-size:10px; color:var(--mid); letter-spacing:0.06em;" role="img" aria-label="Copilot side pane open placeholder">
+                  <!-- PHOTO: The Copilot side pane in its open state — showing the pane anchored to the right edge of the calling composite, the gallery recomposed to the left, and the Copilot interface (conversation, suggestions, or status) visible in the pane. Pull from Figma designs or a prototype screenshot. Should show real content, not a wireframe, since this is a senior portfolio. -->
+                  <span>PHOTO</span>
+                  <small>Side pane open — gallery recomposed left, Copilot pane right</small>
+                </div>
+              </div>
+              <div class="work-img-sm">
+                <div style="background:#ede9e2; aspect-ratio:4/3; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:6px; font-family:var(--mono); font-size:10px; color:var(--mid); letter-spacing:0.06em;" role="img" aria-label="Copilot side pane collapsed placeholder">
+                  <!-- PHOTO: The Copilot toggle in the call control bar — both the default inactive state (before Copilot is opened) and the active-but-collapsed state (after Copilot has been activated, pane closed, session still running). Shows that the toggle carries state information: "Copilot is on" vs. "Copilot is available." These two states should be clearly distinguishable. -->
+                  <span>PHOTO</span>
+                  <small>Control bar toggle — inactive state vs. active-but-collapsed state with ambient indicator</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decision 3: Scoping to Sample Builder as design strategy -->
+      <div class="work-item">
+        <div class="work-item-inner">
+          <div class="work-tag-col">
+            <span class="work-num">03</span>
+            <span class="work-tag">Sample Builder<br>as Validation</span>
+          </div>
+          <div class="work-content">
+            <h3>Don't commit to the API until you've proven the pattern</h3>
+            <p>The spec explicitly scoped Copilot in Rooms as a Sample Builder experimentation surface — not full production support in the UI Library composites. This was a design strategy decision, not a product-resource hedge. Shipping something into the CallComposite API means it's part of the public contract: breaking it is a version bump, changing it requires migration guidance, removing it requires deprecation notices.</p>
+            <p>The Sample Builder has a much lower commitment surface. Developers using it can see and deploy the Copilot experience without the library itself committing to the API shape. If the interaction model doesn't work in practice — if the pane placement is wrong for mobile, if the toggle is confusing, if Copilot's response cadence doesn't fit the calling context — those lessons can be learned and corrected before the pattern is frozen into a production API.</p>
+            <div class="design-decision">
+              <span class="label">Why this is the right approach for exploratory AI UX</span>
+              <p>Call Summary established the same pattern: ship in the Sample Builder first, prove the value and the UX model, then evaluate what belongs in the composites. Copilot in Rooms is applying that same validation loop to a harder problem — in-call AI presence is a more disruptive UX change than a post-call screen, and the risk of getting the API shape wrong is higher. The Sample Builder is exactly the right surface for questions you're still figuring out.</p>
+            </div>
+            <div class="work-img-main">
+              <img src="images/acs/sample-builder-landing.png" alt="Sample Builder — Azure Portal configuration wizard with live preview">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decision 4: The spec as rigor -->
+      <div class="work-item">
+        <div class="work-item-inner">
+          <div class="work-tag-col">
+            <span class="work-num">04</span>
+            <span class="work-tag">Spec-Driven<br>Exploration</span>
+          </div>
+          <div class="work-content">
+            <h3>Exploratory doesn't mean unscoped</h3>
+            <p>Copilot in Rooms was specced using the full UI Library feature spec template: customer-facing language, use cases, in-scope and out-of-scope scenarios, competitive landscape, privacy and regionality considerations, CELA review, functional requirements broken into phases, dependencies, compatibility requirements, risks, and open questions. The exploratory nature of the feature made the spec more important, not less — if you don't define the boundaries precisely, engineering builds the wrong thing and the iteration happens at the wrong cost.</p>
+            <p>The spec defined the Copilot side pane as supporting Rooms-based calls specifically (scoped away from Teams interop in the initial phase), Copilot Studio as the AI integration point, and a three-phase delivery model: Sample Builder experimentation, UI Library composite support, then full production guidance. Each phase had its own success criteria.</p>
+            <div class="work-img-main">
+              <div style="background:#ede9e2; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; font-family:var(--mono); font-size:11px; color:var(--mid); letter-spacing:0.06em;" role="img" aria-label="Feature spec document placeholder">
+                <!-- PHOTO: A screenshot of the Copilot in Rooms feature spec document — specifically the phasing table or the functional requirements section, which shows the three-phase delivery model and the per-phase success criteria. Redact any internal names or sensitive details, but keep the structure visible. The spec itself is the artifact that proves rigor — showing it here (even partially) communicates PM/design craft more than any description of it. -->
+                <span>PHOTO</span>
+                <small>Copilot in Rooms spec — phasing table or functional requirements section showing the three-phase delivery model and per-phase success criteria. Redact sensitive details as needed.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decision 5: The AI strategy context -->
+      <div class="work-item">
+        <div class="work-item-inner">
+          <div class="work-tag-col">
+            <span class="work-num">05</span>
+            <span class="work-tag">Strategic<br>Framing</span>
+          </div>
+          <div class="work-content">
+            <h3>What this work was really trying to prove</h3>
+            <p>The ACS AI strategy was organized around three pillars: product truth (real integrations with Copilot Studio and Azure AI), customer stories (case studies that give ACS credibility in AI scenarios), and "5-minutes-to-wow" (no-code Sample Builder experiences that let anyone deploy an AI-enabled call). Copilot in Rooms was designed to serve all three — but its most important job was product truth.</p>
+            <p>The ACS envisioning work for FY25 H2 listed in-call AI under "Real-Time Assistance" alongside longer-range capabilities: voice authentication, AI interpreter, sign language recognition. Copilot in Rooms was the first, most concrete version of that category — designed to answer the interaction design question before the more complex real-time AI scenarios were committed to roadmap. What does it feel like to have an AI participant in a call? How does it enter, exit, speak, and respond? The side pane model was the beginning of an answer.</p>
+            <div class="work-img-main">
+              <div style="background:#ede9e2; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; font-family:var(--mono); font-size:11px; color:var(--mid); letter-spacing:0.06em;" role="img" aria-label="AI strategy roadmap placeholder">
+                <!-- PHOTO: A slide or visual from the ACS-WebUI/SampleBuilder-Envisioning deck — specifically the section that separates "Web UI Library enhancements" from "AI Capabilities for Sample Builder" and positions Copilot in Rooms within the "Real-Time Assistance" category alongside future AI capabilities. This makes the strategic context concrete and shows that the design work was part of a larger intentional product direction. Redact anything sensitive. -->
+                <span>PHOTO</span>
+                <small>ACS envisioning deck — AI capabilities roadmap for Sample Builder showing Copilot in Rooms in the "Real-Time Assistance" category alongside future AI capabilities (voice authentication, AI interpreter). Redact sensitive details.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section aria-label="Results">
+    <div class="impact">
+      <div class="impact-header"><p class="label">Results</p></div>
+      <div class="impact-grid">
+        <div class="impact-cell">
+          <p class="impact-n">Side pane</p>
+          <p class="impact-desc">Established the spatial model for AI presence in a calling interface — a pattern that can extend to future AI features beyond Copilot (interpreter, voice authentication, real-time coaching).</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">Full spec</p>
+          <p class="impact-desc">Complete feature spec with PM/EM ownership, phased delivery model, success criteria per phase, and explicit in-scope/out-of-scope definitions — exploratory rigor, not just exploratory ideation.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">Sample Builder</p>
+          <p class="impact-desc">Validated the Sample Builder's strategic role as a design validation surface — a place to test AI UX patterns before committing them to the production component API.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">Product truth</p>
+          <p class="impact-desc">The first ACS product to answer the question "what does in-call AI presence feel like?" — creating a concrete reference point for the full Real-Time Assistance AI category.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">Platform shift</p>
+          <p class="impact-desc">Completed the repositioning of the Sample Builder from a demo tool for existing features to a forward-looking surface for AI-first communication scenarios.</p>
+        </div>
+        <div class="impact-cell">
+          <p class="impact-n">↗</p>
+          <p class="impact-desc">The toggle model — ambient presence, opt-in, collapsible without disrupting the call — became the design precedent for subsequent AI surface work in ACS.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sub-case nav -->
+  <div class="subcase-nav">
+    <div class="subcase-nav-inner">
+      <a class="subcase-nav-link" href="acs-call-summary.html">
+        <span class="nav-dir">← Previous sub-case</span>
+        <h3>Transcription &amp; Call Summary</h3>
+      </a>
+      <a class="subcase-nav-link next" href="acs-overview.html">
+        <span class="nav-dir">↑ Back to</span>
+        <h3>ACS UI Library Overview</h3>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html">Work</a>
+        <a href="acs-overview.html">UI Library</a>
+        <a href="acs-rtt.html">RTT</a>
+        <a href="acs-call-summary.html">Call Summary</a>
+        <a href="acs-copilot.html">Copilot in Rooms</a>
+        <a href="collective-iq.html">Collective IQ</a>
+        <a href="cmu-thesis-v2.html">XR Experiences</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+    <span class="footer-copy">© 2026 Tay Aras</span>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+</body>
+</html>

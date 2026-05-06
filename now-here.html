@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!sessionStorage.getItem("ta_auth"))document.documentElement.style.visibility="hidden";</script>
+  <script src="auth.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Now Here — Tay Aras</title>
+  <meta name="description" content="Now Here — a real-time, location-first event discovery app. Product design case study by Tay Aras.">
+  <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+
+    /* ─── NOW HERE — PAGE TOKENS ─── */
+    :root {
+      --nh-warm: #c8552a;
+      --nh-bg-soft: #ede9e2;
+      --pin-host:      #2563EB;
+      --pin-platform:  #16A34A;
+      --pin-community: #E8572A;
+      --pin-soon:      #D97706;
+    }
+
+    /* ─── HERO ADDITIONS ─── */
+    .nh-hero-inner {
+      padding: 48px var(--pad) 64px;
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+    .nh-hero-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--nh-warm);
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    /* ─── BODY CONTENT COLUMN (inside section-row) ─── */
+    .nh-body-col h2 { max-width: 640px; margin-bottom: 24px; }
+    .nh-body-col h3 {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin: 48px 0 16px;
+      font-weight: normal;
+    }
+    .nh-body-col p {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--mid);
+      max-width: 640px;
+      margin-bottom: 20px;
+    }
+    .nh-body-col p strong { color: var(--black); }
+    .nh-body-col p:last-child { margin-bottom: 0; }
+
+    /* ─── COVER — full-bleed map art ─── */
+    .nh-cover {
+      background: var(--nh-bg-soft);
+      aspect-ratio: 16/8;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+    }
+    .nh-cover svg { width: 100%; height: 100%; display: block; }
+
+
+    /* ─── PULL QUOTE ─── */
+    .nh-pull-quote {
+      border-left: 3px solid var(--nh-warm);
+      padding: 6px 0 6px 28px;
+      margin: 36px 0;
+      max-width: 600px;
+    }
+    .nh-pull-quote p {
+      font-size: 18px !important;
+      font-weight: 500 !important;
+      line-height: 1.4 !important;
+      color: var(--black) !important;
+      margin-bottom: 10px !important;
+      font-style: italic;
+    }
+    .nh-pull-quote cite {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--mid);
+      font-style: normal;
+    }
+
+    /* ─── PHOTO FULLBLEED ─── */
+    .nh-photo-fullbleed {
+      width: 100%;
+      aspect-ratio: 21/9;
+      background: var(--nh-bg-soft);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .nh-photo-text {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--mid);
+      letter-spacing: 0.04em;
+      text-align: center;
+      padding: 32px;
+      max-width: 480px;
+      line-height: 1.6;
+    }
+    .nh-photo-text strong {
+      color: var(--nh-warm);
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 10px;
+    }
+
+    /* ─── FEATURED SCREENS ─── */
+    .nh-screens-section { border-bottom: 1px solid var(--line); }
+    .nh-screens-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 80px var(--pad);
+    }
+    /* Hero map screen — wide, communicates spatial/map UI */
+    .nh-screen-hero {
+      background: var(--nh-bg-soft);
+      aspect-ratio: 16/9;
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-top: 32px;
+    }
+    /* Two secondary screens below — portrait, narrower */
+    .nh-screens-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .nh-screen {
+      background: var(--nh-bg-soft);
+      aspect-ratio: 9/16;
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .nh-screen img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .nh-screen-placeholder {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--mid);
+      letter-spacing: 0.06em;
+      text-align: center;
+      padding: 20px;
+      line-height: 1.5;
+    }
+    .nh-screen-label {
+      position: absolute;
+      bottom: -24px;
+      left: 0;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      color: var(--mid);
+      text-transform: uppercase;
+    }
+
+    /* ─── PROCESS ARTIFACT (full-width tinted block) ─── */
+    .nh-process-artifact {
+      background: var(--nh-bg-soft);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 64px var(--pad);
+    }
+    .nh-process-inner { max-width: 1020px; margin: 0 auto; }
+    .nh-process-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--nh-warm);
+      margin-bottom: 12px;
+      display: block;
+    }
+    .nh-process-title {
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin-bottom: 32px;
+      max-width: 560px;
+      color: var(--black);
+    }
+    .nh-process-svg { width: 100%; max-width: 1020px; }
+    .nh-process-caption {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--mid);
+      margin-top: 24px;
+      line-height: 1.6;
+      max-width: 640px;
+    }
+
+    /* ─── IDEATION GRID ─── */
+    .nh-ideation-section { border-bottom: 1px solid var(--line); }
+    .nh-ideation-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 80px var(--pad);
+    }
+    .nh-ideation-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+      margin-top: 32px;
+    }
+    .nh-ideation-cell {
+      aspect-ratio: 9/16;
+      background: var(--nh-bg-soft);
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nh-ideation-cell-label {
+      font-family: var(--mono);
+      font-size: 8px;
+      color: var(--mid);
+      letter-spacing: 0.04em;
+      text-align: center;
+      padding: 6px;
+      line-height: 1.4;
+    }
+    .nh-ideation-cell.nh-hero-cell {
+      grid-column: span 2;
+      grid-row: span 2;
+      aspect-ratio: 9/19.5;
+    }
+
+    /* ─── SHOWCASE (screen + annotation rows) ─── */
+    .nh-showcase-section { border-bottom: 1px solid var(--line); }
+    .nh-showcase-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 80px var(--pad);
+    }
+    .nh-showcase-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+      margin-bottom: 80px;
+    }
+    .nh-showcase-row:last-child { margin-bottom: 0; }
+    .nh-showcase-row.reverse { direction: rtl; }
+    .nh-showcase-row.reverse > * { direction: ltr; }
+    .nh-showcase-screen {
+      background: var(--nh-bg-soft);
+      aspect-ratio: 4/3;
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nh-showcase-placeholder {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--mid);
+      letter-spacing: 0.06em;
+      text-align: center;
+      padding: 20px;
+    }
+    .nh-showcase-text h3 {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--nh-warm);
+      margin-bottom: 12px;
+      font-weight: normal;
+    }
+    .nh-showcase-text h4 {
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+      color: var(--black);
+    }
+    .nh-showcase-text p { font-size: 14px; line-height: 1.65; color: var(--mid); }
+
+    /* ─── DATA MODEL ─── */
+    .nh-data-section { border-bottom: 1px solid var(--line); }
+    .nh-data-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 var(--pad) 80px;
+    }
+    .nh-data-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      border: 1px solid var(--line);
+      background: var(--line);
+      margin-top: 32px;
+    }
+    .nh-dm-layer { background: var(--white); padding: 28px 24px; }
+    .nh-dm-layer-num {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .nh-dm-pin-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .nh-dm-pin {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--white);
+      box-shadow: 0 0 0 1px currentColor;
+      flex-shrink: 0;
+    }
+    .nh-dm-pin-label { font-family: var(--mono); font-size: 11px; color: var(--black); }
+    .nh-dm-layer-title { font-size: 16px; font-weight: 500; margin-bottom: 8px; color: var(--black); }
+    .nh-dm-layer-body { font-size: 13px; line-height: 1.55; color: var(--mid); margin-bottom: 14px; }
+    .nh-dm-sources { font-family: var(--mono); font-size: 11px; color: var(--mid); line-height: 1.6; }
+
+    /* ─── SYSTEM COMPOSITION ─── */
+    .nh-system-section { border-bottom: 1px solid var(--line); }
+    .nh-system-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 80px var(--pad) 80px;
+    }
+    .nh-system-frame {
+      background: var(--nh-bg-soft);
+      border: 1px solid var(--line);
+      aspect-ratio: 16/10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px;
+    }
+    .nh-system-placeholder {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--mid);
+      letter-spacing: 0.04em;
+      text-align: center;
+      max-width: 480px;
+      line-height: 1.6;
+    }
+    .nh-system-placeholder strong {
+      color: var(--nh-warm);
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 10px;
+    }
+
+    /* ─── JOURNEY MAP ─── */
+    .nh-journey {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--line);
+      margin: 32px 0;
+      max-width: 960px;
+    }
+    .nh-journey-step { padding: 20px 22px; border-right: 1px solid var(--line); }
+    .nh-journey-step:last-child { border-right: none; }
+    .nh-journey-step-num {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--nh-warm);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .nh-journey-step-title { font-size: 14px; font-weight: 500; margin-bottom: 8px; color: var(--black); }
+    .nh-journey-step-body { font-size: 13px; line-height: 1.55; color: var(--mid); }
+
+    /* ─── DARK MODE ─── */
+        html[data-theme="dark"] .nh-process-artifact,
+    html[data-theme="dark"] .nh-photo-fullbleed { background: #252422; }
+    html[data-theme="dark"] .nh-cover { background: #252422; }
+    html[data-theme="dark"] .nh-screen,
+    html[data-theme="dark"] .nh-screen-hero,
+    html[data-theme="dark"] .nh-ideation-cell,
+    html[data-theme="dark"] .nh-showcase-screen,
+    html[data-theme="dark"] .nh-system-frame { background: #201f1d; }
+    html[data-theme="dark"] .nh-dm-layer { background: #1c1b19; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .nh-screens-grid { grid-template-columns: 1fr 1fr; }
+      .nh-showcase-row { grid-template-columns: 1fr; gap: 32px; }
+      .nh-showcase-row.reverse { direction: ltr; }
+      .nh-journey { grid-template-columns: 1fr 1fr; }
+      .nh-journey-step { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+      .nh-journey-step:nth-child(2n) { border-right: none; }
+      .nh-journey-step:nth-last-child(-n+2) { border-bottom: none; }
+      .nh-data-grid { grid-template-columns: 1fr; }
+      .nh-ideation-grid { grid-template-columns: repeat(4, 1fr); }
+      .nh-ideation-cell.nh-hero-cell { grid-column: span 2; grid-row: span 2; }
+    }
+    @media (max-width: 600px) {
+      .nh-hero-meta { grid-template-columns: 1fr 1fr; }
+      .nh-screens-grid { grid-template-columns: 1fr; gap: 24px; }
+      .nh-journey { grid-template-columns: 1fr; }
+      .nh-journey-step { border-right: none; border-bottom: 1px solid var(--line); }
+      .nh-journey-step:last-child { border-bottom: none; }
+      .nh-ideation-grid { grid-template-columns: repeat(3, 1fr); }
+      .nh-ideation-cell.nh-hero-cell { grid-column: span 3; grid-row: span 2; aspect-ratio: 16/10; }
+      .nh-process-artifact { padding: 40px var(--pad); }
+      .nh-system-frame { padding: 24px; }
+    }
+
+  </style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- ─── SITE HEADER ─── -->
+<header class="site-header" id="navigation">
+  <div class="header-bar">
+    <a class="brand" href="index.html">Tay Aras</a>
+    <div class="string-zone" id="singleZone" tabindex="0" aria-label="Interactive guitar string — click or drag to play">
+      <svg class="string-svg" id="singleSVG" viewBox="0 0 1100 36" preserveAspectRatio="none">
+        <path id="singlePath" class="string-path" d="M0 19 Q 550 19 1100 19"/>
+      </svg>
+    </div>
+    <button class="mute-btn" id="muteBtn" aria-label="Toggle sound" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path class="sound-on" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-on" d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-off" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"/>
+        <line class="sound-off" x1="15" y1="9" x2="21" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+        <line class="sound-off" x1="21" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+      </svg>
+    </button>
+    <button class="expand-btn" id="expandBtn" aria-expanded="false" aria-controls="stringsPanel" style="display:none" aria-hidden="true">
+      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      more
+    </button>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html" class="current">Work</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="mobile-nav">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none">
+          <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html" class="current">Work</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </div>
+  <div class="strings-panel" id="stringsPanel" hidden>
+    <div class="strings-grid" id="stringsGrid"></div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-l">Concept project · Mobile · Show discovery</span>
+      <span class="hero-eyebrow-r">2024</span>
+    </div>
+    <div class="nh-hero-inner">
+      <span class="nh-hero-label">Location-first event discovery</span>
+      <h1>Now Here</h1>
+    </div>
+  </section>
+
+  <!-- ─── COVER ART ─── -->
+  <div class="nh-cover" role="img" aria-label="Now Here — location map with event pins">
+    <svg viewBox="0 0 1400 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="pinGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#E8572A" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="#E8572A" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="1400" height="700" fill="#efece7"/>
+      <rect x="0" y="140" width="1400" height="22" fill="#e2dfd8"/>
+      <rect x="0" y="340" width="1400" height="14" fill="#e2dfd8"/>
+      <rect x="0" y="510" width="1400" height="22" fill="#e2dfd8"/>
+      <rect x="180" y="0" width="14" height="700" fill="#e2dfd8"/>
+      <rect x="380" y="0" width="22" height="700" fill="#e2dfd8"/>
+      <rect x="600" y="0" width="14" height="700" fill="#e2dfd8"/>
+      <rect x="820" y="0" width="22" height="700" fill="#e2dfd8"/>
+      <rect x="1040" y="0" width="14" height="700" fill="#e2dfd8"/>
+      <rect x="1240" y="0" width="22" height="700" fill="#e2dfd8"/>
+      <rect x="40" y="40" width="120" height="80" rx="3" fill="#d4cfc6"/>
+      <rect x="220" y="40" width="140" height="90" rx="3" fill="#d4cfc6"/>
+      <rect x="430" y="50" width="150" height="70" rx="3" fill="#d4cfc6"/>
+      <rect x="640" y="40" width="160" height="90" rx="3" fill="#d4cfc6"/>
+      <rect x="870" y="50" width="140" height="80" rx="3" fill="#d4cfc6"/>
+      <rect x="1080" y="40" width="140" height="90" rx="3" fill="#d4cfc6"/>
+      <rect x="1270" y="50" width="100" height="80" rx="3" fill="#d4cfc6"/>
+      <rect x="40" y="180" width="120" height="140" rx="3" fill="#d4cfc6"/>
+      <rect x="220" y="180" width="140" height="140" rx="3" fill="#d4cfc6"/>
+      <rect x="430" y="180" width="150" height="140" rx="3" fill="#d4cfc6"/>
+      <rect x="640" y="180" width="160" height="140" rx="3" fill="#d4cfc6"/>
+      <rect x="870" y="180" width="140" height="140" rx="6" fill="#bfd6c2" opacity="0.7"/>
+      <rect x="1080" y="180" width="140" height="140" rx="3" fill="#d4cfc6"/>
+      <rect x="40" y="370" width="120" height="120" rx="3" fill="#d4cfc6"/>
+      <rect x="220" y="370" width="140" height="120" rx="3" fill="#d4cfc6"/>
+      <rect x="430" y="370" width="150" height="120" rx="3" fill="#d4cfc6"/>
+      <rect x="640" y="370" width="160" height="120" rx="3" fill="#d4cfc6"/>
+      <rect x="870" y="370" width="140" height="120" rx="3" fill="#d4cfc6"/>
+      <rect x="1080" y="370" width="140" height="120" rx="3" fill="#d4cfc6"/>
+      <rect x="40" y="540" width="120" height="100" rx="3" fill="#d4cfc6"/>
+      <rect x="220" y="540" width="140" height="110" rx="3" fill="#d4cfc6"/>
+      <rect x="430" y="545" width="150" height="100" rx="3" fill="#d4cfc6"/>
+      <rect x="640" y="540" width="160" height="110" rx="3" fill="#d4cfc6"/>
+      <rect x="870" y="545" width="140" height="100" rx="3" fill="#d4cfc6"/>
+      <rect x="1080" y="540" width="140" height="110" rx="3" fill="#d4cfc6"/>
+      <circle cx="700" cy="345" r="140" fill="url(#pinGlow)"/>
+      <circle cx="700" cy="345" r="70" fill="none" stroke="#E8572A" stroke-width="1.5" opacity="0.3"/>
+      <circle cx="700" cy="345" r="48" fill="none" stroke="#E8572A" stroke-width="1.5" opacity="0.5"/>
+      <circle cx="700" cy="345" r="26" fill="#E8572A" stroke="white" stroke-width="3"/>
+      <circle cx="700" cy="345" r="8" fill="white"/>
+      <circle cx="290" cy="240" r="10" fill="#16A34A" stroke="white" stroke-width="2.5"/>
+      <circle cx="500" cy="430" r="10" fill="#2563EB" stroke="white" stroke-width="2.5"/>
+      <circle cx="950" cy="260" r="10" fill="#D97706" stroke="white" stroke-width="2.5"/>
+      <circle cx="1150" cy="440" r="10" fill="#16A34A" stroke="white" stroke-width="2.5"/>
+      <circle cx="280" cy="580" r="10" fill="#E8572A" stroke="white" stroke-width="2.5"/>
+      <circle cx="1100" cy="100" r="10" fill="#2563EB" stroke="white" stroke-width="2.5"/>
+    </svg>
+  </div>
+
+  <!-- ─── META STRIP ─── -->
+  <div class="meta-strip">
+    <div class="meta-strip-inner meta-strip-inner--4col">
+      <div class="meta-cell">
+        <span class="label">Role</span>
+        <div class="meta-val">Product Design — End to end</div>
+      </div>
+      <div class="meta-cell">
+        <span class="label">Platform</span>
+        <div class="meta-val">Mobile (iOS), Web</div>
+      </div>
+      <div class="meta-cell">
+        <span class="label">Type</span>
+        <div class="meta-val">Concept project</div>
+      </div>
+      <div class="meta-cell">
+        <span class="label">Status</span>
+        <div class="meta-val">In design</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── OVERVIEW ─── -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">Overview</p></div>
+      <div>
+        <p class="overview-p">Existing event apps assume you already know what you're looking for. Now Here is built for the moment you don't — already out, available, open to whatever's nearby right now. The map is the home screen, your location is the only required input, and a three-layer data model keeps it stocked with everything from ticketed shows to a flyer someone scanned ten minutes ago.</p>
+        <p class="overview-p">It is most useful for finding shows — especially DIY and smaller venue events that never get indexed by the mainstream platforms.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── FEATURED SCREENS ─── -->
+  <section class="nh-screens-section">
+    <div class="nh-screens-inner">
+      <h2>The core flow.</h2>
+      <p class="label" style="margin-top: 20px;">Key screens · hi-fi in progress</p>
+      <div class="nh-screen-hero">
+        <div class="nh-screen-placeholder">Map home — pins, filter chips, location button, list toggle<br>Hi-fi to be added</div>
+        <span class="nh-screen-label">Map home</span>
+      </div>
+      <div class="nh-screens-grid">
+        <div class="nh-screen">
+          <div class="nh-screen-placeholder">Event detail sheet<br>Hi-fi to be added</div>
+          <span class="nh-screen-label">Event detail</span>
+        </div>
+        <div class="nh-screen">
+          <div class="nh-screen-placeholder">Add event — flyer scan + confirm<br>Hi-fi to be added</div>
+          <span class="nh-screen-label">Add event</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── THE PROBLEM ─── -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">The Problem</p></div>
+      <div class="nh-body-col">
+        <h2>The city is alive.<br>You just can't see it.</h2>
+        <p>Most event discovery tools are built for planners. You open Eventbrite on Sunday night, find something for the weekend, buy a ticket, go. That flow works — but it leaves an entire mode of being completely unserved: the spontaneous mode. Already out. No fixed plan. Open to whatever's happening within walking distance right now. That moment has no tool built for it.</p>
+
+        <div class="nh-pull-quote">
+          <p>"I found out through an Instagram post. Photos of people having a great time at an event that was already over."</p>
+          <cite>— Origin of the project</cite>
+        </div>
+
+        <p>Social media is a highlight reel of things you missed. Friends mentioning it the next day. News coverage after the fact. Every passive discovery channel delivers awareness after the moment has passed — or never at all. <strong>The structural failure is the same: discovery happens too late, and location is treated as a filter rather than the starting point.</strong></p>
+
+        <p>I go to over a hundred shows a year. I play in bands. I organize DIY events across Seattle, Chicago, and Pittsburgh. The gap this product addresses is one I live with — the constant, low-grade frustration of finding out about something amazing the morning after. This isn't an abstract design exercise. It's a tool I want to exist.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── ATMOSPHERIC PHOTO ─── -->
+  <div class="nh-photo-fullbleed">
+    <div class="nh-photo-text">
+      <strong>Photo · flyer wall</strong>
+      A real-world flyer wall — overlapping show posters, hand-drawn type, layers of staples and tape. The original event discovery surface, completely invisible to anyone not walking past it.
+    </div>
+  </div>
+
+  <!-- ─── RESEARCH ─── -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">Research</p></div>
+      <div class="nh-body-col">
+        <h2>Who feels this — and how.</h2>
+        <p>Conversations across two cities with planners, spontaneous attendees, and event hosts surfaced a consistent pattern. Planners had built workarounds — newsletters, artist alerts, weekly routines. The gap was felt most acutely by people who don't operate that way. <strong>Physical proximity is the oldest form of event discovery, and it still works best.</strong> Flyers on lamp posts. Music from a block away. A crowd forming on a corner. Every digital tool has moved away from that model. Now Here is a return to it.</p>
+        <h3>Current state — Jordan's experience before Now Here</h3>
+        <div class="nh-journey">
+          <div class="nh-journey-step">
+            <div class="nh-journey-step-num">01 Impulse</div>
+            <div class="nh-journey-step-title">"Anything happening tonight?"</div>
+            <div class="nh-journey-step-body">Pulls out phone. Opens Instagram. Scrolls. Texts a couple people.</div>
+          </div>
+          <div class="nh-journey-step">
+            <div class="nh-journey-step-num">02 Search</div>
+            <div class="nh-journey-step-title">"Why do I have to know what I want?"</div>
+            <div class="nh-journey-step-body">Tries Eventbrite. List sorted by date. Most need advance tickets. Same on Facebook, Bandsintown.</div>
+          </div>
+          <div class="nh-journey-step">
+            <div class="nh-journey-step-num">03 Fallback</div>
+            <div class="nh-journey-step-title">"It already started an hour ago."</div>
+            <div class="nh-journey-step-body">Texts more people. Gets a tip about something across town. Too late, too far.</div>
+          </div>
+          <div class="nh-journey-step">
+            <div class="nh-journey-step-num">04 Outcome</div>
+            <div class="nh-journey-step-title">"It was right there. I had no idea."</div>
+            <div class="nh-journey-step-body">Goes home. Next morning sees Instagram photos of a block party three blocks away.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── IA DIAGRAM ─── -->
+  <div class="nh-process-artifact">
+    <div class="nh-process-inner">
+      <span class="nh-process-label">Information architecture</span>
+      <p class="nh-process-title">One home screen. Everything else slides up over it.</p>
+      <svg class="nh-process-svg" viewBox="0 0 1020 540" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr-nh" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="#7a7870" stroke-width="1.5" stroke-linecap="round"/>
+          </marker>
+        </defs>
+        <rect x="280" y="20" width="180" height="50" rx="8" fill="white" stroke="#7a7870" stroke-width="1"/>
+        <text x="370" y="50" text-anchor="middle" font-family="Helvetica Neue" font-size="14" font-weight="600" fill="#1a1a18">Cold launch</text>
+        <rect x="560" y="20" width="200" height="50" rx="8" fill="rgba(127,119,221,0.1)" stroke="#7F77DD" stroke-width="1"/>
+        <text x="660" y="44" text-anchor="middle" font-family="Helvetica Neue" font-size="13" font-weight="600" fill="#1a1a18">Push notification</text>
+        <text x="660" y="60" text-anchor="middle" font-family="Courier New" font-size="10" fill="#7a7870">"Something nearby now"</text>
+        <line x1="370" y1="70" x2="370" y2="110" stroke="#7a7870" stroke-width="1" marker-end="url(#arr-nh)"/>
+        <path d="M660 70 L660 88 L500 88 L500 110" fill="none" stroke="#7F77DD" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#arr-nh)"/>
+        <text x="610" y="84" text-anchor="middle" font-family="Courier New" font-size="10" fill="#7F77DD">auto-opens sheet</text>
+        <rect x="200" y="112" width="620" height="76" rx="10" fill="rgba(91,138,138,0.12)" stroke="#5b8a8a" stroke-width="1.5"/>
+        <text x="510" y="140" text-anchor="middle" font-family="Helvetica Neue" font-size="16" font-weight="700" fill="#1a1a18">Map — persistent base layer</text>
+        <text x="510" y="162" text-anchor="middle" font-family="Helvetica Neue" font-size="12" fill="#5b8a8a">Event pins · quick filter chips · list toggle · location button</text>
+        <text x="810" y="158" text-anchor="end" font-family="Courier New" font-size="10" fill="#5b8a8a">never replaced</text>
+        <line x1="200" y1="218" x2="820" y2="218" stroke="#1a1a18" stroke-width="0.5" stroke-dasharray="3 3"/>
+        <text x="200" y="238" font-family="Courier New" font-size="11" fill="#7a7870">Slides up over map ↓</text>
+        <line x1="320" y1="188" x2="290" y2="252" stroke="#7a7870" stroke-width="0.8" marker-end="url(#arr-nh)"/>
+        <line x1="500" y1="188" x2="510" y2="252" stroke="#7a7870" stroke-width="0.8" marker-end="url(#arr-nh)"/>
+        <line x1="700" y1="188" x2="730" y2="252" stroke="#7a7870" stroke-width="0.8" marker-end="url(#arr-nh)"/>
+        <rect x="200" y="254" width="180" height="62" rx="8" fill="white" stroke="#5b8a8a" stroke-width="0.8" stroke-dasharray="5 3"/>
+        <text x="290" y="278" text-anchor="middle" font-family="Helvetica Neue" font-size="13" font-weight="600" fill="#1a1a18">Event list sheet</text>
+        <text x="290" y="298" text-anchor="middle" font-family="Helvetica Neue" font-size="11" fill="#7a7870">sorted by distance · time</text>
+        <rect x="410" y="254" width="200" height="62" rx="8" fill="white" stroke="#7F77DD" stroke-width="0.8" stroke-dasharray="5 3"/>
+        <text x="510" y="278" text-anchor="middle" font-family="Helvetica Neue" font-size="13" font-weight="600" fill="#1a1a18">Filter sheet</text>
+        <text x="510" y="298" text-anchor="middle" font-family="Helvetica Neue" font-size="11" fill="#7a7870">time · type · free/paid · distance</text>
+        <rect x="640" y="254" width="200" height="62" rx="8" fill="white" stroke="#D97706" stroke-width="0.8" stroke-dasharray="5 3"/>
+        <text x="740" y="278" text-anchor="middle" font-family="Helvetica Neue" font-size="13" font-weight="600" fill="#1a1a18">Saved + profile</text>
+        <text x="740" y="298" text-anchor="middle" font-family="Helvetica Neue" font-size="11" fill="#D97706">login required</text>
+        <path d="M510 316 L510 340 L400 340 L400 188" fill="none" stroke="#7F77DD" stroke-width="0.8" stroke-dasharray="3 3" marker-end="url(#arr-nh)"/>
+        <text x="455" y="356" text-anchor="middle" font-family="Courier New" font-size="10" fill="#7F77DD">updates pins</text>
+        <line x1="290" y1="316" x2="380" y2="380" stroke="#7a7870" stroke-width="0.8" marker-end="url(#arr-nh)"/>
+        <line x1="420" y1="188" x2="420" y2="380" stroke="#7a7870" stroke-width="0.8" marker-end="url(#arr-nh)"/>
+        <text x="295" y="362" font-family="Courier New" font-size="10" fill="#7a7870" text-anchor="middle">tap row</text>
+        <text x="435" y="362" font-family="Courier New" font-size="10" fill="#7a7870">tap pin</text>
+        <rect x="380" y="382" width="280" height="62" rx="8" fill="rgba(91,138,138,0.12)" stroke="#5b8a8a" stroke-width="1.5"/>
+        <text x="520" y="406" text-anchor="middle" font-family="Helvetica Neue" font-size="14" font-weight="700" fill="#1a1a18">Event detail sheet</text>
+        <text x="520" y="426" text-anchor="middle" font-family="Helvetica Neue" font-size="11" fill="#5b8a8a">name · time · location · type · save · action</text>
+        <line x1="420" y1="444" x2="280" y2="486" stroke="#7a7870" stroke-width="0.8" marker-end="url(#arr-nh)"/>
+        <line x1="520" y1="444" x2="520" y2="486" stroke="#7a7870" stroke-width="0.8" marker-end="url(#arr-nh)"/>
+        <line x1="620" y1="444" x2="760" y2="486" stroke="#7a7870" stroke-width="0.8" marker-end="url(#arr-nh)"/>
+        <rect x="180" y="488" width="200" height="46" rx="8" fill="white" stroke="#7a7870" stroke-width="0.8"/>
+        <text x="280" y="508" text-anchor="middle" font-family="Helvetica Neue" font-size="12" font-weight="600" fill="#1a1a18">Get directions</text>
+        <text x="280" y="524" text-anchor="middle" font-family="Courier New" font-size="10" fill="#7a7870">exits to maps app ↗</text>
+        <rect x="420" y="488" width="200" height="46" rx="8" fill="rgba(217,119,6,0.08)" stroke="#D97706" stroke-width="0.8"/>
+        <text x="520" y="508" text-anchor="middle" font-family="Helvetica Neue" font-size="12" font-weight="600" fill="#1a1a18">Save event</text>
+        <text x="520" y="524" text-anchor="middle" font-family="Courier New" font-size="10" fill="#D97706">prompts login if needed</text>
+        <rect x="660" y="488" width="200" height="46" rx="8" fill="rgba(127,119,221,0.08)" stroke="#7F77DD" stroke-width="0.8"/>
+        <text x="760" y="508" text-anchor="middle" font-family="Helvetica Neue" font-size="12" font-weight="600" fill="#1a1a18">Buy / RSVP</text>
+        <text x="760" y="524" text-anchor="middle" font-family="Courier New" font-size="10" fill="#7F77DD">ticketed only · exits app ↗</text>
+      </svg>
+      <p class="nh-process-caption">The map is the only true home screen. Sheets slide up over it. Notifications auto-trigger the relevant event sheet. The product never leaves the spatial frame the user opened with.</p>
+    </div>
+  </div>
+
+  <!-- ─── WIREFRAME IDEATION ─── -->
+  <section class="nh-ideation-section">
+    <div class="nh-ideation-inner">
+      <h2>Eleven screens. Many more sketches.</h2>
+      <p class="overview-p" style="max-width:640px; margin-top:16px;">Wireframes focused on layout, hierarchy, and interaction logic — not color or polish. The eleven screens that made it covered the full MVP surface area. Many more were sketched, considered, and cut.</p>
+      <div class="nh-ideation-grid">
+        <div class="nh-ideation-cell nh-hero-cell">
+          <div class="nh-ideation-cell-label">Map home<br>final direction</div>
+        </div>
+        <div class="nh-ideation-cell"><div class="nh-ideation-cell-label">Search-first</div></div>
+        <div class="nh-ideation-cell"><div class="nh-ideation-cell-label">List-first</div></div>
+        <div class="nh-ideation-cell"><div class="nh-ideation-cell-label">Bottom tab</div></div>
+        <div class="nh-ideation-cell"><div class="nh-ideation-cell-label">Onboarding</div></div>
+        <div class="nh-ideation-cell"><div class="nh-ideation-cell-label">Card stack</div></div>
+        <div class="nh-ideation-cell"><div class="nh-ideation-cell-label">Cluster pins</div></div>
+        <div class="nh-ideation-cell"><div class="nh-ideation-cell-label">Time slider</div></div>
+        <div class="nh-ideation-cell"><div class="nh-ideation-cell-label">Compass</div></div>
+        <div class="nh-ideation-cell"><div class="nh-ideation-cell-label">Heat map</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── DECISION SHOWCASE ─── -->
+  <section class="nh-showcase-section">
+    <div class="nh-showcase-inner">
+
+      <div class="nh-showcase-row">
+        <div class="nh-showcase-screen">
+          <div class="nh-showcase-placeholder">Map — pins + filter chips<br>Hi-fi to be added</div>
+        </div>
+        <div class="nh-showcase-text">
+          <h3>The first decision</h3>
+          <h4>Map as home, not a search bar.</h4>
+          <p>Search requires intent. The core user has no intent yet — they have a location. The map answers the question they're actually asking: what's around me right now? The trade-off: users with formed intent ("show me jazz tonight") have to use filter chips instead of typing. The bet is that the spontaneous user is a much larger segment, and that intent-driven users adapt quickly.</p>
+        </div>
+      </div>
+
+      <div class="nh-showcase-row reverse">
+        <div class="nh-showcase-screen">
+          <div class="nh-showcase-placeholder">Camera + OCR overlay<br>Hi-fi to be added</div>
+        </div>
+        <div class="nh-showcase-text">
+          <h3>The differentiated interaction</h3>
+          <h4>Scan a flyer. One tap to submit.</h4>
+          <p>Flyers are the original event discovery mechanism. The friction between "I see this" and "other people can find this" should be as close to zero as possible. Camera plus OCR pre-fills the form; the user just confirms. The trade-off is data quality — bad scans become bad data. Mitigated by a verification step before going live, but the operational cost at scale is real.</p>
+        </div>
+      </div>
+
+      <div class="nh-showcase-row">
+        <div class="nh-showcase-screen">
+          <div class="nh-showcase-placeholder">Event detail — directions handoff<br>Hi-fi to be added</div>
+        </div>
+        <div class="nh-showcase-text">
+          <h3>The boundary</h3>
+          <h4>Directions exit to native maps.</h4>
+          <p>Navigation is a solved problem. Now Here's value is discovery. Once you know where you're going, native maps does the job better than anything we could build. Doing one thing well rather than two adequately. The trade-off: Now Here loses the user the moment they tap directions. No re-engagement, no analytics on the journey. The bet is that respecting the user's flow earns trust that compounds.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── DATA STRATEGY ─── -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">Data Strategy</p></div>
+      <div class="nh-body-col">
+        <h2>The data strategy is the product.</h2>
+        <p>The hardest design problem wasn't the map or the filters. It was the data model. The UX is only as good as the events on the map — and building a trustworthy, comprehensive, real-time event database is genuinely difficult. Now Here aggregates from three layers, deduplicated into a single canonical pin per event. <strong>Pin color encodes trust at a glance:</strong> users learn the system passively through use.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── DATA MODEL VISUAL ─── -->
+  <section class="nh-data-section">
+    <div class="nh-data-inner">
+      <div class="nh-data-grid">
+        <div class="nh-dm-layer">
+          <div class="nh-dm-layer-num" style="color: var(--pin-platform);">Layer 01 — Aggregated</div>
+          <div class="nh-dm-pin-row">
+            <div class="nh-dm-pin" style="background: var(--pin-platform); color: var(--pin-platform);"></div>
+            <div class="nh-dm-pin-label">Green pin</div>
+          </div>
+          <div class="nh-dm-layer-title">Platform integrations</div>
+          <div class="nh-dm-layer-body">Pulled automatically via API. The largest source of structured event data.</div>
+          <div class="nh-dm-sources">Eventbrite · Dice · Partiful<br>Bandsintown · Facebook · Ticketmaster</div>
+        </div>
+        <div class="nh-dm-layer">
+          <div class="nh-dm-layer-num" style="color: var(--pin-host);">Layer 02 — Host submitted</div>
+          <div class="nh-dm-pin-row">
+            <div class="nh-dm-pin" style="background: var(--pin-host); color: var(--pin-host);"></div>
+            <div class="nh-dm-pin-label">Blue pin</div>
+          </div>
+          <div class="nh-dm-layer-title">Verified host listings</div>
+          <div class="nh-dm-layer-body">Submitted by organizers via host mode. Goes live immediately. Highest confidence.</div>
+          <div class="nh-dm-sources">Venue hosts · DIY organizers<br>Community orgs · Pop-ups</div>
+        </div>
+        <div class="nh-dm-layer">
+          <div class="nh-dm-layer-num" style="color: var(--pin-community);">Layer 03 — Community</div>
+          <div class="nh-dm-pin-row">
+            <div class="nh-dm-pin" style="background: var(--pin-community); color: var(--pin-community);"></div>
+            <div class="nh-dm-pin-label">Orange pin</div>
+          </div>
+          <div class="nh-dm-layer-title">User submissions</div>
+          <div class="nh-dm-layer-body">Added via flyer scan or manual entry. Verified before going live. Catches what platforms miss.</div>
+          <div class="nh-dm-sources">Flyer scan (OCR) · Manual entry<br>Duplicate confirm</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SYSTEM OVERVIEW ─── -->
+  <section class="nh-system-section">
+    <div class="nh-system-inner">
+      <div class="nh-system-frame">
+        <div class="nh-system-placeholder">
+          <strong>System overview composition</strong>
+          A single composed image showing 4–5 hi-fi screens arranged together — light + dark + an edge case state — laid out like a designer's system shot. Communicates the product as a complete system rather than a series of isolated screens.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── IN-CONTEXT PHOTO ─── -->
+  <div class="nh-photo-fullbleed">
+    <div class="nh-photo-text">
+      <strong>Photo · device in context</strong>
+      Hand holding a phone running Now Here on a city street at dusk. Phone in focus, background blurred. The screen and the city it's looking at, in the same frame.
+    </div>
+  </div>
+
+  <!-- ─── REFLECTION ─── -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">Reflection</p></div>
+      <div class="nh-body-col">
+        <h2>What I learned.</h2>
+        <p>The flyer scan feature taught me something about where friction in a product actually lives. The obvious friction point was the submission form — too many fields. But the deeper friction was the gap between "I'm physically looking at this thing" and "I can do something about it." Reducing the form wasn't enough. The camera was the answer.</p>
+        <p>I kept coming back to the question of scope. Now Here could do a lot — social features, recommendations, past event history. All of those are real. All of them are later. <strong>The discipline of building for one moment — already out, open to anything, right now — made every product decision easier.</strong> When a feature doesn't serve that moment, it doesn't belong in MVP.</p>
+        <p>This is a concept project. The deeper documentation — sixteen design decisions with full rationale, the strategic and competitive analysis, the validation plan — is available on request.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── NEXT PROJECT ─── -->
+  <div class="dark-cta">
+    <div class="dark-cta-inner">
+      <div>
+        <p class="label">Next Project</p>
+        <h2>Microsoft —<br>ACS UI Library</h2>
+        <p>A design system and component library for Azure Communication Services — covering video calling, chat, and real-time collaboration. Built to let product teams ship accessible, production-ready communication features without starting from scratch.</p>
+        <a href="acs.html" class="dark-link">View case study →</a>
+      </div>
+      <div class="dark-cta-img"></div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html">Work</a>
+        <a href="acs.html">UI Library</a>
+        <a href="collective-iq.html">Collective IQ</a>
+        <a href="cmu-thesis-v2.html">XR Experiences</a>
+        <a href="now-here.html">Now Here</a>
+        <a href="orbit.html">Orbit</a>
+        <a href="hp.html">HP Experience</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+    <span class="footer-copy">© 2026 Tay Aras</span>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+</body>
+</html>

@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Physicalization of AR/XR Experiences — Tay Aras</title>
   <meta name="description" content="CMU Bachelor of Design capstone. A research-driven set of physicalized prototyping tools for augmented reality, covering image mapping, 3D masking, shader effects, and physical sensor inputs.">
-  <script>try{var t=localStorage.getItem('tayTheme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+  <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
   <link rel="stylesheet" href="shared.css">
   <style>
 
@@ -48,7 +48,7 @@
     .v2-proto-video {
       aspect-ratio: 4 / 3;
       overflow: hidden;
-      background: #e8e5de;
+      background: #ede9e2;
       margin-bottom: 18px;
       position: relative;
       cursor: pointer;
@@ -244,7 +244,7 @@
       border-right: 1px solid var(--line);
       overflow: hidden;
       aspect-ratio: 1;
-      background: #e8e5de;
+      background: #ede9e2;
     }
     .v2-process-item:last-child { border-right: none; }
     .v2-process-strip.wrap .v2-process-item { flex: 0 0 33.333%; }
@@ -279,13 +279,7 @@
     /* ─────────────────────────────
        DARK MODE
     ───────────────────────────── */
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .v2-proto-video { background: #252422; }
-      html:not([data-theme="light"]) .v2-process-item { background: #252422; }
-      html:not([data-theme="light"]) .v2-principles { background: #1e1d1b; }
-      html:not([data-theme="light"]) .v2-process { background: #1e1d1b; }
-    }
-    html[data-theme="dark"] .v2-proto-video { background: #252422; }
+        html[data-theme="dark"] .v2-proto-video { background: #252422; }
     html[data-theme="dark"] .v2-process-item { background: #252422; }
     html[data-theme="dark"] .v2-principles { background: #1e1d1b; }
     html[data-theme="dark"] .v2-process { background: #1e1d1b; }
@@ -382,7 +376,7 @@
     <div class="meta-strip-inner meta-strip-inner--4col">
       <div class="meta-cell"><span class="label">Institution</span><div class="meta-val">Carnegie Mellon University</div></div>
       <div class="meta-cell"><span class="label">Program</span><div class="meta-val">Bachelor of Design · Hybrid Environments</div></div>
-      <div class="meta-cell"><span class="label">Collaborator</span><div class="meta-val">Franklin Guttman</div></div>
+      <div class="meta-cell"><span class="label">Role</span><div class="meta-val">Designer & Researcher</div></div>
       <div class="meta-cell"><span class="label">Tools</span><div class="meta-val">Unity · Cinema 4D · Arduino · ESP32 · Raspberry Pi · Laser cutting · 3D printing</div></div>
     </div>
   </div>
@@ -672,7 +666,7 @@
         <a href="index.html">Work</a>
         <a href="acs.html">ACS</a>
         <a href="collective-iq.html">Collective IQ</a>
-        <a href="cmu-thesis.html">CMU Thesis</a>
+        <a href="cmu-thesis-v2.html">CMU Thesis</a>
         <a href="extras.html">Extras</a>
         <a href="about.html">About</a>
       </nav>

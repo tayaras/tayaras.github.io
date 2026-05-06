@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!sessionStorage.getItem("ta_auth"))document.documentElement.style.visibility="hidden";</script>
+  <script src="auth.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soundmap — Tay Aras</title>
+  <meta name="description" content="Soundmap — a map-based music discovery product concept by Tay Aras. Independent project, 2025.">
+  <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    :root {
+      --sm-accent: #0f4c3a;
+      --sm-bg: #ede9e2;
+    }
+
+    /* ── Body column shared styles ── */
+    .sm-body p {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--mid);
+      max-width: 640px;
+      margin-bottom: 16px;
+    }
+    .sm-body p strong { color: var(--black); }
+    .sm-body p:last-child { margin-bottom: 0; }
+    .sm-body ul {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--mid);
+      max-width: 640px;
+      margin-bottom: 16px;
+      padding-left: 20px;
+    }
+    .sm-body ul li { margin-bottom: 6px; }
+    .sm-pull-quote {
+      border-left: 2px solid var(--sm-accent);
+      padding: 12px 20px;
+      margin: 24px 0;
+      font-size: 16px;
+      line-height: 1.55;
+      color: var(--black);
+      max-width: 540px;
+      font-style: italic;
+    }
+
+    /* ── Image placeholders ── */
+    .sm-placeholder {
+      background: var(--sm-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--mid);
+      letter-spacing: 0.06em;
+      text-align: center;
+      padding: 32px 24px;
+    }
+    .sm-placeholder-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--black);
+      font-family: var(--sans);
+      letter-spacing: 0;
+      margin-bottom: 2px;
+    }
+    .sm-placeholder--screen { border: 1px solid var(--line); }
+    .sm-placeholder--wide {
+      aspect-ratio: 16 / 9;
+      margin-top: 24px;
+    }
+    .sm-placeholder--landscape {
+      aspect-ratio: 4 / 3;
+      margin-top: 24px;
+    }
+    .sm-placeholder--diagram {
+      aspect-ratio: 4 / 1;
+      margin-top: 24px;
+    }
+    .sm-placeholder--screen {
+      aspect-ratio: 9 / 16;
+    }
+
+    /* ── Idea — two-question layout ── */
+    .sm-idea-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 28px 0;
+      max-width: 640px;
+    }
+    .sm-idea-card {
+      padding: 20px 24px;
+      border: 1px solid var(--line);
+    }
+    .sm-idea-card .sm-idea-tag {
+      display: block;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 10px;
+    }
+    .sm-idea-card p {
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--black);
+      font-weight: 500;
+      margin: 0;
+    }
+
+    /* ── Interaction — Preview / Live state pair ── */
+    .sm-state-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 28px;
+      max-width: 640px;
+    }
+    .sm-state-card {
+      padding: 20px 24px;
+      border: 1px solid var(--line);
+    }
+    .sm-state-tag {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--sm-accent);
+      border: 1px solid var(--sm-accent);
+      padding: 3px 8px;
+      margin-bottom: 12px;
+    }
+    .sm-state-card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+      color: var(--black);
+    }
+    .sm-state-card p {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--mid);
+      margin: 0;
+    }
+
+    /* ── Neighborhoods section ── */
+    .sm-hoods { border-bottom: 1px solid var(--line); }
+    .sm-hoods-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 80px var(--pad);
+    }
+    .sm-hoods-header {
+      margin-bottom: 56px;
+    }
+    .sm-hoods-header .label { margin-bottom: 16px; }
+    .sm-hoods-header p {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--mid);
+      max-width: 600px;
+      margin-top: 12px;
+    }
+    .sm-hoods-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+    .sm-hood-tag {
+      display: block;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--sm-accent);
+      margin-bottom: 14px;
+    }
+    .sm-hood-name {
+      font-size: clamp(22px, 2.5vw, 30px);
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      color: var(--black);
+      margin-bottom: 6px;
+    }
+    .sm-hood-vibe {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--mid);
+      letter-spacing: 0.04em;
+      margin-bottom: 20px;
+    }
+    .sm-hood-states {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .sm-hood-state {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+    }
+    .sm-hood-state-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--mid);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .sm-hood-state p {
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--mid);
+      margin: 0;
+    }
+    .sm-hood-artists {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 20px;
+      border-top: 1px solid var(--line);
+    }
+    .sm-hood-artists li {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--mid);
+      padding: 7px 0;
+      border-bottom: 1px solid var(--line);
+      letter-spacing: 0.02em;
+    }
+    .sm-hood-quote {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--black);
+      font-style: italic;
+      margin: 0 0 24px;
+    }
+    .sm-hood-screens {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* ── Decisions list ── */
+    .sm-decisions {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      max-width: 640px;
+    }
+    .sm-decisions li {
+      padding: 18px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .sm-decisions li:first-child { border-top: 1px solid var(--line); }
+    .sm-decision-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 6px;
+    }
+    .sm-decision-desc {
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--mid);
+    }
+
+    /* ── Scope columns ── */
+    .sm-scope-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      max-width: 560px;
+    }
+    .sm-scope-head {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mid);
+      display: block;
+      margin-bottom: 14px;
+    }
+    .sm-scope-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border-top: 1px solid var(--line);
+    }
+    .sm-scope-list li {
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--mid);
+      padding: 7px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    /* ── Closing ── */
+    .sm-closing { border-bottom: 1px solid var(--line); }
+    .sm-closing-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 96px var(--pad);
+    }
+    .sm-closing-inner p {
+      font-size: clamp(22px, 3vw, 38px);
+      font-weight: 500;
+      letter-spacing: -0.025em;
+      line-height: 1.3;
+      max-width: 680px;
+      color: var(--black);
+    }
+
+    /* ── Project nav footer ── */
+    .sm-project-nav { border-bottom: 1px solid var(--line); }
+    .sm-project-nav-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 32px var(--pad);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sm-project-nav-inner a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: var(--mid);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .sm-project-nav-inner a:hover { color: var(--black); }
+
+    /* ── Map overview section ── */
+    .sm-map-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 48px var(--pad);
+    }
+
+    /* ── Dark mode ── */
+        html[data-theme="dark"] { --sm-bg: #252422; }
+    html[data-theme="dark"] .sm-placeholder { background: var(--sm-bg); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .sm-idea-compare { grid-template-columns: 1fr; gap: 12px; }
+      .sm-state-pair { grid-template-columns: 1fr; }
+      .sm-hoods-inner { padding: 48px var(--pad); }
+      .sm-hoods-grid { grid-template-columns: 1fr; gap: 48px; }
+      .sm-hood-states { grid-template-columns: 1fr; gap: 8px; }
+      .sm-scope-cols { grid-template-columns: 1fr; gap: 24px; }
+      .sm-closing-inner { padding: 56px var(--pad); }
+      .sm-placeholder--diagram { aspect-ratio: 3 / 1; }
+    }
+    @media (max-width: 480px) {
+      .sm-hood-screens { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="site-header" id="navigation">
+  <div class="header-bar">
+    <a class="brand" href="index.html">Tay Aras</a>
+    <div class="string-zone" id="singleZone" tabindex="0" aria-label="Interactive guitar string — click or drag to play">
+      <svg class="string-svg" id="singleSVG" viewBox="0 0 1100 36" preserveAspectRatio="none">
+        <path id="singlePath" class="string-path" d="M0 19 Q 550 19 1100 19"/>
+      </svg>
+    </div>
+    <button class="mute-btn" id="muteBtn" aria-label="Toggle sound" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path class="sound-on" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-on" d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-off" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"/>
+        <line class="sound-off" x1="15" y1="9" x2="21" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+        <line class="sound-off" x1="21" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+      </svg>
+    </button>
+    <button class="expand-btn" id="expandBtn" aria-expanded="false" aria-controls="stringsPanel" style="display:none" aria-hidden="true">
+      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      more
+    </button>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html" class="current">Work</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="mobile-nav">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none">
+          <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html" class="current">Work</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </div>
+  <div class="strings-panel" id="stringsPanel" hidden>
+    <div class="strings-grid" id="stringsGrid"></div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- Hero -->
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-l">Independent concept · Mobile · Music &amp; Maps</span>
+      <span class="hero-eyebrow-r">2025</span>
+    </div>
+    <div class="hero-title w">
+      <h1>Soundmap</h1>
+    </div>
+    <!-- Replace with soundmap-hero-preview-live.mp4 or .gif -->
+    <div class="hero-img" role="img" aria-label="Soundmap hero — map to Bushwick to preview to live unlock transition">
+      <span style="font-size:11px;font-weight:600;font-family:var(--sans);letter-spacing:0;color:var(--black);margin-bottom:4px;">Hero video / GIF</span>
+      <span>Map → Bushwick → Preview → Live unlock</span>
+      <span style="margin-top:2px;opacity:0.5">soundmap-hero-preview-live.mp4</span>
+    </div>
+  </section>
+
+  <!-- Meta strip -->
+  <div class="meta-strip">
+    <div class="meta-strip-inner meta-strip-inner--4col">
+      <div class="meta-cell">
+        <span class="label">Role</span>
+        <div class="meta-val">Product strategy<br>Interaction design<br>Visual design · Prototyping</div>
+      </div>
+      <div class="meta-cell">
+        <span class="label">Platform</span>
+        <div class="meta-val">Mobile (iOS)</div>
+      </div>
+      <div class="meta-cell">
+        <span class="label">Type</span>
+        <div class="meta-val">Independent concept</div>
+      </div>
+      <div class="meta-cell">
+        <span class="label">Timeline</span>
+        <div class="meta-val">~6 weeks, 2025</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">Overview</p></div>
+      <div>
+        <p class="overview-p">Soundmap is a map-based music experience that treats place as the primary interface for discovery. Instead of browsing playlists, you explore neighborhoods.</p>
+        <p class="overview-p">Most music products optimize for personalization. Soundmap prioritizes <strong>context</strong> instead. The premise: every neighborhood has a distinct sound identity shaped by local scenes, venues, time of day, and the people moving through it. Those identities should be explorable — and worth going to.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- The Idea -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">The Idea</p></div>
+      <div class="sm-body">
+        <p>Most music apps answer one question. Soundmap asks a different one.</p>
+        <div class="sm-idea-compare">
+          <div class="sm-idea-card">
+            <span class="sm-idea-tag">Most apps</span>
+            <p>"What should I listen to?"</p>
+          </div>
+          <div class="sm-idea-card">
+            <span class="sm-idea-tag">Soundmap</span>
+            <p>"What does this place sound like?"</p>
+          </div>
+        </div>
+        <p>The shift is from feed-based discovery — algorithmic, passive, personalized — to spatial discovery: contextual, active, place-anchored.</p>
+        <!-- Replace with soundmap-discovery-diagram.png -->
+        <div class="sm-placeholder sm-placeholder--diagram" role="img" aria-label="Diagram comparing taste-based versus place-based discovery">
+          <span class="sm-placeholder-label">Discovery diagram</span>
+          <span>Taste-based vs place-based discovery — minimal and editorial</span>
+          <span style="margin-top:4px;opacity:0.5">soundmap-discovery-diagram.png</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- The Interaction -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">The Interaction</p></div>
+      <div class="sm-body">
+        <p>Every place has two states.</p>
+        <div class="sm-state-pair">
+          <div class="sm-state-card">
+            <span class="sm-state-tag">Preview</span>
+            <h3>Accessible from anywhere</h3>
+            <p>Generalized and limited. A taste of the place — enough to understand its character, not enough to replace being there.</p>
+          </div>
+          <div class="sm-state-card">
+            <span class="sm-state-tag">Live</span>
+            <h3>Unlocked on arrival</h3>
+            <p>Richer and more specific. Smaller artists, denser activity, higher signal — because you earned it by showing up.</p>
+          </div>
+        </div>
+        <p style="margin-top:24px;">This creates a deliberate tradeoff: accessibility vs depth. Users can explore from anywhere, but the full experience requires presence. Discovery becomes something you move toward.</p>
+        <!-- Replace with soundmap-interaction-sequence.png or short animation -->
+        <div class="sm-placeholder sm-placeholder--wide" role="img" aria-label="Interaction sequence — four frames: Map, Bushwick preview, Unlock on arrival, Live state">
+          <span class="sm-placeholder-label">Interaction sequence</span>
+          <span>Map → Bushwick preview → Unlock on arrival → Live state</span>
+          <span style="margin-top:4px;opacity:0.5">soundmap-interaction-sequence.png</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Map overview — full-width, replace with soundmap-map-overview.png -->
+  <div class="work-section">
+    <div class="sm-map-inner">
+      <div class="sm-placeholder sm-placeholder--wide" role="img" aria-label="Map overview showing multiple neighborhoods — Bushwick, SoHo — with subtle labels: DIY, Curated, High activity">
+        <span class="sm-placeholder-label">Map overview</span>
+        <span>Multiple neighborhoods · Bushwick (DIY), SoHo (Curated), activity density</span>
+        <span style="margin-top:4px;opacity:0.5">soundmap-map-overview.png</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Neighborhoods -->
+  <div class="sm-hoods">
+    <div class="sm-hoods-inner">
+      <div class="sm-hoods-header">
+        <p class="label">Neighborhoods</p>
+        <p>The same system, two different expressions. Bushwick and SoHo are proof that place-based identity is real — and that the design has to reflect it.</p>
+      </div>
+
+      <div class="sm-hoods-grid">
+
+        <!-- Bushwick -->
+        <div class="sm-hood">
+          <span class="sm-hood-tag">Bushwick</span>
+          <h2 class="sm-hood-name">DIY, local,<br>discovery-driven</h2>
+          <p class="sm-hood-vibe">Best experienced late · Dense activity</p>
+          <div class="sm-hood-states">
+            <div class="sm-hood-state">
+              <span class="sm-hood-state-label">Preview</span>
+              <p>Recognizable entry points. Accessible, but you know there's more.</p>
+            </div>
+            <div class="sm-hood-state">
+              <span class="sm-hood-state-label">Live</span>
+              <p>Smaller artists, denser activity, less predictable. You have to be here.</p>
+            </div>
+          </div>
+          <ul class="sm-hood-artists">
+            <li>Geese</li>
+            <li>MJ Lenderman</li>
+            <li>Waxahatchee</li>
+            <li>Fcukers</li>
+            <li>Telescreens</li>
+            <li>Cab Ellis</li>
+          </ul>
+          <p class="sm-hood-quote">"You go here to discover something new."</p>
+          <div class="sm-hood-screens">
+            <!-- Replace with soundmap-bushwick-preview.png -->
+            <div class="sm-placeholder sm-placeholder--screen" role="img" aria-label="Bushwick preview state — limited tracklist, unlock prompt">
+              <span class="sm-placeholder-label">Preview</span>
+              <span>soundmap-bushwick-preview.png</span>
+            </div>
+            <!-- Replace with soundmap-bushwick-live.png -->
+            <div class="sm-placeholder sm-placeholder--screen" role="img" aria-label="Bushwick live state — expanded tracklist, more pins, denser activity">
+              <span class="sm-placeholder-label">Live</span>
+              <span>soundmap-bushwick-live.png</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SoHo -->
+        <div class="sm-hood">
+          <span class="sm-hood-tag">SoHo</span>
+          <h2 class="sm-hood-name">Curated, recognizable,<br>high-traffic</h2>
+          <p class="sm-hood-vibe">Consistent vibe · Controlled energy</p>
+          <div class="sm-hood-states">
+            <div class="sm-hood-state">
+              <span class="sm-hood-state-label">Preview</span>
+              <p>Familiar and accessible. Clean, structured — you know what you're getting.</p>
+            </div>
+            <div class="sm-hood-state">
+              <span class="sm-hood-state-label">Live</span>
+              <p>Higher energy but still controlled. More signal, not more chaos.</p>
+            </div>
+          </div>
+          <ul class="sm-hood-artists">
+            <li>The Strokes</li>
+            <li>Fred again..</li>
+            <li>Frank Ocean</li>
+            <li>Clairo</li>
+            <li>Kaytranada</li>
+            <li>Peggy Gou</li>
+          </ul>
+          <p class="sm-hood-quote">"You go here for a known, consistent vibe."</p>
+          <div class="sm-hood-screens">
+            <!-- Replace with soundmap-soho-preview.png -->
+            <div class="sm-placeholder sm-placeholder--screen" role="img" aria-label="SoHo preview state — cleaner, more structured than Bushwick">
+              <span class="sm-placeholder-label">Preview</span>
+              <span>soundmap-soho-preview.png</span>
+            </div>
+            <!-- Replace with soundmap-soho-live.png -->
+            <div class="sm-placeholder sm-placeholder--screen" role="img" aria-label="SoHo live state — higher energy, still controlled">
+              <span class="sm-placeholder-label">Live</span>
+              <span>soundmap-soho-live.png</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- The System -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">The System</p></div>
+      <div class="sm-body">
+        <p>The same interaction produces different outcomes depending on place. That's the point.</p>
+        <div class="sm-pull-quote">The system adapts to context, not just preference.</div>
+        <p>Bushwick: dense, chaotic, discovery-heavy. SoHo: minimal, structured, familiar. The UI reflects this — map density, tracklist depth, and content tone all shift with the neighborhood's identity, not with a user's listening history.</p>
+        <!-- Replace with soundmap-bushwick-soho-comparison.png -->
+        <div class="sm-placeholder sm-placeholder--wide" role="img" aria-label="Bushwick vs SoHo side-by-side — map density, tracklist style, content tone">
+          <span class="sm-placeholder-label">System comparison</span>
+          <span>Bushwick vs SoHo — map density, tracklist style, content tone</span>
+          <span style="margin-top:4px;opacity:0.5">soundmap-bushwick-soho-comparison.png</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Movement -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">Movement</p></div>
+      <div class="sm-body">
+        <p>You can preview from anywhere. Full experiences require being there.</p>
+        <p>This shifts discovery from passive to active. The app doesn't push music to you — it pulls you toward places. Exploration becomes intentional.</p>
+        <!-- Replace with soundmap-movement.png -->
+        <div class="sm-placeholder sm-placeholder--landscape" role="img" aria-label="Movement visual — subtle city exploration, path or movement hint without over-designed routes">
+          <span class="sm-placeholder-label">Movement</span>
+          <span>City exploration visual — hint at movement without over-designing routes</span>
+          <span style="margin-top:4px;opacity:0.5">soundmap-movement.png</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decisions -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">Decisions</p></div>
+      <div class="sm-body">
+        <ul class="sm-decisions">
+          <li>
+            <div class="sm-decision-name">Soft unlock — preview anywhere, unlock on arrival</div>
+            <div class="sm-decision-desc">Keeps the app useful even without physical presence, while preserving the reward for showing up. Without a preview, the map is a wall. Without an unlock, presence has no payoff.</div>
+          </li>
+          <li>
+            <div class="sm-decision-name">Neighborhood-level identity — not tied to exact GPS</div>
+            <div class="sm-decision-desc">Geofencing at the block level creates fragmentation and anxiety. Neighborhood-level unlocks feel natural to how people think about place and move through cities.</div>
+          </li>
+          <li>
+            <div class="sm-decision-name">Contextual pins — each track carries meaning</div>
+            <div class="sm-decision-desc">Pins require a short note to post. Without context, the map becomes noise. A single sentence keeps quality high without adding friction that would kill participation.</div>
+          </li>
+          <li>
+            <div class="sm-decision-name">Hybrid signals — user, curated, and behavioral</div>
+            <div class="sm-decision-desc">Relying entirely on user pins produces inconsistency — high-traffic places like SoHo flood with pins while quieter neighborhoods go silent. Relying entirely on editorial curation produces rigidity — the map reflects someone's taste, not the place. The hybrid approach (user-generated plus editorially weighted plus behavioral) is how the map stays alive across the full range of neighborhoods. It is the same tension between algorithm and editorial that every discovery product faces.</div>
+          </li>
+        </ul>
+        <!-- Replace with soundmap-ui-details.png -->
+        <div class="sm-placeholder sm-placeholder--wide" role="img" aria-label="UI details grid — preview vs live states, pin with note, density differences" style="margin-top:32px;">
+          <span class="sm-placeholder-label">UI details</span>
+          <span>Preview / Live states · Pin with note · Density differences</span>
+          <span style="margin-top:4px;opacity:0.5">soundmap-ui-details.png</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scope -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">Scope</p></div>
+      <div class="sm-body">
+        <p>Focused on a single behavior: discover music through place.</p>
+        <div class="sm-scope-cols" style="margin-top:24px;">
+          <div>
+            <span class="sm-scope-head">Included</span>
+            <ul class="sm-scope-list">
+              <li>Map exploration</li>
+              <li>Neighborhood previews</li>
+              <li>Arrival unlocks</li>
+              <li>Contextual pins</li>
+            </ul>
+          </div>
+          <div>
+            <span class="sm-scope-head">Excluded</span>
+            <ul class="sm-scope-list">
+              <li>Social graph</li>
+              <li>Messaging</li>
+              <li>Events &amp; ticketing</li>
+              <li>Full routes system</li>
+            </ul>
+          </div>
+        </div>
+        <p style="margin-top:24px;">Keeping scope tight forced clarity on the core interaction. Social features, events, and routing all exist as natural extensions — but adding them in v1 would have diluted the place-first premise before it had a chance to prove itself.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reflection -->
+  <div class="section-row">
+    <div class="section-row-inner">
+      <div class="section-label-col"><p class="label">Reflection</p></div>
+      <div class="sm-body">
+        <p>Soundmap explores a different model for music products: spatial instead of feed-based, contextual instead of purely personalized, exploratory instead of optimized.</p>
+        <p>Every major streaming platform has converged on the same surface — an algorithmic queue that learns your preferences and feeds them back to you. That model is excellent at giving you more of what you already like. It is not designed for the moment you want to find something you don't know yet, tied to a place you're actually in.</p>
+        <p>The interesting design question isn't whether place-based discovery works — it obviously does, and has for centuries. The question is what it looks like as a product that earns a place in how people actually move through cities and find music.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Closing -->
+  <div class="sm-closing">
+    <div class="sm-closing-inner">
+      <p>Music doesn't just live in your library.<br>It lives in places.</p>
+    </div>
+  </div>
+
+  <!-- Project navigation -->
+  <div class="sm-project-nav">
+    <div class="sm-project-nav-inner">
+      <a href="index.html">← All work</a>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html">Work</a>
+        <a href="acs.html">UI Library</a>
+        <a href="collective-iq.html">Collective IQ</a>
+        <a href="cmu-thesis-v2.html">XR Experiences</a>
+        <a href="soundmap.html">Soundmap</a>
+        <a href="orbit.html">Orbit</a>
+        <a href="hp.html">HP Experience</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+    <span class="footer-copy">© 2026 Tay Aras</span>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+</body>
+</html>

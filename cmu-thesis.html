@@ -6,391 +6,10 @@
   <script src="auth.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Physicalization of AR/XR Experiences — Tay Aras</title>
-  <meta name="description" content="CMU Bachelor of Design capstone. A research-driven set of physicalized prototyping tools for augmented reality, covering image mapping, 3D masking, shader effects, and physical sensor inputs.">
-  <script>try{var t=localStorage.getItem('tayTheme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+  <meta name="description" content="CMU Bachelor of Design capstone. A physical prototyping system for testing how augmented reality behaves across materials, sensors, surfaces, and spatial constraints.">
+  <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
   <link rel="stylesheet" href="shared.css">
-  <style>
-    /* Video fills image placeholder containers the same way img does */
-    .hero-img video,
-    .work-img-main video,
-    .work-img-sm video,
-    .impact-img-block video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .thesis-context {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 80px var(--pad);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-    .thesis-context .label { margin-bottom: 24px; }
-    .thesis-context h2 { margin-bottom: 28px; }
-    .thesis-context .lede { margin-bottom: 24px; }
-    .thesis-context p + p { margin-top: 16px; }
-    .tool-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      border: 1px solid var(--line);
-      margin-top: 32px;
-    }
-    .tool-cell {
-      padding: 24px;
-      border-right: 1px solid var(--line);
-    }
-    .tool-cell:last-child { border-right: none; }
-    .tool-cell:nth-child(n+4) { border-top: 1px solid var(--line); }
-    .tool-cell h3 { font-size: 14px; margin-bottom: 10px; font-weight: 600; }
-    .tool-cell p { font-size: 12px; line-height: 1.6; color: var(--mid); }
-    @media (max-width: 768px) {
-      .thesis-context { grid-template-columns: 1fr; gap: 40px; padding: 40px var(--pad); }
-      .tool-grid { grid-template-columns: 1fr; }
-      .tool-cell { border-right: none; border-bottom: 1px solid var(--line); }
-      .tool-cell:last-child { border-bottom: none; }
-    }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .tool-cell p { color: #999; }
-    }
-    html[data-theme="dark"] .tool-cell p { color: #999; }
-
-    /* ── Process gallery ── */
-    .process-gallery { border-bottom: 1px solid var(--line); }
-    .process-gallery-header {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 24px var(--pad);
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      border-bottom: 1px solid var(--line);
-    }
-    .process-grid {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 32px var(--pad) 48px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: auto auto;
-      gap: 4px;
-    }
-    .process-cell {
-      overflow: hidden;
-      background: #e0ddd6;
-      aspect-ratio: 4 / 3;
-    }
-    .process-cell--wide {
-      grid-column: span 2;
-      aspect-ratio: 16 / 9;
-    }
-    .process-cell img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    @media (max-width: 768px) {
-      .process-grid { grid-template-columns: repeat(2, 1fr); }
-      .process-cell--wide { grid-column: span 2; aspect-ratio: 16 / 9; }
-    }
-    @media (max-width: 480px) {
-      .process-grid { grid-template-columns: 1fr; }
-      .process-cell--wide { grid-column: span 1; aspect-ratio: 4 / 3; }
-    }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .process-cell { background: #252422; }
-    }
-    html[data-theme="dark"] .process-cell { background: #252422; }
-
-    /* ── Proto gallery (Emoto-style video grid) ── */
-    .proto-gallery { border-bottom: 1px solid var(--line); }
-    .proto-overview-img {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 40px var(--pad) 0;
-    }
-    .proto-overview-img img {
-      width: 100%;
-      display: block;
-    }
-    .proto-tool-diagrams {
-      border-top: 1px solid var(--line);
-      padding: 40px 0 48px;
-    }
-    .proto-tool-diagrams-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 var(--pad);
-    }
-    .proto-tool-diagrams-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-    .proto-tool-diagrams-grid img {
-      width: 100%;
-      display: block;
-    }
-    @media (max-width: 768px) {
-      .proto-tool-diagrams-grid { grid-template-columns: 1fr; gap: 32px; }
-    }
-    .proto-gallery-header {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 24px var(--pad);
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      border-bottom: 1px solid var(--line);
-    }
-    .proto-gallery-count {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--mid);
-      letter-spacing: 0.06em;
-    }
-    .proto-grid {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 48px var(--pad) 64px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 56px 32px;
-    }
-    .proto-cell {}
-    .proto-video {
-      aspect-ratio: 4 / 3;
-      overflow: hidden;
-      background: #e0ddd6;
-      margin-bottom: 16px;
-    }
-    .proto-video video,
-    .proto-video img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .proto-meta {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-    .proto-num {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--mid);
-      letter-spacing: 0.06em;
-    }
-    .proto-tag {
-      font-family: var(--sans);
-      font-size: 10px;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--mid);
-    }
-    .proto-cell h3 {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 10px;
-      line-height: 1.3;
-    }
-    .proto-cell p {
-      font-size: 12px;
-      line-height: 1.7;
-      color: var(--fg);
-      opacity: 0.75;
-    }
-    .proto-imgs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px;
-      margin-top: 12px;
-    }
-    .proto-imgs.single { grid-template-columns: 1fr; }
-    .proto-img-sm {
-      aspect-ratio: 4 / 3;
-      overflow: hidden;
-      background: #e8e5de;
-    }
-    .proto-img-sm img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    @media (max-width: 900px) {
-      .proto-grid { grid-template-columns: repeat(2, 1fr); gap: 40px 24px; }
-    }
-    @media (max-width: 560px) {
-      .proto-grid { grid-template-columns: 1fr; gap: 40px; }
-    }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .proto-video { background: #252422; }
-      html:not([data-theme="light"]) .proto-img-sm { background: #201f1d; }
-    }
-    html[data-theme="dark"] .proto-video { background: #252422; }
-    html[data-theme="dark"] .proto-img-sm { background: #201f1d; }
-
-    /* ── Video play/pause overlay ── */
-    .proto-video,
-    .hero-img {
-      position: relative;
-      cursor: pointer;
-    }
-    .vid-btn {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0, 0, 0, 0.18);
-      border: none;
-      padding: 0;
-      margin: 0;
-      cursor: pointer;
-      transition: background 0.2s, opacity 0.2s;
-      z-index: 2;
-    }
-    .vid-btn svg {
-      width: 52px;
-      height: 52px;
-      fill: #fff;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.35));
-      transition: transform 0.15s;
-    }
-    .vid-btn:hover svg { transform: scale(1.1); }
-    .vid-btn .icon-pause { display: none; }
-    /* playing state */
-    .vid-playing .vid-btn {
-      background: transparent;
-      opacity: 0;
-    }
-    .vid-playing:hover .vid-btn {
-      opacity: 1;
-      background: rgba(0,0,0,0.12);
-    }
-    .vid-playing .vid-btn .icon-play  { display: none; }
-    .vid-playing .vid-btn .icon-pause { display: block; }
-
-    /* ── Goal Evolution (ripple diagrams) ── */
-    .goal-evolution {
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      padding: 40px 0 48px;
-    }
-    .goal-evolution-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 var(--pad);
-    }
-    .goal-evolution-inner .label { margin-bottom: 16px; display: block; }
-    .goal-evolution-inner > p {
-      max-width: 640px;
-      font-size: 13px;
-      line-height: 1.75;
-      opacity: 0.75;
-      margin-bottom: 28px;
-    }
-    .ripple-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 4px;
-    }
-    .ripple-cell {
-      overflow: hidden;
-      background: #e0ddd6;
-      aspect-ratio: 4 / 3;
-    }
-    .ripple-cell img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .ripple-label {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--mid);
-      margin-top: 8px;
-    }
-    @media (max-width: 768px) {
-      .ripple-row { grid-template-columns: 1fr; }
-    }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .ripple-cell { background: #252422; }
-    }
-    html[data-theme="dark"] .ripple-cell { background: #252422; }
-
-    /* ── First Attempt section ── */
-    .first-attempt { border-bottom: 1px solid var(--line); }
-    .first-attempt-header {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 24px var(--pad);
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      border-bottom: 1px solid var(--line);
-    }
-    .first-attempt-intro {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 48px var(--pad) 40px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-    .first-attempt-intro h2 { margin-bottom: 20px; }
-    .first-attempt-intro .lede { margin-bottom: 16px; }
-    .first-attempt-intro p + p { margin-top: 14px; }
-    .first-attempt-grid {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 var(--pad) 48px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 4px;
-    }
-    @media (max-width: 768px) {
-      .first-attempt-intro { grid-template-columns: 1fr; gap: 40px; padding: 32px var(--pad); }
-      .first-attempt-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 480px) {
-      .first-attempt-grid { grid-template-columns: 1fr; }
-    }
-
-    /* ── Process chapters ── */
-    .process-chapter { border-bottom: 1px solid var(--line); }
-    .process-chapter-header {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 24px var(--pad);
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      border-bottom: 1px solid var(--line);
-    }
-    .process-chapter-title {
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
-    .process-chapter-desc {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--mid);
-      letter-spacing: 0.06em;
-    }
-  </style>
+  <link rel="stylesheet" href="cmu-thesis.css">
 </head>
 <body>
 <a href="#main" class="skip-link">Skip to main content</a>
@@ -439,475 +58,385 @@
   </div>
 </header>
 
-<main id="main">
+<main id="main" class="cmu-case">
+  <div class="cmu-wrap">
 
-  <!-- Hero -->
-  <section class="hero" aria-label="Introduction">
-    <div class="hero-eyebrow">
-      <span class="hero-eyebrow-l">Carnegie Mellon University · Bachelor of Design</span>
-      <span class="hero-eyebrow-r">2021 – 2022</span>
-    </div>
-    <div class="hero-title w">
-      <h1>Physicalization<br>of AR/XR<br>Experiences</h1>
-    </div>
-    <div class="hero-img" role="img" aria-label="Testing — Augmented Reality Tools for Design Prototyping">
-      <img src="images/capstone/Process/image13.jpg" alt="Testing — Augmented Reality Tools for Design Prototyping title card">
-    </div>
-
-  </section>
-
-  <!-- Meta strip -->
-  <div class="meta-strip">
-    <div class="meta-strip-inner meta-strip-inner--4col">
-      <div class="meta-cell"><span class="label">Institution</span><div class="meta-val">Carnegie Mellon University</div></div>
-      <div class="meta-cell"><span class="label">Program</span><div class="meta-val">Bachelor of Design · Hybrid Environments</div></div>
-      <div class="meta-cell"><span class="label">Collaborator</span><div class="meta-val">Franklin Guttman</div></div>
-      <div class="meta-cell"><span class="label">Tools</span><div class="meta-val">Unity · Cinema 4D · Arduino · ESP32 · Raspberry Pi · Laser cutting · 3D printing</div></div>
-    </div>
-  </div>
-
-  <!-- Overview -->
-  <div class="section-row">
-    <div class="section-row-inner">
-      <div class="section-label-col"><p class="label">Overview</p></div>
-      <div>
-        <p class="overview-p">AR experience design in 2021 was rich in theory and thin in practice. The tools existed, but building with them was the only way to understand them, and there was no shared vocabulary for what each mechanic does, what it costs, or what design decisions it forces.</p>
-        <p class="overview-p">The thesis became a system of six physicalized prototyping tools, one per AR mechanic. Each tool makes a specific technique legible: what it can do, where it fails, and what it demands of the physical environment around it. The goal was a working vocabulary for designing with AR constraints firsthand.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- How It Started -->
-  <div class="section-row">
-    <div class="thesis-context">
-      <div>
-        <p class="label">How It Started</p>
-        <h2>You can't design with a tool you don't understand</h2>
-        <p class="lede">The project started as an attempt to design finished AR experiences. Working with unfamiliar tools quickly exposed a gap: there was a significant distance between imagining an AR experience and knowing how to build one, and conceptual work alone wasn't closing it.</p>
-        <p>The first prototype made this concrete. We built modular cubes using 3D masking and image mapping, each face a window into a small AR room. It worked, but it took far longer than expected, and most of what we learned was about the tools themselves.</p>
-        <p>The goal shifted: build one physicalized prototyping tool per AR mechanic. Each tool would teach how a specific technique behaves and what design decisions it forces.</p>
-      </div>
-      <div>
-        <div class="work-img-main" role="img" aria-label="All six prototyping tools on cutting mat">
-          <img src="images/capstone/Process/image30.jpg" alt="All six prototyping tools laid out on cutting mat with all components">
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Methods -->
-  <div class="did">
-    <div class="did-inner">
-      <div class="did-label-col"><p class="label">Methods</p></div>
-      <div>
-        <ul class="did-grid">
-          <li class="did-item">AR landscape research and tool exploration</li>
-          <li class="did-item">3D modeling and virtual environment development (Unity, Cinema 4D)</li>
-          <li class="did-item">Physical computing and sensor integration (Arduino, ESP32, Raspberry Pi)</li>
-          <li class="did-item">Fabrication via laser cutting and 3D printing</li>
-          <li class="did-item">Iterative prototyping and material testing</li>
-          <li class="did-item">Capstone presentation and exhibition</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- The Prototyping Tools -->
-  <section aria-label="The Prototyping Tools" class="proto-gallery">
-    <div class="proto-gallery-header">
-      <p class="label">The Prototyping Tools</p>
-      <span class="proto-gallery-count">06 tools</span>
-    </div>
-    <div class="proto-grid">
-
-      <!-- 01 Single Image Mapping -->
-      <div class="proto-cell">
-        <div class="proto-video">
-          <video muted loop playsinline aria-label="Single image mapping prototype">
-            <source src="images/SingleImageClipv1.mp4" type="video/mp4">
-          </video>
-          <button class="vid-btn" aria-label="Play video">
-            <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-          </button>
-        </div>
-        <div class="proto-meta">
-          <span class="proto-num">01</span>
-          <span class="proto-tag">Image Mapping</span>
-        </div>
-        <h3>Single Image Mapping</h3>
-        <p>Surface finish determines whether AR tracking holds. We tested a range of materials as image tracking anchors, evaluating contrast and reliability. The physical material becomes a design decision with direct consequences for digital behavior.</p>
+    <section class="cmu-hero">
+      <div class="cmu-eyebrow">
+        <span>Carnegie Mellon University · Bachelor of Design</span>
+        <span>2021–2022</span>
       </div>
 
-      <!-- 02 3D Masking -->
-      <div class="proto-cell">
-        <div class="proto-video">
-          <video muted loop playsinline aria-label="3D masking prototype">
-            <source src="images/3DMaskClipv1.mp4" type="video/mp4">
-          </video>
-          <button class="vid-btn" aria-label="Play video">
-            <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-          </button>
-        </div>
-        <div class="proto-meta">
-          <span class="proto-num">02</span>
-          <span class="proto-tag">3D Masking</span>
-        </div>
-        <h3>3D Masking</h3>
-        <p>The tool renders a physical object invisible to the camera and replaces it with a virtual interior. Scale and material of the physical form shape the illusion and determine its failure points.</p>
-      </div>
+      <h1 class="cmu-title">Physicalization of AR/XR Experiences</h1>
 
-      <!-- 03 Multiple Image Mapping -->
-      <div class="proto-cell">
-        <div class="proto-video">
-          <video muted loop playsinline aria-label="Multiple image mapping prototype">
-            <source src="images/MultiImageClipv1.mp4" type="video/mp4">
-          </video>
-          <button class="vid-btn" aria-label="Play video">
-            <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-          </button>
-        </div>
-        <div class="proto-meta">
-          <span class="proto-num">03</span>
-          <span class="proto-tag">Image Mapping</span>
-        </div>
-        <h3>Multiple Image Mapping</h3>
-        <p>Simultaneous tracking across multiple image targets. We tested how overlays relate spatially when they share a frame, and how physical design choices in target size and contrast affect coherence across the layout.</p>
-      </div>
+      <p class="cmu-subtitle">Building tools to understand how AR behaves in real environments</p>
 
-      <!-- 04 Processing Effects -->
-      <div class="proto-cell">
-        <div class="proto-video">
-          <video muted loop playsinline aria-label="Processing effects / glass prototype">
-            <source src="images/GlassClipv1.mp4" type="video/mp4">
-          </video>
-          <button class="vid-btn" aria-label="Play video">
-            <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-          </button>
-        </div>
-        <div class="proto-meta">
-          <span class="proto-num">04</span>
-          <span class="proto-tag">Processing Effects</span>
-        </div>
-        <h3>Processing Effects: Glass</h3>
-        <p>Real-time shader effects applied directly to the live camera feed. A glass refraction effect treats the physical surface as though it has optical properties, changing how the camera reads it without altering the underlying geometry.</p>
+      <div class="cmu-hero-media">
+        <img src="images/capstone/Process/image13.jpg" alt="Testing — Augmented Reality Tools for Design Prototyping title card">
       </div>
+    </section>
 
-      <!-- 05 Light Sensor -->
-      <div class="proto-cell">
-        <div class="proto-video">
-          <video muted loop playsinline aria-label="Reactive lighting / light sensor prototype">
-            <source src="images/LightSensorClipv1.mp4" type="video/mp4">
-          </video>
-          <button class="vid-btn" aria-label="Play video">
-            <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-          </button>
-        </div>
-        <div class="proto-meta">
-          <span class="proto-num">05</span>
-          <span class="proto-tag">Physical Input</span>
-        </div>
-        <h3>Reactive Lighting: Light Sensor</h3>
-        <p>A light sensor connected via Arduino to Bluetooth controls a virtual lamp in real time. Covering the sensor toggles it, making natural sunlight an active design input.</p>
-      </div>
-
-      <!-- 06 Potentiometer -->
-      <div class="proto-cell">
-        <div class="proto-video">
-          <video muted loop playsinline aria-label="Physical control / potentiometer prototype">
-            <source src="images/PotSensorClipv1.mp4" type="video/mp4">
-          </video>
-          <button class="vid-btn" aria-label="Play video">
-            <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-          </button>
-        </div>
-        <div class="proto-meta">
-          <span class="proto-num">06</span>
-          <span class="proto-tag">Physical Input</span>
-        </div>
-        <h3>Physical Control: Potentiometer</h3>
-        <p>A dial wired through the same Arduino-to-Bluetooth stack controls the speed of a virtual fan. An analog gesture maps directly to a digital animation parameter, with no abstraction between the two.</p>
-      </div>
-
-    </div>
-    <div class="proto-tool-diagrams">
-      <div class="proto-tool-diagrams-inner">
-        <p class="label" style="margin-bottom: 24px;">Tool Details</p>
-        <img src="images/capstone/image-2-1.png" alt="Isometric diagram of all six prototyping tools: single image mapping, 3D masking, multiple image mapping, processing effects glass, sensor ambient light, sensor physical input" style="width:100%;display:block;margin-bottom:24px;">
-        <div class="proto-tool-diagrams-grid">
-          <img src="images/capstone/image-3-3.png" alt="Component diagrams for tool 01 (single image mapping) and tool 02 (3D masking)">
-          <img src="images/capstone/image-3-4.png" alt="Component diagrams for tool 03 (multiple image mapping) and tool 04 (processing effects glass)">
-          <img src="images/capstone/image-4-2.png" alt="Component diagrams for tool 05 (sensor ambient light) and tool 06 (sensor physical input)">
+    <section class="cmu-section no-border compact">
+      <div class="cmu-grid">
+        <div><div class="cmu-kicker">Final system</div></div>
+        <div class="cmu-content cmu-copy">
+          <h2 class="cmu-heading">A set of six tools for testing how AR behaves</h2>
+          <p>The final system includes six physical tools, each designed to isolate and test a specific AR mechanic: tracking, occlusion, visual effects, and physical input.</p>
+          <figure class="cmu-image">
+            <img loading="lazy" src="images/capstone/Process/image30.jpg" alt="All six prototyping tools laid out on a cutting mat">
+            <figcaption class="cmu-caption">Physical forms, image targets, sensor modules, Arduino components, and AR test objects.</figcaption>
+          </figure>
+          <p class="cmu-muted">Each tool combines physical fabrication, image targets, and real-time AR interaction.</p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- What we learned -->
-  <div class="section-row">
-    <div class="section-row-inner">
-      <div class="section-label-col"><p class="label">What We Learned</p></div>
-      <div>
-        <div class="tool-grid">
-          <div class="tool-cell">
-            <h3>Material is part of the design</h3>
-            <p>In every tool, surface finish, form factor, and contrast directly determined how the digital layer behaved. Tracking reliability, occlusion quality, and sensor performance all follow from physical decisions. The material is an active design input.</p>
-          </div>
-          <div class="tool-cell">
-            <h3>Build to understand</h3>
-            <p>Each tool revealed constraints and failure modes that were invisible before construction. Documentation describes AR mechanics; building with them teaches what they actually do. The building was the research.</p>
-          </div>
-          <div class="tool-cell">
-            <h3>Each mechanic has a physical signature</h3>
-            <p>Image mapping, 3D masking, shader effects, and sensor inputs each impose different requirements on the physical environment. Understanding those requirements is what makes AR design decisions actually designable.</p>
+    <section class="cmu-section compact">
+      <div class="cmu-grid">
+        <div><div class="cmu-kicker">In motion</div></div>
+        <div class="cmu-content">
+          <h2 class="cmu-heading">Six tools, six AR behaviors</h2>
+          <p class="cmu-muted">Each prototype isolates one behavior so it can be tested directly.</p>
+          <div class="cmu-tool-list">
+
+            <div class="cmu-tool-item">
+              <div class="cmu-video">
+                <video muted loop playsinline aria-label="Single Image Mapping prototype">
+                  <source src="images/SingleImageClipv1.mp4" type="video/mp4">
+                </video>
+                <button class="vid-btn" aria-label="Play video">
+                  <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                </button>
+              </div>
+              <div class="cmu-tool-meta">
+                <span class="cmu-tool-num">01</span>
+                <span class="cmu-tool-tag">Image Mapping</span>
+              </div>
+              <h3>Single Image Mapping</h3>
+              <p>Tests how surface finish, contrast, and printed detail affect tracking. Matte printed targets held more consistently, while reflective or low-contrast surfaces failed more often.</p>
+            </div>
+
+            <div class="cmu-tool-item">
+              <div class="cmu-video">
+                <video muted loop playsinline aria-label="3D Masking prototype">
+                  <source src="images/3DMaskClipv1.mp4" type="video/mp4">
+                </video>
+                <button class="vid-btn" aria-label="Play video">
+                  <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                </button>
+              </div>
+              <div class="cmu-tool-meta">
+                <span class="cmu-tool-num">02</span>
+                <span class="cmu-tool-tag">3D Masking</span>
+              </div>
+              <h3>3D Masking</h3>
+              <p>Tests how physical geometry can hide and reveal virtual content. Small mismatches between object and model made the illusion break quickly.</p>
+            </div>
+
+            <div class="cmu-tool-item">
+              <div class="cmu-video">
+                <video muted loop playsinline aria-label="Multiple Image Mapping prototype">
+                  <source src="images/MultiImageClipv1.mp4" type="video/mp4">
+                </video>
+                <button class="vid-btn" aria-label="Play video">
+                  <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                </button>
+              </div>
+              <div class="cmu-tool-meta">
+                <span class="cmu-tool-num">03</span>
+                <span class="cmu-tool-tag">Image Mapping</span>
+              </div>
+              <h3>Multiple Image Mapping</h3>
+              <p>Tests how several image targets behave together. Spacing, target size, and angle changed how coherent the virtual layer felt.</p>
+            </div>
+
+            <div class="cmu-tool-item">
+              <div class="cmu-video">
+                <video muted loop playsinline aria-label="Processing Effects: Glass prototype">
+                  <source src="images/GlassClipv1.mp4" type="video/mp4">
+                </video>
+                <button class="vid-btn" aria-label="Play video">
+                  <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                </button>
+              </div>
+              <div class="cmu-tool-meta">
+                <span class="cmu-tool-num">04</span>
+                <span class="cmu-tool-tag">Processing Effects</span>
+              </div>
+              <h3>Processing Effects: Glass</h3>
+              <p>Applies a shader effect to the live camera feed. The test showed how visual processing changes perception without changing physical geometry.</p>
+            </div>
+
+            <div class="cmu-tool-item">
+              <div class="cmu-video">
+                <video muted loop playsinline aria-label="Reactive Lighting: Light Sensor prototype">
+                  <source src="images/LightSensorClipv1.mp4" type="video/mp4">
+                </video>
+                <button class="vid-btn" aria-label="Play video">
+                  <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                </button>
+              </div>
+              <div class="cmu-tool-meta">
+                <span class="cmu-tool-num">05</span>
+                <span class="cmu-tool-tag">Physical Input</span>
+              </div>
+              <h3>Reactive Lighting: Light Sensor</h3>
+              <p>Uses ambient light as input, connecting a physical sensor to a virtual lamp. Environmental conditions became part of the interaction model.</p>
+            </div>
+
+            <div class="cmu-tool-item">
+              <div class="cmu-video">
+                <video muted loop playsinline aria-label="Physical Control: Potentiometer prototype">
+                  <source src="images/PotSensorClipv1.mp4" type="video/mp4">
+                </video>
+                <button class="vid-btn" aria-label="Play video">
+                  <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                </button>
+              </div>
+              <div class="cmu-tool-meta">
+                <span class="cmu-tool-num">06</span>
+                <span class="cmu-tool-tag">Physical Input</span>
+              </div>
+              <h3>Physical Control: Potentiometer</h3>
+              <p>Maps an analog dial to the speed of a virtual fan. The connection between physical input and digital response became direct and easy to understand.</p>
+            </div>
+
           </div>
         </div>
       </div>
-    </div>
+    </section>
+
+    <section class="cmu-section compact">
+      <div class="cmu-grid">
+        <div><div class="cmu-kicker">Details</div></div>
+        <div class="cmu-content">
+          <div class="cmu-image-grid three">
+            <figure class="cmu-image"><img loading="lazy" src="images/capstone/image-2-1.png" alt="Full six-tool system diagram"><figcaption class="cmu-caption">Full six-tool system diagram.</figcaption></figure>
+            <figure class="cmu-image"><img loading="lazy" src="images/capstone/Process/image28.jpg" alt="Tools with physical components and sensors"><figcaption class="cmu-caption">Tools with physical components and sensors.</figcaption></figure>
+            <figure class="cmu-image"><img loading="lazy" src="images/capstone/Process/image30.jpg" alt="Final physical toolkit"><figcaption class="cmu-caption">Final physical toolkit.</figcaption></figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cmu-section">
+      <div class="cmu-grid">
+        <div><div class="cmu-kicker">Overview</div></div>
+        <div class="cmu-content cmu-copy">
+          <h2 class="cmu-heading">Designing AR experiences required understanding how the system behaves in context</h2>
+          <p>Early in the project, I tried to design a complete AR experience. The prototype exposed issues with tracking stability, lighting conditions, and alignment between physical and digital elements.</p>
+          <p>Most of the learning came from building and testing rather than designing the final experience. That shifted the direction of the project.</p>
+          <p>I built six physical tools, each focused on a specific AR mechanic, to make these behaviors easier to test and reason about during design.</p>
+          <div class="cmu-meta-grid">
+            <div class="cmu-meta-card"><div class="cmu-meta-label">Institution</div><div>Carnegie Mellon University</div></div>
+            <div class="cmu-meta-card"><div class="cmu-meta-label">Program</div><div>BDes · Hybrid Environments</div></div>
+            <div class="cmu-meta-card"><div class="cmu-meta-label">Role</div><div>Designer & Researcher</div></div>
+            <div class="cmu-meta-card"><div class="cmu-meta-label">Tools</div><div>Unity · Arduino · ESP32 · Fabrication</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cmu-section">
+      <div class="cmu-grid">
+        <div><div class="cmu-kicker">Problem</div></div>
+        <div class="cmu-content cmu-copy">
+          <h2 class="cmu-heading">AR behavior changes depending on environment, material, and setup</h2>
+          <p>Image tracking depends on surface quality and contrast. Occlusion depends on physical form. Lighting conditions affect reliability. Small changes in setup can produce very different results.</p>
+          <p>These factors were difficult to evaluate early because they only became visible during implementation.</p>
+          <p>In practice, tracking dropped when surfaces were too reflective. Occlusion broke when geometry was misaligned. Lighting changes affected consistency across sessions.</p>
+          <p class="cmu-muted">The challenge was creating a way to test these behaviors earlier and more consistently.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cmu-section compact">
+      <div class="cmu-grid">
+        <div><div class="cmu-kicker">Constraints</div></div>
+        <div class="cmu-content">
+          <h2 class="cmu-heading">The system was shaped by a few key constraints</h2>
+          <div class="cmu-diagram">
+            <div class="cmu-diagram-title">Key constraints</div>
+            <div class="cmu-layer-grid">
+              <div class="cmu-layer-card"><div class="cmu-layer-title">Tracking</div><p>Surface quality and contrast determine stability.</p></div>
+              <div class="cmu-layer-card"><div class="cmu-layer-title">Occlusion</div><p>Geometry must align precisely with digital models.</p></div>
+              <div class="cmu-layer-card"><div class="cmu-layer-title">Environment</div><p>Lighting conditions affect consistency.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cmu-section">
+      <div class="cmu-grid">
+        <div><div class="cmu-kicker">Direction</div></div>
+        <div class="cmu-content cmu-copy">
+          <h2 class="cmu-heading">The project shifted from a single experience to a reusable testing system</h2>
+          <p>The initial concept focused on a narrative AR experience built around physical objects. The first prototype showed that reliability of the underlying mechanics was the limiting factor.</p>
+          <p>I shifted toward tools that isolate and test those mechanics individually.</p>
+          <div class="cmu-diagram">
+            <div class="cmu-diagram-title">Project shift</div>
+            <div class="cmu-layer-grid">
+              <div class="cmu-layer-card"><div class="cmu-layer-number">01</div><div class="cmu-layer-title">Initial approach</div><p>Design a full AR experience.</p></div>
+              <div class="cmu-layer-card active"><div class="cmu-layer-number">02</div><div class="cmu-layer-title">Finding</div><p>Core issues came from system behavior.</p></div>
+              <div class="cmu-layer-card"><div class="cmu-layer-number">03</div><div class="cmu-layer-title">New direction</div><p>Build tools to test individual mechanics.</p></div>
+            </div>
+          </div>
+          <p class="cmu-muted">Early prototypes exposed issues with tracking reliability and alignment, which led to the shift toward tool-based exploration.</p>
+          <div class="cmu-image-grid three">
+            <figure class="cmu-image"><img loading="lazy" src="images/capstone/Process/image38.jpg" alt="Early 3D concept render"><figcaption class="cmu-caption">Original narrative AR concept.</figcaption></figure>
+            <figure class="cmu-image"><img loading="lazy" src="images/capstone/Process/image33.jpg" alt="Early cardboard cube prototypes"><figcaption class="cmu-caption">Early physical cube prototypes.</figcaption></figure>
+            <figure class="cmu-image"><img loading="lazy" src="images/capstone/Process/image39.jpg" alt="Unity editor with early AR prototype"><figcaption class="cmu-caption">Early AR masking test setup.</figcaption></figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cmu-section">
+      <div class="cmu-grid">
+        <div><div class="cmu-kicker">System</div></div>
+        <div class="cmu-content cmu-copy">
+          <h2 class="cmu-heading">Breaking AR into testable behaviors</h2>
+          <p>Instead of treating AR as a single system, I separated it into distinct behaviors. Each tool isolates one mechanic, making it easier to test and compare under different conditions.</p>
+          <div class="cmu-tool-grid">
+            <div class="cmu-tool-card"><div class="cmu-tool-number">01</div><div class="cmu-tool-title">Image Mapping</div><p>Tracking across surface types.</p></div>
+            <div class="cmu-tool-card"><div class="cmu-tool-number">02</div><div class="cmu-tool-title">3D Masking</div><p>Occlusion using geometry.</p></div>
+            <div class="cmu-tool-card"><div class="cmu-tool-number">03</div><div class="cmu-tool-title">Multiple Targets</div><p>Multi-marker stability.</p></div>
+            <div class="cmu-tool-card"><div class="cmu-tool-number">04</div><div class="cmu-tool-title">Shaders</div><p>Camera-based effects.</p></div>
+            <div class="cmu-tool-card"><div class="cmu-tool-number">05</div><div class="cmu-tool-title">Light Sensor</div><p>Environmental input.</p></div>
+            <div class="cmu-tool-card"><div class="cmu-tool-number">06</div><div class="cmu-tool-title">Physical Input</div><p>Analog control mapping.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cmu-section compact">
+      <div class="cmu-grid">
+        <div><div class="cmu-kicker">Tool details</div></div>
+        <div class="cmu-content cmu-copy">
+          <h2 class="cmu-heading">Each tool had a physical and digital architecture</h2>
+          <p>These diagrams document how each tool was constructed and how physical components mapped to AR behaviors.</p>
+          <figure class="cmu-image"><img loading="lazy" src="images/capstone/image-2-1.png" alt="Isometric diagram of all six prototyping tools"><figcaption class="cmu-caption">Overview diagram of the six tool system.</figcaption></figure>
+          <div class="cmu-image-grid three">
+            <figure class="cmu-image"><img loading="lazy" src="images/capstone/image-3-3.png" alt="Component diagrams for tool 01 and tool 02"><figcaption class="cmu-caption">Image mapping and 3D masking details.</figcaption></figure>
+            <figure class="cmu-image"><img loading="lazy" src="images/capstone/image-3-4.png" alt="Component diagrams for tool 03 and tool 04"><figcaption class="cmu-caption">Multiple targets and shader effect details.</figcaption></figure>
+            <figure class="cmu-image"><img loading="lazy" src="images/capstone/image-4-2.png" alt="Component diagrams for tool 05 and tool 06"><figcaption class="cmu-caption">Sensor input and physical control details.</figcaption></figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cmu-section">
+      <div class="cmu-grid">
+        <div><div class="cmu-kicker">What this enabled</div></div>
+        <div class="cmu-content cmu-copy">
+          <h2 class="cmu-heading">The tools made AR behavior easier to reason about during design</h2>
+          <p>Instead of discovering issues late in development, I could test tracking, occlusion, and interaction earlier in the process.</p>
+          <p>This made it easier to design experiences that behaved consistently across different environments and reduced implementation rework.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cmu-section">
+      <div class="cmu-grid">
+        <div><div class="cmu-kicker">Process</div></div>
+        <div class="cmu-content cmu-copy">
+          <h2 class="cmu-heading">Iteration focused on form, material, and system integration</h2>
+          <p>Most tools went through multiple iterations. Early versions either failed to track reliably or were too sensitive to setup conditions.</p>
+          <p>Adjusting surface treatments, marker density, and physical dimensions became part of the design process.</p>
+
+          <div class="cmu-process-section">
+            <div class="cmu-process-header"><h3 class="cmu-process-title">Form studies</h3><p class="cmu-process-desc">Exploring how geometry affects occlusion and tracking stability.</p><span class="cmu-gallery-label">Geometry and modularity</span></div>
+            <div class="cmu-process-grid">
+              <div class="cmu-process-tile"><img loading="lazy" src="images/capstone/Process/image58.png" alt="Early 3D masking model"></div>
+              <div class="cmu-process-tile wide"><img loading="lazy" src="images/capstone/Process/image59.png" alt="Twelve cube form iterations"></div>
+              <div class="cmu-process-tile"><img loading="lazy" src="images/capstone/Process/image62.png" alt="Cube cluster configuration options"></div>
+              <div class="cmu-process-tile"><img loading="lazy" src="images/capstone/Process/image43.jpg" alt="Cube forms modeled for physical fabrication"></div>
+              <div class="cmu-process-tile"><img loading="lazy" src="images/capstone/Process/image45.jpg" alt="Wireframe cube form variations"></div>
+            </div>
+          </div>
+
+          <div class="cmu-process-section">
+            <div class="cmu-process-header"><h3 class="cmu-process-title">Material tests</h3><p class="cmu-process-desc">Comparing surface finishes to understand their impact on tracking reliability.</p><span class="cmu-gallery-label">Surface and tracking reliability</span></div>
+            <div class="cmu-process-grid">
+              <div class="cmu-process-tile wide"><img loading="lazy" src="images/capstone/Process/image35.jpg" alt="Range of image mapping materials"></div>
+              <div class="cmu-process-tile"><img loading="lazy" src="images/capstone/Process/image36.jpg" alt="Wooden cube forms and image mapping cards"></div>
+              <div class="cmu-process-tile"><img loading="lazy" src="images/capstone/Process/image14.jpg" alt="Laser etched cube forms"></div>
+              <div class="cmu-process-tile wide"><img loading="lazy" src="images/capstone/image-3-2.png" alt="Full range of material finishes tested"></div>
+            </div>
+          </div>
+
+          <div class="cmu-process-section">
+            <div class="cmu-process-header"><h3 class="cmu-process-title">Assembly</h3><p class="cmu-process-desc">Integrating physical components, image targets, and electronics into working tools.</p><span class="cmu-gallery-label">Building the tools</span></div>
+            <div class="cmu-process-grid">
+              <div class="cmu-process-tile"><img loading="lazy" src="images/capstone/Process/image20.jpg" alt="Assembled wooden cube cluster"></div>
+              <div class="cmu-process-tile"><img loading="lazy" src="images/capstone/Process/image29.jpg" alt="Prototype iterations including 3D printed forms"></div>
+              <div class="cmu-process-tile"><img loading="lazy" src="images/capstone/Process/image26.jpg" alt="Prototype tools laid out on cutting mat"></div>
+              <div class="cmu-process-tile wide"><img loading="lazy" src="images/capstone/Process/image30.jpg" alt="All six finished prototyping tools"></div>
+              <div class="cmu-process-tile"><img loading="lazy" src="images/capstone/Process/image28.jpg" alt="All six prototyping tools with Arduino components"></div>
+            </div>
+          </div>
+
+          <div class="cmu-process-section">
+            <div class="cmu-process-header"><h3 class="cmu-process-title">In use</h3><p class="cmu-process-desc">Testing how the system behaves across different environments and lighting conditions.</p><span class="cmu-gallery-label">AR captures and tests</span></div>
+            <div class="cmu-process-grid">
+              <div class="cmu-process-tile"><img loading="lazy" src="images/capstone/Process/image42.png" alt="AR content visible through physical box outdoors"></div>
+              <div class="cmu-process-tile"><img loading="lazy" src="images/capstone/Process/image51.jpg" alt="AR content visible through foam core box outdoors"></div>
+              <div class="cmu-process-tile"><img loading="lazy" src="images/capstone/Process/image56.jpg" alt="AR 3D masking test outdoors"></div>
+              <div class="cmu-process-tile"><img loading="lazy" src="images/capstone/Process/image44.gif" alt="Animated prototype components on cutting mat"></div>
+              <div class="cmu-process-tile"><img loading="lazy" src="images/capstone/Process/image50.gif" alt="Animated AR masking test"></div>
+              <div class="cmu-process-tile"><img loading="lazy" src="images/capstone/Process/image60.gif" alt="Animated image mapping test"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cmu-section">
+      <div class="cmu-grid">
+        <div><div class="cmu-kicker">Learnings</div></div>
+        <div class="cmu-content cmu-copy">
+          <h2 class="cmu-heading">What I learned from building the system</h2>
+          <div class="cmu-learning-grid">
+            <div class="cmu-learning-card"><div class="cmu-tool-number">01</div><div class="cmu-learning-title">Material affects behavior</div><p>Tracking performance changed significantly depending on surface finish and contrast.</p></div>
+            <div class="cmu-learning-card"><div class="cmu-tool-number">02</div><div class="cmu-learning-title">Testing reveals the real problem</div><p>Occlusion broke when geometry was slightly misaligned, and lighting affected reliability across sessions.</p></div>
+            <div class="cmu-learning-card"><div class="cmu-tool-number">03</div><div class="cmu-learning-title">Mechanics need isolation</div><p>Separating AR behaviors into individual tools made each mechanic easier to understand.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cmu-section">
+      <div class="cmu-grid">
+        <div><div class="cmu-kicker">Outcome</div></div>
+        <div class="cmu-content cmu-copy">
+          <h2 class="cmu-heading">A reusable way to evaluate AR mechanics during design</h2>
+          <p>The system provides a consistent way to test how AR behaves across different conditions. It allows earlier evaluation of constraints and more reliable design decisions.</p>
+          <p class="cmu-muted">This project shaped how I approach new systems. I start by testing constraints directly, then design from what holds up in practice.</p>
+          <div class="cmu-stats-grid">
+            <div class="cmu-stat-card"><div class="cmu-stat-value">6</div><div class="cmu-stat-label">Physicalized prototyping tools covering image mapping, 3D masking, shader effects, and physical sensor inputs.</div></div>
+            <div class="cmu-stat-card"><div class="cmu-stat-value">4</div><div class="cmu-stat-label">Disciplines bridged: visual design, physical fabrication, electronics prototyping, and real-time software development.</div></div>
+            <div class="cmu-stat-card"><div class="cmu-stat-value">1</div><div class="cmu-stat-label">Live capstone exhibition where visitors tested each mechanic firsthand.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cmu-final-shot">
+      <div class="cmu-hero-media">
+        <img loading="lazy" src="images/capstone/Process/image28.jpg" alt="All six prototyping tools with components">
+      </div>
+    </section>
+
   </div>
-
-
-  <!-- The First Attempt -->
-  <section aria-label="The First Attempt" class="first-attempt">
-    <div class="first-attempt-header">
-      <p class="label">The First Attempt</p>
-      <span class="proto-gallery-count">Pre-pivot concepts &amp; first prototype</span>
-    </div>
-    <div class="first-attempt-intro">
-      <div>
-        <h2>The original direction</h2>
-        <p class="lede">The starting point was a finished AR experience: a narrative space where physical objects connected to virtual stories.</p>
-        <p>The concepts were developed in detail before building started. The first prototype, a 3D masking cube with a virtual office room inside, took far longer than expected and taught us mostly about the tool. That gap between intention and execution was the real finding, and it redirected the project.</p>
-      </div>
-      <div>
-        <div class="work-img-main" role="img" aria-label="Early 3D concept render of the chaotic office interior">
-          <img src="images/capstone/Process/image38.jpg" alt="Early 3D concept render: chaotic office interior with toppled filing cabinets — the first prototype's virtual content">
-        </div>
-      </div>
-    </div>
-    <div class="first-attempt-grid">
-
-      <!-- Concept sketches: pre-pivot -->
-      <div class="process-cell">
-        <img src="images/capstone/Process/image6.jpg" alt="Concept sketches: various AR container shapes, frames, and architectural form explorations">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image22.jpg" alt="Sketch: single augmented story overlaying a related physical artifact — Korean ceramics (Buncheon)">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image24.jpg" alt="Sketch: architectural interior perspective with layered augmented text overlaid on walls and floor">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image34.jpg" alt="Sketch: AR-enabled building model concept — each room tells its own animated story">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image9.jpg" alt="Sketch: modular cube assembly diagram showing how units combine to form a virtual interior structure">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image16.jpg" alt="Sketch: image map cube variations — door and window options with image tracking anchor placements">
-      </div>
-
-      <!-- Office room 3D development -->
-      <div class="process-cell">
-        <img src="images/capstone/Process/image49.png" alt="3D render: isometric view of the chaotic office room concept in grayscale — early layout exploration">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image52.png" alt="3D render: warm-lit office room with toppled furniture — refined material and lighting pass">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image54.png" alt="3D render: close-up inside the office room — warm directional light with scattered papers">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image53.jpg" alt="Unity editor: cel-shaded office scene in development — the virtual room that would go inside the first cube">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image39.jpg" alt="Unity editor: 3D masking prototype scenes positioned outdoors — testing virtual content at real-world scale">
-      </div>
-
-      <!-- First physical prototype -->
-      <div class="process-cell">
-        <img src="images/capstone/Process/image33.jpg" alt="The first physical iterations: cardboard box prototypes — rapid tests of the cube form before committing to materials">
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Process: Form -->
-  <section aria-label="Process: Form" class="process-gallery process-chapter">
-    <div class="process-chapter-header">
-      <p class="label">Process — <span class="process-chapter-title">Form</span></p>
-      <span class="process-chapter-desc">Modeling the cube</span>
-    </div>
-    <div class="process-grid">
-
-      <div class="process-cell">
-        <img src="images/capstone/Process/image58.png" alt="Unity editor: early flat-geometry 3D masking model — cube with simple interior cutout">
-      </div>
-      <div class="process-cell process-cell--wide">
-        <img src="images/capstone/Process/image59.png" alt="Twelve cube form iterations rendered in 3D — exploring different window and door cutout shapes for 3D masking">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image62.png" alt="Two rendered cube cluster configurations — modular assembly options for 3D masking prototypes">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image43.jpg" alt="Cinema 4D: cube forms with window and door cutouts being modeled for physical fabrication">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image45.jpg" alt="3D modeling software: wireframe cube form variations with different opening configurations">
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Process: Material -->
-  <section aria-label="Process: Material" class="process-gallery process-chapter">
-    <div class="process-chapter-header">
-      <p class="label">Process — <span class="process-chapter-title">Material</span></p>
-      <span class="process-chapter-desc">Surface and finish testing</span>
-    </div>
-    <div class="process-grid">
-
-      <div class="process-cell process-cell--wide">
-        <img src="images/capstone/Process/image35.jpg" alt="Range of image mapping card materials and finishes laid out — testing contrast, line weight, and tracking reliability">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image36.jpg" alt="Wooden cube forms and laser-cut image mapping cards spread on cutting mat">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image14.jpg" alt="Wooden laser-etched cube forms stacked on cutting mat — 3D masking prototype fabrication">
-      </div>
-      <div class="process-cell process-cell--wide">
-        <img src="images/capstone/image-3-2.png" alt="Full range of material finishes tested as image tracking anchors — the complete surface study">
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Process: Assembly -->
-  <section aria-label="Process: Assembly" class="process-gallery process-chapter">
-    <div class="process-chapter-header">
-      <p class="label">Process — <span class="process-chapter-title">Assembly</span></p>
-      <span class="process-chapter-desc">Building the six tools</span>
-    </div>
-    <div class="process-grid">
-
-      <div class="process-cell">
-        <img src="images/capstone/Process/image20.jpg" alt="Assembled wooden cube cluster on cutting mat — testing the modular stacking configuration">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image29.jpg" alt="Cube prototype iterations including 3D printed red and grey forms — 3D masking development sequence">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image26.jpg" alt="Close-up: five prototype tools laid out on cutting mat — image mapping cards, sensor modules, and cube forms">
-      </div>
-      <div class="process-cell process-cell--wide">
-        <img src="images/capstone/Process/image30.jpg" alt="All six finished prototyping tools arranged on cutting mat — the complete set">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image28.jpg" alt="All six prototyping tools with Arduino components, breadboard, and image mapping materials spread on cutting mat">
-      </div>
-
-
-    </div>
-  </section>
-
-  <!-- Process: In Use -->
-  <section aria-label="Process: In Use" class="process-gallery process-chapter">
-    <div class="process-chapter-header">
-      <p class="label">Process — <span class="process-chapter-title">In Use</span></p>
-      <span class="process-chapter-desc">AR captures, indoors and out</span>
-    </div>
-    <div class="process-grid">
-      <div class="process-cell">
-        <img src="images/capstone/Process/image42.png" alt="AR content visible through physical box in outdoor setting — early 3D masking test with virtual interior outdoors">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image51.jpg" alt="AR content visible through foam core box window outdoors — testing 3D masking at outdoor scale">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image56.jpg" alt="AR 3D masking: dark office scene visible through physical box placed outdoors">
-      </div>
-
-      <div class="process-cell">
-        <img src="images/capstone/Process/image44.gif" alt="Animated: prototype components laid out on cutting mat — AR content cycling through tool demonstrations">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image50.gif" alt="Animated AR prototype test — 3D masking with virtual interior visible">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image55.gif" alt="Animated AR capture: prototype in use showing virtual content anchored to physical form">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image57.gif" alt="Animated AR capture: prototype demonstration showing virtual content through physical box">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image60.gif" alt="Animated AR prototype: image mapping with virtual content tracked to physical surface">
-      </div>
-      <div class="process-cell">
-        <img src="images/capstone/Process/image61.gif" alt="Animated AR prototype: demonstration with virtual content in physical context">
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Outcomes -->
-  <section aria-label="Outcomes">
-    <div class="impact">
-      <div class="impact-header"><p class="label">Outcomes</p></div>
-      <div class="impact-grid">
-        <div class="impact-cell">
-          <p class="impact-n">6</p>
-          <p class="impact-desc">Physicalized prototyping tools covering image mapping, 3D masking, shader effects, and physical sensor inputs. A reference set for designing with AR constraints firsthand.</p>
-        </div>
-        <div class="impact-cell">
-          <p class="impact-n">4</p>
-          <p class="impact-desc">Disciplines bridged across the project: visual design, physical fabrication, electronics prototyping, and real-time software development. Each tool required all four.</p>
-        </div>
-        <div class="impact-cell">
-          <p class="impact-n">1</p>
-          <p class="impact-desc">Live capstone exhibition where visitors tested each mechanic firsthand, engaging directly with the prototypes rather than reading about their mechanics. The tools worked as both research output and demonstration artifacts.</p>
-        </div>
-      </div>
-      <div class="impact-img">
-        <div class="impact-img-block" role="img" aria-label="All six prototyping tools with components">
-          <img src="images/capstone/Process/image28.jpg" alt="All six prototyping tools arranged on cutting mat alongside Arduino components and image mapping materials">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Reflection -->
-  <div class="section-row">
-    <div class="section-row-inner">
-      <div class="section-label-col"><p class="label">Reflection</p></div>
-      <div>
-        <p class="overview-p">The consistent finding across all six tools was that AR's design problems are relational. How virtual content sits within a physical form, responds to physical light, moves when the object moves. These are composition problems, and you can't reason your way to them. You find them by building.</p>
-        <p class="overview-p" style="margin-top: 24px;">The tools exist because there was no other way to have that conversation. Figma can't simulate what happens when a mapped texture breaks at a physical edge. A prototype can. That's the argument the thesis is making in material form: that designing for AR requires a different kind of design literacy, one that has to be earned through making, not just studying.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Next project CTA -->
-  <div class="dark-cta">
-    <div class="dark-cta-inner">
-      <div>
-        <p class="label">Next Project</p>
-        <h2>Collective IQ<br>Experiences</h2>
-        <p>Design lead on an unreleased Microsoft product under IC3 & Copilot. Details available under NDA. Reach out to discuss.</p>
-        <a href="collective-iq.html" class="dark-link">View case study →</a>
-      </div>
-      <div class="dark-cta-img">
-        <img src="images/acs/copilot-thumb.png" alt="Microsoft Collective IQ — agent builder UI">
-      </div>
-    </div>
-  </div>
-
 </main>
+
 
 <footer class="site-footer">
   <div class="footer-inner">
@@ -916,7 +445,7 @@
         <a href="index.html">Work</a>
         <a href="acs.html">UI Library</a>
         <a href="collective-iq.html">Collective IQ</a>
-        <a href="cmu-thesis.html">XR Experiences</a>
+        <a href="cmu-thesis-v2.html">XR Experiences</a>
         <a href="orbit.html">Orbit</a>
         <a href="hp.html">HP Experience</a>
         <a href="about.html">About</a>
@@ -947,6 +476,28 @@
     video.addEventListener('pause', sync);
     video.addEventListener('ended', sync);
   });
+</script>
+
+<script>
+(function () {
+  document.querySelectorAll('.cmu-video').forEach(function (wrap) {
+    var video = wrap.querySelector('video');
+    var btn = wrap.querySelector('.vid-btn');
+    if (!video || !btn) return;
+    btn.addEventListener('click', function () {
+      if (video.paused) {
+        video.play();
+        wrap.classList.add('vid-playing');
+      } else {
+        video.pause();
+        wrap.classList.remove('vid-playing');
+      }
+    });
+    video.addEventListener('ended', function () {
+      wrap.classList.remove('vid-playing');
+    });
+  });
+})();
 </script>
 </body>
 </html>
