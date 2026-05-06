@@ -6,7 +6,7 @@
   --line: #e5e5e5;
   --accent: #236860;
   --accent-light: #f0f6f5;
-  --mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+  --mono: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
   --sans: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
   --pad: 32px;
   --max: min(calc(100vw - 64px), 1600px);
