@@ -213,6 +213,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; bo
   width: 28px; height: 28px;
   border: 1px solid var(--line);
   background: transparent;
+  color: var(--black);
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   border-radius: 2px;
