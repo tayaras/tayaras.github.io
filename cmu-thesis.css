@@ -7,7 +7,7 @@
 .cmu-hero{min-height:calc(88vh - var(--header-h));padding:80px 0 88px;display:flex;flex-direction:column;justify-content:flex-end}
 .cmu-eyebrow,.cmu-kicker,.cmu-diagram-title,.cmu-gallery-label,.cmu-sublabel{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mid)}
 .cmu-eyebrow{display:flex;justify-content:space-between;gap:24px;margin-bottom:24px}.cmu-sublabel{margin:0 0 18px}
-.cmu-title{max-width:1180px;margin:0;font-size:clamp(52px,7vw,96px);line-height:.95;letter-spacing:-.03em;font-weight:400}
+.cmu-title{max-width:1180px;margin:0;font-size:clamp(52px,7vw,96px);line-height:.95;letter-spacing:-.03em;font-weight:500}
 .cmu-subtitle{white-space:nowrap;margin:24px 0 0;font-size:1.5rem;line-height:1.02;letter-spacing:-.04em;font-weight:400;color:var(--mid)}
 .cmu-hero-line{max-width:720px;margin:18px 0 0;color:var(--mid);font-size:18px;line-height:1.6}
 .cmu-hero-media,.cmu-process-tile{overflow:hidden}
