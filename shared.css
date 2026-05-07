@@ -1481,6 +1481,8 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
 .cs-meta-card { border-radius: var(--radius-card); border: 1px solid var(--line); background: rgba(255,255,255,0.7); padding: 16px; font-size: 0.875rem; }
 .cs-meta-label { color: var(--mid); margin-bottom: 8px; }
 .cs-meta-val   { color: var(--black); }
+.cs-meta-link { color: inherit; border-bottom: 1px solid currentColor; opacity: 0.7; transition: opacity 0.15s; }
+.cs-meta-link:hover { opacity: 1; }
 
 .cs-fig + .cs-fig { margin-top: 32px; }
 .cs-fig--mt-sm { margin-top: 24px; }
