@@ -1509,9 +1509,9 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
 }
 .cs-caption { margin-top: 12px; font-size: 0.875rem; font-family: var(--sans); color: var(--mid); line-height: 1.5; }
 
-.cs-img-grid-2 { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 32px; }
+.cs-img-grid-2 { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 32px; align-items: start; }
 @media (min-width: 768px) { .cs-img-grid-2 { grid-template-columns: 1fr 1fr; } }
-.cs-img-grid-3 { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 32px; }
+.cs-img-grid-3 { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 32px; align-items: start; }
 @media (min-width: 768px) { .cs-img-grid-3 { grid-template-columns: repeat(3, 1fr); } }
 .cs-img-grid-2 .cs-fig,
 .cs-img-grid-3 .cs-fig { margin-top: 0; }

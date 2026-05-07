@@ -25,7 +25,7 @@
 
 .cmu-diagram{margin:36px 0 42px;border:1px solid var(--line);border-radius:var(--radius-diagram);padding:clamp(24px,4vw,44px);background:linear-gradient(135deg,var(--white) 0%,var(--accent-light) 100%)}
 .cmu-diagram-title{margin-bottom:24px}
-.cmu-layer-grid,.cmu-tool-grid,.cmu-image-grid,.cmu-stats-grid,.cmu-learning-grid{display:grid;gap:16px}
+.cmu-layer-grid,.cmu-tool-grid,.cmu-image-grid,.cmu-stats-grid,.cmu-learning-grid{display:grid;gap:16px;align-items:start}
 .cmu-layer-grid,.cmu-tool-grid,.cmu-stats-grid,.cmu-learning-grid{grid-template-columns:repeat(3,1fr)}.cmu-image-grid.two{grid-template-columns:repeat(2,1fr)}.cmu-image-grid.three{grid-template-columns:repeat(3,1fr)}
 .cmu-layer-card,.cmu-tool-card,.cmu-learning-card{padding:22px}.cmu-layer-card.active,.cmu-tool-card.active{border:2px solid var(--accent);background:var(--accent-light)}
 .cmu-layer-number,.cmu-tool-number{margin-bottom:30px;font-family:var(--mono);font-size:12px;color:var(--mid)}
