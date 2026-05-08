@@ -1485,6 +1485,10 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
 .cs-meta-link { color: inherit; border-bottom: 1px solid currentColor; opacity: 0.7; transition: opacity 0.15s; }
 .cs-meta-link:hover { opacity: 1; }
 
+.contact-nudge { text-align: center; padding: 64px var(--pad); color: var(--mid); font-size: 0.9375rem; }
+.contact-nudge a { color: var(--black); border-bottom: 1px solid currentColor; opacity: 0.7; transition: opacity 0.15s; }
+.contact-nudge a:hover { opacity: 1; }
+
 .cs-fig + .cs-fig { margin-top: 32px; }
 .cs-fig--mt-sm { margin-top: 24px; }
 .cs-fig--mt-lg { margin-top: 48px; }
