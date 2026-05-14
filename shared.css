@@ -27,6 +27,7 @@ body {
   background: var(--white);
   color: var(--black);
   font-family: var(--sans);
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
@@ -766,7 +767,7 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
 .spec-card.owned { background: var(--accent-light); border-left: 2px solid var(--accent); }
 
 .spec-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); padding-top: 3px; }
-.spec-card h3 { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.spec-card h3 { font-size: 13px; font-weight: 500; margin-bottom: 6px; }
 .spec-desc { font-size: 12px; line-height: 1.55; color: var(--mid); }
 .spec-owned { font-family: var(--mono); font-size: 10px; color: var(--mid); margin-top: 8px; display: block; letter-spacing: 0.04em; }
 
