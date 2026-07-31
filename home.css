@@ -48,8 +48,7 @@ body:not(.stack-open) .home-fret:not([data-primary]) .home-label {
 .home-fret[data-primary] .home-label { color: var(--black); }
 
 /* hover a section → all of its text and its string line turn red */
-.home-meta, .home-copy p, .home-cta, .home-about-links a, .home-note,
-.cv-title, .cv-sub, .cv-date, .home-cv .label { transition: color 0.2s ease; }
+.home-meta, .home-copy p, .home-cta, .home-about-links a, .home-note { transition: color 0.2s ease; }
 .home-fret:not([data-primary]):hover .home-label,
 .home-fret:not([data-primary]):hover .home-meta,
 .home-fret:not([data-primary]):hover .home-meta p,
@@ -58,11 +57,7 @@ body:not(.stack-open) .home-fret:not([data-primary]) .home-label {
 .home-fret:not([data-primary]):hover .home-note a,
 .home-fret:not([data-primary]):hover .home-copy a,
 .home-fret:not([data-primary]):hover .home-cta,
-.home-fret:not([data-primary]):hover .home-about-links a,
-.home-fret:not([data-primary]):hover .cv-title,
-.home-fret:not([data-primary]):hover .cv-sub,
-.home-fret:not([data-primary]):hover .cv-date,
-.home-fret:not([data-primary]):hover .home-cv .label { color: #ff2d2d; }
+.home-fret:not([data-primary]):hover .home-about-links a { color: #ff2d2d; }
 .home-fret:not([data-primary]):hover .string-path { stroke: #ff2d2d; }
 /* header (Tay Aras) is excluded — but its More about me / See less link
    reddens when the section is hovered, like the project CTAs */
@@ -283,14 +278,6 @@ body.stack-open .home-fret:nth-child(12) .home-panel { transition-delay: 0.55s; 
 .home-about-links { display: flex; flex-wrap: wrap; gap: 32px; margin-top: auto; padding-top: 44px; }
 .home-about-links a { font-size: 12px; color: var(--mid-600); text-decoration: none; border-bottom: 1px solid var(--line); padding-bottom: 2px; }
 .home-about-links a:hover { color: #001EFF; }
-.home-cv { display: grid; grid-template-columns: 1fr 1fr; column-gap: 80px; margin-top: 56px; padding-top: 56px; border-top: 1px solid var(--line); }
-.home-cv > .label { margin-top: 0; margin-bottom: 20px; }
-/* Skills sits at the bottom of its grid cell on desktop (align-self:end) */
-.home-cv > .label--skills { margin-bottom: 14px; }
-.home-cv .label { font-size: 10px; }
-.home-cv .cv-title { font-size: 12px; font-weight: 500; }
-.home-cv .cv-sub { font-size: 11px; }
-.home-cv .cv-date { font-size: 9px; font-family: var(--sans); }
 
 .home-cta {
   display: inline-block;
@@ -343,12 +330,7 @@ body.stack-open .home-fret:nth-child(12) .home-panel { transition-delay: 0.55s; 
   .home-content .home-media { grid-column: 1 / -1; }
   /* stacked, the thumbnail is on its own row — no reason to keep it small */
   .home-content--small .home-media { width: 100%; }
-  .home-bio-cols, .home-cv { grid-template-columns: 1fr; }
-  .home-cv > * { grid-column: 1 !important; grid-row: auto !important; }
-  /* stacked: Education / Skills follow a row's bottom border directly, so
-     open up space above each label (Experience is already first in flow) */
-  .home-cv > .label { margin-top: 48px; margin-bottom: 22px; }
-  .home-cv > .label:first-child { margin-top: 0; }
+  .home-bio-cols { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
   .home-content, .home-content.media-first {

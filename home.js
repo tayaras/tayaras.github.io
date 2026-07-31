@@ -140,37 +140,14 @@ document.addEventListener('DOMContentLoaded', function () {
     "If you're working on something at the intersection of design, technology, and the physical world — or you just want to talk about music — <a href='mailto:tayaras@outlook.com'>reach out</a>."
   ];
 
-  function cvRow(t, s, d, style) {
-    return "<div class='cv-row'" + (style ? " style='" + style + "'" : "") + "><div><div class='cv-title'>" + t + "</div><div class='cv-sub'>" + s + "</div></div>" +
-           (d ? "<span class='cv-date'>" + d + "</span>" : "") + "</div>";
-  }
-  // contact links + CV — appended (faded in) only on the expanded view
-  // contact links sit at the bottom of the bio text column (aligned with the photo)
+  // contact links — shown only on the expanded view, sitting at the bottom of
+  // the bio text column so they align with the photo beside it
   var LINKS =
     "<div class='home-about-links'>" +
       "<a href='mailto:tayaras@outlook.com'>Email</a>" +
       "<a href='https://www.linkedin.com/in/tayaras/' target='_blank' rel='noopener'>LinkedIn ↗</a>" +
       "<a href='https://nowhereinteresting.online' target='_blank' rel='noopener'>Studio ↗</a>" +
     "</div>";
-
-  var DETAILS =
-    "<div class='home-about-extra'><div class='home-about-inner'>" +
-      "<div class='home-cv'>" +
-        "<p class='label' style='grid-column:1;grid-row:1'>Experience</p>" +
-        cvRow("Design Lead, Collective IQ — Microsoft", "IC3 · Microsoft 365 Copilot", "2026 – Present", "grid-column:1;grid-row:2") +
-        cvRow("Product Lead, Web Experiences — Microsoft", "Azure Communication Services · UI Library + Calling SDK + Interop", "2025 – Present", "grid-column:1;grid-row:3") +
-        cvRow("Product Lead, UI Library — Microsoft", "Azure Communication Services · UI Library", "2022 – 2025", "grid-column:1;grid-row:4") +
-        cvRow("Studio Director — Nowhere Interesting", "Strategy · Futures · Conceptualization · Workshops", "2018 – Present", "grid-column:1;grid-row:5") +
-        cvRow("Design / PM Intern — Microsoft", "Various Teams · 5 internships", "2017 – 2021", "grid-column:1;grid-row:6") +
-        cvRow("Teaching Assistant — Carnegie Mellon University", "Environments Design Prototyping Lab I and II", "2021 – 2022", "grid-column:1;grid-row:7") +
-        "<p class='label' style='grid-column:2;grid-row:1'>Education</p>" +
-        cvRow("Bachelor of Design, Hybrid Environments", "Carnegie Mellon University · Thesis: Physicalization of AR/XR", "", "grid-column:2;grid-row:2") +
-        "<p class='label label--skills' style='grid-column:2;grid-row:4;align-self:end'>Skills</p>" +
-        cvRow("Product", "Strategy · Roadmap · Stakeholder Engagement · Specs · User Research", "", "grid-column:2;grid-row:5") +
-        cvRow("Design", "Prototyping · Design Systems · Accessibility · Interaction · Conceptualization", "", "grid-column:2;grid-row:6") +
-        cvRow("Technical", "Front End &amp; React · SDK/API experience · Web standards · AR/XR · Creative Technology", "", "grid-column:2;grid-row:7;border-bottom:1px solid var(--line)") +
-      "</div>" +
-    "</div></div>";
 
   var PHOTO = "<div class='home-bio-photo'><img loading='lazy' src='images/main/IMG_4965.webp' alt='Tay Aras'></div>";
 
@@ -248,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function bind() {
     var ex = document.getElementById('aboutExpand');
     var col = document.getElementById('aboutCollapse');
-    if (ex) ex.addEventListener('click', function (e) { e.preventDefault(); toggle(ABOUT, COLLAPSE_CTA, DETAILS, true); });
+    if (ex) ex.addEventListener('click', function (e) { e.preventDefault(); toggle(ABOUT, COLLAPSE_CTA, '', true); });
     if (col) col.addEventListener('click', function (e) { e.preventDefault(); toggle(SHORT, EXPAND_CTA, '', false, scrollToCta); });
   }
 
