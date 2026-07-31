@@ -169,9 +169,10 @@ class StringsPanel {
     this.open = false;
     this.strings = [];
     const path = window.location.pathname;
-    this.tuning = path.includes('about') 
+    this.tuning = path.includes('about')
       ? [277.18, 220.00, 164.81, 110.00, 82.41]
       : [246.94, 207.65, 164.81, 123.47, 82.41];
+    if (!this.btn) return;   // pages without the header dropdown (e.g. home) skip this
     this.btn.addEventListener('click', () => this.toggle());
   }
 
@@ -223,6 +224,7 @@ class StringsPanel {
 class MuteButton {
   constructor() {
     this.btn = document.getElementById('muteBtn');
+    if (!this.btn) return;
     this.btn.addEventListener('click', () => this.toggle());
   }
 
@@ -240,6 +242,7 @@ class MuteButton {
   }
 
   show() {
+    if (!this.btn) return;
     this.btn.style.display = 'inline-flex';
     this.update(isMuted);
   }
@@ -321,6 +324,8 @@ class PortfolioApp {
     this.muteBtn = new MuteButton();
     this.stringsPanel = new StringsPanel();
     this.initMainString();
+    // mute + theme are now permanent header controls, grouped before the nav
+    this.muteBtn.show();
   }
 
   initMainString() {
@@ -391,6 +396,10 @@ document.addEventListener('visibilitychange', () => {
     if (img.closest('.hero-img')) return;
     if (img.closest('.brand')) return;
     if (img.closest('a[href]')) return;
+    // project thumbnails and page heroes aren't gallery images — a thumbnail
+    // click should follow the project link, not raise a captioned overlay
+    if (img.closest('.home-media')) return;
+    if (img.closest('.proj-lead-img')) return;
     open(img.src, img.dataset.caption || img.alt);
   });
 
@@ -398,4 +407,25 @@ document.addEventListener('visibilitychange', () => {
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') close();
   });
+}());
+
+/* Autoplaying media (project thumbnails, lead images) holds on its poster frame
+   for anyone who has asked for less motion — `autoplay` can't be opted out of
+   in CSS, so it has to be paused here. */
+(function () {
+  var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function apply() {
+    document.querySelectorAll('video[autoplay], video[data-autoplay]').forEach(function (v) {
+      if (mq.matches) {
+        v.pause();
+        v.removeAttribute('autoplay');
+        v.setAttribute('data-autoplay', '');   // remember it, in case they switch back
+        v.currentTime = 0;
+      } else if (v.paused) {
+        v.play().catch(function () {});
+      }
+    });
+  }
+  apply();
+  mq.addEventListener('change', apply);
 }());

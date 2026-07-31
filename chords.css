@@ -1,0 +1,106 @@
+/* ─── CHORD KEYS ───────────────────────────────────────────────────────────
+   The A–G / Z / X chord controls and their on-screen pads, shared by the home
+   page and the project pages. Visible whenever the page is compressed, which
+   each page signals by putting .chords-visible on <body>.
+
+   Pairs with chords.js. Load after shared.css. */
+/* chord instructions — surface only when the stack is compressed */
+.chord-hint {
+  text-align: center;
+  margin-top: 44px;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+  /* expanded, it's invisible — so it must not hold its ~160px of layout open
+     underneath the last section either. Collapsed to nothing until needed. */
+  height: 0;
+  overflow: hidden;
+}
+body.chords-visible .chord-hint { opacity: 1; height: auto; overflow: visible; }
+/* the current chord, shown large */
+.chord-now {
+  font-family: var(--sans);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--mid);
+  line-height: 1.1;
+  min-height: 30px;
+  transition: color 0.2s ease;
+}
+.chord-now.active { color: #ff2d2d; }
+/* the how-to line */
+.chord-instr {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+  margin-top: 10px;
+}
+.chord-instr .k { color: var(--black); font-weight: 700; }
+
+/* on-screen chord keys — a clickable mirror of the A–G / Z / X shortcuts.
+   Desktop: one horizontal row. Touch: stacked columns (see below). */
+.chord-pads { padding-top: 4px; }
+body.chords-visible .chord-pads { pointer-events: auto; }
+.chord-pad-deck {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 22px;
+  margin-top: 20px;
+}
+.chord-pad-left { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 22px; }
+.chord-pad-col { display: flex; gap: 8px; }
+.chord-pad {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  min-width: 40px;
+  min-height: 36px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--mid);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.chord-pad--mode { min-width: 72px; }
+.chord-pad--strum {
+  min-width: 104px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.chord-pad--strum svg { width: 14px; height: 14px; flex: 0 0 auto; }
+.chord-pad[aria-pressed="true"] { color: #ff2d2d; border-color: #ff2d2d; }
+.chord-pad--strum:active { color: #ff2d2d; border-color: #ff2d2d; }
+/* touch: drop the keyboard hint and stack the pads — A–G down the left with
+   major/minor beside it, strum controls on the right, all thumb-sized */
+@media (max-width: 640px), (hover: none) and (pointer: coarse) {
+  .chord-instr { display: none; }
+  .chord-pads { padding: 0 4px 28px; }
+  .chord-pad-deck { flex-wrap: nowrap; align-items: stretch; justify-content: space-between; gap: 16px; text-align: left; }
+  .chord-pad-left { flex-wrap: nowrap; align-items: stretch; gap: 10px; }
+  .chord-pad-col { flex-direction: column; }
+  /* major/minor and the strum pair each split the A–G column's height */
+  .chord-pad-col--mode .chord-pad,
+  .chord-pad-col--strum .chord-pad { flex: 1 1 0; }
+  .chord-pad { font-size: 15px; min-width: 54px; min-height: 46px; padding: 10px 12px; }
+  .chord-pad--mode { min-width: 88px; }
+  .chord-pad--strum { min-width: 124px; }
+}
+@media (max-width: 380px) {
+  .chord-pad { min-width: 46px; font-size: 14px; padding: 10px 8px; }
+  .chord-pad--mode { min-width: 72px; }
+  .chord-pad--strum { min-width: 104px; font-size: 12px; }
+}
+

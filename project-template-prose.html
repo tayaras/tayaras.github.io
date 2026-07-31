@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!--
+  PROJECT PAGE TEMPLATE
+  ─────────────────────────────────────────────────────────────────────────────
+  How to use: copy this file to <project>.html, then
+    1. fill in <title>, meta description, canonical + og: URLs, og:image
+    2. replace everything marked [ ] with the project's own content
+    3. delete any section you don't need — sections are independent
+    4. point the "Next project" link at whatever should come after it
+
+  Structure: every section is a hairline rule + a mono rail label on the left
+  and the body column on the right — the same rhythm as the home page's
+  meta / description split. Styles live in project.css, behaviour in project.js.
+  The header is the shared site header; shared.js wires the string, mute,
+  theme toggle, and mobile menu automatically — leave the IDs alone.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!sessionStorage.getItem("ta_auth"))document.documentElement.style.visibility="hidden";</script>
+  <script src="auth.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Project] — Tay Aras</title>
+  <meta name="description" content="[One sentence on what the project is and what you did.]">
+  <link rel="canonical" href="https://www.tayaras.com/[project].html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.tayaras.com/[project].html">
+  <meta property="og:title" content="[Project] — Tay Aras">
+  <meta property="og:description" content="[One sentence for social cards.]">
+  <meta property="og:image" content="https://www.tayaras.com/images/og-[project].jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
+  <link rel="preconnect" href="https://use.typekit.net" crossorigin>
+  <link rel="preconnect" href="https://p.typekit.net" crossorigin>
+  <link rel="stylesheet" href="https://use.typekit.net/nzi3inl.css">
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="project.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- ─── HEADER — same row as the home page: brand, string, controls, nav ─── -->
+<header class="site-header proj-header" id="navigation">
+  <div class="header-bar">
+    <a class="brand" href="index.html">Tay Aras</a>
+    <div class="string-zone" id="singleZone" tabindex="0" aria-label="Interactive guitar string — click or drag to play">
+      <svg class="string-svg" id="singleSVG" viewBox="0 0 1100 36" preserveAspectRatio="none">
+        <path id="singlePath" class="string-path" d="M0 19 Q 550 19 1100 19"/>
+      </svg>
+    </div>
+    <button class="mute-btn" id="muteBtn" aria-label="Toggle sound" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path class="sound-on" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-on" d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="sound-off" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"/>
+        <line class="sound-off" x1="15" y1="9" x2="21" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+        <line class="sound-off" x1="21" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+      </svg>
+    </button>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html" class="current">Work</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="mobile-nav">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none">
+          <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html" class="current">Work</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <article class="proj">
+
+    <!-- ─── TITLE ─────────────────────────────────────────────────────── -->
+    <header class="proj-head">
+      <p class="proj-eyebrow">[Company] · [Team or context]</p>
+      <h1 class="proj-title">[Project name]</h1>
+      <p class="proj-sub">[One line on what it is — the sentence you'd say out loud.]</p>
+
+      <div class="proj-meta">
+        <div class="proj-meta-cell">
+          <p class="label">Role</p>
+          <p>[Design lead]</p>
+        </div>
+        <div class="proj-meta-cell">
+          <p class="label">Team</p>
+          <p>[Who you worked with]</p>
+        </div>
+        <div class="proj-meta-cell">
+          <p class="label">Timeline</p>
+          <p>[2026 – Present]</p>
+        </div>
+        <div class="proj-meta-cell">
+          <p class="label">Scope</p>
+          <p>[Product design · Research]</p>
+        </div>
+      </div>
+
+      <!-- where the work lives. Use .proj-links--1 for a single row; delete the
+           whole block for anything unshipped or under NDA. -->
+      <div class="proj-links">
+        <a class="proj-link" href="[https://…]" target="_blank" rel="noopener">
+          <span>[Visit the product]</span>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="proj-link" href="[https://…]" target="_blank" rel="noopener">
+          <span>[Paper / repo / press]</span>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </header>
+
+    <!-- hero image — 16:9, hairline border, same treatment as the home thumbs -->
+    <figure class="proj-hero proj-reveal">
+      <img src="images/[project]/hero.webp" alt="[What the image shows]">
+    </figure>
+
+    <!-- ─── OVERVIEW ──────────────────────────────────────────────────── -->
+    <section class="proj-section proj-reveal" aria-label="Overview">
+      <div class="proj-rail">
+        <p class="label">Overview</p>
+        <p class="proj-rail-note">[Optional: the one-line thesis, in the margin.]</p>
+      </div>
+      <div class="proj-body">
+        <h2 class="proj-h2">[The claim this project makes, in one sentence.]</h2>
+        <p class="proj-lead">[Lead paragraph — what the product is, who it's for, and what you owned. Full-contrast text; everything after this is grey.]</p>
+        <p>[Supporting paragraph. Keep it to what a reader needs to follow the rest of the page.]</p>
+      </div>
+    </section>
+
+    <!-- ─── CONTEXT ───────────────────────────────────────────────────── -->
+    <section class="proj-section proj-reveal" aria-label="Context">
+      <div class="proj-rail"><p class="label">Context</p></div>
+      <div class="proj-body">
+        <p>[The situation before the work: what existed, what didn't, why it mattered.]</p>
+        <p>[The constraint that shaped everything — the thing you couldn't design around.]</p>
+
+        <figure class="proj-fig">
+          <img src="images/[project]/[image].webp" alt="[What the image shows]" loading="lazy">
+          <figcaption>[Caption — what to notice, not what it is.]</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ─── APPROACH ──────────────────────────────────────────────────── -->
+    <section class="proj-section proj-reveal" aria-label="Approach">
+      <div class="proj-rail"><p class="label">Approach</p></div>
+      <div class="proj-body">
+        <p>[How you went at it.]</p>
+
+        <!-- numbered decisions — the list numbers itself -->
+        <ol class="proj-list">
+          <li><span><strong>[Decision.]</strong> [Why, in one line.]</span></li>
+          <li><span><strong>[Decision.]</strong> [Why, in one line.]</span></li>
+          <li><span><strong>[Decision.]</strong> [Why, in one line.]</span></li>
+        </ol>
+
+        <!-- two images side by side; drops to one column on mobile -->
+        <figure class="proj-fig proj-fig--pair">
+          <img src="images/[project]/[before].webp" alt="[What the image shows]" loading="lazy">
+          <img src="images/[project]/[after].webp" alt="[What the image shows]" loading="lazy">
+          <figcaption>[Left: … · Right: …]</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ─── A MOMENT WORTH PULLING OUT ────────────────────────────────── -->
+    <section class="proj-section proj-reveal" aria-label="Decision">
+      <div class="proj-rail"><p class="label">Turning point</p></div>
+      <div class="proj-body">
+        <blockquote class="proj-quote">
+          [The sentence that reframed the problem.]
+          <cite>[Who said it, or where it came from]</cite>
+        </blockquote>
+        <p>[What changed because of it.]</p>
+      </div>
+    </section>
+
+    <!-- ─── A FULL-WIDTH IMAGE ────────────────────────────────────────── -->
+    <!-- drop the rail entirely when an image deserves the whole page width -->
+    <section class="proj-section proj-reveal" aria-label="Detail" style="grid-template-columns: 1fr;">
+      <figure class="proj-fig proj-fig--wide">
+        <img src="images/[project]/[wide].webp" alt="[What the image shows]" loading="lazy">
+        <figcaption>[Caption.]</figcaption>
+      </figure>
+    </section>
+
+    <!-- ─── OUTCOME ───────────────────────────────────────────────────── -->
+    <section class="proj-section proj-reveal" aria-label="Outcome">
+      <div class="proj-rail"><p class="label">Outcome</p></div>
+      <div class="proj-body">
+        <p>[What shipped, who uses it, what it changed. If numbers are under NDA, say what changed qualitatively instead.]</p>
+
+        <div class="proj-stats">
+          <div>
+            <p class="proj-stat-n">[00]</p>
+            <p class="proj-stat-d">[What the number counts]</p>
+          </div>
+          <div>
+            <p class="proj-stat-n">[00]</p>
+            <p class="proj-stat-d">[What the number counts]</p>
+          </div>
+          <div>
+            <p class="proj-stat-n">[00]</p>
+            <p class="proj-stat-d">[What the number counts]</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── REFLECTION ────────────────────────────────────────────────── -->
+    <section class="proj-section proj-reveal" aria-label="Reflection">
+      <div class="proj-rail"><p class="label">Reflection</p></div>
+      <div class="proj-body">
+        <p>[What you'd do differently, or what the work taught you. One paragraph — this is the last thing they read.]</p>
+      </div>
+    </section>
+
+    <!-- ─── NEXT ──────────────────────────────────────────────────────── -->
+    <nav class="proj-next" aria-label="Next project">
+      <div>
+        <p class="label">Next project</p>
+        <a class="proj-next-title" href="[next-project].html">[Next project name] →</a>
+      </div>
+      <a class="proj-back" href="index.html">← All work</a>
+    </nav>
+
+  </article>
+</main>
+<footer class="copyright-footer">
+  <span>© 2026 Tay Aras</span>
+</footer>
+
+
+<script src="shared.js"></script>
+<script src="project.js"></script>
+</body>
+</html>

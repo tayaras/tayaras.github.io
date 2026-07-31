@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!sessionStorage.getItem("ta_auth"))document.documentElement.style.visibility="hidden";</script>
+  <script src="auth.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orbit — Tay Aras</title>
+  <meta name="description" content="An interactive wall speaker for two people to bond over music — sharing songs, reacting with emotion, and building a physical record of the relationship over time.">
+  <link rel="canonical" href="https://www.tayaras.com/orbit-overview.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.tayaras.com/orbit-overview.html">
+  <meta property="og:title" content="Orbit: Growing Together — Tay Aras">
+  <meta property="og:description" content="An interactive wall speaker that turns songs shared between two people into a growing record of the relationship.">
+  <meta property="og:image" content="https://www.tayaras.com/images/og-acs.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
+  <link rel="preconnect" href="https://use.typekit.net" crossorigin>
+  <link rel="preconnect" href="https://p.typekit.net" crossorigin>
+  <link rel="stylesheet" href="https://use.typekit.net/nzi3inl.css">
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="chords.css">
+  <link rel="stylesheet" href="project.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<a class="proj-exit" href="index.html" aria-label="Back to all work" title="All work">
+  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+</a>
+
+<header class="site-header proj-header" id="navigation">
+  <div class="header-bar">
+    <a class="brand" href="index.html" title="Back to all work">Tay Aras</a>
+    <div class="string-zone" id="singleZone" tabindex="0" aria-label="Interactive guitar string — click or drag to play">
+      <svg class="string-svg" id="singleSVG" viewBox="0 0 1100 36" preserveAspectRatio="none">
+        <path id="singlePath" class="string-path" d="M0 19 Q 550 19 1100 19"/>
+      </svg>
+    </div>
+    <div class="proj-controls">
+      <button class="mute-btn" id="muteBtn" aria-label="Toggle sound" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path class="sound-on" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path class="sound-on" d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path class="sound-off" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"/>
+          <line class="sound-off" x1="15" y1="9" x2="21" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+          <line class="sound-off" x1="21" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+        </svg>
+      </button>
+      <button id="projCollapse" aria-label="Collapse sections" aria-expanded="true" title="Collapse">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <figure class="proj-lead-img">
+    <img src="images/orbit/hero-still.webp" alt="The Orbit speaker mounted on a wall, glowing, with someone using the app nearby">
+  </figure>
+
+  <article class="proj">
+
+    <header class="proj-head proj-grid">
+      <div class="proj-string-row proj-id-row" data-freq="277.18">
+        <h1 class="proj-id">Orbit: Growing Together</h1>
+        <div class="string-zone" tabindex="0" aria-label="Orbit — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+
+      <dl class="proj-facts">
+        <div class="proj-fact">
+          <dt>Organization</dt>
+          <dd>Carnegie Mellon University<br>Interaction Design</dd>
+        </div>
+        <div class="proj-fact">
+          <dt>Role</dt>
+          <dd>Interaction design<br>Concept development<br>Physical prototyping</dd>
+        </div>
+        <div class="proj-fact">
+          <dt>Collaborators</dt>
+          <dd>Dorcas Lin<br>Franklin Guttman</dd>
+        </div>
+        <div class="proj-fact">
+          <dt>Duration</dt>
+          <dd>2021</dd>
+        </div>
+      </dl>
+
+      <p class="proj-linkline">
+        <a href="orbit.html">Full case study &rarr;</a>
+      </p>
+
+      <div class="proj-summary">
+        <p>Orbit is an interactive wall speaker for two people who live apart. One person shares a song, the other reacts to it, and the speaker turns that exchange into light. Over months the reactions build up into a record of the relationship you can see from across the room.</p>
+        <p>We were trying to work out how a close relationship survives losing the in-person part of itself. Texting keeps you in contact, but it leaves nothing behind. We wanted something that held onto the feeling of a friendship and got richer the longer it went on.</p>
+        <p>It's an interaction study about music as a way of being present at a distance. The interface, the object, and the electronics all had to be designed at the same time: Figma and the Spotify API on one side, TinkerCad, Solidworks, and Arduino on the other.</p>
+      </div>
+    </header>
+
+    <section class="proj-sec proj-reveal">
+      <div class="proj-sec-title proj-string-row" data-freq="246.94">
+        <p class="proj-sec-label">How it works</p>
+        <div class="string-zone" tabindex="0" aria-label="How it works — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+
+      <div class="proj-row proj-row--wide proj-grid">
+        <figure class="proj-row-media">
+          <div class="proj-embed">
+            <iframe src="https://player.vimeo.com/video/527938920?title=0&amp;byline=0&amp;portrait=0"
+                    allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
+                    title="Orbit: Growing Together — demo video" loading="lazy"></iframe>
+          </div>
+          <figcaption>Demo — the full exchange, end to end</figcaption>
+        </figure>
+      </div>
+
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <p class="proj-row-head">A two-person loop</p>
+          <p>Find a song, send it, receive it, listen, react, rewind. Every exchange gets drawn as a light pattern and kept, so the speaker you listen through is also the thing holding the history.</p>
+        </div>
+        <figure class="proj-row-media">
+          <img src="images/orbit/journey-map.webp" alt="User journey map of the full Orbit experience" loading="lazy">
+          <figcaption>The full arc — from discovering a song to the tapestry it joins</figcaption>
+        </figure>
+      </div>
+
+      <div class="proj-tiles" style="margin-top: clamp(32px, 4vw, 48px);">
+        <figure class="proj-tile">
+          <img src="images/orbit/slide-01.webp" alt="Storyboard: finding a song to send" loading="lazy">
+          <figcaption><span class="proj-tile-name">Find a song</span><span class="proj-tile-note">It starts in Spotify, in a library someone already has. Sharing takes one action.</span></figcaption>
+        </figure>
+        <figure class="proj-tile">
+          <img src="images/orbit/slide-03.webp" alt="Storyboard: the speaker signalling that a song is waiting" loading="lazy">
+          <figcaption><span class="proj-tile-name">Receive a song</span><span class="proj-tile-note">Orbit glows a different colour when something is waiting. You catch it from across the room.</span></figcaption>
+        </figure>
+        <figure class="proj-tile">
+          <img src="images/orbit/slide-06.webp" alt="Storyboard: sending an emotional reaction back" loading="lazy">
+          <figcaption><span class="proj-tile-name">Send a reaction</span><span class="proj-tile-note">Swing the control to pick a state. The visuals move as you go, so you see the reaction before you send it.</span></figcaption>
+        </figure>
+        <figure class="proj-tile">
+          <img src="images/orbit/slide-07.webp" alt="Storyboard: rewinding through the accumulated history" loading="lazy">
+          <figcaption><span class="proj-tile-name">Rewind</span><span class="proj-tile-note">The control doubles as a dial. Turn it and you walk back through past songs and the visuals that came with them.</span></figcaption>
+        </figure>
+      </div>
+
+      <div class="proj-row proj-grid" style="margin-top: clamp(40px, 6vw, 72px);">
+        <div class="proj-row-copy">
+          <p class="proj-row-head">Built on the library people already have</p>
+          <p>Orbit plugs into Spotify instead of building a catalog. Songs go straight out of a library someone already keeps, and the companion app shows what was sent, by whom, and what came back.</p>
+        </div>
+        <figure class="proj-row-media">
+          <img src="images/orbit/slide-04.webp" alt="The song sharing interface built on Spotify" loading="lazy">
+          <img src="images/orbit/slide-08.webp" alt="Companion app screens" loading="lazy">
+          <figcaption>Sharing and companion screens</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="proj-sec proj-reveal">
+      <div class="proj-sec-title proj-string-row" data-freq="220.00">
+        <p class="proj-sec-label">The work</p>
+        <div class="string-zone" tabindex="0" aria-label="The work — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+
+      <dl class="proj-contrib">
+        <div>
+          <dt>The interaction model</dt>
+          <dd>Defined the two-person loop of share, react, accumulate, and made the call that what travels between people is a reaction rather than a message.</dd>
+        </div>
+        <div>
+          <dt>Emotional language</dt>
+          <dd>Five states: hype, surprising, chill, nostalgic, rewind. I animated them instead of drawing icons, tuning speed, colour, and movement together so you can tell them apart without being taught.</dd>
+        </div>
+        <div>
+          <dt>Physical form</dt>
+          <dd>Modelled the speaker in TinkerCad and Solidworks to sit flush against a wall, so it hangs like art instead of sitting on a shelf like a gadget.</dd>
+        </div>
+        <div>
+          <dt>Electronics</dt>
+          <dd>Arduino driving the LED array, with an enclosure material picked to diffuse the light so the states arrive as a glow instead of a hard pattern.</dd>
+        </div>
+        <div>
+          <dt>Companion interface</dt>
+          <dd>Designed the app against the Spotify layer so the music keeps its context and sharing stays a single action.</dd>
+        </div>
+        <div>
+          <dt>System architecture</dt>
+          <dd>Mapped how a reaction gets from one person's phone through the shared layer to light on both speakers at once.</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="proj-sec proj-reveal">
+      <div class="proj-sec-title proj-string-row" data-freq="196.00">
+        <p class="proj-sec-label">The object</p>
+        <div class="string-zone" tabindex="0" aria-label="The object — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <p class="proj-row-head">A speaker shaped like something you'd hang</p>
+          <p>The shell sits flush to the wall so Orbit hangs like art. We wanted a record of a relationship to be somewhere you'd see it every day.</p>
+          <p>Inside, an Arduino drives the LED array. The enclosure diffuses the light so a state arrives as a glow across the whole face and you never see the individual pixels.</p>
+        </div>
+        <figure class="proj-row-media">
+          <img src="images/orbit/physical-01.webp" alt="The Orbit speaker prototype, front view" loading="lazy">
+          <img src="images/orbit/physical-02.webp" alt="Detail of the Orbit speaker's diffusing face" loading="lazy">
+          <figcaption>Prototype — front and detail</figcaption>
+        </figure>
+      </div>
+
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <p class="proj-row-head">Two speakers, one signal</p>
+          <p>A reaction leaves one person's phone, passes through the shared music layer, and lands on both speakers at the same time. The simultaneity is what makes it feel like it happened in one room.</p>
+        </div>
+        <figure class="proj-row-media">
+          <img src="images/orbit/systems-diagram.webp" alt="Systems diagram showing how a reaction travels between two Orbit speakers" loading="lazy">
+          <figcaption>System architecture</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="proj-sec proj-reveal">
+      <div class="proj-sec-title proj-string-row" data-freq="174.61">
+        <p class="proj-sec-label">Five states</p>
+        <div class="string-zone" tabindex="0" aria-label="Five states — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <p>Five states — <em>hype, surprising, chill, nostalgic, rewind</em> — each one a moving pattern instead of an icon. I tuned speed, colour temperature, and movement together so you can tell them apart across a room without learning a key.</p>
+          <p>They pile up. Five weeks in you have a small ring; five years in it's dense, and you can see which songs landed, when, and how hard.</p>
+          <p>The object turned out to do things a screen couldn't. The same exchange in a chat thread is gone as soon as you scroll past it. On a wall it just stays there.</p>
+        </div>
+        <figure class="proj-row-media">
+          <img src="images/orbit/emotion-01.gif" alt="An emotional state rendered as a light animation" loading="lazy">
+          <figcaption>The five states — hype, surprising, chill, nostalgic, rewind</figcaption>
+        </figure>
+      </div>
+
+      <div class="proj-tiles" style="margin-top: clamp(32px, 4vw, 48px);">
+        <figure class="proj-tile">
+          <img src="images/orbit/emotion-02.gif" alt="Light animation for sending and receiving a reaction" loading="lazy">
+          <figcaption><span class="proj-tile-name">Sending and receiving</span><span class="proj-tile-note">"I sent this song because it's hype." / "Ooh, it is surprising!" Two lights answering each other.</span></figcaption>
+        </figure>
+        <figure class="proj-tile">
+          <img src="images/orbit/emotion-03.gif" alt="Light animation showing the tapestry growing over time" loading="lazy">
+          <figcaption><span class="proj-tile-name">Growth over time</span><span class="proj-tile-note">Depth and opacity carry duration: five weeks is a small ring, five years is a dense figure.</span></figcaption>
+        </figure>
+        <figure class="proj-tile">
+          <img src="images/orbit/emotion-04.gif" alt="Light animation reflecting the tone of the music" loading="lazy">
+          <figcaption><span class="proj-tile-name">Tone of the music</span><span class="proj-tile-note">The music's tone maps to a colour gradient, so the pattern takes its colour from what was actually shared.</span></figcaption>
+        </figure>
+        <figure class="proj-tile">
+          <img src="images/orbit/emotion-05.gif" alt="Light animation showing relationship size from songs shared" loading="lazy">
+          <figcaption><span class="proj-tile-name">Scale of the exchange</span><span class="proj-tile-note">The number of songs shared sets the projection size, so a longer friendship takes up more of the wall.</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- chord keys — surface only while the page is compressed, same as home -->
+    <div class="chord-hint">
+      <div class="chord-now" id="chordNow" aria-hidden="true">—</div>
+      <div class="chord-instr" aria-hidden="true">Press <span class="k">A</span>–<span class="k">G</span> to tune a chord, then strum the strings · <span class="k">Z</span> = major · <span class="k">X</span> = minor</div>
+      <div class="chord-pads" id="chordPads">
+        <div class="chord-pad-deck">
+          <div class="chord-pad-left">
+            <div class="chord-pad-col" role="group" aria-label="Choose a chord">
+              <button type="button" class="chord-pad" data-root="a" aria-pressed="false">A</button>
+              <button type="button" class="chord-pad" data-root="b" aria-pressed="false">B</button>
+              <button type="button" class="chord-pad" data-root="c" aria-pressed="false">C</button>
+              <button type="button" class="chord-pad" data-root="d" aria-pressed="false">D</button>
+              <button type="button" class="chord-pad" data-root="e" aria-pressed="false">E</button>
+              <button type="button" class="chord-pad" data-root="f" aria-pressed="false">F</button>
+              <button type="button" class="chord-pad" data-root="g" aria-pressed="false">G</button>
+            </div>
+            <div class="chord-pad-col chord-pad-col--mode" role="group" aria-label="Chord quality">
+              <button type="button" class="chord-pad chord-pad--mode" data-mode="major" aria-pressed="true">Major</button>
+              <button type="button" class="chord-pad chord-pad--mode" data-mode="minor" aria-pressed="false">Minor</button>
+            </div>
+          </div>
+          <div class="chord-pad-col chord-pad-col--strum" role="group" aria-label="Strum the strings">
+            <button type="button" class="chord-pad chord-pad--strum" data-strum="up">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Strum up
+            </button>
+            <button type="button" class="chord-pad chord-pad--strum" data-strum="down">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M12 19l-6-6M12 19l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Strum down
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="proj-next" aria-label="Next project" style="margin-top: clamp(72px, 10vw, 150px);">
+      <div>
+        <p class="label">Next project</p>
+        <a class="proj-next-title" href="ui-library.html">ACS UI Library →</a>
+      </div>
+      <a class="proj-back" href="index.html">← All work</a>
+    </nav>
+
+  </article>
+</main>
+<footer class="copyright-footer">
+  <span>© 2026 Tay Aras</span>
+</footer>
+
+
+<script src="shared.js"></script>
+<script src="chords.js"></script>
+<script src="project.js"></script>
+</body>
+</html>

@@ -6,7 +6,21 @@
   <script src="auth.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ACS UI Library — Tay Aras</title>
-  <meta name="description" content="Product design case study for the Azure Communication Services UI Library. Product lead — strategy, design direction, and cross-functional execution, 2022–present.">
+  <meta name="description" content="Product design case study for the Azure Communication Services UI Library. Product and design lead — owned the roadmap and the design system 200+ businesses ship to their users.">
+  <link rel="canonical" href="https://www.tayaras.com/acs.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.tayaras.com/acs.html">
+  <meta property="og:title" content="ACS UI Library — Tay Aras">
+  <meta property="og:description" content="Product design case study for the Azure Communication Services UI Library. Product and design lead — owned the roadmap and the design system 200+ businesses ship to their users.">
+  <meta property="og:image" content="https://www.tayaras.com/images/og-acs.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ACS UI Library — Tay Aras">
+  <meta name="twitter:description" content="Product design case study for the Azure Communication Services UI Library.">
+  <meta name="twitter:image" content="https://www.tayaras.com/images/og-acs.jpg">
+  <link rel="preconnect" href="https://use.typekit.net" crossorigin>
+  <link rel="preconnect" href="https://p.typekit.net" crossorigin>
   <link rel="stylesheet" href="https://use.typekit.net/nzi3inl.css">
   <link rel="stylesheet" href="shared.css">
   <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
@@ -14,7 +28,7 @@
     /* Page-specific: hero, stats, work blocks, decisions */
     .acs-hero h1 { font-size: clamp(52px, 7vw, 96px); line-height: 0.95; letter-spacing: -0.045em; }
     .acs-hero-eyebrow { font-family: var(--sans); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); margin-bottom: 24px; }
-    .acs-hero-sub { font-size: 1.5rem; letter-spacing: -0.04em; white-space: nowrap; margin-top: 24px; color: var(--mid-600); }
+    .acs-hero-sub { font-size: 1.5rem; letter-spacing: -0.04em; margin-top: 24px; color: var(--mid-600); }
     @media (min-width: 768px) { .acs-hero-sub { font-size: 2.25rem; } }
     .acs-hero-tagline { margin-top: 16px; font-size: 1.125rem; color: var(--mid); max-width: 40rem; line-height: 1.6; }
     .acs-hero-img-wrap { margin-top: 64px; border-radius: var(--radius-card); border: 1px solid var(--line); box-shadow: var(--shadow-card); background: #d8d5cc; overflow: hidden; aspect-ratio: 16 / 9; }
@@ -36,6 +50,16 @@
     .acs-work-media .cs-fig { margin-top: 0; }
     .acs-work-video { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--line); background: #0a0a0a; margin-bottom: 12px; }
     .acs-work-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .acs-live-embed { position: relative; border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--line); background: #fff; }
+    .acs-live-embed iframe { display: block; width: 100%; height: 520px; border: 0; }
+    @media (max-width: 640px) { .acs-live-embed iframe { height: 420px; } }
+    .acs-live-tag { position: absolute; top: 12px; right: 12px; z-index: 2; display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; font-size: 0.72rem; letter-spacing: 0.02em; color: var(--white); background: rgba(10,10,10,0.72); backdrop-filter: blur(4px); pointer-events: none; }
+    .acs-live-tag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 3px rgba(74,222,128,0.25); }
+    .acs-explorer-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .acs-tab { font: inherit; font-size: 0.82rem; line-height: 1; padding: 8px 15px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--mid); cursor: pointer; transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease; }
+    .acs-tab:hover { color: var(--black); border-color: var(--mid); }
+    .acs-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .acs-tab.is-active { background: var(--accent); color: #fff; border-color: var(--accent); }
     .acs-work-num { font-size: 0.875rem; color: var(--mid); }
     .acs-work-title { font-size: clamp(1.5rem, 2.5vw, 2.25rem); line-height: 1.1; letter-spacing: -0.045em; font-weight: 400; color: var(--black); margin-bottom: 16px; }
     .acs-work-body { font-size: 1.125rem; line-height: 1.7; color: var(--mid-600); }
@@ -44,16 +68,35 @@
     .cs-decision-block { margin-top: 48px; padding-top: 48px; border-top: 1px solid var(--line); }
     .cs-decision-block:first-child { margin-top: 0; padding-top: 0; border-top: none; }
 
+    /* Inline tradeoff callout — embedded where the decision happened */
+    .cs-tradeoff { margin-top: 40px; padding: 28px; border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--white); }
+    .cs-tradeoff-label { font-family: var(--sans); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .cs-tradeoff-title { font-size: 1.125rem; letter-spacing: -0.02em; color: var(--black); margin-bottom: 12px; }
+    .cs-tradeoff p { font-size: 1rem; line-height: 1.7; color: var(--mid-600); }
+
+    /* Click-to-load live demo facade — Storybook bundle only loads on click */
+    .acs-demo-facade { position: relative; width: 100%; aspect-ratio: 16 / 9; padding: 0; display: block; border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--line); background: #0a0a0a; cursor: pointer; }
+    .acs-demo-facade img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.82; transition: opacity 0.2s ease; }
+    .acs-demo-facade:hover img { opacity: 0.7; }
+    .acs-demo-facade:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .acs-demo-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+    .acs-demo-play { display: inline-flex; align-items: center; gap: 10px; padding: 12px 22px; border-radius: 999px; font-family: var(--sans); font-size: 0.9rem; letter-spacing: 0.01em; color: #fff; background: rgba(10,10,10,0.72); backdrop-filter: blur(4px); }
+
     /* Dark mode — page-specific selectors only */
         [data-theme="dark"] .acs-stat            { background: rgba(255,255,255,0.04); border-color: var(--line); }
     [data-theme="dark"] .acs-stat-value      { color: var(--black); }
     [data-theme="dark"] .acs-stat-label      { color: var(--mid); }
     [data-theme="dark"] .acs-work-block      { border-color: var(--line); }
     [data-theme="dark"] .acs-work-video      { border-color: var(--line); }
+    [data-theme="dark"] .acs-live-embed      { border-color: var(--line); }
     [data-theme="dark"] .acs-work-num        { color: var(--mid); }
     [data-theme="dark"] .acs-work-title      { color: var(--black); }
     [data-theme="dark"] .acs-work-body       { color: #c8c5be; }
     [data-theme="dark"] .cs-decision-block   { border-color: var(--line); }
+    [data-theme="dark"] .cs-tradeoff         { background: rgba(255,255,255,0.04); border-color: var(--line); }
+    [data-theme="dark"] .cs-tradeoff-title   { color: var(--black); }
+    [data-theme="dark"] .cs-tradeoff p       { color: #c8c5be; }
+    [data-theme="dark"] .acs-demo-facade     { border-color: var(--line); }
     [data-theme="dark"] .acs-hero-eyebrow    { color: var(--mid); }
     [data-theme="dark"] .acs-hero-sub        { color: var(--black); }
     [data-theme="dark"] .acs-hero-tagline    { color: var(--mid); }
@@ -138,13 +181,13 @@
         <div class="cs-col-body">
           <h2 class="cs-heading">Developers needed communication experiences that were fast to ship and flexible enough to keep.</h2>
           <div class="cs-body">
-            <p class="muted">Product lead for the ACS Web UI Library. Set product direction, shaped roadmap priorities, and drove cross-functional execution across design, engineering, accessibility, DevRel, and customer-facing workstreams.</p>
+            <p class="muted">Product and design lead for the ACS Web UI Library. I owned both the roadmap and the design system itself — the defaults, components, and accessibility patterns that 200+ businesses ship directly to their users. When a developer adopts the library, their customers inherit our design decisions.</p>
             <p>The ACS Web UI Library helps developers build web-based calling and chat experiences without starting from scratch. It provides prebuilt composites for full experiences and lower-level UI components for teams that need deeper control.</p>
           </div>
           <div class="cs-meta-grid">
             <div class="cs-meta-card">
               <p class="cs-meta-label">Role</p>
-              <p class="cs-meta-val">Product Lead</p>
+              <p class="cs-meta-val">Product &amp; Design Lead</p>
             </div>
             <div class="cs-meta-card">
               <p class="cs-meta-label">Company</p>
@@ -165,17 +208,18 @@
     </div>
   </section>
 
-  <!-- MODEL ─────────────────────────────────────── -->
-  <section class="cs-section" aria-label="Platform model">
+  <!-- CONTEXT (merged Model + Problem) ──────────── -->
+  <section class="cs-section" aria-label="Context">
     <div class="cs-wrap">
       <div class="cs-grid">
         <div class="cs-col-kicker">
-          <p class="cs-kicker">Model</p>
+          <p class="cs-kicker">Context</p>
         </div>
         <div class="cs-col-body">
           <h2 class="cs-heading">A product layer between raw infrastructure and finished experiences.</h2>
           <div class="cs-body">
-            <p>The library existed inside a broader developer-experience ladder. Each layer changed who could build, how quickly they could move, and how much control they retained.</p>
+            <p>Before the library, every team building on ACS rebuilt the same calling UI from scratch — device setup, video gallery, participant management, accessibility — typically a multi-month engineering effort before they wrote a line of their own product.</p>
+            <p class="muted">The library sits between raw communication infrastructure and finished product experiences. Too thin, and it doesn't save teams enough work. Too rigid, and customers outgrow it and build custom UI. Every design decision had to answer the same question: how much of the experience should be prebuilt, and where does convenience end and control begin?</p>
           </div>
           <div class="cs-diagram" role="list">
             <span class="cs-diagram-label">Communication experience stack</span>
@@ -197,105 +241,23 @@
               </div>
             </div>
           </div>
-          <div class="cs-img-grid-2">
-            <figure class="cs-fig">
-              <div class="cs-img-wrap" data-src="images/acs/acs-fluent-relationship.png">
-                <img loading="lazy" class="cs-img" src="images/acs/acs-fluent-relationship.png" alt="Component-level control via Storybook"
-                     onerror="this.closest('.cs-img-wrap').classList.add('missing')">
-              </div>
-              <figcaption class="cs-caption">Component-level control via Storybook and composable UI primitives.</figcaption>
-            </figure>
-            <figure class="cs-fig">
-              <div class="cs-img-wrap" data-src="images/acs/acs-context-mock.webp">
-                <img loading="lazy" class="cs-img" src="images/acs/acs-context-mock.webp" alt="Prebuilt composite experiences"
-                     onerror="this.closest('.cs-img-wrap').classList.add('missing')">
-              </div>
-              <figcaption class="cs-caption">Prebuilt composite experiences for rapid integration.</figcaption>
-            </figure>
-          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PROBLEM ───────────────────────────────────── -->
-  <section class="cs-section" aria-label="Problem">
+  <!-- DESIGNING THE DEFAULTS (merged Users + Design system) ── -->
+  <section class="cs-section" aria-label="Designing the defaults">
     <div class="cs-wrap">
       <div class="cs-grid">
         <div class="cs-col-kicker">
-          <p class="cs-kicker">Problem</p>
+          <p class="cs-kicker">Designing the defaults</p>
         </div>
         <div class="cs-col-body">
-          <h2 class="cs-heading">The promise was speed. The risk was rigidity.</h2>
+          <h2 class="cs-heading">The people using our designs never chose them.</h2>
           <div class="cs-body">
-            <p>Customers wanted faster ways to launch communication experiences, but adoption was limited by missing features, Teams parity gaps, limited customization, and mismatches with real workflows.</p>
-            <p>When the library was too thin, it did not reduce enough engineering effort. When it was too rigid, customers outgrew it and built custom UI. The product had to sit in the middle.</p>
-            <p class="muted">The core question was not simply what components to ship. It was how much of the experience should be prebuilt, how much should remain flexible, and where the library should draw the boundary between convenience and control.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- USERS ─────────────────────────────────────── -->
-  <section class="cs-section" aria-label="Users">
-    <div class="cs-wrap">
-      <div class="cs-grid">
-        <div class="cs-col-kicker">
-          <p class="cs-kicker">Users</p>
-        </div>
-        <div class="cs-col-body">
-          <h2 class="cs-heading">The product served developers first, but the defaults touched everyone in the call.</h2>
-          <div class="cs-body">
-            <p>Primary users were developers and solution teams building virtual appointments, contact-center workflows, click-to-call experiences, Teams-adjacent interop, and AI-enhanced calling scenarios.</p>
-            <p>Indirect users included patients, customers, agents, supervisors, employees, and meeting participants. They rarely knew the UI Library existed, but they inherited its defaults.</p>
-            <p class="muted">A button placement, notification pattern, caption behavior, or device setup flow could affect a telehealth appointment, a financial consultation, or a support call.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- RESULTS ───────────────────────────────────── -->
-  <section class="cs-section" aria-label="Results">
-    <div class="cs-wrap">
-      <div class="cs-grid">
-        <div class="cs-col-kicker">
-          <p class="cs-kicker">Results</p>
-        </div>
-        <div class="cs-col-body">
-          <h2 class="cs-heading">The product became one of ACS's most-used surfaces.</h2>
-          <div class="acs-stat-grid">
-            <div class="acs-stat">
-              <p class="acs-stat-value">11.1M+</p>
-              <p class="acs-stat-label">Monthly minutes on the UI Library by end of 2025, up from roughly 2M at the start of the year.</p>
-            </div>
-            <div class="acs-stat">
-              <p class="acs-stat-value">5×</p>
-              <p class="acs-stat-label">Growth in a single year, adding over 100M total minutes in FY25.</p>
-            </div>
-            <div class="acs-stat">
-              <p class="acs-stat-value">200+</p>
-              <p class="acs-stat-label">Businesses onboarded across healthcare, finance, automotive, retail, and enterprise scenarios.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- DESIGN SYSTEM ─────────────────────────────── -->
-  <section class="cs-section" aria-label="Design system">
-    <div class="cs-wrap">
-      <div class="cs-grid">
-        <div class="cs-col-kicker">
-          <p class="cs-kicker">Design system</p>
-        </div>
-        <div class="cs-col-body">
-          <h2 class="cs-heading">The defaults had to work across customers that had almost nothing in common.</h2>
-          <div class="cs-body">
-            <p>Every composite had to function out of the box while still allowing teams to customize branding, layout, actions, and behavior. The same system needed to support a one-on-one telehealth visit, a customer support call, and a larger enterprise meeting.</p>
-            <p>The design challenge was not only visual consistency. It was deciding which defaults were reliable enough to scale, and which controls needed to remain open for developers.</p>
+            <p>Primary users were developers building telehealth visits, contact centers, click-to-call, and Teams interop. But the people inside those calls — patients, customers, agents — inherited every default we shipped. A button placement, a caption behavior, a device-setup flow could shape a medical appointment or a financial consultation for someone who never knew the library existed.</p>
+            <p class="muted">That meant the design bar for defaults was higher than for a normal product. Every composite had to work out of the box across scenarios that had almost nothing in common — a one-on-one telehealth visit, a support call, an enterprise meeting — while staying customizable enough that teams could make it theirs.</p>
           </div>
           <figure class="cs-fig cs-fig--mt-lg">
             <div class="cs-img-wrap" data-src="images/acs/acs-normal-gallery.webp">
@@ -304,29 +266,122 @@
             </div>
             <figcaption class="cs-caption">Core calling UI: video gallery, participant state, and call controls built as reusable product defaults.</figcaption>
           </figure>
+          <div class="cs-tradeoff">
+            <p class="cs-tradeoff-label">Tradeoff</p>
+            <h3 class="cs-tradeoff-title">Prebuilt vs. control</h3>
+            <p>Composites got teams to production fast, but real customers always needed more. We preserved the fast path while exposing lower-level components for teams with specific workflows — knowing that every component we opened up became a permanent API commitment. The discipline was saying no to opening things up until a real customer workflow demanded it.</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SELECTED WORK ─────────────────────────────── -->
-  <section class="cs-section" aria-label="Selected work">
+  <!-- DEEP DIVES ─────────────────────────────────── -->
+  <section class="cs-section" aria-label="Deep dives">
     <div class="cs-wrap">
       <div class="cs-grid">
         <div class="cs-col-kicker">
-          <p class="cs-kicker">Selected work</p>
+          <p class="cs-kicker">Deep dives</p>
         </div>
         <div class="cs-col-body">
-          <h2 class="cs-heading">The library matured through a set of high-pressure workstreams.</h2>
+          <h2 class="cs-heading">Two problems worth the depth — and the actual product to handle.</h2>
 
-          <!-- 01 Calling foundations -->
+          <!-- 4a · Live demo -->
+          <figure class="cs-fig cs-fig--mt-lg">
+            <button type="button" class="acs-demo-facade" id="acs-demo-facade" aria-expanded="false" aria-controls="acs-explorer">
+              <img src="images/acs/acs-normal-gallery.webp" alt="Preview of the ACS UI Library components running live in Storybook" loading="lazy">
+              <span class="acs-demo-overlay"><span class="acs-demo-play">▶ Try the live components</span></span>
+            </button>
+            <div class="acs-explorer" id="acs-explorer" hidden>
+              <div class="acs-explorer-tabs" role="tablist" aria-label="ACS UI Library components">
+                <button type="button" class="acs-tab is-active" role="tab" id="acs-tab-0" aria-controls="acs-explorer-panel" aria-selected="true" data-story="components-video-gallery--video-gallery">Video Gallery</button>
+                <button type="button" class="acs-tab" role="tab" id="acs-tab-1" aria-controls="acs-explorer-panel" aria-selected="false" tabindex="-1" data-story="components-controlbar-control-bar--control-bar">Control Bar</button>
+                <button type="button" class="acs-tab" role="tab" id="acs-tab-2" aria-controls="acs-explorer-panel" aria-selected="false" tabindex="-1" data-story="components-message-thread--message-thread">Message Thread</button>
+                <button type="button" class="acs-tab" role="tab" id="acs-tab-3" aria-controls="acs-explorer-panel" aria-selected="false" tabindex="-1" data-story="components-sendbox-send-box--send-box">Send Box</button>
+                <button type="button" class="acs-tab" role="tab" id="acs-tab-4" aria-controls="acs-explorer-panel" aria-selected="false" tabindex="-1" data-story="components-participant-list--participant-list">Participant List</button>
+                <button type="button" class="acs-tab" role="tab" id="acs-tab-5" aria-controls="acs-explorer-panel" aria-selected="false" tabindex="-1" data-story="components-captions-banner--captions-banner">Captions</button>
+              </div>
+              <div class="acs-live-embed" id="acs-explorer-panel" role="tabpanel" aria-labelledby="acs-tab-0" tabindex="0">
+                <span class="acs-live-tag">Live component · Storybook</span>
+                <iframe
+                  id="acs-explorer-frame"
+                  title="ACS UI Library components, live in Storybook"
+                  loading="lazy"
+                  allow="camera; microphone; fullscreen">
+                </iframe>
+              </div>
+            </div>
+            <figcaption class="cs-caption">Live components from the shipped library — the same Storybook developers integrate from. Switch components and interact with each one directly.</figcaption>
+          </figure>
+
+          <!-- 4b · Real-Time Text (hero deep dive) -->
           <div class="acs-work-block">
             <p class="acs-work-num">01</p>
+            <div>
+              <h3 class="acs-work-title">Real-Time Text</h3>
+              <div class="acs-work-body">
+                <p>Real-Time Text transmits text character by character as it's typed — a legally required accessibility capability for live calling. The design problem: text appears before a thought is complete, inside a call surface already carrying video, captions, notifications, and controls. Legibility and hierarchy had to survive all of it.</p>
+              </div>
+              <a href="acs-rtt.html" class="cs-work-link">Full case study →</a>
+            </div>
+            <div class="acs-work-media">
+              <!-- TODO(Tay): EXPLORATIONS BLOCK — the "what we tried, what we cut" evidence.
+                   Pull 2–3 rejected directions from Figma. Drop exports into images/acs/, then
+                   uncomment and fill the captions. Uses the existing cs-img-grid-3 pattern.
+              <div class="cs-img-grid-3">
+                <figure class="cs-fig">
+                  <div class="cs-img-wrap" data-src="images/acs/acs-rtt-explore-1.webp">
+                    <img loading="lazy" class="cs-img" src="images/acs/acs-rtt-explore-1.webp" alt="RTT exploration — inline text over the video gallery">
+                  </div>
+                  <figcaption class="cs-caption">Inline over the gallery — incomplete text competed with captions and read as a bug.</figcaption>
+                </figure>
+                <figure class="cs-fig">
+                  <div class="cs-img-wrap" data-src="images/acs/acs-rtt-explore-2.webp">
+                    <img loading="lazy" class="cs-img" src="images/acs/acs-rtt-explore-2.webp" alt="RTT exploration — full-height dedicated panel">
+                  </div>
+                  <figcaption class="cs-caption">Full-height panel — displaced the participant strip on smaller layouts.</figcaption>
+                </figure>
+                <figure class="cs-fig">
+                  <div class="cs-img-wrap" data-src="images/acs/acs-rtt-explore-final.webp">
+                    <img loading="lazy" class="cs-img" src="images/acs/acs-rtt-explore-final.webp" alt="RTT final direction — the shipped panel">
+                  </div>
+                  <figcaption class="cs-caption">Shipped direction — [what it solved that the others didn't].</figcaption>
+                </figure>
+              </div>
+              -->
+              <!-- TODO(Tay): ANNOTATED FRAME — annotate acs-rtt-panel.webp (or a new export) with
+                   3–4 labeled decisions (panel anchoring, in-progress vs. committed text, coexistence
+                   with captions, keyboard/focus). Swap the src below for the annotated export. -->
+              <figure class="cs-fig">
+                <div class="cs-img-wrap" data-src="images/acs/acs-rtt-panel.webp">
+                  <img loading="lazy" class="cs-img" src="images/acs/acs-rtt-panel.webp" alt="RTT panel during an active call — live character-by-character text"
+                       onerror="this.closest('.cs-img-wrap').classList.add('missing')">
+                </div>
+                <figcaption class="cs-caption">RTT panel — live character-by-character text alongside video and call controls.</figcaption>
+              </figure>
+              <figure class="cs-fig cs-fig--mt-sm">
+                <div class="cs-img-wrap" data-src="images/acs/acs-rtt-notification.webp">
+                  <img loading="lazy" class="cs-img" src="images/acs/acs-rtt-notification.webp" alt="Confirmation dialog before turning on RTT for all participants"
+                       onerror="this.closest('.cs-img-wrap').classList.add('missing')">
+                </div>
+                <figcaption class="cs-caption">Consent prompt — RTT turns on for all participants when enabled.</figcaption>
+              </figure>
+              <div class="cs-tradeoff">
+                <p class="cs-tradeoff-label">Tradeoff</p>
+                <h3 class="cs-tradeoff-title">Explicit consent over silent convenience</h3>
+                <p>Enabling RTT turns it on for every participant in the call, so we required an explicit confirmation rather than a silent toggle. RTT is a call-wide accessibility channel — a per-person toggle would have fragmented the transcript and left some participants unaware that a legally-protected accommodation was in use. The smoother path was a quiet switch; the right path was making the whole call aware.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4c · Calling foundations -->
+          <div class="acs-work-block">
+            <p class="acs-work-num">02</p>
             <div>
               <h3 class="acs-work-title">Calling foundations</h3>
               <div class="acs-work-body">
                 <p>I shaped the core calling experience that everything else built on: device setup, video gallery, participant management, control bar, lobby states, and screenshare.</p>
-                <p>The central design tension was completeness without overload. Defaults needed to feel ready for production, while the component model had to stay predictable for developers customizing on top.</p>
+                <p>Every one of these surfaces doubled as an API. A design change wasn't just a visual change — it was a contract with every team building on top, which made "predictable" a design requirement equal to "polished."</p>
               </div>
               <a href="acs-overview.html" class="cs-work-link">Full case study →</a>
             </div>
@@ -340,8 +395,8 @@
                   <figcaption class="cs-caption">Device setup — camera and audio configuration before joining.</figcaption>
                 </figure>
                 <figure class="cs-fig">
-                  <div class="cs-img-wrap" data-src="images/acs/acs-lobby.png">
-                    <img loading="lazy" class="cs-img" src="images/acs/acs-lobby.png" alt="Lobby state — waiting for others to join"
+                  <div class="cs-img-wrap" data-src="images/acs/acs-lobby.webp">
+                    <img loading="lazy" class="cs-img" src="images/acs/acs-lobby.webp" alt="Lobby state — waiting for others to join"
                          onerror="this.closest('.cs-img-wrap').classList.add('missing')">
                   </div>
                   <figcaption class="cs-caption">Lobby — holding state while waiting for others to join.</figcaption>
@@ -357,217 +412,45 @@
             </div>
           </div>
 
-          <!-- 02 Sample Builder -->
-          <div class="acs-work-block">
-            <p class="acs-work-num">02</p>
-            <div>
-              <h3 class="acs-work-title">Sample Builder</h3>
-              <div class="acs-work-body">
-                <p>Sample Builder helped developers, PMs, and field teams configure and deploy prototype communication experiences quickly.</p>
-                <p>The live preview turned configuration into discovery. Instead of asking users to understand the architecture up front, the builder let them see a deployable experience take shape as they made decisions.</p>
-              </div>
-            </div>
-            <div class="acs-work-media">
-              <div class="cs-img-grid-2">
-                <figure class="cs-fig">
-                  <div class="cs-img-wrap" data-src="images/acs/sample-builder-landing.png">
-                    <img loading="lazy" class="cs-img" src="images/acs/sample-builder-landing.png" alt="Sample Builder landing — start configuring a communication experience"
-                         onerror="this.closest('.cs-img-wrap').classList.add('missing')">
-                  </div>
-                  <figcaption class="cs-caption">Landing step — selecting a communication scenario to configure.</figcaption>
-                </figure>
-                <figure class="cs-fig">
-                  <div class="cs-img-wrap" data-src="images/acs/sample-builder-themes.webp">
-                    <img loading="lazy" class="cs-img" src="images/acs/sample-builder-themes.webp" alt="Sample Builder theme selection with live call preview"
-                         onerror="this.closest('.cs-img-wrap').classList.add('missing')">
-                  </div>
-                  <figcaption class="cs-caption">Theme and template selection — live call preview updates as you configure.</figcaption>
-                </figure>
-              </div>
-            </div>
-          </div>
-
-          <!-- 03 Real-Time Text -->
-          <div class="acs-work-block">
-            <p class="acs-work-num">03</p>
-            <div>
-              <h3 class="acs-work-title">Real-Time Text</h3>
-              <div class="acs-work-body">
-                <p>RTT was a compliance and accessibility workstream that brought real-time text into live calling experiences.</p>
-                <p>The hard part was legibility. Text appears character by character before a thought is complete, during a live call that may already include video, captions, notifications, and controls.</p>
-              </div>
-              <a href="acs-rtt.html" class="cs-work-link">Full case study →</a>
-            </div>
-            <div class="acs-work-media">
-              <div class="cs-img-grid-2">
-                <figure class="cs-fig">
-                  <div class="cs-img-wrap" data-src="images/acs/acs-rtt-notification.webp">
-                    <img loading="lazy" class="cs-img" src="images/acs/acs-rtt-notification.webp" alt="Confirmation dialog before turning on RTT for all participants"
-                         onerror="this.closest('.cs-img-wrap').classList.add('missing')">
-                  </div>
-                  <figcaption class="cs-caption">Consent prompt — RTT turns on for all participants when enabled.</figcaption>
-                </figure>
-                <figure class="cs-fig">
-                  <div class="cs-img-wrap" data-src="images/acs/acs-rtt-panel.webp">
-                    <img loading="lazy" class="cs-img" src="images/acs/acs-rtt-panel.webp" alt="RTT panel during an active call — live character-by-character text"
-                         onerror="this.closest('.cs-img-wrap').classList.add('missing')">
-                  </div>
-                  <figcaption class="cs-caption">RTT panel — live character-by-character text alongside video and call controls.</figcaption>
-                </figure>
-              </div>
-            </div>
-          </div>
-
-          <!-- 04 Call Summary -->
-          <div class="acs-work-block">
-            <p class="acs-work-num">04</p>
-            <div>
-              <h3 class="acs-work-title">Call Summary</h3>
-              <div class="acs-work-body">
-                <p>Call Summary was the first visible AI feature in ACS. The design challenge was timing and relevance.</p>
-                <p>The call ends before the summary is ready. The experience needed to communicate progress, then lead with the most useful generated output while keeping the full transcript available underneath.</p>
-              </div>
-              <a href="acs-call-summary.html" class="cs-work-link">Full case study →</a>
-            </div>
-            <div class="acs-work-media">
-              <figure class="cs-fig">
-                <div class="acs-work-video">
-                  <iframe
-                    src="https://www.youtube-nocookie.com/embed/5o4LcIiVLb4?start=3"
-                    title="Sample Builder AI Call Summary walkthrough"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                  </iframe>
-                </div>
-                <figcaption class="cs-caption">Sample Builder walkthrough — produced for Microsoft Build and the YouTube relaunch of AI call summary.</figcaption>
-              </figure>
-              <figure class="cs-fig cs-fig--mt-sm">
-                <div class="cs-img-wrap" data-src="images/acs/acs-post-call-transcription.webp">
-                  <img loading="lazy" class="cs-img" src="images/acs/acs-post-call-transcription.webp" alt="Post-call summary — generated insight first, transcript below"
-                       onerror="this.closest('.cs-img-wrap').classList.add('missing')">
-                </div>
-                <figcaption class="cs-caption">Post-call summary — generated insight surfaced first, full transcript preserved below.</figcaption>
-              </figure>
-            </div>
-          </div>
+          <!-- 4d · Other work -->
+          <p class="acs-work-body" style="margin-top:48px;padding-top:48px;border-top:1px solid var(--line);">Other workstreams included Sample Builder, a configure-and-deploy path for prototype experiences, and <a href="acs-call-summary.html" class="cs-work-link" style="display:inline">Call Summary</a>, the first AI feature shipped in ACS.</p>
 
         </div>
       </div>
     </div>
   </section>
 
-  <!-- DECISIONS ─────────────────────────────────── -->
-  <section class="cs-section" aria-label="Decisions">
+  <!-- OUTCOMES (merged Results + Impact) ─────────── -->
+  <section class="cs-section" aria-label="Outcomes">
     <div class="cs-wrap">
       <div class="cs-grid">
         <div class="cs-col-kicker">
-          <p class="cs-kicker">Decisions</p>
+          <p class="cs-kicker">Outcomes</p>
         </div>
         <div class="cs-col-body">
-          <h2 class="cs-heading">Key tradeoffs shaped the product direction.</h2>
-
-          <div class="cs-decision-block">
-            <h3 class="cs-sub-heading">Prebuilt experiences vs. developer control</h3>
-            <div class="cs-body">
-              <p>Composites accelerated teams quickly, but real customers needed customization. The product direction had to preserve a fast path while exposing enough lower-level flexibility for teams with specific workflows.</p>
+          <h2 class="cs-heading">The product became one of ACS's most-used surfaces.</h2>
+          <div class="acs-stat-grid">
+            <div class="acs-stat">
+              <p class="acs-stat-value">11.1M+</p>
+              <p class="acs-stat-label">Monthly minutes on the UI Library by end of 2025, up from roughly 2M at the start of the year.</p>
             </div>
-            <div class="cs-img-grid-2">
-              <figure class="cs-fig">
-                <div class="cs-img-wrap" data-src="images/acs/acs-together-mode.webp">
-                  <img loading="lazy" class="cs-img" src="images/acs/acs-together-mode.webp" alt="Together Mode — a structurally different prebuilt composite layout"
-                       onerror="this.closest('.cs-img-wrap').classList.add('missing')">
-                </div>
-                <figcaption class="cs-caption">Together Mode — a prebuilt composite with a fundamentally different layout model.</figcaption>
-              </figure>
-              <figure class="cs-fig">
-                <div class="cs-img-wrap" data-src="images/acs/acs-gallery-view.webp">
-                  <img loading="lazy" class="cs-img" src="images/acs/acs-gallery-view.webp" alt="Composable components for deeper customization"
-                       onerror="this.closest('.cs-img-wrap').classList.add('missing')">
-                </div>
-                <figcaption class="cs-caption">Composable components for deeper customization.</figcaption>
-              </figure>
+            <div class="acs-stat">
+              <p class="acs-stat-value">200+</p>
+              <p class="acs-stat-label">Businesses onboarded across healthcare, finance, automotive, retail, and enterprise scenarios.</p>
+            </div>
+            <!-- TODO(Tay): swap for a real design-shaped number if defensible
+                 (e.g. "% shipping default composites unmodified", component/composite count).
+                 Qualitative fallback in place below. -->
+            <div class="acs-stat">
+              <p class="acs-stat-value" style="font-size:clamp(2rem,4vw,3rem)">WCAG 2.1 AA</p>
+              <p class="acs-stat-label">Accessible by default — every composite ships meeting WCAG 2.1 AA out of the box.</p>
             </div>
           </div>
-
-          <div class="cs-decision-block">
-            <h3 class="cs-sub-heading">Scenario clarity vs. platform sprawl</h3>
-            <div class="cs-body">
-              <p>Every new scenario created pressure for a new composite. The longer-term product challenge was deciding when to build scenario-specific experiences and when to invest in configurable systems that could serve multiple scenarios.</p>
-            </div>
-            <figure class="cs-fig cs-fig--mt-sm">
-              <div class="cs-img-wrap" data-src="images/acs/acs-ppt-live.webp">
-                <img loading="lazy" class="cs-img" src="images/acs/acs-ppt-live.webp" alt="PPT Live — a distinct scenario that once required its own composite"
-                     onerror="this.closest('.cs-img-wrap').classList.add('missing')">
-              </div>
-              <figcaption class="cs-caption">PPT Live — one of several scenarios that each once required a dedicated composite.</figcaption>
-            </figure>
-          </div>
-
-          <div class="cs-decision-block">
-            <h3 class="cs-sub-heading">Accessibility and compliance vs. roadmap preference</h3>
-            <div class="cs-body">
-              <p>Features like RTT and explicit consent were not polish items. They were required capabilities that shaped roadmap priority, interaction design, and cross-team execution.</p>
-            </div>
-            <figure class="cs-fig cs-fig--mt-sm">
-              <div class="cs-img-wrap" data-src="images/acs/acs-rtt-in-call.webp">
-                <img loading="lazy" class="cs-img" src="images/acs/acs-rtt-in-call.webp" alt="RTT menu accessed during a live call"
-                     onerror="this.closest('.cs-img-wrap').classList.add('missing')">
-              </div>
-              <figcaption class="cs-caption">RTT accessible from the captions menu during an active call — a compliance capability embedded into the existing call surface.</figcaption>
-            </figure>
-          </div>
-
-          <div class="cs-decision-block">
-            <h3 class="cs-sub-heading">AI showcase vs. production surface</h3>
-            <div class="cs-body">
-              <p>Sample Builder became the low-friction place to demonstrate AI value before every capability belonged inside the durable UI Library surface.</p>
-            </div>
-            <figure class="cs-fig cs-fig--mt-sm">
-              <div class="cs-img-wrap" data-src="images/acs/copilot-hero.webp">
-                <img loading="lazy" class="cs-img" src="images/acs/copilot-hero.webp" alt="AI-enabled communication experience on a laptop"
-                     onerror="this.closest('.cs-img-wrap').classList.add('missing')">
-              </div>
-              <figcaption class="cs-caption">AI-enhanced communication experiences moving from demo surface to production integration.</figcaption>
-            </figure>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROCESS ───────────────────────────────────── -->
-  <section class="cs-section" aria-label="Process">
-    <div class="cs-wrap">
-      <div class="cs-grid">
-        <div class="cs-col-kicker">
-          <p class="cs-kicker">Process</p>
-        </div>
-        <div class="cs-col-body">
-          <h2 class="cs-heading">The work was product direction, not just feature delivery.</h2>
-          <div class="cs-body">
-            <p>The product was shaped through customer conversations, backlog grooming, formal specs, design reviews, accessibility requirements, DevRel coordination, Storybook updates, documentation, and launch planning.</p>
-            <p>I translated adoption barriers into roadmap priorities, then drove workstreams across design, engineering, accessibility, and customer-facing stakeholders.</p>
-            <p class="muted">The operating system mattered because the library was an ecosystem. Components, composites, samples, docs, telemetry, and customer guidance all had to evolve together.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- IMPACT ────────────────────────────────────── -->
-  <section class="cs-section" aria-label="Impact">
-    <div class="cs-wrap">
-      <div class="cs-grid">
-        <div class="cs-col-kicker">
-          <p class="cs-kicker">Impact</p>
-        </div>
-        <div class="cs-col-body">
-          <h2 class="cs-heading">The library reduced the cost of building communication experiences.</h2>
-          <div class="cs-body">
-            <p>The UI Library gave customers a faster path to production-quality communication UI while preserving the flexibility needed to adapt to their brand, workflow, and scenario.</p>
-            <p>It helped shift ACS from raw infrastructure toward a more complete developer experience: one where teams could start with a working UI, customize it, and scale into more advanced scenarios over time.</p>
+          <div class="cs-body" style="margin-top:48px">
+            <p>The UI Library gave customers a faster path to production-quality communication UI while preserving the flexibility needed to adapt to their brand, workflow, and scenario. It helped shift ACS from raw infrastructure toward a more complete developer experience.</p>
             <p class="muted">The strongest product outcome was not a single feature. It was a reusable layer that made complex communication experiences easier to build, easier to demo, and easier to adopt.</p>
+            <!-- TODO(Tay): confirm or rewrite this "what I learned" line in your own voice. -->
+            <p>What stays with me: the hardest defaults to design are the ones you never watch anyone use. You're designing for a stranger three layers of abstraction away — and when a default is wrong, it fails quietly, in someone else's product, for the person least able to route around it.</p>
           </div>
           <figure class="cs-fig cs-fig--mt-lg">
             <div class="cs-img-wrap" data-src="images/acs/acs-iphone-mock.webp">
@@ -648,5 +531,58 @@
 </footer>
 
 <script src="shared.js"></script>
+<script>
+(function () {
+  var explorer = document.getElementById('acs-explorer');
+  if (!explorer) return;
+  var frame = document.getElementById('acs-explorer-frame');
+  var panel = document.getElementById('acs-explorer-panel');
+  var facade = document.getElementById('acs-demo-facade');
+  var tabs = Array.prototype.slice.call(explorer.querySelectorAll('.acs-tab'));
+  var base = 'https://azure.github.io/communication-ui-library/iframe.html?viewMode=story&id=';
+  var defaultStory = 'components-video-gallery--video-gallery';
+
+  // Click-to-load: the heavy Storybook bundle only loads on demand.
+  if (facade) {
+    facade.addEventListener('click', function () {
+      frame.src = base + defaultStory;
+      frame.dataset.story = defaultStory;
+      explorer.hidden = false;
+      facade.setAttribute('aria-expanded', 'true');
+      facade.hidden = true;
+      var active = explorer.querySelector('.acs-tab.is-active') || tabs[0];
+      if (active) active.focus();
+    });
+  }
+
+  function activate(tab, setFocus) {
+    if (!tab) return;
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.classList.toggle('is-active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    panel.setAttribute('aria-labelledby', tab.id);
+    if (frame.dataset.story !== tab.dataset.story) {
+      frame.src = base + tab.dataset.story;
+      frame.dataset.story = tab.dataset.story;
+    }
+    if (setFocus) tab.focus();
+  }
+
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener('click', function () { activate(tab, false); });
+    tab.addEventListener('keydown', function (e) {
+      var idx = null;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') idx = (i + 1) % tabs.length;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') idx = (i - 1 + tabs.length) % tabs.length;
+      else if (e.key === 'Home') idx = 0;
+      else if (e.key === 'End') idx = tabs.length - 1;
+      if (idx !== null) { e.preventDefault(); activate(tabs[idx], true); }
+    });
+  });
+})();
+</script>
 </body>
 </html>

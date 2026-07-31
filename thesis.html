@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!sessionStorage.getItem("ta_auth"))document.documentElement.style.visibility="hidden";</script>
+  <script src="auth.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Physicalization of AR/XR — Tay Aras</title>
+  <meta name="description" content="Undergraduate thesis at Carnegie Mellon: moving augmented reality from a digital layer on top of the world to something embedded within it, through six physical prototyping tools.">
+  <link rel="canonical" href="https://www.tayaras.com/thesis.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.tayaras.com/thesis.html">
+  <meta property="og:title" content="Physicalization of AR/XR — Tay Aras">
+  <meta property="og:description" content="What does it mean to physicalize AR? Six physical prototyping tools, one per mechanic.">
+  <meta property="og:image" content="https://www.tayaras.com/images/og-acs.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <script>try{var _t=localStorage.getItem("tayTheme")||"system";document.documentElement.setAttribute("data-theme",_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light");}catch(e){}</script>
+  <link rel="preconnect" href="https://use.typekit.net" crossorigin>
+  <link rel="preconnect" href="https://p.typekit.net" crossorigin>
+  <link rel="stylesheet" href="https://use.typekit.net/nzi3inl.css">
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="chords.css">
+  <link rel="stylesheet" href="project.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<a class="proj-exit" href="index.html" aria-label="Back to all work" title="All work">
+  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+</a>
+
+<header class="site-header proj-header" id="navigation">
+  <div class="header-bar">
+    <a class="brand" href="index.html" title="Back to all work">Tay Aras</a>
+    <div class="string-zone" id="singleZone" tabindex="0" aria-label="Interactive guitar string — click or drag to play">
+      <svg class="string-svg" id="singleSVG" viewBox="0 0 1100 36" preserveAspectRatio="none">
+        <path id="singlePath" class="string-path" d="M0 19 Q 550 19 1100 19"/>
+      </svg>
+    </div>
+    <div class="proj-controls">
+      <button class="mute-btn" id="muteBtn" aria-label="Toggle sound" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path class="sound-on" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path class="sound-on" d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path class="sound-off" d="M3 9v6h4l5 5V4L7 9H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"/>
+          <line class="sound-off" x1="15" y1="9" x2="21" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+          <line class="sound-off" x1="21" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"/>
+        </svg>
+      </button>
+      <button id="projCollapse" aria-label="Collapse sections" aria-expanded="true" title="Collapse">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <figure class="proj-lead-img">
+    <img src="images/capstone/Process/image13.webp" alt="A physical prototyping tool from the thesis, with its AR layer active">
+  </figure>
+
+  <article class="proj">
+
+    <header class="proj-head proj-grid">
+      <div class="proj-string-row proj-id-row" data-freq="277.18">
+        <h1 class="proj-id">Physicalization of AR/XR</h1>
+        <div class="string-zone" tabindex="0" aria-label="Physicalization of AR/XR — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+
+      <dl class="proj-facts">
+        <div class="proj-fact">
+          <dt>Organization</dt>
+          <dd>Carnegie Mellon University<br>School of Design</dd>
+        </div>
+        <div class="proj-fact">
+          <dt>Role</dt>
+          <dd>Undergraduate thesis<br>Research, design, fabrication</dd>
+        </div>
+        <div class="proj-fact">
+          <dt>Built with</dt>
+          <dd>Unity · Cinema 4D<br>Arduino · ESP32 · Raspberry Pi<br>Laser cutting · 3D printing</dd>
+        </div>
+        <div class="proj-fact">
+          <dt>Duration</dt>
+          <dd>2022</dd>
+        </div>
+      </dl>
+
+      <p class="proj-linkline">
+        <a href="cmu-thesis.html">Full case study &rarr;</a>
+      </p>
+
+      <div class="proj-summary">
+        <p>In 2021 most AR sat on top of the world: overlays floating above surfaces, anchored to objects but never really part of them. I wanted to know what it would take to <em>physicalize</em> it — to push AR into the material itself.</p>
+        <p>I started by designing a complete AR experience. The first prototype fell apart on tracking stability, lighting, and alignment. The mechanics were the problem, not the story I was telling with them, so I stopped and built six physical tools instead — one per mechanic, each one built to show what that mechanic needs from the physical world.</p>
+        <p>All six pointed at the same thing. Surface finish, form, and contrast determine whether the digital layer holds, so you have to pick them deliberately.</p>
+        <p>This was research and prototyping, built by hand, not a product that shipped.</p>
+      </div>
+    </header>
+
+    <section class="proj-sec proj-reveal">
+      <div class="proj-sec-title proj-string-row" data-freq="246.94">
+        <p class="proj-sec-label">Six tools</p>
+        <div class="string-zone" tabindex="0" aria-label="Six tools — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+
+      <div class="proj-row proj-row--wide proj-grid">
+        <figure class="proj-row-media">
+          <img src="images/capstone/image-2-1.webp" alt="Isometric diagram of all six prototyping tools" loading="lazy">
+          <figcaption>The six tools — image mapping, 3D masking, shader effects, and two sensor inputs</figcaption>
+        </figure>
+      </div>
+
+      <div class="proj-tiles proj-tiles--video" style="margin-top: clamp(40px, 6vw, 72px);">
+        <figure class="proj-tile">
+          <div class="proj-vid">
+            <video muted loop playsinline preload="metadata" poster="images/capstone/posters/SingleImageClipv1.webp" aria-label="Single image mapping prototype">
+              <source src="images/SingleImageClipv1.mp4" type="video/mp4">
+            </video>
+            <button class="vid-btn" aria-label="Play video">
+              <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+          </div>
+          <figcaption><span class="proj-tile-name"><span class="proj-tile-num">01</span>Single image mapping</span><span class="proj-tile-note">Surface finish decides whether tracking holds. Matte print worked; reflective and low-contrast surfaces dropped out.</span></figcaption>
+        </figure>
+        <figure class="proj-tile">
+          <div class="proj-vid">
+            <video muted loop playsinline preload="metadata" poster="images/capstone/posters/3DMaskClipv1.webp" aria-label="3D masking prototype">
+              <source src="images/3DMaskClipv1.mp4" type="video/mp4">
+            </video>
+            <button class="vid-btn" aria-label="Play video">
+              <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+          </div>
+          <figcaption><span class="proj-tile-name"><span class="proj-tile-num">02</span>3D masking</span><span class="proj-tile-note">The camera hides a physical object and puts a virtual interior in its place. Scale and form decide whether the illusion works; a few millimetres off and it doesn't.</span></figcaption>
+        </figure>
+        <figure class="proj-tile">
+          <div class="proj-vid">
+            <video muted loop playsinline preload="metadata" poster="images/capstone/posters/MultiImageClipv1.webp" aria-label="Multiple image mapping prototype">
+              <source src="images/MultiImageClipv1.mp4" type="video/mp4">
+            </video>
+            <button class="vid-btn" aria-label="Play video">
+              <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+          </div>
+          <figcaption><span class="proj-tile-name"><span class="proj-tile-num">03</span>Multiple image mapping</span><span class="proj-tile-note">Several targets sharing one frame. Spacing, target size, and angle change how coherent the virtual layer feels across a layout.</span></figcaption>
+        </figure>
+        <figure class="proj-tile">
+          <div class="proj-vid">
+            <video muted loop playsinline preload="metadata" poster="images/capstone/posters/GlassClipv1.webp" aria-label="Shader effects prototype">
+              <source src="images/GlassClipv1.mp4" type="video/mp4">
+            </video>
+            <button class="vid-btn" aria-label="Play video">
+              <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+          </div>
+          <figcaption><span class="proj-tile-name"><span class="proj-tile-num">04</span>Shader effects</span><span class="proj-tile-note">A glass refraction effect on the live camera feed. The surface behaves as though it has optical properties, so the camera reads it differently without any change to the geometry.</span></figcaption>
+        </figure>
+        <figure class="proj-tile">
+          <div class="proj-vid">
+            <video muted loop playsinline preload="metadata" poster="images/capstone/posters/LightSensorClipv1.webp" aria-label="Light sensor prototype">
+              <source src="images/LightSensorClipv1.mp4" type="video/mp4">
+            </video>
+            <button class="vid-btn" aria-label="Play video">
+              <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+          </div>
+          <figcaption><span class="proj-tile-name"><span class="proj-tile-num">05</span>Light sensor</span><span class="proj-tile-note">A light sensor on Arduino drives a virtual lamp over Bluetooth. Cover the sensor and the lamp responds, so the daylight in the room is doing something.</span></figcaption>
+        </figure>
+        <figure class="proj-tile">
+          <div class="proj-vid">
+            <video muted loop playsinline preload="metadata" poster="images/capstone/posters/PotSensorClipv1.webp" aria-label="Potentiometer prototype">
+              <source src="images/PotSensorClipv1.mp4" type="video/mp4">
+            </video>
+            <button class="vid-btn" aria-label="Play video">
+              <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+          </div>
+          <figcaption><span class="proj-tile-name"><span class="proj-tile-num">06</span>Potentiometer</span><span class="proj-tile-note">A dial mapped to the speed of a virtual fan through the same stack. You turn it and the parameter moves, with nothing in between.</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="proj-sec proj-reveal">
+      <div class="proj-sec-title proj-string-row" data-freq="220.00">
+        <p class="proj-sec-label">What I did</p>
+        <div class="string-zone" tabindex="0" aria-label="What I did — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+
+      <dl class="proj-contrib">
+        <div>
+          <dt>Reframed the thesis</dt>
+          <dd>Switched from making a single AR experience to building tools for designing AR, once the first prototype showed where the real limits were.</dd>
+        </div>
+        <div>
+          <dt>Six prototyping tools</dt>
+          <dd>One per mechanic: image mapping, 3D masking, shader effects, and sensor input. Each isolates a single behaviour so it can be tested on its own.</dd>
+        </div>
+        <div>
+          <dt>Physical fabrication</dt>
+          <dd>Designed and made the objects: laser-cut and 3D-printed forms, printed image targets, and housings built to hold a specific tracking condition.</dd>
+        </div>
+        <div>
+          <dt>Hardware and software</dt>
+          <dd>Unity and Cinema 4D for the digital layer; Arduino, ESP32, and Raspberry Pi over Bluetooth for the sensor tools; laser cutting and 3D printing for the forms.</dd>
+        </div>
+        <div>
+          <dt>Testing method</dt>
+          <dd>Surfaced problems that usually only turn up during implementation: tracking loss on reflective surfaces, occlusion breaking when things are misaligned, drift as the light changes.</dd>
+        </div>
+        <div>
+          <dt>The argument</dt>
+          <dd>Argued that AR embedded in physical material behaves differently from AR layered over it, and that you can design for the difference.</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="proj-sec proj-reveal">
+      <div class="proj-sec-title proj-string-row" data-freq="196.00">
+        <p class="proj-sec-label">Making them</p>
+        <div class="string-zone" tabindex="0" aria-label="Making them — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <p class="proj-row-head">Testing materials as tracking anchors</p>
+          <p>Every finish is a different tracking target. I laser-etched the same pattern into woods, papers, and card stocks and tested each one as an anchor. Matte held. Gloss and low contrast dropped out.</p>
+          <p>Choosing a material is choosing how reliably the digital layer will hold.</p>
+        </div>
+        <figure class="proj-row-media">
+          <img src="images/capstone/image-3-2.webp" alt="A range of laser-etched material finishes tested as image tracking anchors" loading="lazy">
+          <figcaption>Finishes tested as image tracking anchors</figcaption>
+        </figure>
+      </div>
+
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <p class="proj-row-head">Form, iterated until the illusion held</p>
+          <p>For 3D masking the physical object has to match its virtual replacement closely enough that nobody notices the swap. It took twelve cube variants, modelled in Cinema 4D and then cut or printed, before the alignment held.</p>
+        </div>
+        <figure class="proj-row-media">
+          <img src="images/capstone/Process/image59-crop.webp" alt="Twelve cube form iterations rendered in 3D" loading="lazy">
+          <img src="images/capstone/Process/image29.webp" alt="Cube prototype iterations including 3D printed forms" loading="lazy">
+          <figcaption>Form iterations, rendered and fabricated</figcaption>
+        </figure>
+      </div>
+
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <p class="proj-row-head">Modelled and made in parallel</p>
+          <p>Each form existed twice: once in Unity and Cinema 4D as the thing the camera would render, once on the bench as the thing it had to replace. Building both at once is how I found the mismatches.</p>
+        </div>
+        <figure class="proj-row-media">
+          <img src="images/capstone/Process/image49.webp" alt="A rendered virtual office interior — the content the camera swaps in during 3D masking" loading="lazy">
+          <figcaption>The virtual interior the camera swaps in</figcaption>
+        </figure>
+      </div>
+
+      <div class="proj-tiles" style="margin-top: clamp(32px, 4vw, 48px);">
+        <figure class="proj-tile">
+          <img src="images/capstone/Process/image36.webp" alt="Wooden cube forms and laser-cut image mapping cards laid out on a cutting mat" loading="lazy">
+          <figcaption><span class="proj-tile-name">Targets and forms</span><span class="proj-tile-note">The card set that came out of material testing, laid out beside the cube forms they anchor.</span></figcaption>
+        </figure>
+        <figure class="proj-tile">
+          <img src="images/capstone/Process/image20.webp" alt="Assembled wooden cube cluster on a cutting mat" loading="lazy">
+          <figcaption><span class="proj-tile-name">Assembled cluster</span><span class="proj-tile-note">Multiple targets sharing one frame, to test whether the virtual layer holds together across a layout.</span></figcaption>
+        </figure>
+      </div>
+
+      <div class="proj-row proj-row--wide proj-grid" style="margin-top: clamp(40px, 6vw, 72px);">
+        <figure class="proj-row-media">
+          <img src="images/capstone/Process/image28.webp" alt="All six tools with Arduino components and image mapping materials" loading="lazy">
+          <figcaption>The finished set — forms, targets, sensors, and Arduino components</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="proj-sec proj-reveal">
+      <div class="proj-sec-title proj-string-row" data-freq="174.61">
+        <p class="proj-sec-label">What it found</p>
+        <div class="string-zone" tabindex="0" aria-label="What it found — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <p>Across all six, the physical decisions drove the digital behaviour. Tracking dropped when surfaces were too reflective. Occlusion broke when the geometry was off by millimetres. The sensor tools only felt direct when nothing sat between the gesture and the parameter.</p>
+          <p>None of this is easy to judge at design time, because you can't see it until something is built. The tools were an attempt to find out sooner.</p>
+          <p>I set out to build an AR experience and ended up building instruments for designing them. That turned out to be the more useful thing to have made.</p>
+        </div>
+        <figure class="proj-row-media">
+          <img src="images/capstone/Process/image42.webp" alt="A virtual interior rendered at architectural scale in a field" loading="lazy">
+          <figcaption>3D masking pushed to architectural scale outdoors</figcaption>
+        </figure>
+      </div>
+
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <p class="proj-row-head">Out of the studio</p>
+          <p>Outside, the tools stopped being desk objects. The masking mechanic that hides a wooden cube on a cutting mat can also hold a room-sized interior in a field. The failure modes don't go away at that scale, they just follow the light instead.</p>
+        </div>
+        <figure class="proj-row-media">
+          <img src="images/capstone/Process/image51.webp" alt="3D masking tested at outdoor scale" loading="lazy">
+          <img src="images/capstone/Process/image56.webp" alt="A dark interior scene seen through the physical box outdoors" loading="lazy">
+          <figcaption>Scale and lighting tests in the field</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- chord keys — surface only while the page is compressed, same as home -->
+    <div class="chord-hint">
+      <div class="chord-now" id="chordNow" aria-hidden="true">—</div>
+      <div class="chord-instr" aria-hidden="true">Press <span class="k">A</span>–<span class="k">G</span> to tune a chord, then strum the strings · <span class="k">Z</span> = major · <span class="k">X</span> = minor</div>
+      <div class="chord-pads" id="chordPads">
+        <div class="chord-pad-deck">
+          <div class="chord-pad-left">
+            <div class="chord-pad-col" role="group" aria-label="Choose a chord">
+              <button type="button" class="chord-pad" data-root="a" aria-pressed="false">A</button>
+              <button type="button" class="chord-pad" data-root="b" aria-pressed="false">B</button>
+              <button type="button" class="chord-pad" data-root="c" aria-pressed="false">C</button>
+              <button type="button" class="chord-pad" data-root="d" aria-pressed="false">D</button>
+              <button type="button" class="chord-pad" data-root="e" aria-pressed="false">E</button>
+              <button type="button" class="chord-pad" data-root="f" aria-pressed="false">F</button>
+              <button type="button" class="chord-pad" data-root="g" aria-pressed="false">G</button>
+            </div>
+            <div class="chord-pad-col chord-pad-col--mode" role="group" aria-label="Chord quality">
+              <button type="button" class="chord-pad chord-pad--mode" data-mode="major" aria-pressed="true">Major</button>
+              <button type="button" class="chord-pad chord-pad--mode" data-mode="minor" aria-pressed="false">Minor</button>
+            </div>
+          </div>
+          <div class="chord-pad-col chord-pad-col--strum" role="group" aria-label="Strum the strings">
+            <button type="button" class="chord-pad chord-pad--strum" data-strum="up">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Strum up
+            </button>
+            <button type="button" class="chord-pad chord-pad--strum" data-strum="down">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M12 19l-6-6M12 19l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Strum down
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="proj-next" aria-label="Next project" style="margin-top: clamp(72px, 10vw, 150px);">
+      <div>
+        <p class="label">Next project</p>
+        <a class="proj-next-title" href="orbit.html">Orbit: Growing Together →</a>
+      </div>
+      <a class="proj-back" href="index.html">← All work</a>
+    </nav>
+
+  </article>
+</main>
+<footer class="copyright-footer">
+  <span>© 2026 Tay Aras</span>
+</footer>
+
+
+<script src="shared.js"></script>
+<script src="chords.js"></script>
+<script src="project.js"></script>
+</body>
+</html>

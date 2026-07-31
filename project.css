@@ -1,0 +1,976 @@
+/* ─── PROJECT PAGE TEMPLATE ───────────────────────────────────────────────
+   Built on the home page's rules — hairline rules as the structural motif,
+   mono uppercase labels, grey body copy against black headings, red on hover,
+   no rounded corners — in the shape the reference sites use: one intro block,
+   then the work shown at full width with a caption layer.
+
+   Two templates share this file:
+     project-template.html        image-led (default)
+     project-template-prose.html  rail + prose, for research-heavy writeups
+
+   Pairs with project.js. Load after shared.css:
+     <link rel="stylesheet" href="shared.css">
+     <link rel="stylesheet" href="project.css">
+   ------------------------------------------------------------------------ */
+
+.proj {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--pad) 120px;
+}
+
+/* ─── HEADER ────────────────────────────────────────────────────────────── */
+/* the home page's header isn't a bar — it's the first "string" row inside the
+   padded content stack, so it sits ~90px down and scrolls away. Match that:
+   drop the sticky 52px bar and give the row the same padding and label size.
+   (For a sticky header on a long case study, delete this block.) */
+.proj-header { position: static; }
+.proj-header .header-bar {
+  height: auto;
+  /* shared.css declares six columns for the full site header (brand, string,
+     mute, expand, nav, mobile-nav). This header has three children, so the
+     spare columns would eat ~48px of gap off the right edge and leave the row
+     narrower than the body below it. Declare exactly what's here. */
+  grid-template-columns: auto 1fr auto;
+  /* page padding + the row's own 16px, exactly like body.stack-open .home-row */
+  padding: calc(clamp(24px, 5vw, 56px) + 16px) var(--pad) 16px;
+}
+.proj-header .brand { font-size: 14px; }
+.proj-header .string-svg { height: 30px; }   /* home trims the string to 30px */
+
+/* the control cluster — [mute][theme][collapse], same as the home page's */
+.proj-controls { display: flex; align-items: center; gap: 8px; }
+#projCollapse {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--mid);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+#projCollapse:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+#projCollapse svg { width: 14px; height: 14px; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+/* chevron points up while everything is open (click to pack it away) */
+#projCollapse[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+/* ─── COMPRESSED STATE ──────────────────────────────────────────────────── */
+/* Identical to the home stack when it's packed: content gone, rows 5px apart
+   instead of 16, every label — the project name included — slid away so the
+   strings run the full width. Only the header's brand stays. */
+/* Hide everything except the string rows themselves. Stated as "everything in
+   the head that isn't the name row, everything in a section that isn't its
+   title row" so new kinds of content stay covered without editing this list. */
+body.proj-collapsed .proj-head > *:not(.proj-id-row),
+body.proj-collapsed .proj-sec > *:not(.proj-sec-title),
+body.proj-collapsed .proj-lead-img,
+body.proj-collapsed .proj-next { display: none; }
+body.proj-collapsed .proj-head { padding: 0; }
+body.proj-collapsed .proj-sec { margin-top: 0; }
+/* the header is its own row here rather than the stack's first one, so pack
+   its bottom padding down too — otherwise the first gap is 21px to the rest's 10 */
+body.proj-collapsed .proj-header .header-bar { padding-bottom: 5px; }
+.proj-header .header-bar { transition: padding 0.95s cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* Compressed, the page always reads as a six-string guitar. A page with fewer
+   sections gets plain strings added to make up the count; one with more fades
+   the extras out. project.js decides which case applies. */
+.proj-fillers { display: none; }
+body.proj-collapsed .proj-fillers { display: block; }
+body.proj-collapsed .proj-string-row--filler { animation: projStringIn 0.7s ease both; }
+@keyframes projStringIn { from { opacity: 0; } to { opacity: 1; } }
+.proj-string-row--over {
+  max-height: 120px;
+  transition: opacity 0.45s ease,
+              max-height 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              padding 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+body.proj-collapsed .proj-string-row--over {
+  opacity: 0;
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .proj-string-row--filler { animation: none; }
+}
+body.proj-collapsed .proj-string-row { padding: 5px 0; }
+body.proj-collapsed .proj-sec-label,
+body.proj-collapsed .proj-id {
+  max-width: 0;
+  opacity: 0;
+  margin-right: -16px;      /* absorb the row gap so the string reaches the edge */
+  transform: translateX(-12px);
+}
+.proj-head { transition: padding 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.proj-sec  { transition: margin-top 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+@media (prefers-reduced-motion: reduce) {
+  .proj-sec, .proj-head, .proj-string-row, .proj-sec-label, #projCollapse svg {
+    transition-duration: 0.001s;
+  }
+}
+
+/* rail width — the label column, mirroring --label-w on the home page */
+:root { --proj-rail: 180px; }
+
+/* ─── LEAD IMAGE ────────────────────────────────────────────────────────── */
+/* the work lands before a single word of copy: full-bleed, most of the
+   viewport, no border. Sits outside .proj so it ignores the page padding. */
+.proj-lead-img {
+  width: 100%;
+  height: clamp(360px, 72vh, 860px);
+  background: var(--line);
+  overflow: hidden;
+  /* the same air the home page leaves between its header row and the bio —
+     .home-panel's top padding, matched exactly */
+  margin-top: clamp(24px, 3.5vw, 44px);
+}
+.proj-lead-img img, .proj-lead-img video { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* a lead video shows its whole 16:9 frame instead of being cropped to the fixed
+   lead height — the subject runs to the top and bottom edges, so `cover` would
+   cut it off */
+.proj-lead-img--video { height: auto; aspect-ratio: 16 / 9; }
+@media (max-width: 640px) {
+  .proj-lead-img { height: clamp(280px, 52vh, 480px); }
+}
+
+/* ─── TITLE BLOCK ───────────────────────────────────────────────────────── */
+/* Sits under the lead image, so it needs less air above it than a page top.
+   Everything here rides the same 4-column grid as the meta strip below: title
+   on the left half, the standfirst on the right half. That's what keeps the
+   page from looking left-heavy — content reaches both edges at every row. */
+/* the name row carries its own 16px, so the head needs less of its own */
+.proj-head {
+  padding: clamp(24px, 4vw, 56px) 0 clamp(32px, 5vw, 56px);
+}
+/* prose template only — the image-led head carries .proj-grid and lays itself
+   out on 12 columns further down this file */
+@media (min-width: 900px) {
+  .proj-head:not(.proj-grid) {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 24px;
+    align-items: start;
+  }
+  .proj-head:not(.proj-grid) .proj-eyebrow { grid-column: 1 / -1; }
+  .proj-head:not(.proj-grid) .proj-title   { grid-column: 1 / span 2; }
+  .proj-head:not(.proj-grid) .proj-sub     { grid-column: 1 / span 2; }
+  .proj-head:not(.proj-grid) .proj-intro   { grid-column: 3 / span 2; grid-row: 2 / span 2; margin-top: 24px; }
+  .proj-head:not(.proj-grid) .proj-meta    { grid-column: 1 / -1; }
+  .proj-head:not(.proj-grid) .proj-links   { grid-column: 1 / -1; }
+}
+.proj-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+}
+.proj-title {
+  font-family: var(--sans);
+  font-size: clamp(40px, 7vw, 84px);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  color: var(--black);
+  margin-top: 20px;
+  text-wrap: balance;
+}
+.proj-sub {
+  font-size: clamp(18px, 2.2vw, 24px);
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  color: var(--mid);
+  margin-top: 20px;
+  max-width: 40rem;
+  text-wrap: balance;
+}
+
+/* intro — the only prose on the page. Two sentences is the budget; on wide
+   screens it sits in the right half of the head grid, opposite the title. */
+.proj-intro {
+  margin-top: clamp(32px, 4vw, 48px);
+  max-width: 40rem;
+}
+.proj-intro p {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--mid-500);
+}
+.proj-intro p + p { margin-top: 1em; }
+.proj-intro a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  transition: color 0.15s ease;
+}
+.proj-intro a:hover { color: #001EFF; }
+
+/* meta strip — role / team / timeline / status, hairline-separated */
+.proj-meta {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: clamp(40px, 5vw, 64px);
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.proj-meta-cell .label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+  margin-bottom: 8px;
+}
+.proj-meta-cell p:not(.label) {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--black);
+}
+
+/* ─── LIVE LINKS ────────────────────────────────────────────────────────── */
+/* where the work actually lives — the app, the docs, the repo, the shop page.
+   Bordered rows, label left and arrow right, one or two across. Drop the whole
+   block for anything unshippable or under NDA. */
+.proj-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: clamp(32px, 4vw, 48px);
+}
+.proj-links--1 { grid-template-columns: minmax(0, 1fr); }
+.proj-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--black);
+  text-decoration: none;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.proj-link:hover { color: #ff2d2d; border-color: #ff2d2d; }
+.proj-link svg { width: 14px; height: 14px; flex: 0 0 auto; }
+@media (max-width: 640px) {
+  .proj-links { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ═══ IMAGE-LED TEMPLATE ═════════════════════════════════════════════════
+   A 12-column grid, quiet as the home page: the project is named with a small
+   bold label rather than a display heading, the facts and summary sit in the
+   right half, and every body row runs copy-left / image-right.
+   ─────────────────────────────────────────────────────────────────────── */
+.proj-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+}
+
+/* ─── STRING ROWS ───────────────────────────────────────────────────────── */
+/* the home page's row, reused: a label, then a strummable string running to
+   the edge. project.js binds each one to the shared GuitarString engine. */
+.proj-string-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;          /* home's open-stack row rhythm; 5px when packed */
+  transition: padding 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.proj-string-row .string-zone { flex: 1 1 auto; min-width: 0; }
+.proj-string-row .string-svg { height: 30px; }
+/* hovering the row reddens its label and its line, exactly like home */
+.proj-string-row:hover .proj-id,
+.proj-string-row:hover .proj-sec-label { color: #ff2d2d; }
+.proj-string-row:hover .string-path { stroke: #ff2d2d; }
+
+/* the project's name — same treatment as a home page row label */
+.proj-id-row { grid-column: 1 / -1; }
+.proj-id {
+  flex: 0 0 auto;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--black);
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 480px;
+  /* slides away when the page compresses, like every other row label */
+  transition: color 0.2s ease,
+              max-width 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.45s ease,
+              margin-right 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* facts — organization / role / collaborators / duration, right half */
+.proj-facts {
+  grid-column: 7 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px 24px;
+  margin-top: clamp(28px, 3.5vw, 44px);
+}
+.proj-fact dt {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 4px;
+}
+.proj-fact dd { font-size: 13px; line-height: 1.5; color: var(--mid-500); }
+
+/* the live link, alone on the left, level with the summary */
+.proj-linkline {
+  grid-column: 1 / span 5;
+  margin-top: clamp(32px, 4.5vw, 56px);
+}
+.proj-linkline a {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--black);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 2px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.proj-linkline a:hover { color: #ff2d2d; border-color: #ff2d2d; }
+
+/* the summary — the page's only sustained prose, in the right half */
+.proj-summary {
+  grid-column: 7 / -1;
+  margin-top: clamp(32px, 4.5vw, 56px);
+}
+.proj-summary p { font-size: 13px; line-height: 1.65; color: var(--mid-500); }
+.proj-summary p:first-child { color: var(--black); }
+.proj-summary p + p { margin-top: 1em; }
+.proj-summary a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  transition: color 0.15s ease;
+}
+.proj-summary a:hover { color: #001EFF; }
+
+/* contributions — "what I did", as labelled lines rather than prose */
+.proj-contrib {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px 44px;
+  margin-top: clamp(36px, 5vw, 56px);
+}
+.proj-contrib dt {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 6px;
+}
+.proj-contrib dd { font-size: 13px; line-height: 1.6; color: var(--mid-500); }
+
+/* tiles — a highlight reel of surfaces, two across so the screens are legible,
+   each with a name and a line of context */
+.proj-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(32px, 4vw, 56px) clamp(24px, 3vw, 40px);
+  margin-top: clamp(36px, 5vw, 56px);
+}
+.proj-tile img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  /* crop from the bottom-right, never the left — UI screenshots carry their
+     identity in the top-left corner and centre-cropping decapitates it */
+  object-position: left top;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.proj-tile figcaption { margin-top: 14px; }
+.proj-tile-name {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--black);
+  display: block;
+  margin-bottom: 6px;
+}
+.proj-tile-note {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--mid-500);
+  display: block;
+  max-width: 34rem;
+}
+
+/* video tiles — click to play, three across. Carried over from the thesis
+   page's prototype grid; project.js wires the play/pause button. */
+.proj-tiles--video { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.proj-vid {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #ede9e2;
+  border: 1px solid var(--line);
+  cursor: pointer;
+}
+[data-theme="dark"] .proj-vid { background: #252422; }
+.proj-vid video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.proj-vid .vid-btn {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.16);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+  z-index: 2;
+}
+.proj-vid .vid-btn svg {
+  width: 38px;
+  height: 38px;
+  fill: #fff;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+  transition: transform 0.15s;
+}
+.proj-vid .vid-btn:hover svg { transform: scale(1.1); }
+.proj-vid .vid-btn .icon-pause { display: none; }
+.proj-vid.vid-playing .vid-btn { background: transparent; opacity: 0; }
+.proj-vid.vid-playing:hover .vid-btn { opacity: 1; background: rgba(0,0,0,0.1); }
+.proj-vid.vid-playing .vid-btn .icon-play  { display: none; }
+.proj-vid.vid-playing .vid-btn .icon-pause { display: block; }
+/* numbered label above each clip's caption */
+.proj-tile-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--mid-500);
+  margin-right: 10px;
+}
+
+/* hosted video embed (Vimeo, YouTube) — 16:9, hairline border like a figure.
+   For local .mp4 clips use .proj-vid above instead. */
+.proj-embed {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  background: #111;
+  border: 1px solid var(--line);
+}
+.proj-embed iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: 0;
+}
+
+/* phone screens — shown whole rather than cropped, three across */
+.proj-tiles--phone { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.proj-tiles--phone img {
+  aspect-ratio: 9 / 16;
+  object-fit: contain;
+  object-position: center;
+  background: var(--white);
+  border: 1px solid var(--line);
+}
+[data-theme="dark"] .proj-tiles--phone img { background: #f4f1ea; }
+
+/* a second link beside the project link — "read the full case study" */
+.proj-linkline a + a { margin-left: 28px; }
+
+@media (max-width: 640px) {
+  .proj-contrib { grid-template-columns: 1fr; gap: 22px; }
+  .proj-tiles { grid-template-columns: 1fr; }
+  /* phone screens stay side by side — they're narrow enough */
+  .proj-tiles--phone { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 820px) {
+  .proj-tiles--video { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .proj-tiles--video { grid-template-columns: 1fr; }
+}
+
+/* ─── SECTIONS ──────────────────────────────────────────────────────────── */
+/* a mono label followed by its own string — the section rule is a string you
+   can play, same as every divider on the home page */
+.proj-sec { margin-top: clamp(72px, 10vw, 150px); }
+/* the first section follows the head, which already ends in its own bottom
+   padding — the full inter-section margin on top of that reads as a void */
+.proj-sec:first-of-type { margin-top: clamp(28px, 3vw, 44px); }
+.proj-sec-label {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 320px;
+  /* same slide-away as .home-label when the stack compresses */
+  transition: color 0.2s ease,
+              max-width 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.45s ease,
+              margin-right 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── ROWS — copy left, work right ──────────────────────────────────────── */
+.proj-row {
+  align-items: start;
+  margin-top: clamp(36px, 5vw, 56px);
+}
+.proj-row + .proj-row { margin-top: clamp(48px, 7vw, 96px); }
+.proj-row-copy { grid-column: 1 / span 4; }
+.proj-row-copy p { font-size: 13px; line-height: 1.7; color: var(--mid-500); }
+.proj-row-copy p + p { margin-top: 1em; }
+.proj-row-copy .proj-row-head {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 10px;
+}
+.proj-row-media { grid-column: 5 / -1; }
+.proj-row-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--line);
+}
+.proj-row-media figcaption {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+  margin-top: 10px;
+}
+/* two or three stacked in the media column */
+.proj-row-media > * + * { margin-top: 16px; }
+/* …or side by side — a phone next to a tablet, say. The pair fills the same
+   width as the full-width shots above it and both images land at the same
+   height, which happens on its own when each column is sized in proportion to
+   its image's aspect ratio (width ÷ height). Set them per pair:
+
+     <figure class="proj-row-media proj-row-media--pair"
+             style="--pair-cols: 0.48fr 1.43fr">
+
+   The caption spans both. */
+.proj-row-media--pair {
+  display: grid;
+  grid-template-columns: var(--pair-cols, 1fr 1fr);
+  align-items: start;
+  gap: 24px;
+}
+.proj-row-media--pair > * + * { margin-top: 0; }
+.proj-row-media--pair img { width: 100%; height: auto; }
+.proj-row-media--pair figcaption { grid-column: 1 / -1; }
+/* a row whose media should run the full width instead */
+.proj-row--wide .proj-row-media { grid-column: 1 / -1; }
+
+@media (max-width: 820px) {
+  .proj-facts { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; }
+  .proj-id, .proj-linkline, .proj-summary { grid-column: 1 / -1; }
+  .proj-row-copy, .proj-row-media { grid-column: 1 / -1; }
+  .proj-row-media { margin-top: 24px; }
+}
+
+/* ─── BLOCKS (older image-led pieces, still available) ──────────────────── */
+/* the page's working unit: a short title, one grey line of context, then the
+   work itself at full content width. Text is a caption layer, not the argument. */
+.proj-block {
+  padding: clamp(48px, 7vw, 96px) 0 0;
+  border-top: 1px solid var(--line);
+  margin-top: clamp(48px, 7vw, 96px);
+}
+/* the first block follows the head, which already supplies the air — no rule
+   above it and no extra padding, or the gap reads as a missing section */
+.proj-block:first-of-type { border-top: none; margin-top: 0; padding-top: 0; }
+.proj-block-title {
+  font-size: clamp(20px, 2.4vw, 26px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--black);
+}
+.proj-block-note {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--mid-500);
+  margin-top: 8px;
+  max-width: 44rem;
+}
+/* an optional paragraph when a block genuinely needs one — keep it rare */
+.proj-block p.proj-note {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--mid-500);
+  margin-top: 20px;
+  max-width: 44rem;
+}
+
+/* the shot: full content width, hairline border, mono caption under */
+.proj-shot { margin-top: clamp(24px, 3vw, 36px); }
+.proj-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--black);
+  background: var(--line);
+  transition: border-color 0.2s ease, opacity 0.25s ease;
+}
+.proj-shot:hover img { border-color: #ff2d2d; opacity: 0.92; }
+.proj-shot figcaption {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+  margin-top: 10px;
+}
+/* soft frame — for UI screenshots that need air around them (Anthony's move).
+   The frame is the padded surface; the screenshot inside loses its border. */
+.proj-shot--soft {
+  background: color-mix(in srgb, var(--line) 55%, var(--white));
+  padding: clamp(24px, 5vw, 72px);
+}
+.proj-shot--soft img { border: none; background: transparent; }
+.proj-shot--soft:hover img { opacity: 1; }
+.proj-shot--soft figcaption { margin-top: 16px; }
+/* two or three shots across */
+.proj-shots {
+  display: grid;
+  gap: 16px;
+  margin-top: clamp(24px, 3vw, 36px);
+}
+.proj-shots--2 { grid-template-columns: 1fr 1fr; }
+.proj-shots--3 { grid-template-columns: repeat(3, 1fr); }
+.proj-shots img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 1px solid var(--black);
+  background: var(--line);
+}
+.proj-shots figcaption {
+  grid-column: 1 / -1;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+}
+
+/* ─── SECTIONS (prose template) ─────────────────────────────────────────── */
+/* every section is a rail label + a body column, split by a hairline rule —
+   the same two-column rhythm the home page uses for meta + description */
+.proj-section {
+  display: grid;
+  grid-template-columns: var(--proj-rail) minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 44px);
+  align-items: start;
+  padding: clamp(40px, 6vw, 80px) 0;
+  border-top: 1px solid var(--line);
+}
+/* no sticky header to clear, so the rail pins near the top of the viewport */
+.proj-rail {
+  position: sticky;
+  top: 32px;
+}
+.proj-rail .label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+}
+/* optional one-line note under the rail label */
+.proj-rail-note {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--mid-500);
+  margin-top: 12px;
+  max-width: 15rem;
+}
+
+.proj-body { max-width: 44rem; }
+.proj-body > * + * { margin-top: 20px; }
+
+.proj-h2 {
+  font-size: clamp(22px, 2.6vw, 30px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--black);
+  text-wrap: balance;
+}
+.proj-lead {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--black);
+}
+.proj-body p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--mid-500);
+}
+.proj-body a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  transition: color 0.15s ease;
+}
+.proj-body a:hover { color: #001EFF; }
+
+/* bulleted points — hairline rows, not dots */
+.proj-list { list-style: none; border-top: 1px solid var(--line); }
+.proj-list li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--mid-500);
+}
+.proj-list li::before {
+  content: counter(proj-item, decimal-leading-zero);
+  counter-increment: proj-item;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--mid-500);
+}
+.proj-list { counter-reset: proj-item; }
+.proj-list li strong { color: var(--black); font-weight: 500; }
+
+/* pull quote — the one place type goes big inside a section */
+.proj-quote {
+  font-size: clamp(20px, 2.6vw, 28px);
+  line-height: 1.3;
+  letter-spacing: -0.03em;
+  color: var(--black);
+  padding: 8px 0 8px 20px;
+  border-left: 1px solid #ff2d2d;
+  text-wrap: balance;
+}
+.proj-quote cite {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-style: normal;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+  margin-top: 14px;
+}
+
+/* ─── FIGURES ───────────────────────────────────────────────────────────── */
+/* squared, hairline-bordered, mono caption underneath — same treatment as
+   .home-media, including the red border + dim on hover */
+.proj-fig { margin-top: 32px; }
+.proj-fig img,
+.proj-frame {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--black);
+  background: var(--line);
+  transition: border-color 0.2s ease, opacity 0.25s ease;
+}
+.proj-fig img { height: auto; }
+.proj-fig:hover img { border-color: #ff2d2d; opacity: 0.9; }
+.proj-fig figcaption {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+  margin-top: 10px;
+}
+/* two side-by-side images */
+.proj-fig--pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+/* crop both to the same shape so the pair lines up whatever you feed it */
+.proj-fig--pair img { aspect-ratio: 4 / 3; object-fit: cover; }
+.proj-fig--pair figcaption { grid-column: 1 / -1; }
+/* full-width figure — breaks the rail grid to run the page's whole width */
+.proj-fig--wide { grid-column: 1 / -1; margin-top: 0; }
+
+/* hero image under the title block */
+.proj-hero {
+  border: 1px solid var(--black);
+  background: var(--line);
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+.proj-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ─── OUTCOME NUMBERS ───────────────────────────────────────────────────── */
+.proj-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+}
+.proj-stat-n {
+  font-family: var(--mono);
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--black);
+}
+.proj-stat-d {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--mid-500);
+  margin-top: 10px;
+}
+
+/* ─── PERSISTENT EXIT ───────────────────────────────────────────────────── */
+/* every reference site keeps a way out on screen the whole scroll. Ours fades
+   in once the header has scrolled away, so it never doubles up with the nav. */
+.proj-exit {
+  position: fixed;
+  top: 20px;
+  right: max(var(--pad), calc((100vw - var(--max)) / 2));
+  z-index: 9500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--white);
+  color: var(--mid);
+  text-decoration: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease, color 0.15s, border-color 0.15s;
+}
+.proj-exit.in { opacity: 1; pointer-events: auto; }
+.proj-exit:hover { color: #ff2d2d; border-color: #ff2d2d; }
+.proj-exit svg { width: 13px; height: 13px; }
+
+/* ─── FOOTER: NEXT PROJECT ──────────────────────────────────────────────── */
+.proj-next {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: clamp(40px, 6vw, 72px) 0 0;
+  border-top: 1px solid var(--line);
+}
+.proj-next .label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+  margin-bottom: 12px;
+}
+.proj-next-title {
+  font-size: clamp(26px, 4vw, 44px);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: var(--black);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.proj-next-title:hover { color: #ff2d2d; }
+.proj-back {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--mid-500);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.proj-back:hover { color: #ff2d2d; }
+
+/* ─── PHOTO GRID ────────────────────────────────────────────────────────── */
+/* A contact sheet for image-led projects: a little text, then the work. Photos
+   keep their own aspect ratios — nothing is cropped and nothing overflows —
+   and CSS columns pack the mixed portrait/landscape shapes without gaps. */
+.proj-gallery {
+  grid-column: 1 / -1;
+  columns: 3;
+  column-gap: clamp(12px, 1.6vw, 20px);
+  margin-top: clamp(28px, 4vw, 44px);
+}
+.proj-gallery figure {
+  break-inside: avoid;
+  margin: 0 0 clamp(12px, 1.6vw, 20px);
+}
+.proj-gallery img {
+  display: block;
+  width: 100%;
+  height: auto;          /* natural ratio — the whole photo, never a crop */
+  background: var(--line);
+}
+.proj-gallery figcaption {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--mid-500);
+}
+@media (max-width: 900px) { .proj-gallery { columns: 2; } }
+@media (max-width: 560px) { .proj-gallery { columns: 1; } }
+
+/* ─── ENTRANCE ──────────────────────────────────────────────────────────── */
+/* sections rise in as they're scrolled to; project.js adds .in */
+.proj-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.proj-reveal.in { opacity: 1; transform: none; }
+
+/* ─── RESPONSIVE ────────────────────────────────────────────────────────── */
+@media (max-width: 820px) {
+  .proj-meta { grid-template-columns: 1fr 1fr; }
+  .proj-stats { grid-template-columns: 1fr; gap: 20px; }
+  .proj-shots--3 { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .proj-section { grid-template-columns: 1fr; }
+  .proj-rail { position: static; }
+  .proj-rail-note { max-width: none; }
+  .proj-fig--pair { grid-template-columns: 1fr; }
+  .proj-shots--2, .proj-shots--3 { grid-template-columns: 1fr; }
+  .proj-exit { top: 12px; right: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .proj-reveal { opacity: 1; transform: none; transition: none; }
+  .proj-exit { transition: none; }
+}

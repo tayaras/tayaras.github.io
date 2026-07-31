@@ -27,7 +27,7 @@ body {
   background: var(--white);
   color: var(--black);
   font-family: var(--sans);
-  font-weight: 400;
+  font-weight: 500;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
@@ -315,6 +315,19 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; bo
   font-size: 10px;
   letter-spacing: 0.03em;
   color: rgba(255,255,255,0.5);
+}
+
+/* copyright footer — the quiet one, for pages that end on the paper rather
+   than on the full .site-footer bar. Aligns with the page's content edge. */
+.copyright-footer {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--pad) clamp(32px, 5vw, 56px);
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mid-500);
 }
 
 /* ─── SHARED TYPOGRAPHY ─── */
@@ -982,6 +995,8 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
   text-decoration: none;
   color: inherit;
 }
+/* First card is the full-width flagship */
+.project-cards > .project-card:first-child { grid-column: 1 / -1; }
 @media (hover: hover) {
   .project-card:hover .project-card-arrow { color: #fff; transform: translateX(4px); }
   .project-card:hover .thumb-img { opacity: 0.88; transform: scale(1.02); filter: blur(2px); }
@@ -1102,7 +1117,7 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
   background: linear-gradient(to bottom, rgba(0,0,0,0.1) 20%, rgba(0,0,0,0.72) 100%);
 }
 
-/* Meta overlay — inside thumb, revealed on hover */
+/* Meta overlay — title + tags always visible; overview revealed on hover */
 .project-card-meta {
   position: absolute;
   bottom: 0;
@@ -1114,16 +1129,6 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
   justify-content: space-between;
   padding: 24px;
   gap: 16px;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.25s, transform 0.25s;
-}
-
-@media (hover: hover) {
-  .project-card:hover .project-card-meta { opacity: 1; transform: translateY(0); }
-}
-@media (hover: none) {
-  .project-card-meta { opacity: 1; transform: none; }
 }
 
 .project-card-meta-left {
@@ -1170,9 +1175,20 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
 .project-card-overview {
   font-size: 12px;
   line-height: 1.6;
-  color: rgba(255,255,255,0.65);
-  margin-top: 8px;
+  color: rgba(255,255,255,0.78);
+  max-width: 620px;
+  margin-top: 0;
   margin-bottom: 0;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.25s ease, max-height 0.3s ease, margin-top 0.25s ease;
+}
+@media (hover: hover) {
+  .project-card:hover .project-card-overview { opacity: 1; max-height: 9rem; margin-top: 10px; }
+}
+@media (hover: none) {
+  .project-card-overview { opacity: 1; max-height: none; margin-top: 10px; }
 }
 
 .project-card-arrow {
@@ -1457,10 +1473,10 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
 .cs-section { border-top: 1px solid var(--line); padding: 112px 0; }
 @media (min-width: 768px) { .cs-section { padding: 144px 0; } }
 
-.cs-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 32px; }
-@media (min-width: 768px) { .cs-grid { gap: 48px; } }
-.cs-col-kicker { grid-column: span 12; }
-.cs-col-body   { grid-column: span 12; }
+.cs-grid { display: grid; grid-template-columns: 1fr; gap: 32px; }
+@media (min-width: 768px) { .cs-grid { grid-template-columns: repeat(12, 1fr); gap: 48px; } }
+.cs-col-kicker { grid-column: 1 / -1; }
+.cs-col-body   { grid-column: 1 / -1; }
 @media (min-width: 768px) {
   .cs-col-kicker { grid-column: span 3; }
   .cs-col-body   { grid-column: span 9; }
@@ -1472,16 +1488,16 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
 .cs-heading { font-size: clamp(1.875rem, 4vw, 3.75rem); line-height: 1.02; letter-spacing: -0.045em; font-weight: 400; color: var(--black); margin-bottom: 48px; max-width: 56rem; text-wrap: balance; }
 
 .cs-body { font-size: 1.125rem; line-height: 1.7; color: var(--mid-600); }
-@media (min-width: 768px) { .cs-body { font-size: 1.25rem; } }
+@media (min-width: 768px) { .cs-body, .cs-sub-heading { font-size: 1.25rem; } }
 .cs-body p + p { margin-top: 32px; }
 .cs-body .muted { color: var(--mid); }
 
-.cs-sub-heading { font-size: 1.5rem; letter-spacing: -0.02em; font-weight: 400; color: var(--black); margin-bottom: 12px; }
+.cs-sub-heading { font-size: 1.125rem; letter-spacing: -0.01em; font-weight: 400; color: var(--black); margin-bottom: 6px; }
 
 .cs-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 48px; }
 @media (min-width: 1024px) { .cs-meta-grid { grid-template-columns: repeat(4, 1fr); } }
 .cs-meta-card { border-radius: var(--radius-card); border: 1px solid var(--line); background: rgba(255,255,255,0.7); padding: 16px; font-size: 0.875rem; }
-.cs-meta-label { color: var(--mid); margin-bottom: 8px; }
+.cs-meta-label { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mid); margin-bottom: 10px; }
 .cs-meta-val   { color: var(--black); }
 .cs-meta-link { color: inherit; border-bottom: 1px solid currentColor; opacity: 0.7; transition: opacity 0.15s; }
 .cs-meta-link:hover { opacity: 1; }

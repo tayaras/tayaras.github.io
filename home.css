@@ -1,0 +1,368 @@
+/* ─── Strummable strings home ───────────────────────────────────────────
+   Six labeled "strings" stacked tight on load (compressed). The first strum
+   slides them apart to reveal each section's content (expanded). A collapse
+   arrow packs them back. Every string is a GuitarString (shared.js) so they
+   stay strummable in either state. */
+.strum-home {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(24px, 5vw, 56px) var(--pad) 120px;
+}
+/* skip rendering off-screen project sections until scrolled near (perf) */
+.home-fret:not([data-primary]) { content-visibility: auto; contain-intrinsic-size: auto 500px; }
+
+.home-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 5px 0;                 /* spacing between strings when compressed */
+  transition: padding 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+}
+body.stack-open .home-row { padding: 16px 0; }
+
+.home-label {
+  flex: 0 0 auto;                 /* hug the title — string starts right after */
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--mid-500);
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 240px;
+  transition: color 0.4s ease,
+              max-width 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.45s ease,
+              margin-right 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  text-transform: uppercase;   /* all-caps, matching the header brand */
+}
+/* compressed: titles slide away, strings extend to the full body width
+   (the primary "Tay Aras" line keeps its title) */
+body:not(.stack-open) .home-fret:not([data-primary]) .home-label {
+  max-width: 0;
+  opacity: 0;
+  margin-right: -16px;   /* absorb the row gap so the string reaches the edge */
+  transform: translateX(-12px);
+}
+.home-fret[data-primary] .home-label { color: var(--black); }
+
+/* hover a section → all of its text and its string line turn red */
+.home-meta, .home-copy p, .home-cta, .home-about-links a, .home-note,
+.cv-title, .cv-sub, .cv-date, .home-cv .label { transition: color 0.2s ease; }
+.home-fret:not([data-primary]):hover .home-label,
+.home-fret:not([data-primary]):hover .home-meta,
+.home-fret:not([data-primary]):hover .home-meta p,
+.home-fret:not([data-primary]):hover .home-copy p,
+.home-fret:not([data-primary]):hover .home-note,
+.home-fret:not([data-primary]):hover .home-note a,
+.home-fret:not([data-primary]):hover .home-copy a,
+.home-fret:not([data-primary]):hover .home-cta,
+.home-fret:not([data-primary]):hover .home-about-links a,
+.home-fret:not([data-primary]):hover .cv-title,
+.home-fret:not([data-primary]):hover .cv-sub,
+.home-fret:not([data-primary]):hover .cv-date,
+.home-fret:not([data-primary]):hover .home-cv .label { color: #ff2d2d; }
+.home-fret:not([data-primary]):hover .string-path { stroke: #ff2d2d; }
+/* header (Tay Aras) is excluded — but its More about me / See less link
+   reddens when the section is hovered, like the project CTAs */
+.home-fret[data-primary]:hover .home-cta { color: #ff2d2d; }
+
+/* view-project button does a little wiggle when its section is hovered */
+@keyframes homeCtaWiggle {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-3deg); }
+  55% { transform: rotate(2deg); }
+  80% { transform: rotate(-1deg); }
+}
+.home-fret:not([data-primary]):hover .home-cta { animation: homeCtaWiggle 0.45s ease; transform-origin: left center; }
+
+/* whole project section is clickable */
+.home-fret.is-linked .home-panel { cursor: pointer; }
+
+/* photo dims + a red outline fades in on section hover */
+.home-media img, .home-media video { transition: opacity 0.25s ease; }
+.home-fret:not([data-primary]):hover .home-media img,
+.home-fret:not([data-primary]):hover .home-media video { opacity: 0.72; }
+.home-fret:not([data-primary]):hover .home-media { outline-color: #ff2d2d; }
+
+/* hover-photo keywords (scatter) — mirrors the about page */
+.kw { cursor: pointer; border-bottom: 1px solid var(--black); transition: opacity 0.15s; color: inherit; }
+.kw:hover { opacity: 0.4; }
+.scatter-stage { position: fixed; inset: 0; pointer-events: none; z-index: 200; }
+.scatter-img {
+  position: absolute; background: #ede9e2; opacity: 0; overflow: hidden;
+  transform: scale(0.94) rotate(var(--rot, 0deg));
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.scatter-img.visible { opacity: 1; transform: scale(1) rotate(var(--rot, 0deg)); }
+.scatter-img.visible img { pointer-events: auto; cursor: zoom-in; }
+.scatter-img img { width: 100%; height: auto; display: block; }
+[data-theme="dark"] .scatter-img { background: #252422; }
+@media (max-width: 768px) { .scatter-stage { display: none; } }
+
+
+/* the string — reuses .string-zone / .string-path from shared.css */
+.home-string {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.home-string .string-svg { height: 30px; }  /* trimmed from 36px to pack rows closer */
+
+/* top-row controls: mute lives on the header string already; here we add the
+   collapse arrow so it sits on the top string of the STACK, per the design */
+.home-controls {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+/* always-present toggle: opens the stack when compressed, collapses it when
+   open. The chevron points down (expand) by default, and flips up on open. */
+#stackCollapse {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--mid);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+#stackCollapse:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+/* mute button's muted red matches the "More about me" hover red */
+.mute-btn.muted { color: #ff2d2d; border-color: #ff2d2d; }
+/* the arrow slowly glows blue until it's clicked (draws the eye to it) */
+@keyframes stackGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); border-color: var(--line); color: var(--mid); }
+  50%      { box-shadow: 0 0 7px 0 rgba(59, 130, 246, 0.28); border-color: rgba(59, 130, 246, 0.5); color: var(--mid); }
+}
+#stackCollapse.pulse { animation: stackGlow 2.6s ease-in-out infinite; }
+#stackCollapse svg { width: 14px; height: 14px; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+body.stack-open #stackCollapse svg { transform: rotate(180deg); }
+
+/* Compressed, the stack always reads as a six-string guitar. Sections past the
+   sixth fold their string away on collapse — the mirror of
+   .proj-string-row--over on the project pages. home.js adds the class. */
+.home-fret--over .home-row {
+  max-height: 120px;
+  transition: opacity 0.45s ease,
+              max-height 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              padding 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+body:not(.stack-open) .home-fret--over .home-row {
+  opacity: 0;
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-fret--over .home-row { transition-duration: 0.001s; }
+}
+
+/* content panel — closed by default, slides open on strum */
+.home-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.95s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.75s ease;
+}
+.home-panel > .home-panel-inner { overflow: hidden; min-height: 0; }
+body.stack-open .home-panel { grid-template-rows: 1fr; opacity: 1; }
+
+/* stagger each panel so they cascade open like a downstroke */
+body.stack-open .home-fret:nth-child(1) .home-panel { transition-delay: 0.00s; }
+body.stack-open .home-fret:nth-child(2) .home-panel { transition-delay: 0.05s; }
+body.stack-open .home-fret:nth-child(3) .home-panel { transition-delay: 0.10s; }
+body.stack-open .home-fret:nth-child(4) .home-panel { transition-delay: 0.15s; }
+body.stack-open .home-fret:nth-child(5) .home-panel { transition-delay: 0.20s; }
+body.stack-open .home-fret:nth-child(6) .home-panel { transition-delay: 0.25s; }
+body.stack-open .home-fret:nth-child(7) .home-panel { transition-delay: 0.30s; }
+body.stack-open .home-fret:nth-child(8) .home-panel { transition-delay: 0.35s; }
+body.stack-open .home-fret:nth-child(9) .home-panel { transition-delay: 0.40s; }
+body.stack-open .home-fret:nth-child(10) .home-panel { transition-delay: 0.45s; }
+body.stack-open .home-fret:nth-child(11) .home-panel { transition-delay: 0.50s; }
+body.stack-open .home-fret:nth-child(12) .home-panel { transition-delay: 0.55s; }
+
+.home-content {
+  display: grid;
+  grid-template-columns: 1fr 0.4fr 0.6fr;   /* image (~half) · meta · description */
+  gap: clamp(20px, 3vw, 44px);
+  align-items: start;
+  padding: clamp(24px, 3.5vw, 44px) 0 clamp(32px, 5vw, 72px);
+}
+/* smaller sections — client work + side projects. Identical to a full project
+   section, just a narrower thumbnail and tighter vertical padding. Everything
+   else (type, meta, CTA, hover) is inherited so the two read as one family. */
+.home-content--small {
+  /* columns stay identical to a full section so the meta and description
+     line up across every row — only the image inside the first column
+     shrinks. Tune the thumbnail with --small-thumb. */
+  --small-thumb: 26%;
+  padding: clamp(16px, 2.2vw, 28px) 0 clamp(20px, 3vw, 40px);
+}
+.home-content--small .home-media { width: var(--small-thumb); }
+
+/* bio (top section) — copy only, no photo */
+.home-content--bio { grid-template-columns: 1fr; }
+.home-content--bio .home-copy { max-width: 44rem; }
+
+/* project sections: drop the "View project" link to the bottom so it lines
+   up with the bottom edge of the photo (the tallest column in the row) */
+.home-content:not(.home-content--bio) .home-copy { align-self: stretch; display: flex; flex-direction: column; }
+.home-content:not(.home-content--bio) .home-copy .home-cta { margin-top: auto; }
+
+/* meta column — company, descriptive title, years (all uniform) */
+.home-meta { font-family: var(--sans); font-size: 14px; line-height: 1.55; color: var(--black); }
+.home-meta p { margin: 0; }
+
+.home-copy p {
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--black);
+}
+/* project descriptions sit a step back from the meta column (company /
+   title / year); the bio at the top keeps full-contrast text */
+.home-fret:not([data-primary]) .home-copy p { color: var(--mid-500); }
+.home-copy p + p { margin-top: 1em; }
+.home-copy a { color: inherit; text-decoration: none; border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent); transition: color 0.15s ease; }
+.home-copy a:hover { color: #001EFF; }
+
+/* expanded "more about me" — bio + photo, contact links, two-column CV */
+.home-copy.is-expanded { max-width: none; }
+
+/* ─── BIO WIPE ───────────────────────────────────────────────────────────
+   Toggling the bio wipes the old copy up (erased bottom edge upward, pulled
+   slightly up as it goes), swaps the content while it's hidden, then wipes
+   the new copy back down. home.js drives the classes.
+   The resting inset() matters: clip-path can't interpolate from `none`, so
+   without it the wipe-up would snap shut instead of animating. */
+.home-copy { clip-path: inset(0 0 0 0); }
+.home-copy.wipe-out {
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(-10px);
+  opacity: 0;
+  transition: clip-path 0.42s cubic-bezier(0.65, 0, 0.35, 1),
+              transform 0.42s cubic-bezier(0.65, 0, 0.35, 1),
+              opacity 0.42s ease-in;   /* matches the wipe so the copy stays
+                                          visible while it's being erased */
+}
+/* the frame the new copy is placed in — hidden, no transition yet */
+.home-copy.wipe-primed {
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(-10px);
+  opacity: 0;
+}
+.home-copy.wipe-in {
+  clip-path: inset(0 0 0 0);
+  transform: none;
+  opacity: 1;
+  transition: clip-path 0.62s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.62s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.40s ease;
+}
+/* the CV rides the parent's reveal rather than running its own slide */
+.home-copy.wipe-primed .home-about-extra,
+.home-copy.wipe-in .home-about-extra { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .home-copy.wipe-out, .home-copy.wipe-in { transition: none; }
+}
+.home-bio-cols { display: grid; grid-template-columns: minmax(0, 44rem) 1fr; gap: clamp(28px, 3.5vw, 56px); align-items: start; }
+.home-bio-text { align-self: stretch; display: flex; flex-direction: column; }
+.home-bio-photo img { width: 100%; height: auto; display: block; }
+
+.home-about-extra { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease; }
+.home-about-extra > .home-about-inner { overflow: hidden; min-height: 0; }
+.home-about-extra.in { grid-template-rows: 1fr; opacity: 1; }
+.home-about-links { display: flex; flex-wrap: wrap; gap: 32px; margin-top: auto; padding-top: 44px; }
+.home-about-links a { font-size: 12px; color: var(--mid-600); text-decoration: none; border-bottom: 1px solid var(--line); padding-bottom: 2px; }
+.home-about-links a:hover { color: #001EFF; }
+.home-cv { display: grid; grid-template-columns: 1fr 1fr; column-gap: 80px; margin-top: 56px; padding-top: 56px; border-top: 1px solid var(--line); }
+.home-cv > .label { margin-top: 0; margin-bottom: 20px; }
+/* Skills sits at the bottom of its grid cell on desktop (align-self:end) */
+.home-cv > .label--skills { margin-bottom: 14px; }
+.home-cv .label { font-size: 10px; }
+.home-cv .cv-title { font-size: 12px; font-weight: 500; }
+.home-cv .cv-sub { font-size: 11px; }
+.home-cv .cv-date { font-size: 9px; font-family: var(--sans); }
+
+.home-cta {
+  display: inline-block;
+  margin-top: 20px;
+  font-family: var(--mono);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: none;
+}
+.home-cta:hover { opacity: 0.6; }
+.home-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+
+/* closing note — one line of copy under an unlabelled string. Left-aligned at
+   the content edge, like the section labels above it. */
+.home-note {
+  margin: 0;
+  padding: clamp(16px, 2.2vw, 28px) 0 clamp(20px, 3vw, 40px);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--mid-500);
+  transition: color 0.2s ease;
+}
+.home-note a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+}
+
+.home-media {
+  border-radius: 0;
+  overflow: hidden;
+  background: var(--line);
+  aspect-ratio: 16 / 9;           /* wider + shorter, uniform across all sections */
+  /* transparent until hover — an outline (not a border) so nothing reflows,
+     pulled inward so it sits on the image edge the way the old border did */
+  outline: 1px solid transparent;
+  outline-offset: -1px;
+  transition: outline-color 0.2s ease;
+}
+.home-media img, .home-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+
+
+@media (max-width: 820px) {
+  :root { --label-w: 130px; }
+  .home-content { grid-template-columns: 1fr 1fr; }
+  .home-content .home-media { grid-column: 1 / -1; }
+  /* stacked, the thumbnail is on its own row — no reason to keep it small */
+  .home-content--small .home-media { width: 100%; }
+  .home-bio-cols, .home-cv { grid-template-columns: 1fr; }
+  .home-cv > * { grid-column: 1 !important; grid-row: auto !important; }
+  /* stacked: Education / Skills follow a row's bottom border directly, so
+     open up space above each label (Experience is already first in flow) */
+  .home-cv > .label { margin-top: 48px; margin-bottom: 22px; }
+  .home-cv > .label:first-child { margin-top: 0; }
+}
+@media (max-width: 640px) {
+  .home-content, .home-content.media-first {
+    grid-template-columns: 1fr;
+    padding-left: 0;
+  }
+  .home-media { order: -1; }
+  .home-label { flex-basis: auto; }
+  /* stacked: margin-top:auto collapses, so give the CTA the same breathing
+     room the grid gap gives between the meta block and the description */
+  .home-content:not(.home-content--bio) .home-copy .home-cta { margin-top: clamp(20px, 3vw, 44px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-row, .home-panel, #stackCollapse, #stackCollapse svg, .home-label, .home-about-extra { transition-duration: 0.001s; }
+  .home-fret:hover .home-cta { animation: none; }
+  #stackCollapse.pulse { animation: none; }
+}
