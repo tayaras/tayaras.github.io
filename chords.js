@@ -20,7 +20,36 @@ window.initChordKeys = function (opts) {
   function strings() { return typeof source === 'function' ? source() : source; }
   if (!strings().length && typeof source !== 'function') return null;
 
-  var CHORD_ROOTS = { a: 57, b: 59, c: 48, d: 50, e: 52, f: 53, g: 55 };  // MIDI, C3 octave
+  /* Open-position chord voicings, as MIDI notes low string → high string.
+     These are the shapes a guitarist actually plays — E is 022100, G is
+     320003, and so on — so the strum lands in a guitar's real range
+     (E2 82Hz – E4 330Hz) instead of the octave-and-a-bit above it that a
+     generic root/3rd/5th stack produces.
+
+     Where the shape mutes a string (A, D, C and B are five- or four-string
+     chords) the muted position sounds the root or fifth in the bass, since
+     every string here is visible and strummable and silence would read as
+     something broken. */
+  var VOICINGS = {
+    major: {
+      e: [40, 47, 52, 56, 59, 64],   // 022100  E2 B2 E3 G#3 B3 E4
+      a: [40, 45, 52, 57, 61, 64],   // x02220  low E rings as the 5th
+      d: [38, 45, 50, 57, 62, 66],   // xx0232  extended down to D2 A2
+      g: [43, 47, 50, 55, 59, 67],   // 320003  G2 B2 D3 G3 B3 G4
+      c: [43, 48, 52, 55, 60, 64],   // x32010  over a G bass
+      f: [41, 48, 53, 57, 60, 65],   // 133211  F2 C3 F3 A3 C4 F4
+      b: [42, 47, 54, 59, 63, 66]    // x24442  over an F# bass
+    },
+    minor: {
+      e: [40, 47, 52, 55, 59, 64],   // 022000
+      a: [40, 45, 52, 57, 60, 64],   // x02210
+      d: [38, 45, 50, 57, 62, 65],   // xx0231
+      g: [43, 50, 55, 58, 62, 67],   // 355333
+      c: [43, 48, 55, 60, 63, 67],   // x35543
+      f: [41, 48, 53, 56, 60, 65],   // 133111
+      b: [42, 47, 54, 59, 62, 66]    // x24432
+    }
+  };
   var chordMode = 'major';
   var lastRoot = null;
   var chordNow = document.getElementById('chordNow');
@@ -45,12 +74,11 @@ window.initChordKeys = function (opts) {
   }
 
   function setChord(letter) {
-    var root = CHORD_ROOTS[letter];
-    if (root == null) return;
+    var notes = VOICINGS[chordMode][letter];
+    if (!notes) return;
     lastRoot = letter;
-    var third = chordMode === 'minor' ? 3 : 4;
-    var offsets = [0, 7, 12, 12 + third, 19, 24];   // root · 5th · oct · 3rd · 5th · 2·oct
-    var freqs = offsets.map(function (o) { return midiFreq(root + o); }).reverse();  // top string = highest
+    // voicings read low→high; the rows read high→low, like a chord chart
+    var freqs = notes.map(midiFreq).slice().reverse();
     strings().forEach(function (gs, i) { gs.freq = freqs[i % freqs.length]; });
     updateChordDisplay();
   }
@@ -76,7 +104,7 @@ window.initChordKeys = function (opts) {
     var k = e.key.toLowerCase();
     if (k === 'z') { setMode('major'); return; }  // re-tune the current chord to major
     if (k === 'x') { setMode('minor'); return; }  // …to minor
-    if (Object.prototype.hasOwnProperty.call(CHORD_ROOTS, k)) setChord(k);
+    if (Object.prototype.hasOwnProperty.call(VOICINGS.major, k)) setChord(k);
   });
 
   // …and the same controls as buttons, for touch devices with no keyboard
