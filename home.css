@@ -339,6 +339,11 @@ body.stack-open .home-fret:nth-child(12) .home-panel { transition-delay: 0.55s; 
   }
   .home-media { order: -1; }
   .home-label { flex-basis: auto; }
+  /* project descriptions are desktop-only — stacked single-column they push
+     the next section a screen away. The thumbnail, the meta block and the
+     "View project" link stay, so a card is still identifiable and still
+     opens. The bio keeps its copy: it IS the content of that section. */
+  .home-content:not(.home-content--bio) .home-copy p { display: none; }
   /* stacked: margin-top:auto collapses, so give the CTA the same breathing
      room the grid gap gives between the meta block and the description */
   .home-content:not(.home-content--bio) .home-copy .home-cta { margin-top: clamp(20px, 3vw, 44px); }
