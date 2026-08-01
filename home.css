@@ -160,6 +160,22 @@ body:not(.stack-open) .home-fret--over .home-row {
   .home-fret--over .home-row { transition-duration: 0.001s; }
 }
 
+/* divider — separates the projects above from the client work below.
+   A plain rule rather than another string: it isn't a section, so it stays
+   out of the six-string count and out of the strum. */
+.home-divider {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: clamp(40px, 6vw, 80px) 0 clamp(16px, 2vw, 28px);
+}
+/* compressed, the stack is only strings — the divider packs away with them */
+body:not(.stack-open) .home-divider {
+  margin: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease, margin 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+body.stack-open .home-divider { transition: opacity 0.5s ease 0.25s, margin 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+
 /* content panel — closed by default, slides open on strum */
 .home-panel {
   display: grid;
@@ -170,19 +186,21 @@ body:not(.stack-open) .home-fret--over .home-row {
 .home-panel > .home-panel-inner { overflow: hidden; min-height: 0; }
 body.stack-open .home-panel { grid-template-rows: 1fr; opacity: 1; }
 
-/* stagger each panel so they cascade open like a downstroke */
-body.stack-open .home-fret:nth-child(1) .home-panel { transition-delay: 0.00s; }
-body.stack-open .home-fret:nth-child(2) .home-panel { transition-delay: 0.05s; }
-body.stack-open .home-fret:nth-child(3) .home-panel { transition-delay: 0.10s; }
-body.stack-open .home-fret:nth-child(4) .home-panel { transition-delay: 0.15s; }
-body.stack-open .home-fret:nth-child(5) .home-panel { transition-delay: 0.20s; }
-body.stack-open .home-fret:nth-child(6) .home-panel { transition-delay: 0.25s; }
-body.stack-open .home-fret:nth-child(7) .home-panel { transition-delay: 0.30s; }
-body.stack-open .home-fret:nth-child(8) .home-panel { transition-delay: 0.35s; }
-body.stack-open .home-fret:nth-child(9) .home-panel { transition-delay: 0.40s; }
-body.stack-open .home-fret:nth-child(10) .home-panel { transition-delay: 0.45s; }
-body.stack-open .home-fret:nth-child(11) .home-panel { transition-delay: 0.50s; }
-body.stack-open .home-fret:nth-child(12) .home-panel { transition-delay: 0.55s; }
+/* stagger each panel so they cascade open like a downstroke.
+   nth-of-type, not nth-child: the divider between own work and client
+   work is a sibling here, and nth-child would count it. */
+body.stack-open .home-fret:nth-of-type(1) .home-panel { transition-delay: 0.00s; }
+body.stack-open .home-fret:nth-of-type(2) .home-panel { transition-delay: 0.05s; }
+body.stack-open .home-fret:nth-of-type(3) .home-panel { transition-delay: 0.10s; }
+body.stack-open .home-fret:nth-of-type(4) .home-panel { transition-delay: 0.15s; }
+body.stack-open .home-fret:nth-of-type(5) .home-panel { transition-delay: 0.20s; }
+body.stack-open .home-fret:nth-of-type(6) .home-panel { transition-delay: 0.25s; }
+body.stack-open .home-fret:nth-of-type(7) .home-panel { transition-delay: 0.30s; }
+body.stack-open .home-fret:nth-of-type(8) .home-panel { transition-delay: 0.35s; }
+body.stack-open .home-fret:nth-of-type(9) .home-panel { transition-delay: 0.40s; }
+body.stack-open .home-fret:nth-of-type(10) .home-panel { transition-delay: 0.45s; }
+body.stack-open .home-fret:nth-of-type(11) .home-panel { transition-delay: 0.50s; }
+body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s; }
 
 .home-content {
   display: grid;
