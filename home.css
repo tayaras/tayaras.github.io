@@ -160,19 +160,42 @@ body:not(.stack-open) .home-fret--over .home-row {
   .home-fret--over .home-row { transition-duration: 0.001s; }
 }
 
-/* divider — separates the projects above from the client work below.
-   A plain rule rather than another string: it isn't a section, so it stays
-   out of the six-string count and out of the strum. */
+/* divider — separates the projects above from the client work below. Reads
+   like a section row (mark on the left, rule running to the edge) but is
+   deliberately not one: no string, so it stays out of the six-string count
+   and out of the strum. The mark is set at .label scale rather than
+   .home-label's, so it groups the sections under it instead of competing. */
 .home-divider {
-  border: 0;
-  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 16px;
   margin: clamp(40px, 6vw, 80px) 0 clamp(16px, 2vw, 28px);
 }
-/* compressed, the stack is only strings — the divider packs away with them */
+.home-divider::after {
+  content: "";
+  flex: 1 1 auto;
+  border-top: 1px solid var(--line);
+}
+.home-divider-mark {
+  flex: 0 0 auto;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid);
+  white-space: nowrap;
+}
+/* compressed, the stack is only strings — the divider packs away with them.
+   Height as well as margin: the mark's line-box would otherwise leave ~14px
+   of invisible space sitting in the middle of the guitar. */
 body:not(.stack-open) .home-divider {
   margin: 0;
+  height: 0;
+  overflow: hidden;
   opacity: 0;
-  transition: opacity 0.4s ease, margin 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.4s ease,
+              height 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              margin 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 body.stack-open .home-divider { transition: opacity 0.5s ease 0.25s, margin 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
 
