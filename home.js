@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var COLLAPSE_CTA = '<a class="home-cta" id="aboutCollapse" href="#">See less ←</a>';
 
   var SHORT = [
-    "Howdy! I'm Tay Aras, a designer and product lead with 8+ years of experience, focused on emergent technologies, hybrid environments, and interaction design. My work explores connection: how we can connect people to each other, and to the things they care about.",
+    "Howdy! I'm Tay Aras, a designer and product lead with 8+ years  of experience, focused on emergent technologies, hybrid environments, and interaction design. My work explores connection: how we can connect people to each other, and to the things they care about.",
 
     "Currently at <a href='https://microsoft.com' target='_blank' rel='noopener'>Microsoft</a>, building virtual communication platforms and multimodal interfaces. Also <a href='https://nowhereinteresting.online' target='_blank' rel='noopener'>Nowhere Interesting</a>, a design studio &amp; lab. I studied (and taught) <a href='https://design.cmu.edu/about-our-programs/undergraduate-degrees/environments' target='_blank' rel='noopener'>Hybrid Environments Design</a> at <a href='https://design.cmu.edu' target='_blank' rel='noopener'>Carnegie Mellon University</a>.",
 

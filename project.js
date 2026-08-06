@@ -80,8 +80,12 @@ document.addEventListener('DOMContentLoaded', function () {
       var gs = bind(row, SCALE[i % SCALE.length]);
       if (gs) fillerStrings.push(gs);
     }
-    var lastSec = document.querySelector('.proj-sec:last-of-type');
-    if (lastSec && lastSec.parentNode) lastSec.parentNode.insertBefore(host, lastSec.nextSibling);
+    /* normally the spares hang below the last section; on a page that is only
+       a header (no sections at all) they hang off the header instead, so the
+       count still reaches six. */
+    var anchor = document.querySelector('.proj-sec:last-of-type') ||
+                 document.querySelector('.proj-head');
+    if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(host, anchor.nextSibling);
   }
 
   /* the six strings the chords play: the header's on top, then the real rows

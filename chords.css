@@ -104,3 +104,15 @@ body.chords-visible .chord-pads { pointer-events: auto; }
   .chord-pad--strum { min-width: 104px; font-size: 12px; }
 }
 
+
+/* Short screens: the A–G column is seven pads tall, so it sets the height of
+   the whole deck. Trim the pads and their gaps enough that the deck and the
+   strings above it share one screen without scrolling. Still ≥40px targets. */
+@media (max-height: 750px) and (pointer: coarse), (max-height: 700px) {
+  .chord-now { font-size: 20px; }
+  .chord-pads { padding-bottom: 12px; }
+  .chord-pad-deck { margin-top: 12px; }
+  .chord-pad-left { gap: 8px; }
+  .chord-pad-col { gap: 6px; }
+  .chord-pad { min-height: 40px; padding: 6px 10px; font-size: 14px; }
+}

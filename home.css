@@ -46,6 +46,10 @@ body:not(.stack-open) .home-fret:not([data-primary]) .home-label {
   transform: translateX(-12px);
 }
 .home-fret[data-primary] .home-label { color: var(--black); }
+/* the name doubles as this page's brand — the corner mark every other page
+   carries as a link, so it behaves like one here too */
+a.home-label { text-decoration: none; }
+a.home-label:hover { opacity: 0.5; }
 
 /* hover a section → all of its text and its string line turn red */
 .home-meta, .home-copy p, .home-cta, .home-about-links a, .home-note { transition: color 0.2s ease; }
@@ -373,6 +377,16 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   .home-content--small .home-media { width: 100%; }
   .home-bio-cols { grid-template-columns: 1fr; }
 }
+/* Compressed on a phone, the whole instrument — six strings, the chord deck
+   and the footer — has to land inside one screen. The expanded page keeps its
+   generous bottom padding; collapsed, that 120px is just dead air under the
+   pads. */
+@media (max-width: 640px) {
+  body:not(.stack-open) .strum-home { padding-bottom: 12px; }
+  body:not(.stack-open) .chord-hint { margin-top: clamp(12px, 3vh, 28px); }
+  body:not(.stack-open) .copyright-footer { padding-bottom: clamp(12px, 2vh, 24px); }
+}
+
 @media (max-width: 640px) {
   .home-content, .home-content.media-first {
     grid-template-columns: 1fr;
