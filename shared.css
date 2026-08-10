@@ -8,8 +8,10 @@
   --accent-light: #f0f6f5;
   --mono: 'Helvetica Neue', 'helvetica-neue-lt-pro', 'Helvetica', Arial, sans-serif;
   --sans: 'Helvetica Neue', 'helvetica-neue-lt-pro', 'Helvetica', Arial, sans-serif;
-  --pad: 32px;
-  --max: min(calc(100vw - 64px), 1600px);
+  /* Near-full-bleed: thin gutters, and a cap high enough that wide screens
+     actually reach the edges rather than stopping short. */
+  --pad: 8px;
+  --max: min(calc(100vw - 16px), 2400px);
   --header-h: 52px;
   --string-h: 36px;
   --mid-600: #525252;
@@ -1289,14 +1291,12 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); }
 }
 
 /* ─── RESPONSIVE ─── */
-@media (max-width: 1024px) {
-  :root { --pad: 32px; }
+@media (max-width: 640px) {
+  /* Tighten gutters further on phones */
+  :root { --pad: 6px; --max: calc(100vw - 12px); }
 }
 
 @media (max-width: 768px) {
-  /* Tighten gutters so content uses more of the screen */
-  :root { --pad: 20px; --max: calc(100vw - 40px); }
-
   /* Header: 6 cols — brand | string | mute | expand | theme | hamburger (all can be visible at once) */
   .header-bar { grid-template-columns: auto 1fr auto auto auto auto; gap: 8px; }
   .main-nav { display: none; }
