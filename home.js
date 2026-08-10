@@ -152,14 +152,25 @@ document.addEventListener('DOMContentLoaded', function () {
       "<a href='https://nowhereinteresting.online' target='_blank' rel='noopener'>Studio ↗</a>" +
     "</div>";
 
-  var PHOTO = "<div class='home-bio-photo'><img loading='lazy' src='images/main/IMG_4965.webp' alt='Tay Aras'></div>";
+  /* The photo lives outside .home-copy (index.html) so it survives the copy
+     swap: collapsed it's a band as tall as the short copy, expanded it grows to
+     its own aspect. Same element, same width — so the two states are one
+     continuous height transition rather than a cut between two images. */
+  var photoEl = document.getElementById('bioPhoto');
+  var PHOTO_RATIO = 1480 / 987;   // natural aspect of images/main/IMG_4965.webp
+
+  function sizePhoto(expanded) {
+    if (!photoEl) return;
+    var h = expanded ? photoEl.clientWidth / PHOTO_RATIO : copy.offsetHeight;
+    photoEl.classList.toggle('is-full', !!expanded);
+    if (h) photoEl.style.setProperty('--bio-photo-h', h + 'px');
+  }
 
   function paraHTML(paras) {
     return paras.map(function (h) { return '<p>' + h + '</p>'; }).join('');
   }
   function bioHTML(paras, photo) {
-    if (!photo) return paraHTML(paras);
-    return "<div class='home-bio-cols'><div class='home-bio-text'>" + paraHTML(paras) + LINKS + "</div>" + PHOTO + "</div>";
+    return paraHTML(paras) + (photo ? LINKS : '');
   }
   function finalHTML(paras, ctaHTML, extra, photo) { return bioHTML(paras, photo) + (extra || '') + ctaHTML; }
 
@@ -168,6 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
     copy.innerHTML = html;
     var ex = copy.querySelector('.home-about-extra');
     if (ex) ex.classList.add('in');   // the wipe reveals it; no separate slide
+    sizePhoto(expanded);              // photo grows/shrinks alongside the wipe-in
     bind();
     if (window.__initScatterLinks) window.__initScatterLinks();   // wire hover-photo keywords
     running = false;
@@ -233,6 +245,17 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   bind();
+
+  // keep the collapsed band matched to the copy as it reflows — the panel
+  // opening, a resize, a late webfont all change how tall the short bio is
+  function syncPhoto() { sizePhoto(copy.classList.contains('is-expanded')); }
+  syncPhoto();
+  window.addEventListener('resize', syncPhoto);
+  if (window.ResizeObserver) {
+    new ResizeObserver(function () {
+      if (!copy.classList.contains('is-expanded')) sizePhoto(false);
+    }).observe(copy);
+  }
 })();
 
 /* Hover-photo keywords — same scatter effect as the about page. Keywords live in

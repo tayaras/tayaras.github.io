@@ -228,9 +228,10 @@ body.stack-open .home-fret:nth-of-type(11) .home-panel { transition-delay: 0.50s
 body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s; }
 
 .home-content {
+  --home-gap: clamp(20px, 3vw, 44px);
   display: grid;
   grid-template-columns: 1fr 0.4fr 0.6fr;   /* image (~half) · meta · description */
-  gap: clamp(20px, 3vw, 44px);
+  gap: var(--home-gap);
   align-items: start;
   padding: clamp(24px, 3.5vw, 44px) 0 clamp(32px, 5vw, 72px);
 }
@@ -246,9 +247,43 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 }
 .home-content--small .home-media { width: var(--small-thumb); }
 
-/* bio (top section) — copy only, no photo */
-.home-content--bio { grid-template-columns: 1fr; }
-.home-content--bio .home-copy { max-width: 44rem; }
+/* bio (top section). One photo serves both states: compressed it's a band as
+   tall as the short copy, expanded it opens to the full frame. The column never
+   changes width, so the reveal is a pure height change — home.js sets
+   --bio-photo-h for each state and the transition below does the rest. */
+/* The photo starts exactly where a project's hero image ends: a project row is
+   1fr · 0.4fr · 0.6fr with two gaps, so its image runs to 50% - one gap. The
+   bio matches that edge with a first column of the same width and no gutter. */
+.home-content--bio { grid-template-columns: calc(50% - var(--home-gap)) 1fr; column-gap: 0; }
+/* the column has no gutter of its own, so the copy carries one — otherwise the
+   text runs right up against the photo's edge */
+.home-content--bio .home-copy { max-width: 44rem; padding-right: var(--home-gap); }
+
+/* the image is absolutely placed so it can't push the row taller than the
+   height we've asked for; cover + object-position keeps the head in the band */
+.home-bio-photo {
+  align-self: start;
+  position: relative;
+  overflow: hidden;
+  height: var(--bio-photo-h, 15rem);
+  transition: height 0.62s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.home-bio-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  display: block;
+  transition: object-position 0.62s cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* expanded, the height matches the photo's own aspect, so cover shows all of
+   it and the crop offset no longer bites */
+.home-bio-photo.is-full img { object-position: center 50%; }
+@media (prefers-reduced-motion: reduce) {
+  .home-bio-photo, .home-bio-photo img { transition: none; }
+}
 
 /* project sections: drop the "View project" link to the bottom so it lines
    up with the bottom edge of the photo (the tallest column in the row) */
@@ -268,12 +303,19 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 /* project descriptions sit a step back from the meta column (company /
    title / year); the bio at the top keeps full-contrast text */
 .home-fret:not([data-primary]) .home-copy p { color: var(--mid-500); }
+/* bio: the opening line and the closing sign-off stay full contrast, the
+   middle paragraphs step back to the same grey the project copy uses */
+.home-content--bio .home-copy p:nth-of-type(2),
+.home-content--bio .home-copy p:nth-of-type(3) { color: var(--mid-500); }
 .home-copy p + p { margin-top: 1em; }
 .home-copy a { color: inherit; text-decoration: none; border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent); transition: color 0.15s ease; }
 .home-copy a:hover { color: #001EFF; }
 
-/* expanded "more about me" — bio + photo, contact links, two-column CV */
-.home-copy.is-expanded { max-width: none; }
+/* expanded "more about me" — the copy keeps its column (the photo holds the
+   one beside it), with the contact links pinned to the bottom of the text */
+.home-copy.is-expanded { display: flex; flex-direction: column; }
+/* a flex child would otherwise stretch the link's underline across the column */
+.home-copy.is-expanded > .home-cta { align-self: flex-start; }
 
 /* ─── BIO WIPE ───────────────────────────────────────────────────────────
    Toggling the bio wipes the old copy up (erased bottom edge upward, pulled
@@ -311,9 +353,6 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 @media (prefers-reduced-motion: reduce) {
   .home-copy.wipe-out, .home-copy.wipe-in { transition: none; }
 }
-.home-bio-cols { display: grid; grid-template-columns: minmax(0, 44rem) 1fr; gap: clamp(28px, 3.5vw, 56px); align-items: start; }
-.home-bio-text { align-self: stretch; display: flex; flex-direction: column; }
-.home-bio-photo img { width: 100%; height: auto; display: block; }
 
 .home-about-extra { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease; }
 .home-about-extra > .home-about-inner { overflow: hidden; min-height: 0; }
@@ -356,7 +395,11 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   .home-content .home-media { grid-column: 1 / -1; }
   /* stacked, the thumbnail is on its own row — no reason to keep it small */
   .home-content--small .home-media { width: 100%; }
-  .home-bio-cols { grid-template-columns: 1fr; }
+  /* stacked, the crop would be a thin band under the copy — it only comes back
+     once the bio is expanded and the photo can be shown whole */
+  .home-content--bio { grid-template-columns: 1fr; }
+  .home-bio-photo { display: none; }
+  .home-content--bio:has(.home-copy.is-expanded) .home-bio-photo { display: block; }
 }
 /* Compressed on a phone, the whole instrument — six strings, the chord deck
    and the footer — has to land inside one screen. The expanded page keeps its
