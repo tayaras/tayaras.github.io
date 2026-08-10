@@ -52,13 +52,11 @@ a.home-label { text-decoration: none; }
 a.home-label:hover { opacity: 0.5; }
 
 /* hover a section → all of its text and its string line turn red */
-.home-meta, .home-copy p, .home-cta, .home-about-links a, .home-note { transition: color 0.2s ease; }
+.home-meta, .home-copy p, .home-cta, .home-about-links a { transition: color 0.2s ease; }
 .home-fret:not([data-primary]):hover .home-label,
 .home-fret:not([data-primary]):hover .home-meta,
 .home-fret:not([data-primary]):hover .home-meta p,
 .home-fret:not([data-primary]):hover .home-copy p,
-.home-fret:not([data-primary]):hover .home-note,
-.home-fret:not([data-primary]):hover .home-note a,
 .home-fret:not([data-primary]):hover .home-copy a,
 .home-fret:not([data-primary]):hover .home-cta,
 .home-fret:not([data-primary]):hover .home-about-links a { color: #ff2d2d; }
@@ -336,23 +334,6 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 }
 .home-cta:hover { opacity: 0.6; }
 .home-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-
-/* closing note — one line of copy under an unlabelled string. Left-aligned at
-   the content edge, like the section labels above it. */
-.home-note {
-  margin: 0;
-  padding: clamp(16px, 2.2vw, 28px) 0 clamp(20px, 3vw, 40px);
-  font-family: var(--sans);
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--mid-500);
-  transition: color 0.2s ease;
-}
-.home-note a {
-  color: inherit;
-  text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent);
-}
 
 .home-media {
   border-radius: 0;
