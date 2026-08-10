@@ -18,7 +18,10 @@
 .cmu-section{padding:96px 0;border-top:1px solid var(--line)}.cmu-section.no-border{border-top:0}.cmu-section.compact{padding:64px 0}
 .cmu-grid{display:grid;grid-template-columns:minmax(120px,.28fr) minmax(0,1fr);gap:48px}.cmu-kicker{position:sticky;top:calc(var(--header-h) + 24px)}.cmu-content{max-width:none}
 .cmu-heading{margin:0 0 40px;font-size:clamp(34px,5.5vw,72px);line-height:1.02;letter-spacing:-.055em;font-weight:450}
-.cmu-copy{font-size:clamp(18px,1.55vw,22px);line-height:1.62}.cmu-copy p,.cmu-content>p{margin:0 0 22px}.cmu-muted{color:var(--mid)}
+.cmu-copy{font-size:clamp(18px,1.55vw,22px);line-height:1.62}
+/* body type here runs larger than the site default, so give it a wider
+   column than --measure — still capped, or lines run the full 2400px */
+.cmu-copy p,.cmu-content>p{margin:0 0 22px;max-width:52rem}.cmu-muted{color:var(--mid)}
 .cmu-meta-grid{margin-top:42px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;font-size:14px}
 .cmu-meta-card,.cmu-tool-card,.cmu-stat-card,.cmu-layer-card,.cmu-learning-card{border:1px solid var(--line);border-radius:var(--radius-card);background:var(--white)}
 .cmu-meta-card{padding:16px;background:color-mix(in srgb,var(--white) 82%,var(--accent-light))}.cmu-meta-label{color:var(--mid);margin-bottom:8px}

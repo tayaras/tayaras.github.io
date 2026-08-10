@@ -372,7 +372,7 @@ body.proj-collapsed .proj-id {
   align-self: start;
   margin-top: clamp(28px, 3.5vw, 44px);
 }
-.proj-summary p { font-size: 13px; line-height: 1.65; color: var(--mid-500); }
+.proj-summary p { font-size: 13px; line-height: 1.65; color: var(--mid-500); max-width: var(--measure); }
 .proj-summary p:first-child { color: var(--black); }
 .proj-summary p + p { margin-top: 1em; }
 .proj-summary a {
