@@ -270,18 +270,22 @@ class ThemeManager {
     this.pref = (() => { try { return localStorage.getItem('tayTheme') || 'system'; } catch(e) { return 'system'; } })();
     this.btn = this.createButton();
     this.insertButton();
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
       if (this.pref === 'system') {
-        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', e.matches ? 'light' : 'dark');
         this.updateIcon();
       }
     });
   }
 
+  /* Dark is the default: it takes an explicit choice — the visitor's own, or
+     their system asking for light — to get the light theme. Mirrors the inline
+     script in every page's <head>, which sets the attribute before first paint;
+     the two have to agree or the page flashes. */
   isDark() {
     if (this.pref === 'dark') return true;
     if (this.pref === 'light') return false;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return !window.matchMedia('(prefers-color-scheme: light)').matches;
   }
 
   toggle() {
