@@ -58,6 +58,12 @@
 .page-grid span:nth-child(4) { left: calc(var(--hero-w) + var(--home-gap) + var(--grid-rest) * 0.35); }      /* meta ends */
 .page-grid span:nth-child(5) { left: calc(var(--hero-w) + 2 * var(--home-gap) + var(--grid-rest) * 0.35); }  /* description starts */
 .page-grid span:nth-child(6) { left: calc(var(--grid-w) - 1px); }           /* page edge */
+/* The columns only mean something once there are rows laid out in them, so
+   the rules fade in with the stack. Compressed, the strings are the only
+   lines on the page — same rule the horizontal cross-pieces below follow. */
+.page-grid { opacity: 0; transition: opacity 0.6s ease; }
+body.stack-open .page-grid { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .page-grid { transition: none; } }
 /* skip rendering off-screen project sections until scrolled near (perf) */
 .home-fret:not([data-primary]) { content-visibility: auto; contain-intrinsic-size: auto 500px; }
 
