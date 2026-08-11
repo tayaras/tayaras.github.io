@@ -690,6 +690,16 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   .home-content--bio { grid-template-columns: 1fr; }
   .home-bio-photo { display: none; }
   .home-content--bio:has(.home-copy.is-expanded) .home-bio-photo { display: block; }
+  /* no photo beside it any more, so the gutter it was holding open is just an
+     inset that stops the copy short of the grid's right-hand rule */
+  .home-content--bio .home-copy { padding-right: 0; }
+  /* The rules have to follow the columns. Here the photo runs full width and
+     the meta and description split the row evenly, so the only edges left are
+     the page's own two and the one gutter down the middle. */
+  .page-grid span:nth-child(2) { left: calc(50% - var(--home-gap) / 2); }
+  .page-grid span:nth-child(3) { left: calc(50% + var(--home-gap) / 2); }
+  .page-grid span:nth-child(4),
+  .page-grid span:nth-child(5) { display: none; }
 }
 /* Compressed on a phone, the whole instrument — six strings, the chord deck
    and the footer — has to land inside one screen. The expanded page keeps its
@@ -702,20 +712,78 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 }
 
 @media (max-width: 640px) {
+  /* 6px of gutter (shared.css) reads as no margin at all once every photo runs
+     the full width of the page — the stack needs a thumb's width of air down
+     each side. --grid-w is derived from these two, so the rules move with it. */
+  :root { --pad: 16px; --max: 100vw; }
+
   .home-content, .home-content.media-first {
     grid-template-columns: 1fr;
     padding-left: 0;
+    /* one column of blocks, not three columns of copy: the gap that separated
+       the photo from the text sideways is too much air above and below it */
+    gap: 14px;
+    padding-top: clamp(14px, 3vw, 20px);
+    padding-bottom: clamp(24px, 6vw, 32px);
   }
+  .home-content--small { padding-top: clamp(12px, 2.5vw, 18px); padding-bottom: clamp(20px, 5vw, 26px); }
   .home-media { order: -1; }
   .home-label { flex-basis: auto; }
+  /* single column: the page's own two edges are the whole grid, and the
+     interior rules would just be lines drawn through the middle of the copy */
+  .page-grid span:nth-child(2),
+  .page-grid span:nth-child(3) { display: none; }
   /* project descriptions are desktop-only — stacked single-column they push
      the next section a screen away. The thumbnail, the meta block and the
      "View project" link stay, so a card is still identifiable and still
      opens. The bio keeps its copy: it IS the content of that section. */
   .home-content:not(.home-content--bio) .home-copy p { display: none; }
-  /* stacked: margin-top:auto collapses, so give the CTA the same breathing
-     room the grid gap gives between the meta block and the description */
-  .home-content:not(.home-content--bio) .home-copy .home-cta { margin-top: clamp(20px, 3vw, 44px); }
+  /* stacked: margin-top:auto collapses, so the CTA carries its own space —
+     enough to sit clear of the meta block, not enough to strand it */
+  .home-content:not(.home-content--bio) .home-copy .home-cta { margin-top: 18px; }
+  /* the row already gained the grid's gap above and below it */
+  body.stack-open .home-row { padding: 12px 0; }
+}
+
+/* ─── THE CARD HEADING (phones) ──────────────────────────────────────────
+   No hover on a touch screen and no description column for the big title to
+   ride out of, so on a phone the name is simply the first thing in the card,
+   above the photo. home.js builds it from the same label the hover title uses.
+   It stands in for both of its neighbours: the small row label collapses the
+   way it does under a desktop hover, and the meta's title line hides when it
+   would only say the name a second time. */
+.home-lead-title { display: none; }
+@media (max-width: 640px) {
+  .home-hover-title { display: none; }
+  .home-lead-title {
+    display: block;
+    order: -2;                 /* ahead of the photo, which sits at -1 */
+    font-family: var(--sans);
+    font-size: clamp(21px, 6.2vw, 32px);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1.05;
+    text-transform: uppercase;
+    color: var(--black);
+    /* line-height still leaves the font's leading above the cap height */
+    margin: -0.1em 0 -2px;
+  }
+  body.stack-open .home-fret.has-media-title .home-label {
+    max-width: 0;
+    opacity: 0;
+    margin-right: -16px;       /* absorb the row gap so the string reaches the edge */
+    transform: translateX(-12px);
+  }
+  .home-meta-title--dupe { display: none; }
+}
+
+/* No snapping on a phone. Stacked, a section is a card rather than a band
+   across the page, and a snap that pulls a card into place is always fighting
+   a flick of the thumb — touch scrolling carries its own momentum and wants to
+   be left alone. The frets keep their alignment for the desktop rule above;
+   turning the container off is what stops it. */
+@media (max-width: 640px) {
+  html:has(body.stack-open) { scroll-snap-type: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .home-row, .home-panel, #stackCollapse, #stackCollapse svg, .home-label, .home-about-extra { transition-duration: 0.001s; }

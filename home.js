@@ -382,6 +382,26 @@ document.addEventListener('DOMContentLoaded', function () {
     if (cta) copy.insertBefore(mask, cta); else copy.appendChild(mask);
     fret.classList.add('has-media-title');
 
+    // Stacked on a phone there is no hover and no description column to ride
+    // out of, so the same name is also placed at the top of the card, above
+    // the photo, where it reads as the section's heading. CSS shows one or the
+    // other. Its two neighbours would otherwise repeat it, so the small row
+    // label collapses (the has-media-title class) and the meta's title line is
+    // marked as a duplicate whenever it says the same thing.
+    var content = fret.querySelector('.home-content');
+    if (content) {
+      var lead = document.createElement('span');
+      lead.className = 'home-lead-title';
+      lead.setAttribute('aria-hidden', 'true');
+      lead.textContent = text.textContent;
+      content.insertBefore(lead, content.firstChild);
+
+      var metaTitle = fret.querySelector('.home-meta-title');
+      if (metaTitle && metaTitle.textContent.trim().toLowerCase() === text.textContent.toLowerCase()) {
+        metaTitle.classList.add('home-meta-title--dupe');
+      }
+    }
+
     // a long name (someoneinteresting.online) would run past the column and be
     // cut off by the mask, so scale it down to fit. Measured on first hover:
     // off-screen sections are skipped by content-visibility until then.
