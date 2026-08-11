@@ -61,6 +61,20 @@
 /* skip rendering off-screen project sections until scrolled near (perf) */
 .home-fret:not([data-primary]) { content-visibility: auto; contain-intrinsic-size: auto 500px; }
 
+/* ─── SNAP ───────────────────────────────────────────────────────────────
+   Scrolling settles with a section centred. Only once the stack is open —
+   collapsed, the frets are 40px rows and there is nothing to centre.
+   `proximity` snaps when a section is already near the middle and otherwise
+   leaves the scroll alone; `mandatory` would make every scroll land on a
+   section, which turns nasty the moment a section is taller than the window.
+   Off for reduced motion, where an unrequested jump is worse than a scroll. */
+@media (prefers-reduced-motion: no-preference) {
+  /* on <html>, the element that actually scrolls — body is not the scroller */
+  html:has(body.stack-open) { scroll-snap-type: y proximity; }
+  body.stack-open .home-fret { scroll-snap-align: center; }
+  body.stack-open .chord-hint { scroll-snap-align: center; }
+}
+
 /* Horizontal rules closing each section, the cross-pieces of the same grid.
    z-index 0 on the section makes a stacking context so the -1 line sits above
    the page but under everything in the section — it never crosses content.
