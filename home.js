@@ -128,9 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var SHORT = [
     "Howdy! I'm Tay Aras, a designer and product lead with 8+ years  of experience, focused on emergent technologies, hybrid environments, and interaction design. My work explores connection: how we can connect people to each other, and to the things they care about.",
 
-    "Currently at <a href='https://microsoft.com' target='_blank' rel='noopener'>Microsoft</a>, building virtual communication platforms and multimodal interfaces. Also <a href='https://nowhereinteresting.online' target='_blank' rel='noopener'>Nowhere Interesting</a>, a design studio &amp; lab. I studied (and taught) <a href='https://design.cmu.edu/about-our-programs/undergraduate-degrees/environments' target='_blank' rel='noopener'>Hybrid Environments Design</a> at <a href='https://design.cmu.edu' target='_blank' rel='noopener'>Carnegie Mellon University</a>.",
-
-    "Outside of work, I play in bands and organize DIY shows across New York, Seattle, Chicago, and Pittsburgh. If you have any interesting ideas or want to chat about music, please <a href='mailto:tayaras@outlook.com'>reach out</a>!"
+    "Currently at <a href='https://microsoft.com' target='_blank' rel='noopener'>Microsoft</a>, building virtual communication platforms and multimodal interfaces. Also <a href='https://nowhereinteresting.online' target='_blank' rel='noopener'>Nowhere Interesting</a>, a design studio &amp; lab. I studied (and taught) <a href='https://design.cmu.edu/about-our-programs/undergraduate-degrees/environments' target='_blank' rel='noopener'>Hybrid Environments Design</a> at <a href='https://design.cmu.edu' target='_blank' rel='noopener'>Carnegie Mellon University</a>. Outside of work, I play in bands and organize DIY shows across New York, Seattle, Chicago, and Pittsburgh. If you have any interesting ideas or want to chat about music, please <a href='mailto:tayaras@outlook.com'>reach out</a>!"
   ];
 
   var ABOUT = [
@@ -152,6 +150,79 @@ document.addEventListener('DOMContentLoaded', function () {
       "<a href='https://nowhereinteresting.online' target='_blank' rel='noopener'>Studio ↗</a>" +
     "</div>";
 
+  /* What's on rotation, shown above the contact links in the expanded bio.
+     Three kinds of entry, and a list can mix them:
+       { art, title, artist, url }  → a cover tile that links out (the default)
+       { spotify: '…' }             → Spotify's own player, with its controls
+       { title, artist, url }       → a plain text line
+     Cover art is kept locally in images/albums rather than hotlinked; grab it
+     and the exact title from Spotify's oEmbed endpoint:
+       curl -s "https://open.spotify.com/oembed?url=<album url>" */
+  var ALBUMS = [
+    // Shelved for now — uncomment to bring the section back. The artwork is
+    // already in images/albums.
+    // {
+    //   art: 'images/albums/live-at-mercury-lounge.webp',
+    //   title: 'Live at Mercury Lounge',
+    //   artist: 'Cab Ellis',
+    //   url: 'https://open.spotify.com/album/2ArFbBajsiwGionqmJkqZ4'
+    // },
+    // {
+    //   art: 'images/albums/role-model-hermit.webp',
+    //   title: 'Role Model Hermit',
+    //   artist: 'mary in the junkyard',
+    //   url: 'https://open.spotify.com/album/0r5nmjIvD8FmcgWsILF1Eh'
+    // },
+    // {
+    //   art: 'images/albums/mount-zero.webp',
+    //   title: 'Mount Zero',
+    //   artist: 'Swapmeet',
+    //   url: 'https://open.spotify.com/album/6MkGAjdvZDLijPcPBVQQFQ'
+    // }
+  ];
+
+  // open.spotify.com/album/ID → open.spotify.com/embed/album/ID
+  function embedSrc(url) {
+    var src = url.split('?')[0].replace('open.spotify.com/', 'open.spotify.com/embed/');
+    return src + '?utm_source=generator';
+  }
+
+  function albumsHTML() {
+    if (!ALBUMS.length) return '';
+
+    var tiles = ALBUMS.filter(function (a) { return a.art; }).map(function (a) {
+      var inner =
+        "<img loading='lazy' src='" + a.art + "' alt='" + a.title + " — " + a.artist + "'>" +
+        "<span class='album-title'>" + a.title + "</span>" +
+        "<span class='album-artist'>" + a.artist + "</span>";
+      return "<li>" + (a.url
+        ? "<a href='" + a.url + "' target='_blank' rel='noopener'>" + inner + "</a>"
+        : inner) + "</li>";
+    }).join('');
+
+    var players = ALBUMS.filter(function (a) { return a.spotify; }).map(function (a) {
+      return "<iframe src='" + embedSrc(a.spotify) + "' loading='lazy' " +
+             "allow='clipboard-write; encrypted-media; fullscreen; picture-in-picture' " +
+             "title='Spotify player'></iframe>";
+    }).join('');
+
+    var lines = ALBUMS.filter(function (a) { return !a.art && !a.spotify && a.title; }).map(function (a) {
+      var name = "<span class='album-title'>" + a.title + "</span>" +
+                 "<span class='album-artist'>" + a.artist + "</span>";
+      // linked albums carry the same ↗ the other outbound links use
+      return "<li>" + (a.url
+        ? "<a href='" + a.url + "' target='_blank' rel='noopener'>" + name + " ↗</a>"
+        : name) + "</li>";
+    }).join('');
+
+    return "<div class='home-listening'>" +
+             "<span class='home-listening-label'>Currently listening</span>" +
+             (tiles ? "<ul class='home-listening-tiles'>" + tiles + "</ul>" : '') +
+             (players ? "<div class='home-listening-players'>" + players + "</div>" : '') +
+             (lines ? "<ul>" + lines + "</ul>" : '') +
+           "</div>";
+  }
+
   /* The photo lives outside .home-copy (index.html) so it survives the copy
      swap: collapsed it's a band as tall as the short copy, expanded it grows to
      its own aspect. Same element, same width — so the two states are one
@@ -159,20 +230,45 @@ document.addEventListener('DOMContentLoaded', function () {
   var photoEl = document.getElementById('bioPhoto');
   var PHOTO_RATIO = 1480 / 987;   // natural aspect of images/main/IMG_4965.webp
 
+  /* Expanded, the photo opens to its own aspect — unless the bio runs taller
+     than that, in which case the photo matches the text instead (cropping a
+     little, exactly as the collapsed band does). Both columns then end on the
+     same line, which is what puts "See less" on the gridline at every width.
+     The height is measured with the copy's min-height lifted, otherwise the
+     two would be sizing off each other. */
+  var bioRow = photoEl && photoEl.closest('.home-content');
+
   function sizePhoto(expanded) {
     if (!photoEl) return;
-    var h = expanded ? photoEl.clientWidth / PHOTO_RATIO : copy.offsetHeight;
+    var h;
+    if (expanded) {
+      copy.style.minHeight = '0';
+      var textHeight = copy.offsetHeight;
+      copy.style.minHeight = '';
+      h = Math.max(photoEl.clientWidth / PHOTO_RATIO, textHeight);
+    } else {
+      h = copy.offsetHeight;
+    }
     photoEl.classList.toggle('is-full', !!expanded);
-    if (h) photoEl.style.setProperty('--bio-photo-h', h + 'px');
+    if (h) (bioRow || photoEl).style.setProperty('--bio-photo-h', h + 'px');
   }
 
   function paraHTML(paras) {
     return paras.map(function (h) { return '<p>' + h + '</p>'; }).join('');
   }
   function bioHTML(paras, photo) {
-    return paraHTML(paras) + (photo ? LINKS : '');
+    // `photo` doubles as the "this is the expanded bio" flag
+    return paraHTML(paras) + (photo ? albumsHTML() : '');
   }
-  function finalHTML(paras, ctaHTML, extra, photo) { return bioHTML(paras, photo) + (extra || '') + ctaHTML; }
+  /* Expanded, "See less" and the contact links share one line at the foot of
+     the column — the link out on the left, the contacts pushed over toward the
+     photo. Collapsed, the CTA stands on its own as before. */
+  function finalHTML(paras, ctaHTML, extra, photo) {
+    var tail = photo
+      ? "<div class='home-bio-footer'>" + ctaHTML + LINKS + "</div>"
+      : ctaHTML;
+    return bioHTML(paras, photo) + (extra || '') + tail;
+  }
 
   function render(html, expanded) {
     copy.classList.toggle('is-expanded', !!expanded);
@@ -256,6 +352,48 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!copy.classList.contains('is-expanded')) sizePhoto(false);
     }).observe(copy);
   }
+})();
+
+/* Big hover title — each full-size project gets a copy of its own label placed
+   in its description column, where CSS slides it out from the column's left
+   edge on hover and drops it right above "View project". Built here rather
+   than in the markup so the name lives in exactly one place. The
+   .has-media-title class is what lets the string row collapse its small label:
+   the smaller sections keep theirs, since their columns are shared with a
+   thumbnail and there is no room for display type. */
+(function () {
+  [].forEach.call(document.querySelectorAll('.home-fret:not([data-primary])'), function (fret) {
+    var label = fret.querySelector('.home-label');
+    var copy = fret.querySelector('.home-content:not(.home-content--small) .home-copy');
+    if (!label || !copy || copy.querySelector('.home-hover-title')) return;
+
+    var mask = document.createElement('span');
+    mask.className = 'home-hover-title';
+    mask.setAttribute('aria-hidden', 'true');   // the row label already says it
+    var text = document.createElement('span');
+    // data-hover-title lets a section show something other than its row label
+    // in display type — a URL reads fine as a small label, badly as a headline
+    text.textContent = (label.getAttribute('data-hover-title') || label.textContent).trim();
+    mask.appendChild(text);
+
+    var cta = copy.querySelector('.home-cta');
+    if (cta) copy.insertBefore(mask, cta); else copy.appendChild(mask);
+    fret.classList.add('has-media-title');
+
+    // a long name (someoneinteresting.online) would run past the column and be
+    // cut off by the mask, so scale it down to fit. Measured on first hover:
+    // off-screen sections are skipped by content-visibility until then.
+    function fit() {
+      text.style.fontSize = '';
+      var room = mask.clientWidth;
+      var needs = text.scrollWidth;
+      if (room <= 0 || needs <= 0 || needs <= room) return;
+      var size = parseFloat(getComputedStyle(text).fontSize);
+      text.style.fontSize = (size * room / needs) + 'px';
+    }
+    fret.addEventListener('pointerenter', fit);
+    window.addEventListener('resize', function () { if (text.style.fontSize) fit(); });
+  });
 })();
 
 /* Hover-photo keywords — same scatter effect as the about page. Keywords live in

@@ -3,13 +3,79 @@
    slides them apart to reveal each section's content (expanded). A collapse
    arrow packs them back. Every string is a GuitarString (shared.js) so they
    stay strummable in either state. */
+/* ─── THE GRID ───────────────────────────────────────────────────────────
+   One set of measurements drives the project rows, the bio row and the
+   gridlines drawn behind the page, so a change to --hero-share moves the
+   columns and their lines together. --grid-w is the content box the whole
+   page lays out in: the container's --max less its --pad gutters. */
+:root {
+  --home-gap: clamp(20px, 3vw, 44px);
+  /* how much of a row the hero image takes; meta and description split what's
+     left 0.35 / 0.65 */
+  --hero-share: 0.58;
+  --grid-w: calc(var(--max) - 2 * var(--pad));
+  --hero-w: calc((var(--grid-w) - 2 * var(--home-gap)) * var(--hero-share));
+  --grid-rest: calc(var(--grid-w) - var(--hero-w) - 2 * var(--home-gap));
+  --grid-line: color-mix(in srgb, var(--line) 65%, transparent);
+  /* the Additional sections' thumbnail, as a fraction of the hero column —
+     kept as a number so both the thumbnail and its gridline read from it */
+  --small-thumb-n: 0.224;
+  /* corner rounding shared by every photo on the page */
+  --media-radius: clamp(10px, 0.9vw, 18px);
+}
+
 .strum-home {
   max-width: var(--max);
   margin: 0 auto;
   padding: clamp(24px, 5vw, 56px) var(--pad) 120px;
+  position: relative;
+  z-index: 1;               /* content sits above the gridlines */
 }
+
+/* Vertical rules at every column edge, fixed so they run the full height of
+   the page as it scrolls. Purely decorative and never interactive; anything
+   opaque (a photo) simply covers them. */
+.page-grid {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: var(--grid-w);
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+.page-grid span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--grid-line);
+}
+.page-grid span:nth-child(1) { left: 0; }                                   /* page edge */
+.page-grid span:nth-child(2) { left: var(--hero-w); }                       /* hero ends */
+.page-grid span:nth-child(3) { left: calc(var(--hero-w) + var(--home-gap)); }               /* meta starts */
+.page-grid span:nth-child(4) { left: calc(var(--hero-w) + var(--home-gap) + var(--grid-rest) * 0.35); }      /* meta ends */
+.page-grid span:nth-child(5) { left: calc(var(--hero-w) + 2 * var(--home-gap) + var(--grid-rest) * 0.35); }  /* description starts */
+.page-grid span:nth-child(6) { left: calc(var(--grid-w) - 1px); }           /* page edge */
 /* skip rendering off-screen project sections until scrolled near (perf) */
 .home-fret:not([data-primary]) { content-visibility: auto; contain-intrinsic-size: auto 500px; }
+
+/* Horizontal rules closing each section, the cross-pieces of the same grid.
+   z-index 0 on the section makes a stacking context so the -1 line sits above
+   the page but under everything in the section — it never crosses content.
+   Only while the stack is open: collapsed, the strings are the only edges. */
+.home-fret { position: relative; z-index: 0; }
+body.stack-open .home-fret::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--grid-line);
+  z-index: -1;
+}
 
 .home-row {
   display: flex;
@@ -38,8 +104,12 @@ body.stack-open .home-row { padding: 16px 0; }
   text-transform: uppercase;   /* all-caps, matching the header brand */
 }
 /* compressed: titles slide away, strings extend to the full body width
-   (the primary "Tay Aras" line keeps its title) */
-body:not(.stack-open) .home-fret:not([data-primary]) .home-label {
+   (the primary "Tay Aras" line keeps its title).
+   Hovering a project does the same thing for a different reason — the title
+   hands itself over to the big one riding out of the photo, and the string
+   takes the room it leaves behind. */
+body:not(.stack-open) .home-fret:not([data-primary]) .home-label,
+body.stack-open .home-fret.has-media-title:hover .home-label {
   max-width: 0;
   opacity: 0;
   margin-right: -16px;   /* absorb the row gap so the string reaches the edge */
@@ -78,9 +148,6 @@ a.home-label:hover { opacity: 0.5; }
 .home-fret.is-linked .home-panel { cursor: pointer; }
 
 /* photo dims + a red outline fades in on section hover */
-.home-media img, .home-media video { transition: opacity 0.25s ease; }
-.home-fret:not([data-primary]):hover .home-media img,
-.home-fret:not([data-primary]):hover .home-media video { opacity: 0.72; }
 .home-fret:not([data-primary]):hover .home-media { outline-color: #ff2d2d; }
 
 /* hover-photo keywords (scatter) — mirrors the about page */
@@ -228,9 +295,8 @@ body.stack-open .home-fret:nth-of-type(11) .home-panel { transition-delay: 0.50s
 body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s; }
 
 .home-content {
-  --home-gap: clamp(20px, 3vw, 44px);
   display: grid;
-  grid-template-columns: 1fr 0.4fr 0.6fr;   /* image (~half) · meta · description */
+  grid-template-columns: var(--hero-w) 0.35fr 0.65fr;   /* image · meta · description */
   gap: var(--home-gap);
   align-items: start;
   padding: clamp(24px, 3.5vw, 44px) 0 clamp(32px, 5vw, 72px);
@@ -242,7 +308,9 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   /* columns stay identical to a full section so the meta and description
      line up across every row — only the image inside the first column
      shrinks. Tune the thumbnail with --small-thumb. */
-  --small-thumb: 26%;
+  /* % of the (now wider) hero column — tuned to keep these thumbnails the
+     size they were before the hero grew */
+  --small-thumb: calc(var(--small-thumb-n) * 100%);
   padding: clamp(16px, 2.2vw, 28px) 0 clamp(20px, 3vw, 40px);
 }
 .home-content--small .home-media { width: var(--small-thumb); }
@@ -251,20 +319,22 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
    tall as the short copy, expanded it opens to the full frame. The column never
    changes width, so the reveal is a pure height change — home.js sets
    --bio-photo-h for each state and the transition below does the rest. */
-/* The photo starts exactly where a project's hero image ends: a project row is
-   1fr · 0.4fr · 0.6fr with two gaps, so its image runs to 50% - one gap. The
-   bio matches that edge with a first column of the same width and no gutter. */
-.home-content--bio { grid-template-columns: calc(50% - var(--home-gap)) 1fr; column-gap: 0; }
-/* the column has no gutter of its own, so the copy carries one — otherwise the
-   text runs right up against the photo's edge */
-.home-content--bio .home-copy { max-width: 44rem; padding-right: var(--home-gap); }
+/* The photo starts exactly where a project's hero image ends — same first
+   column, no gutter of its own. */
+.home-content--bio { grid-template-columns: var(--hero-w) 1fr; column-gap: 0; }
+/* The bio runs the full width of its column rather than taking the site's
+   44rem reading measure — the column is sized to put the photo's left edge on
+   the project hero's right edge, and a capped measure left a wide gutter
+   between the text and the photo. The column has no gutter of its own, so the
+   copy carries one, otherwise the text would touch the photo's edge. */
+.home-content--bio .home-copy { max-width: none; padding-right: var(--home-gap); }
 
 /* the image is absolutely placed so it can't push the row taller than the
    height we've asked for; cover + object-position keeps the head in the band */
 .home-bio-photo {
   align-self: start;
   position: relative;
-  overflow: hidden;
+  border-radius: var(--media-radius);
   height: var(--bio-photo-h, 15rem);
   transition: height 0.62s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -276,6 +346,7 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   object-fit: cover;
   object-position: center 30%;
   display: block;
+  border-radius: inherit;
   transition: object-position 0.62s cubic-bezier(0.16, 1, 0.3, 1);
 }
 /* expanded, the height matches the photo's own aspect, so cover shows all of
@@ -313,9 +384,129 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 
 /* expanded "more about me" — the copy keeps its column (the photo holds the
    one beside it), with the contact links pinned to the bottom of the text */
-.home-copy.is-expanded { display: flex; flex-direction: column; }
+/* held to the photo's height so the contact links and "See less" fall to the
+   bottom of the column — which puts the link's underline exactly on the
+   gridline running off the bottom of the photo. min-height rather than
+   align-self: stretch, because home.js sizes the photo from this column's
+   own content when the bio is the taller of the two. */
+.home-copy.is-expanded {
+  display: flex;
+  flex-direction: column;
+  min-height: var(--bio-photo-h, 0);
+}
 /* a flex child would otherwise stretch the link's underline across the column */
 .home-copy.is-expanded > .home-cta { align-self: flex-start; }
+
+/* what's on rotation — takes the auto margin so it and the footer line below
+   it travel to the bottom of the column together. home.js builds it from its
+   ALBUMS list; no albums, no block. */
+.home-listening { margin-top: auto; padding: 26px 0; position: relative; }
+/* banded off by the same hairline the rest of the page is ruled with, run out
+   to the full grid width and kept behind everything */
+.home-listening::before,
+.home-listening::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: var(--grid-w);
+  height: 1px;
+  background: var(--grid-line);
+  pointer-events: none;
+  z-index: -1;
+}
+.home-listening::before { top: 0; }
+.home-listening::after { bottom: 0; }
+
+/* the closing line: "See less" at the column's left edge, the contact links
+   pushed over to its right, toward the photo */
+.home-bio-footer {
+  display: flex;
+  flex-wrap: wrap;
+  /* bottoms, not baselines: it lines the underlines up with each other and
+     keeps "See less" sitting on the gridline */
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px 32px;
+  margin-top: auto;         /* stands in for the listening block when there is none */
+  padding-top: 22px;
+}
+.home-listening + .home-bio-footer { margin-top: 0; }
+.home-bio-footer .home-cta { margin-top: 0; }
+/* the contacts match "See less" — same family, size and underline */
+.home-bio-footer .home-about-links { margin-top: 0; padding-top: 0; gap: 32px; }
+.home-bio-footer .home-about-links a {
+  font-family: var(--mono);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: var(--black);
+  padding-bottom: 0;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+}
+.home-bio-footer .home-about-links a:hover { color: #001EFF; }
+.home-listening-label {
+  display: block;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+  margin-bottom: 12px;
+}
+/* Cover tiles — our own markup, so they carry the page's type and rounding
+   instead of Spotify's chrome. The art is local (images/albums) and the whole
+   tile is the link out. */
+.home-listening .home-listening-tiles {
+  --album-tile: 92px;        /* the one number that sizes these */
+  list-style: none;
+  display: grid;
+  /* fixed tracks rather than 1fr, so the tiles stay exactly --album-tile wide
+     and wrap when the column runs out instead of stretching to fill it */
+  grid-template-columns: repeat(auto-fill, var(--album-tile));
+  gap: 18px;
+}
+.home-listening-tiles a { display: block; color: inherit; text-decoration: none; border-bottom: none; }
+.home-listening-tiles img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+  border-radius: calc(var(--media-radius) * 0.5);
+  margin-bottom: 8px;
+  transition: opacity 0.2s ease;
+}
+.home-listening-tiles a:hover img { opacity: 0.78; }
+.home-listening-tiles .album-title,
+.home-listening-tiles .album-artist { display: block; font-size: 10px; line-height: 1.4; }
+.home-listening-tiles .album-title::after { content: none; }
+.home-listening-tiles a:hover .album-title { color: #001EFF; }
+
+/* Spotify's own player, which has three layouts and picks one from the height
+   it's given: 352 = full card with tracklist, 152 = compact card with a peek
+   at the tracklist, anything under that = a single row of art, title and
+   controls. 80 is the quietest of them. Nothing here can restyle its insides;
+   its colour comes from the artwork. */
+/* auto-fill rather than auto-fit: when a row is short of players the leftover
+   track stays empty instead of stretching the last one across the column */
+.home-listening-players {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.home-listening-players iframe {
+  min-width: 0;
+  height: 80px;
+  border: 0;
+  border-radius: var(--media-radius);
+}
+.home-listening-players + ul { margin-top: 16px; }
+/* the plain text list (entries with no art and no player) */
+.home-listening ul:not(.home-listening-tiles) { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 32px; }
+.home-listening li { font-size: 12px; line-height: 1.5; }
+.home-listening a { color: inherit; text-decoration: none; border-bottom: none; }
+.home-listening a:hover .album-title { color: #001EFF; }
+.album-title { color: var(--black); }
+.album-title::after { content: ' — '; color: var(--mid-500); }
+.album-artist { color: var(--mid-500); }
 
 /* ─── BIO WIPE ───────────────────────────────────────────────────────────
    Toggling the bio wipes the old copy up (erased bottom edge upward, pulled
@@ -375,8 +566,10 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 .home-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 
 .home-media {
-  border-radius: 0;
-  overflow: hidden;
+  border-radius: var(--media-radius);
+  /* no overflow clip: the image already fills the box exactly, and the
+     gridline extenders below have to reach past this element's edges */
+  position: relative;
   background: var(--line);
   aspect-ratio: 16 / 9;           /* wider + shorter, uniform across all sections */
   /* transparent until hover — an outline (not a border) so nothing reflows,
@@ -385,7 +578,79 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   outline-offset: -1px;
   transition: outline-color 0.2s ease;
 }
-.home-media img, .home-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.home-media img, .home-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: inherit;   /* the rounding lives on the image now */
+}
+
+/* ─── THE BIG TITLE ──────────────────────────────────────────────────────
+   Hovering a project hands its name from the string row to the description
+   column: the small label collapses (above) and the large one rides out of
+   the column's left edge, landing directly on top of "View project".
+   home.js injects the markup from each section's own label. */
+.home-hover-title {
+  display: block;
+  overflow: hidden;          /* the edge the title rides out of */
+  margin-top: auto;          /* sits with the CTA at the bottom of the column */
+  pointer-events: none;
+  min-width: 0;
+}
+/* the title is one long unbreakable word, so without this the column's
+   automatic minimum size grows to fit it and the row's grid is thrown out */
+.home-content .home-copy { min-width: 0; }
+.home-hover-title span {
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: clamp(20px, 2.4vw, 44px);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  line-height: 1;
+  /* line-height 1 still leaves the font's leading above the cap height, so the
+     text optically hangs low in its box; pull that slack back out */
+  margin: -0.13em 0 0.08em;
+  color: #ff2d2d;           /* the same red every other hover state uses */
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-102%);   /* parked just outside the left edge */
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+}
+.home-fret:hover .home-hover-title span { opacity: 1; transform: translateX(0); }
+/* the title now carries the auto margin that pushed the CTA down, so the link
+   tucks straight in under it */
+.home-content:not(.home-content--bio) .home-copy .home-hover-title + .home-cta { margin-top: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .home-hover-title span { transform: none; transition: opacity 0.2s ease; }
+}
+
+/* ─── PHOTO GRIDLINES ────────────────────────────────────────────────────
+   Each photo's top and bottom edge carried straight across the page. The
+   line starts at the element's own edge and runs the full grid width, and
+   z-index -1 keeps it under the photo itself — so it reads as the photo
+   sitting on a gridline, never as a line drawn over it. */
+.home-media::before, .home-media::after,
+.home-bio-photo::before, .home-bio-photo::after {
+  content: '';
+  position: absolute;
+  width: var(--grid-w);
+  height: 1px;
+  background: var(--grid-line);
+  pointer-events: none;
+  z-index: -1;
+}
+/* project photos start at the left edge of the grid, so the line only has to
+   run rightward */
+.home-media::before, .home-media::after { left: 0; }
+.home-media::before { top: 0; }
+.home-media::after { bottom: 0; }
+/* the bio photo starts a column in — pull its lines back to the page edge */
+.home-bio-photo::before, .home-bio-photo::after { left: calc(-1 * var(--hero-w)); }
+.home-bio-photo::before { top: 0; }
+.home-bio-photo::after { bottom: 0; }
 
 
 
