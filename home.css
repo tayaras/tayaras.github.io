@@ -16,7 +16,7 @@
   --grid-w: calc(var(--max) - 2 * var(--pad));
   --hero-w: calc((var(--grid-w) - 2 * var(--home-gap)) * var(--hero-share));
   --grid-rest: calc(var(--grid-w) - var(--hero-w) - 2 * var(--home-gap));
-  --grid-line: color-mix(in srgb, var(--line) 65%, transparent);
+  --grid-line: color-mix(in srgb, var(--line) 38%, transparent);
   /* the Additional sections' thumbnail, as a fraction of the hero column —
      kept as a number so both the thumbnail and its gridline read from it */
   --small-thumb-n: 0.224;

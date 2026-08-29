@@ -122,6 +122,116 @@ document.addEventListener('DOMContentLoaded', function () {
     video.addEventListener('ended', sync);
   });
 
+  /* ── 1c · the customization ladder ──
+     A three-tier accordion, one tier open at a time. The markup ships with
+     every panel open so the content is there without JS; the first thing we do
+     is close all but one. Triggers are real buttons, so Enter and Space come
+     free — arrow keys are the only thing left to add. */
+  [].slice.call(document.querySelectorAll('.proj-ladder')).forEach(function (ladder) {
+    var tiers = [].slice.call(ladder.querySelectorAll('.proj-ladder-tier'));
+    var triggers = tiers.map(function (t) { return t.querySelector('.proj-ladder-trigger'); });
+    if (!tiers.length) return;
+
+    function open(i) {
+      tiers.forEach(function (tier, j) {
+        var on = j === i;
+        tier.classList.toggle('proj-ladder-tier--open', on);
+        if (triggers[j]) triggers[j].setAttribute('aria-expanded', on ? 'true' : 'false');
+      });
+    }
+
+    // whichever tier the markup marked open, or the first
+    var start = tiers.findIndex(function (t) { return t.classList.contains('proj-ladder-tier--open'); });
+    open(start < 0 ? 0 : start);
+
+    triggers.forEach(function (btn, i) {
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        // clicking the open tier closes it, so the figure can rest shut
+        open(tiers[i].classList.contains('proj-ladder-tier--open') ? -1 : i);
+      });
+      btn.addEventListener('keydown', function (e) {
+        var to = null;
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') to = (i + 1) % triggers.length;
+        else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') to = (i - 1 + triggers.length) % triggers.length;
+        else if (e.key === 'Home') to = 0;
+        else if (e.key === 'End') to = triggers.length - 1;
+        if (to === null) return;
+        e.preventDefault();
+        triggers[to].focus();   // move focus only; opening stays a deliberate act
+      });
+    });
+  });
+
+  /* ── 1d · real-time text, typed ──
+     A [data-type] element types its lines out character by character and loops.
+     One line is the featured module's hook; several is the RTT page's call
+     stage, where each message commits and the next begins.
+
+     Two details are the shipped design rather than decoration: in-progress
+     text is dimmed and carries an "RTT typing" tag, and both clear the moment
+     the message commits.
+
+     Reduced motion gets the last line, in full, with nothing moving. */
+  [].slice.call(document.querySelectorAll('[data-type]')).forEach(function (el) {
+    var lines;
+    try { lines = JSON.parse(el.getAttribute('data-type')); } catch (err) { return; }
+    if (!Array.isArray(lines) || !lines.length) return;
+
+    var out = el.querySelector('.proj-type-out') || el;
+    var caret = el.querySelector('.proj-caret');
+    var tag = el.parentNode && el.parentNode.querySelector('.proj-stage-tag');
+
+    if (reduce) {
+      out.textContent = lines[lines.length - 1];
+      out.classList.remove('proj-type--live');
+      if (caret) caret.remove();
+      return;
+    }
+
+    var SPEED = 52;        // ms per character, near a fast typist
+    var COMMIT = 3000;     // the three-second commit window RTT actually ships
+    var CLEAR = 900;       // beat before the next message starts
+    var i = 0, n = 0, timer;
+
+    function frame() {
+      var line = lines[i];
+      if (n <= line.length) {
+        out.textContent = line.slice(0, n);
+        out.classList.add('proj-type--live');
+        if (tag) tag.classList.add('on');
+        n++;
+        timer = setTimeout(frame, SPEED + Math.random() * 45);
+        return;
+      }
+      // committed: the dimming and the typing tag both come off
+      out.classList.remove('proj-type--live');
+      if (tag) tag.classList.remove('on');
+      timer = setTimeout(function () {
+        if (lines.length === 1) { n = 0; frame(); return; }
+        i = (i + 1) % lines.length;
+        n = 0;
+        out.textContent = '';
+        timer = setTimeout(frame, CLEAR);
+      }, COMMIT);
+    }
+
+    /* only type while it's on screen — a loop running behind six screens of
+       scroll is wasted work, and it means the reader always catches it from
+       the start of a message rather than halfway through one */
+    if ('IntersectionObserver' in window) {
+      var seen = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { if (!timer) frame(); }
+          else { clearTimeout(timer); timer = null; }
+        });
+      }, { threshold: 0.2 });
+      seen.observe(el);
+    } else {
+      frame();
+    }
+  });
+
   /* ── 2 · reveal on scroll ── */
   var blocks = [].slice.call(document.querySelectorAll('.proj-reveal'));
   if (blocks.length) {

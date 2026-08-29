@@ -89,6 +89,14 @@
           <dt>Duration</dt>
           <dd>2022 – Present</dd>
         </div>
+        <div class="proj-fact">
+          <dt>Scope</dt>
+          <dd>Strategy, design system, research, accessibility, feature design, rollout</dd>
+        </div>
+        <div class="proj-fact">
+          <dt>Package</dt>
+          <dd>@azure/communication-react</dd>
+        </div>
       </dl>
 
       <p class="proj-linkline">
@@ -97,18 +105,103 @@
       </p>
 
       <div class="proj-summary">
-        <p>The ACS UI Library is the interface layer for Azure Communication Services. It ships in two tiers: composites that drop a whole calling or chat experience into a product in a few lines, and components a developer assembles into their own. Both run on web, iOS, and Android. It carries 11.1M+ monthly minutes and ships inside 200+ businesses.</p>
+        <p>The ACS UI Library is an open-source SDK of prebuilt voice, video, and chat experiences, built on top of the Azure Communication Services Calling, Chat, and Rooms SDKs. It ships in two tiers: composites that drop a whole calling or chat experience into a product in a few lines, and components a developer assembles into their own. Both run on web, iOS, and Android. It carries 11.1M+ monthly minutes and ships inside 200+ businesses.</p>
         <p>I'm the product lead and the designer. I set the interaction model, made the visual calls, and wrote the specs. I also own the roadmap and the customer conversations for those same features. 40+ have shipped with a team of 20+ engineers.</p>
         <p>Everything here is designed through defaults. Developers adopt the library; their patients, customers, and agents just get whatever we shipped, without ever choosing it. So one control bar has to hold up in a telehealth appointment and in a contact center, and still bend far enough that a team can make it theirs.</p>
       </div>
     </header>
 
+    <!-- Fig. 01 — the customization ladder. Interactive: one tier open at a
+         time, driven by project.js. Ships open so it reads without JS. -->
+    <figure class="proj-figblock proj-reveal">
+      <figcaption class="proj-figblock-label">Fig. 01</figcaption>
+      <p class="proj-figblock-title">The customization ladder — reach lower for more control, and take on more as you go.</p>
+
+      <div class="proj-ladder">
+        <div class="proj-ladder-axis" aria-hidden="true"><span>Control</span></div>
+        <div class="proj-ladder-tiers">
+
+          <div class="proj-ladder-tier proj-ladder-tier--open">
+            <h3>
+              <button type="button" class="proj-ladder-trigger" aria-expanded="true" aria-controls="tier-composites">
+                <span class="proj-ladder-n">01</span>
+                <span class="proj-ladder-name">Composites<span class="proj-ladder-kind">Turn-key experiences</span></span>
+                <span class="proj-ladder-dots" role="img" aria-label="Control: one of three"><i class="on"></i><i></i><i></i></span>
+              </button>
+            </h3>
+            <div class="proj-ladder-panel" id="tier-composites" role="region" aria-label="Composites">
+              <div>
+                <p>Full call and chat experiences for common scenarios — <code>CallComposite</code>, <code>ChatComposite</code>, and <code>CallWithChatComposite</code> — packaged to drop straight into an app.</p>
+                <p class="proj-ladder-control"><b>You control</b> branding, layout presets, limited behavior overrides</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="proj-ladder-tier">
+            <h3>
+              <button type="button" class="proj-ladder-trigger" aria-expanded="false" aria-controls="tier-components">
+                <span class="proj-ladder-n">02</span>
+                <span class="proj-ladder-name">Components<span class="proj-ladder-kind">Building blocks</span></span>
+                <span class="proj-ladder-dots" role="img" aria-label="Control: two of three"><i class="on"></i><i class="on"></i><i></i></span>
+              </button>
+            </h3>
+            <div class="proj-ladder-panel" id="tier-components" role="region" aria-label="Components">
+              <div>
+                <p>The modular pieces beneath the composites, for teams that need their own layout, their own features, or deeper customization.</p>
+                <p class="proj-ladder-control"><b>You control</b> custom layout, styling, behavior, full observability</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="proj-ladder-tier">
+            <h3>
+              <button type="button" class="proj-ladder-trigger" aria-expanded="false" aria-controls="tier-core">
+                <span class="proj-ladder-n">03</span>
+                <span class="proj-ladder-name">Core SDKs<span class="proj-ladder-kind">Low-level access</span></span>
+                <span class="proj-ladder-dots" role="img" aria-label="Control: three of three"><i class="on"></i><i class="on"></i><i class="on"></i></span>
+              </button>
+            </h3>
+            <div class="proj-ladder-panel" id="tier-core" role="region" aria-label="Core SDKs">
+              <div>
+                <p>The headless Calling, Chat, and Rooms SDKs underneath everything. Build the interface from nothing when the prebuilt tiers aren't enough.</p>
+                <p class="proj-ladder-control"><b>You control</b> everything, and you own the whole build</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </figure>
+
     <section class="proj-sec proj-reveal">
       <div class="proj-sec-title proj-string-row" data-freq="246.94">
-        <p class="proj-sec-label">What I did</p>
-        <div class="string-zone" tabindex="0" aria-label="What I did — strum">
+        <p class="proj-sec-label"><span class="proj-sec-num">§01</span>Problem</p>
+        <div class="string-zone" tabindex="0" aria-label="Problem — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
+      </div>
+
+      <div class="proj-prose">
+        <p class="proj-thesis">A component library only matters if developers actually reach for it.</p>
+        <p>The UI Library gives developers turn-key voice, video, and chat UI so they can add communication to their apps without building it from scratch. The promise is speed: a working, accessible call experience in days instead of months, themeable to a brand.</p>
+        <p>For much of the time I owned it, the honest story was not the founding vision. It was adoption. Developers were not reaching for the library as often as that promise suggested they would, so I set out to learn why rather than assume. What I found reframed the whole roadmap.</p>
+        <p>The stakes ran three ways. Developers were spending months building this themselves. Their end users needed the accessibility features that are hardest for a small team to get right. And the business cared because every app built on the library is an app running on the platform.</p>
+      </div>
+    </section>
+
+    <section class="proj-sec proj-reveal">
+      <div class="proj-sec-title proj-string-row" data-freq="207.65">
+        <p class="proj-sec-label"><span class="proj-sec-num">§02</span>Role</p>
+        <div class="string-zone" tabindex="0" aria-label="Role — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+
+      <div class="proj-prose">
+        <p class="proj-thesis">I owned the library as a product, and that meant far more than the screens.</p>
+        <p>I ran the research that told us where it really stood, rewrote the strategy around what we learned, designed and shipped features across the system, and drove the accessibility work against a legal deadline.</p>
+        <p>I wrote the specs in a press-release-first format. Every feature began with the sentence a customer would eventually read, so the team designed backward from that outcome, starting from the result a customer wanted.</p>
+        <p>None of it was solo work. I worked in close partnership with engineering and design throughout, and the founding vision and telemetry belonged to others on the team. The calls described here are the ones I made or drove.</p>
       </div>
 
       <dl class="proj-contrib">
@@ -140,12 +233,55 @@
     </section>
 
     <section class="proj-sec proj-reveal">
-      <div class="proj-sec-title proj-string-row" data-freq="207.65">
-        <p class="proj-sec-label">Selected images</p>
-        <div class="string-zone" tabindex="0" aria-label="Selected images — strum">
+      <div class="proj-sec-title proj-string-row" data-freq="185.00">
+        <p class="proj-sec-label"><span class="proj-sec-num">§03</span>System</p>
+        <div class="string-zone" tabindex="0" aria-label="System — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
       </div>
+
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <p class="proj-thesis">One system, many levels of control.</p>
+          <p>The library is built in two tiers. Composites are turn-key experiences for common scenarios, packaged to drop straight into an app. Components are the building blocks beneath them, for teams that need custom layouts or their own behavior. Accessibility and localization run across both, shown in Fig. 01 above as a ladder: the more you want to shape the experience, the lower you reach, and the more you take on.</p>
+          <p>Three axes decide where a team lands: identity, meaning bring your own or use Microsoft 365 identity to reach Teams resources; platform, meaning web and native; and look and feel. The headline I wrote for it: build the exact user experience you want.</p>
+          <p>Theming runs on Fluent. Documentation was itself a design decision. Component docs need to be visual and interactive, so we built on Storybook, where a developer can try a component with their own IDs before writing a line of code.</p>
+        </div>
+        <figure class="proj-row-media">
+          <img src="images/acs/acs-custom-theme.webp" alt="Pre-call device setup screen themed with a customer's logo and background image" loading="lazy">
+          <figcaption>Theming through a single Fluent provider — a team can take it anywhere its palette still passes the accessibility checker</figcaption>
+        </figure>
+      </div>
+
+      <!-- IMAGE NEEDED — one composite, three brand themes. The same
+           CallComposite themed for two or three different brands, side by side.
+           Visual proof of the customization finding: identical components,
+           completely different look and feel. A triptych reads best here.
+           Source: your Figma (Web UI Library) or themed Storybook captures. -->
+      <figure class="proj-ph">
+        <div class="proj-ph-box" style="--ph-ratio: 16 / 9">
+          <p class="proj-ph-kind">Image · Theming</p>
+          <p class="proj-ph-title">One composite, three brands</p>
+          <p class="proj-ph-desc">The same CallComposite themed for two or three different brands, side by side. Visual proof of the customization finding: identical components, completely different look and feel. A triptych reads best here.</p>
+        </div>
+        <figcaption>Source · Figma (Web UI Library) or themed Storybook captures</figcaption>
+      </figure>
+
+      <p class="proj-figblock-title" style="margin-top: clamp(36px, 5vw, 56px)">Over its life the system shipped a broad feature set:</p>
+      <ul class="proj-features">
+        <li>Background blur &amp; replacement</li>
+        <li>Closed captions</li>
+        <li>Reactions</li>
+        <li>Breakout rooms</li>
+        <li>Together mode</li>
+        <li>PowerPoint Live</li>
+        <li>Custom &amp; pinned layouts</li>
+        <li>Spotlight</li>
+        <li>Noise suppression</li>
+        <li>End-of-call survey</li>
+        <li>E911</li>
+        <li><a href="acs-real-time-text.html">Real-time text &nearr;</a></li>
+      </ul>
 
       <div class="proj-tiles">
         <figure class="proj-tile">
@@ -155,14 +291,6 @@
         <figure class="proj-tile">
           <img src="images/acs/acs-gallery-chat.webp" alt="Video gallery with the chat panel open beside it" loading="lazy">
           <figcaption><span class="proj-tile-name">Video gallery with chat</span><span class="proj-tile-note">The default calling surface with chat open. The gallery is a grid, an overflow row, and the local tile. People who never turned a camera on keep their place as initials, and once the grid is full, dominant speakers hold the visible slots.</span></figcaption>
-        </figure>
-        <figure class="proj-tile">
-          <img src="images/acs/acs-custom-theme.webp" alt="Pre-call device setup screen themed with a customer's logo and background image" loading="lazy">
-          <figcaption><span class="proj-tile-name">Themed pre-call setup</span><span class="proj-tile-note">Camera and microphone confirmed before joining, under a customer's own logo, color, and background. Theming runs through a single Fluent provider, and a team can take it anywhere its palette still passes the accessibility checker.</span></figcaption>
-        </figure>
-        <figure class="proj-tile">
-          <img src="images/acs/acs-rtt-panel.webp" alt="The Real-Time Text panel during a call" loading="lazy">
-          <figcaption><span class="proj-tile-name">Real-Time Text</span><span class="proj-tile-note">Character-by-character text for callers who can't use voice. Once anyone starts it, RTT is on for everyone for the rest of the call and can't be switched off, which is why the notification says so in those words. Scoped to the European Accessibility Act deadline of June 2025.</span></figcaption>
         </figure>
         <figure class="proj-tile">
           <img src="images/acs/acs-screenshare-recording.webp" alt="A shared screen with the participant strip below it and a recording consent banner above" loading="lazy">
@@ -184,8 +312,56 @@
     </section>
 
     <section class="proj-sec proj-reveal">
-      <div class="proj-sec-title proj-string-row" data-freq="185.00">
-        <p class="proj-sec-label">Outcome</p>
+      <div class="proj-sec-title proj-string-row" data-freq="164.81">
+        <p class="proj-sec-label"><span class="proj-sec-num">§04</span>Findings</p>
+        <div class="string-zone" tabindex="0" aria-label="Findings — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <p class="proj-thesis">The obvious roadmap was the wrong one.</p>
+          <p>The instinct was to chase feature parity with Teams. The research said something else. Customers wanted control over branding and customization more than they wanted the next feature, and several had turned away because the library felt less malleable than we had promised. I ranked customization first, ahead of parity, and made that the strategy.</p>
+          <p>The sharpest finding was about how people reached the library in the first place. It was hard to discover, and you could click through page after page of docs before you ever got to it. An adoption problem that looked like a product-quality problem was, in large part, a problem of getting people to the front door. An independent developer starting cold hit the same wall the interviewed customers described. Same problem, both ends.</p>
+          <p>The assumption I had to drop was that low-code versus pro-code was the axis that mattered. It wasn't. Customers were fine with that balance. What they wanted was their brand, built their way.</p>
+        </div>
+
+        <!-- IMAGE NEEDED — research synthesis. A synthesis artifact from the
+             customer interviews, or a simple before-and-after of the path to
+             the library through the docs. INTERNAL MATERIAL: names and logos
+             must be abstracted before this goes live. -->
+        <figure class="proj-row-media proj-ph proj-ph--internal" style="margin-top: 0">
+          <div class="proj-ph-box" style="--ph-ratio: 3 / 2">
+            <p class="proj-ph-kind">Image · Research</p>
+            <p class="proj-ph-title">The discovery problem, mapped</p>
+            <p class="proj-ph-desc">A synthesis artifact from the customer interviews, or a simple before-and-after of the path to the library through the docs. Shows the research work behind the strategy call.</p>
+            <p class="proj-ph-warn">Internal · abstract names and logos before publishing</p>
+          </div>
+          <figcaption>Source · research synthesis</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- the pointer into the RTT case study. Dark in either theme, and the one
+         line types itself, because the feature is text arriving as it's typed. -->
+    <section class="proj-featured proj-dark proj-reveal" aria-labelledby="featured-rtt">
+      <p class="proj-featured-eyebrow">Featured · Case study</p>
+      <h2 class="proj-featured-title" id="featured-rtt">Real-Time Text</h2>
+
+      <div class="proj-stage">
+        <div class="proj-stage-body">
+          <span data-type='["Text has to have equal footing with speech."]'><span class="proj-type-out proj-type--live"></span></span><span class="proj-caret" aria-hidden="true"></span>
+        </div>
+      </div>
+
+      <p class="proj-featured-copy">A compliance-critical accessibility feature, shipped across four SDKs ahead of a European deadline, and ahead of Teams. A platform with no way to signal the feature was on, two design reversals I made when better evidence appeared, and two moments where I refused to let a reasonable business request take away a deaf user's equal footing in a call.</p>
+      <a class="proj-featured-cta" href="acs-real-time-text.html">Read the case study &rarr;</a>
+    </section>
+
+    <section class="proj-sec proj-reveal">
+      <div class="proj-sec-title proj-string-row" data-freq="146.83">
+        <p class="proj-sec-label"><span class="proj-sec-num">§05</span>Outcome</p>
         <div class="string-zone" tabindex="0" aria-label="Outcome — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
@@ -193,7 +369,9 @@
 
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
+          <p class="proj-thesis">It found its audience and grew fast.</p>
           <p>One of ACS's most-used surfaces, shipping in healthcare, finance, automotive, retail, and enterprise products. Every composite meets WCAG 2.1 AA before a developer touches it.</p>
+          <p>As the platform evolved, this stayed one of the clearest examples in ACS of a system that met developers where they were: reach for a composite when you want speed, drop to components when you want control. By the time it matured, developers were using it to add voice, video, and chat to their apps in days, with accessibility handled by default.</p>
           <p>Two of the smaller decisions underneath it: in-progress text is dimmed rather than colored, and turning RTT on asks for consent before it starts.</p>
         </div>
         <div class="proj-row-media">
@@ -212,6 +390,44 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- IMAGE NEEDED — live and public. A capture of the live Storybook or
+           the npm page for @azure/communication-react. Real, public artifacts
+           that back the numbers above. -->
+      <figure class="proj-ph">
+        <div class="proj-ph-box" style="--ph-ratio: 16 / 9">
+          <p class="proj-ph-kind">Image · Proof</p>
+          <p class="proj-ph-title">Live and public</p>
+          <p class="proj-ph-desc">A capture of the live Storybook or the npm page for @azure/communication-react. Real, public artifacts that back the numbers above.</p>
+        </div>
+        <figcaption>Source · aka.ms/acsstorybook · npm @azure/communication-react</figcaption>
+      </figure>
+
+      <div class="proj-artifacts">
+        <p class="proj-artifacts-label">Live &amp; public</p>
+        <div class="proj-links">
+          <a class="proj-link proj-link--artifact" href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/ui-library/ui-library-overview" target="_blank" rel="noopener">
+            <span><span class="proj-link-kind">Docs</span><span class="proj-link-name">UI Library overview</span><span class="proj-link-host">Microsoft Learn</span></span>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="proj-link proj-link--artifact" href="https://www.npmjs.com/package/@azure/communication-react" target="_blank" rel="noopener">
+            <span><span class="proj-link-kind">Package</span><span class="proj-link-name">@azure/communication-react</span><span class="proj-link-host">npm</span></span>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="proj-link proj-link--artifact" href="https://aka.ms/acsstorybook" target="_blank" rel="noopener">
+            <span><span class="proj-link-kind">Interactive</span><span class="proj-link-name">Component Storybook</span><span class="proj-link-host">aka.ms</span></span>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="proj-link proj-link--artifact" href="https://github.com/Azure/communication-ui-library" target="_blank" rel="noopener">
+            <span><span class="proj-link-kind">Source</span><span class="proj-link-name">communication-ui-library</span><span class="proj-link-host">GitHub</span></span>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="proj-credits">
+        <p>Built with the Calling Web, Native, UI, and Design teams, and partners across IC3 and Teams. The founding vision and the telemetry work belonged to others; the research, strategy, feature design, and accessibility rollout were mine to drive.</p>
       </div>
     </section>
 

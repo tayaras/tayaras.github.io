@@ -68,6 +68,11 @@
 body.proj-collapsed .proj-head > *:not(.proj-id-row),
 body.proj-collapsed .proj-sec > *:not(.proj-sec-title),
 body.proj-collapsed .proj-lead-img,
+/* the case study's own top-level blocks — a figure and a dark module sitting
+   as siblings of .proj-sec, so the rules above never reach them. Left in, they
+   stand between the strings and the page stops reading as a guitar. */
+body.proj-collapsed .proj-figblock,
+body.proj-collapsed .proj-featured,
 body.proj-collapsed .proj-next { display: none; }
 body.proj-collapsed .proj-head { padding: 0; }
 body.proj-collapsed .proj-sec { margin-top: 0; }
@@ -1003,4 +1008,508 @@ body.proj-collapsed .proj-id {
 @media (prefers-reduced-motion: reduce) {
   .proj-reveal { opacity: 1; transform: none; transition: none; }
   .proj-exit { transition: none; }
+}
+
+/* ═══ CASE STUDY PIECES ═══════════════════════════════════════════════════
+   Added for the ACS UI Library and Real-Time Text writeups: numbered sections
+   that open on a thesis line, an interactive ladder, a dark module that types,
+   and visible slots for art that hasn't been shot yet. Everything else on
+   those pages is the vocabulary above.
+   ─────────────────────────────────────────────────────────────────────── */
+
+/* the § number riding ahead of a section's word. Red because it's structural —
+   it tells you where you are — not because it's decoration. */
+.proj-sec-num {
+  color: #ff2d2d;
+  margin-right: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.proj-string-row:hover .proj-sec-num { color: inherit; }
+
+/* the line each section opens on. Bigger than body copy, black against the
+   grey prose under it, and the sentence that carries the argument.
+   Written with the container in the selector because it sits among <p>s that
+   .proj-prose and .proj-row-copy already size — a bare .proj-thesis loses. */
+.proj-thesis,
+.proj-prose .proj-thesis,
+.proj-row-copy .proj-thesis {
+  font-size: clamp(17px, 1.9vw, 21px);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.025em;
+  color: var(--black);
+  max-width: 34rem;
+  margin-bottom: 20px;
+  text-wrap: balance;
+}
+/* prose blocks outside the copy/media split — full-width sections like Decisions */
+.proj-prose { margin-top: clamp(36px, 5vw, 56px); }
+.proj-prose p { font-size: 13px; line-height: 1.7; color: var(--mid-500); max-width: var(--measure); }
+.proj-prose p + p { margin-top: 1em; }
+.proj-prose .proj-thesis + p { margin-top: 0; }
+.proj-prose a, .proj-row-copy a {
+  color: inherit;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  transition: color 0.15s ease;
+}
+.proj-prose a:hover, .proj-row-copy a:hover { color: #ff2d2d; }
+/* copy column prose wants the same reading cap as everything else */
+.proj-row-copy p { max-width: var(--measure); }
+/* a subhead inside a prose run — "The forcing function" */
+.proj-subhead {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--black);
+  margin-top: 28px;
+  margin-bottom: 8px;
+}
+
+/* ─── PLACEHOLDERS ──────────────────────────────────────────────────────── */
+/* A slot with no asset yet, left deliberately visible: dashed rather than
+   hairline so it never reads as finished work, carrying the description of
+   what belongs there and where it comes from. Swap the whole <figure> for a
+   .proj-fig or .proj-shot once the image exists. */
+.proj-ph { margin-top: clamp(24px, 3vw, 36px); }
+.proj-ph-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: clamp(20px, 3vw, 40px);
+  border: 1px dashed color-mix(in srgb, var(--mid-500) 55%, transparent);
+  background: color-mix(in srgb, var(--line) 40%, transparent);
+  aspect-ratio: var(--ph-ratio, 16 / 9);
+  /* an empty slot shouldn't out-shout the finished work around it — at full
+     column width a 3:2 box runs past 600px tall */
+  max-height: 420px;
+}
+.proj-ph-kind {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ff2d2d;
+}
+.proj-ph-title {
+  font-size: clamp(15px, 1.7vw, 19px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--black);
+}
+.proj-ph-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--mid-500);
+  max-width: 34rem;
+}
+.proj-ph figcaption {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+  margin-top: 10px;
+}
+/* the one slot holding internal material — flagged so it can't ship by accident */
+.proj-ph--internal .proj-ph-box { border-color: #ff2d2d; }
+.proj-ph-warn {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ff2d2d;
+  margin-top: 6px;
+}
+
+/* ─── FEATURE LIST ──────────────────────────────────────────────────────── */
+/* what the system shipped over its life — a list, set as hairline chips so a
+   long inventory reads as one texture instead of twenty bullet points */
+.proj-features {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: clamp(24px, 3vw, 32px);
+}
+.proj-features li {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--mid-500);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 7px 11px;
+}
+.proj-features li a {
+  color: #ff2d2d;
+  border-bottom: none;
+}
+.proj-features li:hover { border-color: color-mix(in srgb, var(--mid-500) 45%, transparent); }
+
+/* ─── FIG. 01 — THE CUSTOMIZATION LADDER ────────────────────────────────── */
+/* Three tiers, one open at a time, against a vertical axis that runs from
+   least control to most. The dots are the reading: filled means you hold that
+   much of the build. project.js drives it; without JS every panel is open. */
+.proj-figblock { margin-top: clamp(40px, 5vw, 64px); }
+.proj-figblock-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ff2d2d;
+}
+.proj-figblock-title {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--mid-500);
+  margin-top: 8px;
+  max-width: 34rem;
+}
+
+.proj-ladder {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 0 20px;
+  /* capped rather than full-bleed: the dots are the figure's argument and they
+     sit at the right edge, so on a wide screen an uncapped ladder strands them
+     three feet from the tier they describe */
+  max-width: 68rem;
+  margin-top: clamp(20px, 2.5vw, 28px);
+  border-top: 1px solid var(--line);
+}
+/* the axis: a rule with the word running up it, and an arrowhead at the
+   bottom end, because control increases as you go down */
+.proj-ladder-axis {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.proj-ladder-axis::before {
+  content: "";
+  position: absolute;
+  top: 18px;
+  bottom: 18px;
+  left: 50%;
+  width: 1px;
+  background: color-mix(in srgb, var(--mid-500) 40%, transparent);
+}
+.proj-ladder-axis::after {
+  content: "";
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  border-right: 1px solid color-mix(in srgb, var(--mid-500) 40%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--mid-500) 40%, transparent);
+  transform: translateX(-50%) rotate(45deg);
+}
+.proj-ladder-axis span {
+  position: relative;
+  writing-mode: vertical-rl;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+  background: var(--white);
+  padding: 8px 0;
+}
+
+.proj-ladder-tier { border-bottom: 1px solid var(--line); }
+.proj-ladder-tier h3 { font-weight: inherit; font-size: inherit; }
+.proj-ladder-trigger {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 8px 16px;
+  width: 100%;
+  padding: 20px 0;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  font-family: inherit;
+}
+.proj-ladder-n {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--mid-500);
+  transition: color 0.2s ease;
+}
+.proj-ladder-name {
+  font-size: clamp(16px, 1.8vw, 20px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--black);
+  transition: color 0.2s ease;
+}
+.proj-ladder-kind {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--mid-500);
+  margin-top: 4px;
+}
+/* the control dots — the figure's actual argument, so they get the red */
+.proj-ladder-dots { display: inline-flex; gap: 5px; align-self: center; }
+.proj-ladder-dots i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--mid-500) 55%, transparent);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.proj-ladder-dots i.on { background: #ff2d2d; border-color: #ff2d2d; }
+.proj-ladder-trigger:hover .proj-ladder-name,
+.proj-ladder-trigger:hover .proj-ladder-n { color: #ff2d2d; }
+.proj-ladder-trigger[aria-expanded="true"] .proj-ladder-name { color: #ff2d2d; }
+
+/* the panel opens on grid rows, the same trick the home page's stack uses —
+   it animates to the content's real height without measuring anything */
+.proj-ladder-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+}
+.proj-ladder-panel > div { overflow: hidden; }
+.proj-ladder-tier--open .proj-ladder-panel { grid-template-rows: 1fr; opacity: 1; }
+.proj-ladder-panel p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--mid-500);
+  max-width: 40rem;
+  padding-bottom: 4px;
+}
+.proj-ladder-panel code {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--black);
+  border-bottom: 1px solid var(--line);
+}
+.proj-ladder-control {
+  font-family: var(--mono);
+  font-size: 11px !important;
+  letter-spacing: 0.04em;
+  color: var(--mid-500) !important;
+  padding: 14px 0 22px !important;
+}
+.proj-ladder-control b {
+  color: #ff2d2d;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 10px;
+  margin-right: 10px;
+}
+/* no JS: every tier open, nothing hidden */
+.no-js .proj-ladder-panel { grid-template-rows: 1fr; opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .proj-ladder-panel { transition-duration: 0.001s; }
+}
+@media (max-width: 640px) {
+  .proj-ladder { grid-template-columns: 28px minmax(0, 1fr); gap: 0 12px; }
+  .proj-ladder-trigger { grid-template-columns: auto minmax(0, 1fr); }
+  .proj-ladder-dots { grid-column: 2; margin-top: 10px; }
+}
+
+/* ─── DARK MODULES ──────────────────────────────────────────────────────── */
+/* The featured pointer to the RTT case study, and the call stage on the RTT
+   page itself. Both are dark in either theme — like .site-footer, they use
+   fixed values rather than tokens, because the point is that they read as a
+   call, not as the page. */
+.proj-dark {
+  background: #0c0b0a;
+  color: #edeae3;
+  border: 1px solid #1e1d1b;
+  padding: clamp(28px, 4vw, 56px);
+}
+.proj-featured { margin-top: clamp(72px, 10vw, 150px); }
+.proj-featured-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ff2d2d;
+}
+.proj-featured-title {
+  font-size: clamp(28px, 4.5vw, 52px);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  color: #edeae3;
+  margin-top: 14px;
+}
+.proj-featured-copy {
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(237, 234, 227, 0.66);
+  margin-top: 18px;
+  max-width: 38rem;
+}
+.proj-featured-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #edeae3;
+  border-bottom: 1px solid rgba(237, 234, 227, 0.3);
+  padding-bottom: 4px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.proj-featured-cta:hover { color: #ff2d2d; border-color: #ff2d2d; }
+.proj-featured-cta:focus-visible { outline-color: #ff2d2d; }
+
+/* the call stage — a strip of chrome over a line of text that types itself */
+.proj-stage { margin-top: clamp(24px, 3vw, 32px); }
+.proj-stage-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(237, 234, 227, 0.5);
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(237, 234, 227, 0.12);
+}
+.proj-stage-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff2d2d;
+  flex: 0 0 auto;
+}
+.proj-stage-body {
+  min-height: 4.4em;
+  padding-top: 16px;
+  font-size: clamp(15px, 1.9vw, 20px);
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  color: #edeae3;
+}
+/* the tag that marks text as still in progress, cleared the moment it commits */
+.proj-stage-tag {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 12px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ff2d2d;
+  border: 1px solid #ff2d2d;
+  border-radius: 2px;
+  padding: 2px 6px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.proj-stage-tag.on { opacity: 1; }
+/* in-progress text is dimmed rather than colored — the shipped decision, so
+   the page should show it rather than describe it */
+.proj-type--live { color: rgba(237, 234, 227, 0.62); }
+.proj-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  vertical-align: -0.13em;
+  margin-left: 2px;
+  background: #ff2d2d;
+  animation: projCaret 1.05s steps(1) infinite;
+}
+@keyframes projCaret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+/* nothing types, nothing blinks — the full text is just there */
+@media (prefers-reduced-motion: reduce) {
+  .proj-caret { display: none; }
+  .proj-stage-tag { display: none; }
+  .proj-type--live { color: #edeae3; }
+}
+
+/* ─── LIVE & PUBLIC ─────────────────────────────────────────────────────── */
+/* the artifacts strip: what a reader can go and open themselves. Built on
+   .proj-link above, with room for the kind of thing each one is. */
+.proj-artifacts { margin-top: clamp(28px, 3.5vw, 40px); }
+.proj-artifacts-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+  margin-bottom: 16px;
+}
+.proj-link--artifact {
+  align-items: baseline;
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: var(--sans);
+  font-size: 13px;
+}
+.proj-link-kind {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+  margin-bottom: 6px;
+}
+.proj-link-name { font-weight: 700; }
+.proj-link-host {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--mid-500);
+  margin-top: 3px;
+}
+
+/* ─── CREDITS ───────────────────────────────────────────────────────────── */
+.proj-credits {
+  margin-top: clamp(40px, 5vw, 64px);
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.proj-credits p {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--mid-500);
+  max-width: 40rem;
+}
+
+/* ─── CONSTRAINT DIAGRAM ────────────────────────────────────────────────── */
+/* one missing signal, three consequences — drawn rather than photographed,
+   in the same hairline-and-mono language as Fig. 01 */
+/* capped to the ladder's width — stretched to full bleed the boxes swim and
+   the 9px labels lose all relation to them */
+.proj-diagram { margin-top: clamp(24px, 3vw, 36px); max-width: 68rem; }
+.proj-diagram svg { display: block; width: 100%; height: auto; }
+.proj-diagram .dg-box { fill: none; stroke: var(--line); }
+.proj-diagram .dg-box--src { stroke: #ff2d2d; }
+.proj-diagram .dg-line { stroke: color-mix(in srgb, var(--mid-500) 45%, transparent); fill: none; }
+.proj-diagram .dg-head { fill: color-mix(in srgb, var(--mid-500) 45%, transparent); }
+.proj-diagram .dg-t {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  fill: var(--black);
+}
+.proj-diagram .dg-t--sm { fill: var(--mid-500); font-size: 8px; }
+.proj-diagram .dg-t--red { fill: #ff2d2d; }
+.proj-diagram figcaption {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+  margin-top: 12px;
 }
