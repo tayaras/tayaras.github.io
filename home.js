@@ -147,7 +147,10 @@ document.addEventListener('DOMContentLoaded', function () {
   // the bio text column so they align with the photo beside it
   var LINKS =
     "<div class='home-about-links'>" +
-      "<a href='mailto:tayaras@outlook.com'>Email</a>" +
+      // opens the list in a dialog rather than a page — it is a credits list,
+      // not a destination. Styled as a link because it sits in a row of them.
+      "<button type='button' class='home-about-link-btn' data-exhibits-open>Exhibitions &amp; Performances</button>" +
+      "<a href='mailto:tayaras@outlook.com'>Email ↗</a>" +
       "<a href='https://www.linkedin.com/in/tayaras/' target='_blank' rel='noopener'>LinkedIn ↗</a>" +
       "<a href='https://nowhereinteresting.online' target='_blank' rel='noopener'>Studio ↗</a>" +
     "</div>";
@@ -230,14 +233,15 @@ document.addEventListener('DOMContentLoaded', function () {
      its own aspect. Same element, same width — so the two states are one
      continuous height transition rather than a cut between two images. */
   var photoEl = document.getElementById('bioPhoto');
-  var PHOTO_RATIO = 1480 / 987;   // natural aspect of images/main/IMG_4965.webp
+  var PHOTO_RATIO = 4000 / 6000;  // natural aspect of images/main/IMG_amber-fort.webp
 
-  /* Expanded, the photo opens to its own aspect — unless the bio runs taller
-     than that, in which case the photo matches the text instead (cropping a
-     little, exactly as the collapsed band does). Both columns then end on the
-     same line, which is what puts "See less" on the gridline at every width.
-     The height is measured with the copy's min-height lifted, otherwise the
-     two would be sizing off each other. */
+  /* Expanded, the photo opens toward its own aspect but stops at a square:
+     this one is a 2:3 portrait, and at full aspect it stands half again as
+     tall as the bio beside it, stranding the contact links a long way under
+     the text. It never goes shorter than the text either — both columns end
+     on the same line, which is what puts "See less" on the photo's bottom
+     edge at every width. The height is measured with the copy's min-height
+     lifted, otherwise the two would be sizing off each other. */
   var bioRow = photoEl && photoEl.closest('.home-content');
 
   function sizePhoto(expanded) {
@@ -247,7 +251,8 @@ document.addEventListener('DOMContentLoaded', function () {
       copy.style.minHeight = '0';
       var textHeight = copy.offsetHeight;
       copy.style.minHeight = '';
-      h = Math.max(photoEl.clientWidth / PHOTO_RATIO, textHeight);
+      var w = photoEl.clientWidth;
+      h = Math.max(Math.min(w / PHOTO_RATIO, w), textHeight);
     } else {
       h = copy.offsetHeight;
     }
@@ -356,9 +361,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 })();
 
-/* Big hover title — each full-size project gets a copy of its own label placed
-   in its description column, where CSS slides it out from the column's left
-   edge on hover and drops it right above "View project". Built here rather
+/* Hover title — each full-size project gets a copy of its own label placed at
+   the foot of its meta column, where CSS slides it out from the column's left
+   edge on hover and lands it under the years line. Built here rather
    than in the markup so the name lives in exactly one place. The
    .has-media-title class is what lets the string row collapse its small label:
    the smaller sections keep theirs, since their columns are shared with a
@@ -378,16 +383,21 @@ document.addEventListener('DOMContentLoaded', function () {
     text.textContent = (label.getAttribute('data-hover-title') || label.textContent).trim();
     mask.appendChild(text);
 
-    var cta = copy.querySelector('.home-cta');
-    if (cta) copy.insertBefore(mask, cta); else copy.appendChild(mask);
+    // it belongs to the meta column now, as the line under the years — the
+    // copy column is only the fallback for a section without a meta block
+    var meta = fret.querySelector('.home-content:not(.home-content--small) .home-meta');
+    if (meta) {
+      meta.appendChild(mask);
+    } else {
+      var cta = copy.querySelector('.home-cta');
+      if (cta) copy.insertBefore(mask, cta); else copy.appendChild(mask);
+    }
     fret.classList.add('has-media-title');
 
-    // Stacked on a phone there is no hover and no description column to ride
-    // out of, so the same name is also placed at the top of the card, above
-    // the photo, where it reads as the section's heading. CSS shows one or the
-    // other. Its two neighbours would otherwise repeat it, so the small row
-    // label collapses (the has-media-title class) and the meta's title line is
-    // marked as a duplicate whenever it says the same thing.
+    // Stacked on a phone there is no hover for the name to ride out on, so the
+    // same name is also placed at the top of the card, above the photo, where
+    // it reads as the section's heading. CSS shows one or the other, and the
+    // small row label collapses either way (the has-media-title class).
     var content = fret.querySelector('.home-content');
     if (content) {
       var lead = document.createElement('span');
@@ -395,11 +405,6 @@ document.addEventListener('DOMContentLoaded', function () {
       lead.setAttribute('aria-hidden', 'true');
       lead.textContent = text.textContent;
       content.insertBefore(lead, content.firstChild);
-
-      var metaTitle = fret.querySelector('.home-meta-title');
-      if (metaTitle && metaTitle.textContent.trim().toLowerCase() === text.textContent.toLowerCase()) {
-        metaTitle.classList.add('home-meta-title--dupe');
-      }
     }
 
     // a long name (someoneinteresting.online) would run past the column and be
@@ -517,4 +522,25 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.target.closest('.scatter-img img') || e.target.closest('.kw')) return;
     unpin();
   });
+})();
+
+
+/* Exhibitions & performances dialog — opened from the contact line in the bio.
+   A native <dialog> so Esc and the focus trap come for free; the only things
+   left to wire are the open button, the close button and a click on the
+   backdrop (which lands on the dialog element itself, never on its contents). */
+(function () {
+  var modal = document.getElementById('exhibitsModal');
+  if (!modal || !modal.showModal) return;   // no dialog support: leave the button inert
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('[data-exhibits-open]')) {
+      e.preventDefault();
+      e.stopPropagation();   // the bio section is clickable — don't let it through
+      modal.showModal();
+      return;
+    }
+    if (e.target.closest('[data-exhibits-close]')) modal.close();
+  });
+  // click outside the panel closes it
+  modal.addEventListener('click', function (e) { if (e.target === modal) modal.close(); });
 })();

@@ -1,3 +1,16 @@
+/* ─── FONTS ───
+   Ursa Mono (Tekio) — the wordmark face, self-hosted. TRIAL LICENSE: fine for
+   trying the look, not for a live site; buy a web licence before this ships.
+   One weight only (Regular), so anything set in it asks for 400. */
+@font-face {
+  font-family: 'Ursa Mono';
+  src: url('fonts/UrsaMonoTrial-Regular.woff2') format('woff2'),
+       url('fonts/UrsaMonoTrial-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ─── TOKENS ─── */
 :root {
   --black: #0a0a0a;
@@ -6,8 +19,14 @@
   --line: #e5e5e5;
   --accent: #236860;
   --accent-light: #f0f6f5;
-  --mono: 'Helvetica Neue', 'helvetica-neue-lt-pro', 'Helvetica', Arial, sans-serif;
-  --sans: 'Helvetica Neue', 'helvetica-neue-lt-pro', 'Helvetica', Arial, sans-serif;
+  /* the Adobe Fonts cut comes first so every platform renders the same face:
+     macOS would otherwise prefer its own Helvetica Neue, and Windows — which
+     has neither Helvetica nor Helvetica Neue, and maps a plain "Helvetica"
+     request to Arial — would be the only one seeing the webfont. */
+  --mono: 'helvetica-neue-lt-pro', 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+  /* the wordmark only — the name in the corner of every page */
+  --brand-font: 'Ursa Mono', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --sans: 'helvetica-neue-lt-pro', 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
   /* Near-full-bleed: thin gutters, and a cap high enough that wide screens
      actually reach the edges rather than stopping short. */
   --pad: 8px;

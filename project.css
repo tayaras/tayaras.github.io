@@ -1146,27 +1146,6 @@ body.proj-collapsed .proj-id {
 /* ─── FEATURE LIST ──────────────────────────────────────────────────────── */
 /* what the system shipped over its life — a list, set as hairline chips so a
    long inventory reads as one texture instead of twenty bullet points */
-.proj-features {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: clamp(24px, 3vw, 32px);
-}
-.proj-features li {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  color: var(--mid-500);
-  border: 1px solid var(--line);
-  border-radius: 2px;
-  padding: 7px 11px;
-}
-.proj-features li a {
-  color: #ff2d2d;
-  border-bottom: none;
-}
-.proj-features li:hover { border-color: color-mix(in srgb, var(--mid-500) 45%, transparent); }
 
 /* ─── FIG. 01 — THE CUSTOMIZATION LADDER ────────────────────────────────── */
 /* Three tiers, one open at a time, against a vertical axis that runs from
@@ -1188,69 +1167,21 @@ body.proj-collapsed .proj-id {
   max-width: 34rem;
 }
 
+/* Three rows, all open. It was an accordion showing one tier at a time, which
+   made the one thing the figure is for — comparing the tiers — impossible
+   without clicking through and remembering. */
 .proj-ladder {
-  display: grid;
-  grid-template-columns: 56px minmax(0, 1fr);
-  gap: 0 20px;
-  margin-top: clamp(20px, 2.5vw, 28px);
-  border-top: 1px solid var(--line);
-}
-/* the axis: a rule with the word running up it, and an arrowhead at the
-   bottom end, because control increases as you go down */
-.proj-ladder-axis {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.proj-ladder-axis::before {
-  content: "";
-  position: absolute;
-  top: 18px;
-  bottom: 18px;
-  left: 50%;
-  width: 1px;
-  background: color-mix(in srgb, var(--mid-500) 40%, transparent);
-}
-.proj-ladder-axis::after {
-  content: "";
-  position: absolute;
-  bottom: 12px;
-  left: 50%;
-  width: 7px;
-  height: 7px;
-  border-right: 1px solid color-mix(in srgb, var(--mid-500) 40%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--mid-500) 40%, transparent);
-  transform: translateX(-50%) rotate(45deg);
-}
-.proj-ladder-axis span {
-  position: relative;
-  writing-mode: vertical-rl;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--mid-500);
-  background: var(--white);
-  padding: 8px 0;
+  margin: 0;
+  /* Boxed, the way the other figures in this rail are. --line is the divider
+     token: at #e5e5e5 on white it is a 1.26:1 line, which reads as no line at
+     all. An outline has to hold its own edge, so it takes a share of the text
+     grey instead and lands the same in both themes. */
+  border: 1px solid color-mix(in srgb, var(--mid-500) 40%, transparent);
+  padding: 0 clamp(16px, 2vw, 24px);
 }
 
 .proj-ladder-tier { border-bottom: 1px solid var(--line); }
 .proj-ladder-tier h3 { font-weight: inherit; font-size: inherit; }
-.proj-ladder-trigger {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: baseline;
-  gap: 8px 16px;
-  width: 100%;
-  padding: 20px 0;
-  background: none;
-  border: none;
-  text-align: left;
-  cursor: pointer;
-  color: inherit;
-  font-family: inherit;
-}
 .proj-ladder-n {
   font-family: var(--mono);
   font-size: 10px;
@@ -1283,44 +1214,9 @@ body.proj-collapsed .proj-id {
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 .proj-ladder-dots i.on { background: #ff2d2d; border-color: #ff2d2d; }
-.proj-ladder-trigger:hover .proj-ladder-name,
-.proj-ladder-trigger:hover .proj-ladder-n { color: #ff2d2d; }
-.proj-ladder-trigger[aria-expanded="true"] .proj-ladder-name { color: #ff2d2d; }
 
 /* the panel opens on grid rows, the same trick the home page's stack uses —
    it animates to the content's real height without measuring anything */
-.proj-ladder-panel {
-  display: grid;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  transition: grid-template-rows 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
-}
-.proj-ladder-panel > div { overflow: hidden; }
-.proj-ladder-tier--open .proj-ladder-panel { grid-template-rows: 1fr; opacity: 1; }
-/* description left, what-you-control right, so an open tier reaches both
-   edges the same way the trigger above it does */
-.proj-ladder-panel-inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  column-gap: 24px;
-  align-items: start;
-}
-.proj-ladder-panel p {
-  font-size: 13px;
-  line-height: 1.7;
-  color: var(--mid-500);
-  max-width: 40rem;
-  padding-bottom: 4px;
-}
-@media (max-width: 820px) {
-  .proj-ladder-panel-inner { grid-template-columns: minmax(0, 1fr); }
-}
-.proj-ladder-panel code {
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--black);
-  border-bottom: 1px solid var(--line);
-}
 .proj-ladder-control {
   font-family: var(--mono);
   font-size: 11px !important;
@@ -1341,15 +1237,12 @@ body.proj-collapsed .proj-id {
   margin-right: 10px;
 }
 /* no JS: every tier open, nothing hidden */
-.no-js .proj-ladder-panel { grid-template-rows: 1fr; opacity: 1; }
-
+.no-js 
 @media (prefers-reduced-motion: reduce) {
-  .proj-ladder-panel { transition-duration: 0.001s; }
-}
+  }
 @media (max-width: 640px) {
   .proj-ladder { grid-template-columns: 28px minmax(0, 1fr); gap: 0 12px; }
-  .proj-ladder-trigger { grid-template-columns: auto minmax(0, 1fr); }
-  .proj-ladder-dots { grid-column: 2; margin-top: 10px; }
+    .proj-ladder-dots { grid-column: 2; margin-top: 10px; }
 }
 
 /* ─── DARK MODULES ──────────────────────────────────────────────────────── */
@@ -1364,44 +1257,6 @@ body.proj-collapsed .proj-id {
   padding: clamp(28px, 4vw, 56px);
 }
 .proj-featured { margin-top: clamp(72px, 10vw, 150px); }
-.proj-featured-eyebrow {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #ff2d2d;
-}
-.proj-featured-title {
-  font-size: clamp(28px, 4.5vw, 52px);
-  font-weight: 500;
-  line-height: 1.02;
-  letter-spacing: -0.04em;
-  color: #edeae3;
-  margin-top: 14px;
-}
-.proj-featured-copy {
-  font-size: 13px;
-  line-height: 1.7;
-  color: rgba(237, 234, 227, 0.66);
-  margin-top: 18px;
-  max-width: 38rem;
-}
-.proj-featured-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 28px;
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #edeae3;
-  border-bottom: 1px solid rgba(237, 234, 227, 0.3);
-  padding-bottom: 4px;
-  transition: color 0.2s ease, border-color 0.2s ease;
-}
-.proj-featured-cta:hover { color: #ff2d2d; border-color: #ff2d2d; }
-.proj-featured-cta:focus-visible { outline-color: #ff2d2d; }
 
 /* the call stage — a strip of chrome over a line of text that types itself */
 .proj-stage { margin-top: clamp(24px, 3vw, 32px); }
@@ -1544,3 +1399,356 @@ body.proj-collapsed .proj-id {
   color: var(--mid-500);
   margin-top: 12px;
 }
+
+/* ── live embed ───────────────────────────────────────────────────────────── */
+/* The ACS showcase in §03 — a separate Vite build served from /acs-demo/, same
+   origin, iframed here. It is a real app rather than a screenshot, so it gets
+   the tile's border treatment but keeps its own light/dark toggle: the frame
+   does not inherit this page's theme. */
+.proj-embed { margin-top: clamp(24px, 3vw, 32px); }
+/* A title bar over the frame, so it reads as a running thing and names the
+   package it is running. The dot is the one place the accent is allowed to be
+   decorative, because here it is doing the same job a status light does. */
+.proj-embed-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 14px;
+  /* Window chrome, so it is the same dark strip in both themes rather than a
+     tinted --line that washed the label out to near-invisible. */
+  border: 1px solid #24211f;
+  border-bottom: 0;
+  background: #24211f;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #f4f1ea;
+}
+.proj-embed-pkg,
+.proj-embed-state { color: #f4f1ea; }
+.proj-embed-state { opacity: 0.75; }
+.proj-embed-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 9px;
+  border-radius: 50%;
+  background: #ff2d2d;
+  vertical-align: middle;
+}
+.proj-embed-frame {
+  position: relative;
+  width: 100%;
+  /* A definite height, not an aspect ratio. The app inside is a flex column
+     ending in its control bar, so if the frame comes out even slightly shorter
+     than the ratio implies, the bar is the thing that gets clipped — and two
+     Chromium builds disagreed about what `aspect-ratio` here resolves to. */
+  height: clamp(620px, 55vw, 860px);
+  border: 1px solid var(--line);
+  background: var(--line);
+  overflow: hidden;
+}
+.proj-embed-frame iframe {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.proj-embed-cap {
+  display: block;
+  margin-top: 14px;
+}
+.proj-embed-note {
+  display: block;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--mid-500);
+  max-width: 46rem;
+}
+/* the caveat about why this is not the composite — quieter than the caption */
+.proj-embed-fine {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--mid-500);
+  max-width: 46rem;
+}
+.proj-embed-fine b { font-weight: 500; color: var(--black); }
+@media (max-width: 700px) {
+  .proj-embed-frame { height: 560px; }
+}
+
+/* ── component embeds ─────────────────────────────────────────────────────── */
+/* One frame per row, beside the text that introduces it. All seven come off
+   the same build, so the library downloads once and the rest is cache. */
+.proj-demo-frame {
+  position: relative;
+  width: 100%;
+  /* Each component gets the height it needs. One flat height for all of them
+     left a row of buttons floating in half a screen of nothing. */
+  height: var(--frame-h, clamp(400px, 36vw, 560px));
+  border: 1px solid var(--line);
+  background: var(--line);
+  overflow: hidden;
+}
+.proj-demo-frame iframe {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.proj-demo-name {
+  display: block;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: -0.01em;
+  color: var(--black);
+}
+@media (max-width: 700px) {
+    .proj-demo-frame { height: 460px; }
+}
+
+/* ─── EDITORIAL RAILS ───────────────────────────────────────────────────── */
+/* Opt in with .proj--rail on the <article>.
+
+   Proportions taken from the reference: a 530fr / 837fr split with a 96px
+   gutter and a flat 129px between sections. The grammar is the reference's too:
+
+     the statement holds the left rail,
+     the payload holds the right — prose when a section has no picture,
+     the picture when it does, in which case the prose joins the statement.
+
+   Only two things cross both rails: the string rows, which are the page's
+   spine, and the live call surface, which needs the width. */
+
+.proj--rail .proj-sec {
+  margin-top: 129px;
+}
+.proj--rail .proj-sec:first-of-type { margin-top: clamp(28px, 3vw, 44px); }
+
+@media (min-width: 1000px) {
+  .proj--rail .proj-sec,
+  .proj--rail .proj-figblock {
+    display: grid;
+    grid-template-columns: minmax(0, 530fr) minmax(0, 837fr);
+    column-gap: 96px;
+    row-gap: 56px;
+    align-items: start;
+  }
+  .proj--rail .proj-sec > *,
+  .proj--rail .proj-figblock > * { margin-top: 0; }
+
+  /* the payload: everything you look at, and prose with nothing to sit beside */
+  .proj--rail .proj-sec > *,
+  .proj--rail .proj-figblock > * { grid-column: 2; }
+
+  /* the statement: what introduces the payload beside it */
+  .proj--rail .proj-sec > .proj-railhead,
+  .proj--rail .proj-figblock > .proj-railhead { grid-column: 1; }
+
+  /* the two things that cross both rails */
+  .proj--rail .proj-sec > .proj-sec-title,
+  .proj--rail .proj-sec > .proj-embed,
+  .proj--rail .proj-sec > .proj-credits { grid-column: 1 / -1; }
+
+  /* Prose and rows carry the same split internally, so they span the section
+     and re-declare it rather than fighting it from inside one column. */
+  .proj--rail .proj-sec > .proj-prose,
+  .proj--rail .proj-sec > .proj-row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 530fr) minmax(0, 837fr);
+    column-gap: 96px;
+    align-items: start;
+  }
+  .proj--rail .proj-prose > * { grid-column: 2; }
+  .proj--rail .proj-prose > .proj-thesis {
+    grid-column: 1;
+    grid-row: 1 / span 99;   /* holds the left while the prose stacks beside it */
+    margin-bottom: 0;
+  }
+  .proj--rail .proj-row-copy { grid-column: 1; }
+  .proj--rail .proj-row-media { grid-column: 2; }
+
+  /* Fig. 01 pairs its caption with the ladder rather than running 1,400px wide */
+  .proj--rail .proj-figblock > .proj-ladder { grid-column: 2; }
+
+  /* the specimen grids live in the right rail now, so they drop to two up */
+  .proj--rail .proj-tiles,
+  /* two columns inside the right rail, paired the way the facts are */
+  .proj--rail .proj-contrib {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 24px;
+  }
+}
+
+/* A left-rail heading is a heading, not a caption — the reference sets these
+   at 28px beside 16px body, and the same ratio here lands at 20px. */
+.proj--rail .proj-figblock-title {
+  font-size: clamp(17px, 1.9vw, 20px);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--black);
+  max-width: 20rem;
+}
+.proj--rail .proj-figblock-lede {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--mid-500);
+  margin-top: 10px;
+  max-width: 22rem;
+}
+
+/* 13px was set for a full-bleed column. In a 530fr rail it reads cramped, and
+   the reference runs 16px. */
+.proj--rail .proj-prose p:not(.proj-thesis),
+.proj--rail .proj-row-copy p:not(.proj-thesis),
+.proj--rail .proj-contrib dd { font-size: 14.5px; line-height: 1.65; }
+
+/* The rail already sets the measure. A second cap at --measure left ~100px of
+   dead space on the right of every paragraph, which read as the whole page
+   being pushed left. */
+.proj--rail .proj-prose p,
+.proj--rail .proj-row-copy p,
+.proj--rail .proj-prose .proj-thesis,
+.proj--rail .proj-row-copy .proj-thesis { max-width: none; }
+
+/* a component name heading the left rail of its own row (--mono is this site's
+   label stack, not a monospace face) */
+.proj--rail .proj-row-copy .proj-demo-name,
+.proj--rail .proj-row-copy .proj-tile-name {
+  display: block;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  color: var(--black);
+  margin-bottom: 8px;
+}
+
+.proj--rail .proj-railhead .proj-figblock-label { margin-bottom: 10px; }
+
+/* The section labels, rail headings and component names carry the page's
+   outline now — they were <p> before, which left a screen reader with an H1 and
+   nothing else. Only the margins and weight a browser adds to a heading need
+   undoing; the classes above already own size, family and colour. Stated
+   explicitly rather than as `inherit` so the value does not depend on whatever
+   element happens to wrap them. */
+h2.proj-sec-label,
+h2.proj-figblock-title,
+h3.proj-figblock-title,
+h4.proj-demo-name {
+  margin: 0;
+  font-weight: 500;
+}
+h4.proj-demo-name { margin-bottom: 8px; }
+
+/* ── the head, on the same rails as everything else ───────────────────────── */
+/* It was running its own 12-column layout: facts in a 2-up sub-grid ending at
+   589, summary starting at 732. Against the page's 16 / 621 that is two extra
+   vertical edges before the reader has got past the title, which is what made
+   the overview read as a different piece of design. */
+@media (min-width: 1000px) {
+  .proj--rail .proj-head.proj-grid {
+    grid-template-columns: minmax(0, 530fr) minmax(0, 837fr);
+    column-gap: 96px;
+    row-gap: 32px;
+    align-items: start;
+  }
+  .proj--rail .proj-head > .proj-id-row { grid-column: 1 / -1; }
+  .proj--rail .proj-head > .proj-facts,
+  .proj--rail .proj-head > .proj-linkline { grid-column: 1; }
+  .proj--rail .proj-head > .proj-summary { grid-column: 2; grid-row: 2 / span 2; }
+
+  /* two columns, paired inside the left rail rather than spanning past it */
+  .proj--rail .proj-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 24px;
+  }
+  .proj--rail .proj-linkline { margin-top: 0; }
+}
+
+/* ── the ladder, static ───────────────────────────────────────────────────── */
+.proj-ladder-tier {
+  padding: 18px 0 20px;
+  border-bottom: 1px solid var(--line);
+}
+.proj-ladder-tier:last-child { border-bottom: 0; }
+.proj-ladder-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 8px 14px;
+}
+.proj-ladder-desc,
+.proj-ladder-control { margin: 10px 0 0; }
+.proj-ladder-desc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--mid-500);
+}
+
+/* the closing brand figure and the placeholder under it read as one beat */
+
+/* ── the head's type, matched to the sections ─────────────────────────────── */
+/* The overview was set a step smaller than everything under it: 13px body
+   against the sections' 14.5px, and fact values 13px against the identical
+   dt/dd pairs in §02 at 14.5px. Same line-height ratio, so only the size and
+   the title's tracking were out. */
+@media (min-width: 1000px) {
+  .proj--rail .proj-summary p,
+  .proj--rail .proj-fact dd { font-size: 14.5px; line-height: 1.65; }
+
+  /* the id row and the section labels sit on the same string device, so they
+     should track alike — 0.12em either way, rather than 0.02em against 0.12em */
+  .proj--rail .proj-id { letter-spacing: 0.12em; }
+
+  /* ink for the statement, grey for what supports it — the page's own logic,
+     which the summary was already following at the wrong size */
+  .proj--rail .proj-summary p + p { color: var(--mid-500); }
+}
+
+/* ── one measure per rail ─────────────────────────────────────────────────── */
+/* Text inside a rail was being capped a second time, by five different values:
+   the summary at 704px, the rail ledes at 352px, the embed caption at 736px,
+   the placeholder copy at 544px. So paragraphs stopped at 368, 753, 1206, 1325
+   and 1424 in a layout with two columns. The column is the measure. */
+@media (min-width: 1000px) {
+  .proj--rail .proj-summary p,
+  .proj--rail .proj-figblock-lede,
+  .proj--rail .proj-ph-desc { max-width: none; }
+
+  /* the embed spans both rails, so its caption takes the left rail's measure
+     rather than a width of its own */
+  .proj--rail .proj-embed-note,
+  .proj--rail .proj-embed-fine { max-width: 509px; }
+}
+
+/* the link out of the RealTimeText row into its own case study */
+.proj-row-cta { margin-top: 14px; }
+.proj-row-cta a {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--black);
+  border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.proj-row-cta a:hover { color: #ff2d2d; border-color: #ff2d2d; }
+
+/* two figures stacked in the closing beat, plus the one the row already had */
+
+/* A diagram on white needs an edge, where a screenshot brings its own. */
+.proj-row-media--framed img {
+  border: 1px solid color-mix(in srgb, var(--mid-500) 40%, transparent);
+  background: var(--white);
+}
+[data-theme="dark"] .proj-row-media--framed img { background: #f4f1ea; }
+

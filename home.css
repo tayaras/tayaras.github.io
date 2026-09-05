@@ -5,8 +5,8 @@
    stay strummable in either state. */
 /* ─── THE GRID ───────────────────────────────────────────────────────────
    One set of measurements drives the project rows, the bio row and the
-   gridlines drawn behind the page, so a change to --hero-share moves the
-   columns and their lines together. --grid-w is the content box the whole
+   horizontal rules drawn behind the page, so a change to --hero-share moves
+   the columns and their lines together. --grid-w is the content box the whole
    page lays out in: the container's --max less its --pad gutters. */
 :root {
   --home-gap: clamp(20px, 3vw, 44px);
@@ -16,9 +16,8 @@
   --grid-w: calc(var(--max) - 2 * var(--pad));
   --hero-w: calc((var(--grid-w) - 2 * var(--home-gap)) * var(--hero-share));
   --grid-rest: calc(var(--grid-w) - var(--hero-w) - 2 * var(--home-gap));
-  --grid-line: color-mix(in srgb, var(--line) 38%, transparent);
   /* the Additional sections' thumbnail, as a fraction of the hero column —
-     kept as a number so both the thumbnail and its gridline read from it */
+     kept as a number so the thumbnail and the row size off the same value */
   --small-thumb-n: 0.224;
   /* corner rounding shared by every photo on the page */
   --media-radius: clamp(10px, 0.9vw, 18px);
@@ -29,73 +28,14 @@
   margin: 0 auto;
   padding: clamp(24px, 5vw, 56px) var(--pad) 120px;
   position: relative;
-  z-index: 1;               /* content sits above the gridlines */
+  z-index: 1;
 }
 
-/* Vertical rules at every column edge, fixed so they run the full height of
-   the page as it scrolls. Purely decorative and never interactive; anything
-   opaque (a photo) simply covers them. */
-.page-grid {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: var(--grid-w);
-  transform: translateX(-50%);
-  pointer-events: none;
-  z-index: 0;
-}
-.page-grid span {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: var(--grid-line);
-}
-.page-grid span:nth-child(1) { left: 0; }                                   /* page edge */
-.page-grid span:nth-child(2) { left: var(--hero-w); }                       /* hero ends */
-.page-grid span:nth-child(3) { left: calc(var(--hero-w) + var(--home-gap)); }               /* meta starts */
-.page-grid span:nth-child(4) { left: calc(var(--hero-w) + var(--home-gap) + var(--grid-rest) * 0.35); }      /* meta ends */
-.page-grid span:nth-child(5) { left: calc(var(--hero-w) + 2 * var(--home-gap) + var(--grid-rest) * 0.35); }  /* description starts */
-.page-grid span:nth-child(6) { left: calc(var(--grid-w) - 1px); }           /* page edge */
-/* The columns only mean something once there are rows laid out in them, so
-   the rules fade in with the stack. Compressed, the strings are the only
-   lines on the page — same rule the horizontal cross-pieces below follow. */
-.page-grid { opacity: 0; transition: opacity 0.6s ease; }
-body.stack-open .page-grid { opacity: 1; }
-@media (prefers-reduced-motion: reduce) { .page-grid { transition: none; } }
 /* skip rendering off-screen project sections until scrolled near (perf) */
 .home-fret:not([data-primary]) { content-visibility: auto; contain-intrinsic-size: auto 500px; }
 
-/* ─── SNAP ───────────────────────────────────────────────────────────────
-   Scrolling settles with a section centred. Only once the stack is open —
-   collapsed, the frets are 40px rows and there is nothing to centre.
-   `proximity` snaps when a section is already near the middle and otherwise
-   leaves the scroll alone; `mandatory` would make every scroll land on a
-   section, which turns nasty the moment a section is taller than the window.
-   Off for reduced motion, where an unrequested jump is worse than a scroll. */
-@media (prefers-reduced-motion: no-preference) {
-  /* on <html>, the element that actually scrolls — body is not the scroller */
-  html:has(body.stack-open) { scroll-snap-type: y proximity; }
-  body.stack-open .home-fret { scroll-snap-align: center; }
-  body.stack-open .chord-hint { scroll-snap-align: center; }
-}
-
-/* Horizontal rules closing each section, the cross-pieces of the same grid.
-   z-index 0 on the section makes a stacking context so the -1 line sits above
-   the page but under everything in the section — it never crosses content.
-   Only while the stack is open: collapsed, the strings are the only edges. */
+/* z-index 0 on the section makes a stacking context of its own */
 .home-fret { position: relative; z-index: 0; }
-body.stack-open .home-fret::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: var(--grid-line);
-  z-index: -1;
-}
 
 .home-row {
   display: flex;
@@ -194,7 +134,6 @@ a.home-label:hover { opacity: 0.5; }
   min-width: 0;
 }
 .home-string .string-svg { height: 30px; }  /* trimmed from 36px to pack rows closer */
-
 /* top-row controls: mute lives on the header string already; here we add the
    collapse arrow so it sits on the top string of the STACK, per the design */
 .home-controls {
@@ -349,7 +288,7 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
    the project hero's right edge, and a capped measure left a wide gutter
    between the text and the photo. The column has no gutter of its own, so the
    copy carries one, otherwise the text would touch the photo's edge. */
-.home-content--bio .home-copy { max-width: none; padding-right: var(--home-gap); }
+.home-content--bio .home-copy { max-width: none; padding-right: calc(var(--home-gap) * 2); }
 
 /* the image is absolutely placed so it can't push the row taller than the
    height we've asked for; cover + object-position keeps the head in the band */
@@ -366,14 +305,14 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 30%;
+  object-position: center 42%;   /* the band is a slot: head near its top edge, as much body under it as fits */
   display: block;
   border-radius: inherit;
   transition: object-position 0.62s cubic-bezier(0.16, 1, 0.3, 1);
 }
-/* expanded, the height matches the photo's own aspect, so cover shows all of
-   it and the crop offset no longer bites */
-.home-bio-photo.is-full img { object-position: center 50%; }
+/* expanded, the square shows two thirds of the frame — enough for the arch
+   overhead and the figure under it, so the crop can sit near the middle */
+.home-bio-photo.is-full img { object-position: center 47%; }
 @media (prefers-reduced-motion: reduce) {
   .home-bio-photo, .home-bio-photo img { transition: none; }
 }
@@ -411,7 +350,7 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
    one beside it), with the contact links pinned to the bottom of the text */
 /* held to the photo's height so the contact links and "See less" fall to the
    bottom of the column — which puts the link's underline exactly on the
-   gridline running off the bottom of the photo. min-height rather than
+   bottom edge of the photo. min-height rather than
    align-self: stretch, because home.js sizes the photo from this column's
    own content when the bio is the taller of the two. */
 .home-copy.is-expanded {
@@ -426,21 +365,6 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
    it travel to the bottom of the column together. home.js builds it from its
    ALBUMS list; no albums, no block. */
 .home-listening { margin-top: auto; padding: 26px 0; position: relative; }
-/* banded off by the same hairline the rest of the page is ruled with, run out
-   to the full grid width and kept behind everything */
-.home-listening::before,
-.home-listening::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  width: var(--grid-w);
-  height: 1px;
-  background: var(--grid-line);
-  pointer-events: none;
-  z-index: -1;
-}
-.home-listening::before { top: 0; }
-.home-listening::after { bottom: 0; }
 
 /* the closing line: "See less" at the column's left edge, the contact links
    pushed over to its right, toward the photo */
@@ -448,7 +372,7 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   display: flex;
   flex-wrap: wrap;
   /* bottoms, not baselines: it lines the underlines up with each other and
-     keeps "See less" sitting on the gridline */
+     keeps "See less" on the photo's bottom edge */
   align-items: flex-end;
   justify-content: space-between;
   gap: 12px 32px;
@@ -459,7 +383,8 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 .home-bio-footer .home-cta { margin-top: 0; }
 /* the contacts match "See less" — same family, size and underline */
 .home-bio-footer .home-about-links { margin-top: 0; padding-top: 0; gap: 32px; }
-.home-bio-footer .home-about-links a {
+.home-bio-footer .home-about-links a,
+.home-bio-footer .home-about-links .home-about-link-btn {
   font-family: var(--mono);
   font-size: 14px;
   letter-spacing: 0.02em;
@@ -467,7 +392,8 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   padding-bottom: 0;
   border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent);
 }
-.home-bio-footer .home-about-links a:hover { color: #001EFF; }
+.home-bio-footer .home-about-links a:hover,
+.home-bio-footer .home-about-links .home-about-link-btn:hover { color: #001EFF; }
 .home-listening-label {
   display: block;
   font-family: var(--sans);
@@ -574,8 +500,126 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 .home-about-extra > .home-about-inner { overflow: hidden; min-height: 0; }
 .home-about-extra.in { grid-template-rows: 1fr; opacity: 1; }
 .home-about-links { display: flex; flex-wrap: wrap; gap: 32px; margin-top: auto; padding-top: 44px; }
-.home-about-links a { font-size: 12px; color: var(--mid-600); text-decoration: none; border-bottom: 1px solid var(--line); padding-bottom: 2px; }
-.home-about-links a:hover { color: #001EFF; }
+.home-about-links a,
+.home-about-links .home-about-link-btn { font-size: 12px; color: var(--mid-600); text-decoration: none; border-bottom: 1px solid var(--line); padding-bottom: 2px; }
+.home-about-links a:hover,
+.home-about-links .home-about-link-btn:hover { color: #001EFF; }
+/* the one button in a row of links: strip the button chrome so it reads as one */
+.home-about-link-btn {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  font-weight: inherit;   /* a button ignores the body's 500 and lands on 400 */
+  font-size: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+/* ─── EXHIBITIONS DIALOG ─────────────────────────────────────────────────
+   A native <dialog>, so Esc, the backdrop and the focus trap are the
+   browser's job. Sized to the reading measure and scrollable inside itself:
+   the list is long, and the page behind it must not scroll with it. */
+.ex-modal {
+  width: min(680px, calc(100vw - 32px));
+  max-height: min(80vh, 760px);
+  margin: auto;             /* the global reset zeroes the UA's centring margin */
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--white);
+  color: var(--black);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.ex-modal::backdrop { background: rgba(10, 10, 10, 0.45); }
+.ex-modal-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 28px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.ex-modal-head h2 {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.ex-close {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0 2px;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--mid-600);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.ex-close:hover { color: #ff2d2d; }
+/* the scroller — the head stays put while the list moves under it */
+.ex-modal-body { padding: 4px 28px 28px; overflow-y: auto; max-height: calc(min(80vh, 760px) - 62px); }
+.ex-group { padding-top: 22px; }
+.ex-group h3 {
+  margin: 0 0 10px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+}
+.ex-group ul { margin: 0; padding: 0; list-style: none; }
+/* name left, date and place right — they meet in the middle and the pair
+   stacks instead of colliding once the dialog is narrow */
+.ex-group li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px 24px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+}
+.ex-group li:last-child { border-bottom: 0; }
+.ex-name { font-family: var(--sans); font-size: 14px; line-height: 1.4; color: var(--black); }
+.ex-meta { font-family: var(--sans); font-size: 13px; line-height: 1.4; color: var(--mid-600); text-align: right; }
+/* what I played, revealed on hover: a full-width line that opens under the
+   name, in the red every other hover state on the page uses */
+.ex-role {
+  flex: 0 0 100%;
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: #ff2d2d;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+.ex-group li:hover .ex-role { max-height: 2.4em; opacity: 1; }
+/* no hover on a touch screen — the roles are simply always there */
+@media (hover: none) {
+  .ex-role { max-height: none; opacity: 1; transition: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ex-role { transition: opacity 0.15s ease; }
+  .ex-group li:hover .ex-role { max-height: 2.4em; }
+}
+@media (max-width: 560px) {
+  .ex-modal-head { padding: 20px 20px 14px; }
+  .ex-modal-body { padding: 4px 20px 22px; }
+  .ex-meta { text-align: left; }
+}
 
 .home-cta {
   display: inline-block;
@@ -592,8 +636,7 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 
 .home-media {
   border-radius: var(--media-radius);
-  /* no overflow clip: the image already fills the box exactly, and the
-     gridline extenders below have to reach past this element's edges */
+  /* no overflow clip: the image already fills the box exactly */
   position: relative;
   background: var(--line);
   aspect-ratio: 16 / 9;           /* wider + shorter, uniform across all sections */
@@ -612,32 +655,28 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   border-radius: inherit;   /* the rounding lives on the image now */
 }
 
-/* ─── THE BIG TITLE ──────────────────────────────────────────────────────
-   Hovering a project hands its name from the string row to the description
-   column: the small label collapses (above) and the large one rides out of
-   the column's left edge, landing directly on top of "View project".
+/* ─── THE HOVER TITLE ────────────────────────────────────────────────────
+   Hovering a project hands its name from the string row to the meta column:
+   the small label collapses (above) and the name rides out of the column's
+   left edge to sit under the years, set like the lines above it.
    home.js injects the markup from each section's own label. */
 .home-hover-title {
   display: block;
   overflow: hidden;          /* the edge the title rides out of */
-  margin-top: auto;          /* sits with the CTA at the bottom of the column */
   pointer-events: none;
   min-width: 0;
 }
 /* the title is one long unbreakable word, so without this the column's
    automatic minimum size grows to fit it and the row's grid is thrown out */
-.home-content .home-copy { min-width: 0; }
+.home-content .home-copy, .home-content .home-meta { min-width: 0; }
 .home-hover-title span {
   display: inline-block;
   font-family: var(--sans);
-  font-size: clamp(20px, 2.4vw, 44px);
+  font-size: 14px;          /* the meta lines it sits under */
   font-weight: 700;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  line-height: 1;
-  /* line-height 1 still leaves the font's leading above the cap height, so the
-     text optically hangs low in its box; pull that slack back out */
-  margin: -0.13em 0 0.08em;
+  line-height: 1.55;
   color: #ff2d2d;           /* the same red every other hover state uses */
   white-space: nowrap;
   opacity: 0;
@@ -645,38 +684,12 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
 }
 .home-fret:hover .home-hover-title span { opacity: 1; transform: translateX(0); }
-/* the title now carries the auto margin that pushed the CTA down, so the link
-   tucks straight in under it */
-.home-content:not(.home-content--bio) .home-copy .home-hover-title + .home-cta { margin-top: 0; }
+/* the name is the line under the years now, so the meta's own title line goes
+   — the small sections, which have no hover title, keep theirs */
+.home-fret.has-media-title .home-meta-title { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .home-hover-title span { transform: none; transition: opacity 0.2s ease; }
 }
-
-/* ─── PHOTO GRIDLINES ────────────────────────────────────────────────────
-   Each photo's top and bottom edge carried straight across the page. The
-   line starts at the element's own edge and runs the full grid width, and
-   z-index -1 keeps it under the photo itself — so it reads as the photo
-   sitting on a gridline, never as a line drawn over it. */
-.home-media::before, .home-media::after,
-.home-bio-photo::before, .home-bio-photo::after {
-  content: '';
-  position: absolute;
-  width: var(--grid-w);
-  height: 1px;
-  background: var(--grid-line);
-  pointer-events: none;
-  z-index: -1;
-}
-/* project photos start at the left edge of the grid, so the line only has to
-   run rightward */
-.home-media::before, .home-media::after { left: 0; }
-.home-media::before { top: 0; }
-.home-media::after { bottom: 0; }
-/* the bio photo starts a column in — pull its lines back to the page edge */
-.home-bio-photo::before, .home-bio-photo::after { left: calc(-1 * var(--hero-w)); }
-.home-bio-photo::before { top: 0; }
-.home-bio-photo::after { bottom: 0; }
-
 
 
 @media (max-width: 820px) {
@@ -693,13 +706,6 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   /* no photo beside it any more, so the gutter it was holding open is just an
      inset that stops the copy short of the grid's right-hand rule */
   .home-content--bio .home-copy { padding-right: 0; }
-  /* The rules have to follow the columns. Here the photo runs full width and
-     the meta and description split the row evenly, so the only edges left are
-     the page's own two and the one gutter down the middle. */
-  .page-grid span:nth-child(2) { left: calc(50% - var(--home-gap) / 2); }
-  .page-grid span:nth-child(3) { left: calc(50% + var(--home-gap) / 2); }
-  .page-grid span:nth-child(4),
-  .page-grid span:nth-child(5) { display: none; }
 }
 /* Compressed on a phone, the whole instrument — six strings, the chord deck
    and the footer — has to land inside one screen. The expanded page keeps its
@@ -729,10 +735,6 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   .home-content--small { padding-top: clamp(12px, 2.5vw, 18px); padding-bottom: clamp(20px, 5vw, 26px); }
   .home-media { order: -1; }
   .home-label { flex-basis: auto; }
-  /* single column: the page's own two edges are the whole grid, and the
-     interior rules would just be lines drawn through the middle of the copy */
-  .page-grid span:nth-child(2),
-  .page-grid span:nth-child(3) { display: none; }
   /* project descriptions are desktop-only — stacked single-column they push
      the next section a screen away. The thumbnail, the meta block and the
      "View project" link stay, so a card is still identifiable and still
@@ -746,12 +748,10 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 }
 
 /* ─── THE CARD HEADING (phones) ──────────────────────────────────────────
-   No hover on a touch screen and no description column for the big title to
-   ride out of, so on a phone the name is simply the first thing in the card,
-   above the photo. home.js builds it from the same label the hover title uses.
-   It stands in for both of its neighbours: the small row label collapses the
-   way it does under a desktop hover, and the meta's title line hides when it
-   would only say the name a second time. */
+   No hover on a touch screen for the name to ride out on, so on a phone it is
+   simply the first thing in the card, above the photo. home.js builds it from
+   the same label the hover title uses, and the small row label collapses the
+   way it does under a desktop hover. */
 .home-lead-title { display: none; }
 @media (max-width: 640px) {
   .home-hover-title { display: none; }
@@ -774,17 +774,8 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
     margin-right: -16px;       /* absorb the row gap so the string reaches the edge */
     transform: translateX(-12px);
   }
-  .home-meta-title--dupe { display: none; }
 }
 
-/* No snapping on a phone. Stacked, a section is a card rather than a band
-   across the page, and a snap that pulls a card into place is always fighting
-   a flick of the thumb — touch scrolling carries its own momentum and wants to
-   be left alone. The frets keep their alignment for the desktop rule above;
-   turning the container off is what stops it. */
-@media (max-width: 640px) {
-  html:has(body.stack-open) { scroll-snap-type: none; }
-}
 @media (prefers-reduced-motion: reduce) {
   .home-row, .home-panel, #stackCollapse, #stackCollapse svg, .home-label, .home-about-extra { transition-duration: 0.001s; }
   .home-fret:hover .home-cta { animation: none; }

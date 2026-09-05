@@ -1,3 +1,5 @@
 .claude/
 .playwright-mcp/
 .DS_Store
+acs-showcase/node_modules/
+# acs-demo/ is the built showcase and IS committed — GitHub Pages serves it
