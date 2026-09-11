@@ -362,6 +362,23 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 })();
 
+/* The bio photo's moving frame. It stays paused so it never runs unseen, and
+   starts from the top each time the photo is hovered — an animated image could
+   only ever be revealed mid-loop, which is why this is a video. */
+(function () {
+  var box = document.getElementById('bioPhoto');
+  var clip = box && box.querySelector('.home-bio-photo-motion');
+  if (!clip || !clip.play) return;
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+  box.addEventListener('mouseenter', function () {
+    if (still.matches) return;
+    clip.currentTime = 0;
+    var p = clip.play();
+    if (p && p.catch) p.catch(function () {});   // autoplay policy; nothing to do
+  });
+  box.addEventListener('mouseleave', function () { clip.pause(); });
+})();
+
 /* Hover title — each full-size project gets a copy of its own label placed at
    the foot of its meta column, where CSS slides it out from the column's left
    edge on hover and lands it under the years line. Built here rather

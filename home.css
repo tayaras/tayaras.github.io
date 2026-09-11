@@ -330,7 +330,8 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   height: var(--bio-photo-h, 15rem);
   transition: height 0.62s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.home-bio-photo img {
+.home-bio-photo img,
+.home-bio-photo video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -345,11 +346,14 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
    overhead and the figure under it, so the crop can sit near the middle */
 /* expanded, the box is taller than the frame's aspect, so the crop is
    horizontal and the vertical position has nothing left to move */
-.home-bio-photo.is-full img { object-position: center 50%; }
+.home-bio-photo.is-full img,
+.home-bio-photo.is-full video { object-position: center 50%; }
 
-/* The same beach in motion, stacked on the still and faded in on hover. Both
-   frames share every crop rule above, so the swap is a cross-fade in place
-   rather than a jump. */
+/* The same beach in motion, stacked on the still and faded in on hover. A
+   <video>, not an animated image: an animated webp runs whether or not it is
+   visible, so hovering could only ever catch it mid-loop. home.js plays it from
+   the top on enter and pauses on leave. It inherits the crop rules above, so
+   the swap is a cross-fade in place rather than a jump. */
 .home-bio-photo-motion {
   opacity: 0;
   transition: opacity 0.45s ease;
@@ -635,19 +639,27 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   text-transform: uppercase;
   color: var(--mid-500);
 }
-.ex-group ul { margin: 0; padding: 0; list-style: none; }
-/* name left, date and place right — they meet in the middle and the pair
-   stacks instead of colliding once the dialog is narrow */
-.ex-group li {
-  /* name · venue · year, the year in a fixed column so the dates align */
+/* The list is one grid rather than a grid per row, so the three columns share
+   their edges down the whole group and size to their longest entry. Splitting
+   the row into fractions of the dialog instead left short names stranded —
+   "ZAF 2.0" sat 445px from its venue. */
+.ex-group ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) 4ch;
-  align-items: baseline;
-  gap: 2px 24px;
+  grid-template-columns: max-content max-content auto;
+  column-gap: clamp(24px, 3vw, 48px);
+}
+/* the row hands its cells to the grid above; the rule under each row is drawn
+   by the cells, since the row itself no longer generates a box */
+.ex-group li { display: contents; }
+.ex-group li > * {
+  align-self: baseline;
   padding: 9px 0;
   border-bottom: 1px solid var(--line);
 }
-.ex-group li:last-child { border-bottom: 0; }
+.ex-group li:last-child > * { border-bottom: 0; }
 .ex-name { font-family: var(--sans); font-size: 14px; line-height: 1.4; color: var(--black); }
 /* the venue sits between the name and the year, which holds its own column at
    the right edge so the dates line up down the list */
