@@ -121,32 +121,8 @@ a.home-label:hover { opacity: 0.5; }
 /* hover-photo keywords (scatter) — mirrors the about page */
 /* underline tracks the text it sits in — the bio's middle paragraphs are grey,
    so a fixed --black rule left the keywords darker than their own sentence */
-/* A keyword that has photos behind it glows the way the stack arrow does, so
-   the words you can open read as interactive before you touch them. Pinned
-   (clicked open) it holds at the peak rather than continuing to pulse. */
-@keyframes kwGlow {
-  0%, 100% { text-shadow: none; }
-  50% {
-    text-shadow: 0 0 6px rgba(59, 130, 246, 0.55),
-                 0 0 14px rgba(59, 130, 246, 0.28);
-  }
-}
-.kw {
-  cursor: pointer;
-  border-bottom: 1px solid currentColor;
-  transition: opacity 0.15s, text-shadow 0.25s ease, border-color 0.25s ease;
-  color: inherit;
-  animation: kwGlow 2.2s ease-in-out infinite;
-}
-.kw:hover, .kw.is-pinned {
-  animation: none;
-  opacity: 1;
-  text-shadow: 0 0 6px rgba(59, 130, 246, 0.7), 0 0 16px rgba(59, 130, 246, 0.35);
-  border-color: rgba(59, 130, 246, 0.9);
-}
-@media (prefers-reduced-motion: reduce) {
-  .kw { animation: none; }
-}
+.kw { cursor: pointer; border-bottom: 1px solid currentColor; transition: opacity 0.15s; color: inherit; }
+.kw:hover, .kw.is-pinned { opacity: 0.4; }
 .scatter-stage { position: fixed; inset: 0; pointer-events: none; z-index: 200; }
 .scatter-img {
   position: absolute; background: #ede9e2; opacity: 0; overflow: hidden;
