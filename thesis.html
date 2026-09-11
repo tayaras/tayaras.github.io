@@ -92,14 +92,9 @@
       </dl>
 
       <div class="proj-summary">
-        <p>In 2021 most AR sat on top of the world: overlays floating above surfaces, anchored to objects but never really part of them. I wanted to know what it would take to <em>physicalize</em> it — to push AR into the material itself.</p>
-        <p>I started by designing a complete AR experience. The first prototype fell apart on tracking stability, lighting, and alignment. The mechanics were the problem, not the story I was telling with them, so I stopped and built six physical tools instead — one per mechanic, each one built to show what that mechanic needs from the physical world.</p>
-        <p>All six pointed at the same thing. Surface finish, form, and contrast determine whether the digital layer holds, so you have to pick them deliberately.</p>
-        <p>This was research and prototyping, built by hand, not a product that shipped.</p>
+        <p>I designed and built six physical prototyping tools to investigate how materials, geometry, and sensor inputs shape augmented reality. For this undergraduate thesis, I led the research, fabricated the objects, and connected their digital models and electronics.</p>
+        <p>The project began as a complete AR experience, but early tests exposed tracking and alignment problems. I changed direction to study those mechanics individually, producing a toolkit for testing physical and digital behavior together.</p>
       </div>
-      <p class="proj-linkline">
-        <a href="cmu-thesis.html">Full case study &rarr;</a>
-      </p>
     </header>
 
     <section class="proj-sec proj-reveal">
@@ -110,12 +105,6 @@
         </div>
       </div>
 
-      <div class="proj-row proj-row--wide proj-grid">
-        <figure class="proj-row-media">
-          <img src="images/capstone/image-2-1.webp" alt="Isometric diagram of all six prototyping tools" loading="lazy">
-          <figcaption>The six tools — image mapping, 3D masking, shader effects, and two sensor inputs</figcaption>
-        </figure>
-      </div>
 
       <div class="proj-tiles proj-tiles--video" style="margin-top: clamp(40px, 6vw, 72px);">
         <figure class="proj-tile">
@@ -128,7 +117,7 @@
               <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
             </button>
           </div>
-          <figcaption><span class="proj-tile-name"><span class="proj-tile-num">01</span>Single image mapping</span><span class="proj-tile-note">Surface finish decides whether tracking holds. Matte print worked; reflective and low-contrast surfaces dropped out.</span></figcaption>
+          <figcaption><span class="proj-tile-name"><span class="proj-tile-num">01</span>Single image mapping</span><span class="proj-tile-note">Compares tracking across surface finishes. Matte printed targets were more reliable in these tests than reflective or low-contrast surfaces.</span></figcaption>
         </figure>
         <figure class="proj-tile">
           <div class="proj-vid">
@@ -140,7 +129,7 @@
               <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
             </button>
           </div>
-          <figcaption><span class="proj-tile-name"><span class="proj-tile-num">02</span>3D masking</span><span class="proj-tile-note">The camera hides a physical object and puts a virtual interior in its place. Scale and form decide whether the illusion works; a few millimetres off and it doesn't.</span></figcaption>
+          <figcaption><span class="proj-tile-name"><span class="proj-tile-num">02</span>3D masking</span><span class="proj-tile-note">Reveals a virtual interior within a physical form. Small differences in scale or alignment disrupted the effect.</span></figcaption>
         </figure>
         <figure class="proj-tile">
           <div class="proj-vid">
@@ -152,7 +141,7 @@
               <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
             </button>
           </div>
-          <figcaption><span class="proj-tile-name"><span class="proj-tile-num">03</span>Multiple image mapping</span><span class="proj-tile-note">Several targets sharing one frame. Spacing, target size, and angle change how coherent the virtual layer feels across a layout.</span></figcaption>
+          <figcaption><span class="proj-tile-name"><span class="proj-tile-num">03</span>Multiple image mapping</span><span class="proj-tile-note">Tests several image targets within one camera view. Target spacing, size, and viewing angle affect alignment across the arrangement.</span></figcaption>
         </figure>
         <figure class="proj-tile">
           <div class="proj-vid">
@@ -164,7 +153,7 @@
               <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
             </button>
           </div>
-          <figcaption><span class="proj-tile-name"><span class="proj-tile-num">04</span>Shader effects</span><span class="proj-tile-note">A glass refraction effect on the live camera feed. The surface behaves as though it has optical properties, so the camera reads it differently without any change to the geometry.</span></figcaption>
+          <figcaption><span class="proj-tile-name"><span class="proj-tile-num">04</span>Shader effects</span><span class="proj-tile-note">Applies a glass-like refraction effect to the camera feed, changing the appearance of a surface without altering its physical geometry.</span></figcaption>
         </figure>
         <figure class="proj-tile">
           <div class="proj-vid">
@@ -176,7 +165,7 @@
               <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
             </button>
           </div>
-          <figcaption><span class="proj-tile-name"><span class="proj-tile-num">05</span>Light sensor</span><span class="proj-tile-note">A light sensor on Arduino drives a virtual lamp over Bluetooth. Cover the sensor and the lamp responds, so the daylight in the room is doing something.</span></figcaption>
+          <figcaption><span class="proj-tile-name"><span class="proj-tile-num">05</span>Light sensor</span><span class="proj-tile-note">Connects an Arduino light sensor to a virtual lamp over Bluetooth. Covering the sensor changes the lamp, making ambient light an input to the experience.</span></figcaption>
         </figure>
         <figure class="proj-tile">
           <div class="proj-vid">
@@ -188,60 +177,67 @@
               <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
             </button>
           </div>
-          <figcaption><span class="proj-tile-name"><span class="proj-tile-num">06</span>Potentiometer</span><span class="proj-tile-note">A dial mapped to the speed of a virtual fan through the same stack. You turn it and the parameter moves, with nothing in between.</span></figcaption>
+          <figcaption><span class="proj-tile-name"><span class="proj-tile-num">06</span>Potentiometer</span><span class="proj-tile-note">Maps a physical dial to the speed of a virtual fan, allowing continuous control of a digital parameter.</span></figcaption>
         </figure>
       </div>
     </section>
 
-    <section class="proj-sec proj-reveal">
+    <section class="proj-sec proj-reveal" aria-labelledby="sec-direction">
+      <div class="proj-sec-title proj-string-row" data-freq="233.08">
+        <h2 class="proj-sec-label" id="sec-direction">Design direction</h2>
+        <div class="string-zone" tabindex="0" aria-label="Design direction — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <h3 class="proj-figblock-title">From experience to toolkit</h3>
+          <p>The initial concept was a narrative AR experience built around physical objects. Its first prototype exposed tracking and alignment problems that affected whether the experience could work at all.</p>
+          <p>I changed the project&rsquo;s focus to the mechanics behind the experience. Separate tools let me examine materials, geometry, and physical inputs individually, then use those observations to inform later design work.</p>
+          <p>Static designs could not show whether an image target would remain trackable or whether a virtual interior would align with its physical shell. The toolkit made those questions available to investigate through a camera.</p>
+        </div>
+        <figure class="proj-row-media">
+          <img src="images/capstone/Process/image38.jpg" alt="Early concept render for the narrative AR experience" loading="lazy">
+          <img src="images/capstone/Process/image39.jpg" alt="Early AR masking prototype in Unity" loading="lazy">
+          <figcaption>Initial experience concept and the masking prototype used to explore it</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="proj-sec proj-reveal" aria-labelledby="sec-role">
       <div class="proj-sec-title proj-string-row" data-freq="220.00">
-        <p class="proj-sec-label">What I did</p>
+        <h2 class="proj-sec-label" id="sec-role">What I did</h2>
         <div class="string-zone" tabindex="0" aria-label="What I did — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
       </div>
 
+      <div class="proj-railhead">
+        <h3 class="proj-figblock-title">My contribution</h3>
+      </div>
       <dl class="proj-contrib">
-        <div>
-          <dt>Reframed the thesis</dt>
-          <dd>Switched from making a single AR experience to building tools for designing AR, once the first prototype showed where the real limits were.</dd>
-        </div>
-        <div>
-          <dt>Six prototyping tools</dt>
-          <dd>One per mechanic: image mapping, 3D masking, shader effects, and sensor input. Each isolates a single behaviour so it can be tested on its own.</dd>
-        </div>
-        <div>
-          <dt>Physical fabrication</dt>
-          <dd>Designed and made the objects: laser-cut and 3D-printed forms, printed image targets, and housings built to hold a specific tracking condition.</dd>
-        </div>
-        <div>
-          <dt>Hardware and software</dt>
-          <dd>Unity and Cinema 4D for the digital layer; Arduino, ESP32, and Raspberry Pi over Bluetooth for the sensor tools; laser cutting and 3D printing for the forms.</dd>
-        </div>
-        <div>
-          <dt>Testing method</dt>
-          <dd>Surfaced problems that usually only turn up during implementation: tracking loss on reflective surfaces, occlusion breaking when things are misaligned, drift as the light changes.</dd>
-        </div>
-        <div>
-          <dt>The argument</dt>
-          <dd>Argued that AR embedded in physical material behaves differently from AR layered over it, and that you can design for the difference.</dd>
-        </div>
+        <div><dt>Research direction</dt><dd>Reframed the thesis around testing individual AR mechanics and compared behavior across materials, forms, and lighting conditions.</dd></div>
+        <div><dt>Interaction design</dt><dd>Designed the relationship between physical objects, sensor inputs, and the virtual content they controlled.</dd></div>
+        <div><dt>Fabrication</dt><dd>Modeled and made the forms, image targets, and housings using laser cutting and 3D printing.</dd></div>
+        <div><dt>Integration</dt><dd>Connected Unity and Cinema 4D models with the fabricated objects and Arduino, ESP32, and Raspberry Pi hardware.</dd></div>
       </dl>
     </section>
 
-    <section class="proj-sec proj-reveal">
+    
+
+    <section class="proj-sec proj-reveal" aria-labelledby="sec-prototyping">
       <div class="proj-sec-title proj-string-row" data-freq="196.00">
-        <p class="proj-sec-label">Making them</p>
-        <div class="string-zone" tabindex="0" aria-label="Making them — strum">
+        <h2 class="proj-sec-label" id="sec-prototyping">Prototyping</h2>
+        <div class="string-zone" tabindex="0" aria-label="Prototyping — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
       </div>
 
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
-          <p class="proj-row-head">Testing materials as tracking anchors</p>
-          <p>Every finish is a different tracking target. I laser-etched the same pattern into woods, papers, and card stocks and tested each one as an anchor. Matte held. Gloss and low contrast dropped out.</p>
-          <p>Choosing a material is choosing how reliably the digital layer will hold.</p>
+          <h3 class="proj-figblock-title">Material testing</h3>
+          <p>I laser-etched the same pattern into wood, paper, and card stock to compare tracking across materials. I adjusted surface treatments and marker density when targets lost tracking or depended too heavily on a precise setup. Matte surfaces tracked more consistently than glossy or low-contrast surfaces in these tests.</p>
+          <p>The design implication was that surface finish belonged in the interaction specification. A visually suitable material could still make the experience unreliable if the camera could not track it consistently.</p>
         </div>
         <figure class="proj-row-media">
           <img src="images/capstone/image-3-2.webp" alt="A range of laser-etched material finishes tested as image tracking anchors" loading="lazy">
@@ -251,8 +247,9 @@
 
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
-          <p class="proj-row-head">Form, iterated until the illusion held</p>
-          <p>For 3D masking the physical object has to match its virtual replacement closely enough that nobody notices the swap. It took twelve cube variants, modelled in Cinema 4D and then cut or printed, before the alignment held.</p>
+          <h3 class="proj-figblock-title">Form and alignment</h3>
+          <p>The masking prototype required close alignment between the physical object and its virtual model. I developed twelve cube variants in Cinema 4D, then fabricated them to compare how dimensions and geometry affected the result.</p>
+          <p>I developed the virtual models alongside the fabricated forms and compared them through the camera. Small mismatches disrupted the masking effect, so the fit between the two informed revisions to the physical dimensions.</p>
         </div>
         <figure class="proj-row-media">
           <img src="images/capstone/Process/image59-crop.webp" alt="Twelve cube form iterations rendered in 3D" loading="lazy">
@@ -261,49 +258,63 @@
         </figure>
       </div>
 
+
+
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
-          <p class="proj-row-head">Modelled and made in parallel</p>
-          <p>Each form existed twice: once in Unity and Cinema 4D as the thing the camera would render, once on the bench as the thing it had to replace. Building both at once is how I found the mismatches.</p>
+          <h3 class="proj-figblock-title">Assembly</h3>
+          <p>I brought the fabricated forms, printed targets, and electronics together as working tools. Assembly connected the material and form studies to the behaviors demonstrated above.</p>
+          <p>Testing the assembled tools let me compare the physical setup with its camera view and use that feedback in the next iteration.</p>
         </div>
         <figure class="proj-row-media">
-          <img src="images/capstone/Process/image49.webp" alt="A rendered virtual office interior — the content the camera swaps in during 3D masking" loading="lazy">
-          <figcaption>The virtual interior the camera swaps in</figcaption>
-        </figure>
-      </div>
-
-      <div class="proj-tiles" style="margin-top: clamp(32px, 4vw, 48px);">
-        <figure class="proj-tile">
-          <img src="images/capstone/Process/image36.webp" alt="Wooden cube forms and laser-cut image mapping cards laid out on a cutting mat" loading="lazy">
-          <figcaption><span class="proj-tile-name">Targets and forms</span><span class="proj-tile-note">The card set that came out of material testing, laid out beside the cube forms they anchor.</span></figcaption>
-        </figure>
-        <figure class="proj-tile">
-          <img src="images/capstone/Process/image20.webp" alt="Assembled wooden cube cluster on a cutting mat" loading="lazy">
-          <figcaption><span class="proj-tile-name">Assembled cluster</span><span class="proj-tile-note">Multiple targets sharing one frame, to test whether the virtual layer holds together across a layout.</span></figcaption>
-        </figure>
-      </div>
-
-      <div class="proj-row proj-row--wide proj-grid" style="margin-top: clamp(40px, 6vw, 72px);">
-        <figure class="proj-row-media">
-          <img src="images/capstone/Process/image28.webp" alt="All six tools with Arduino components and image mapping materials" loading="lazy">
-          <figcaption>The finished set — forms, targets, sensors, and Arduino components</figcaption>
+          <img src="images/capstone/Process/image28.webp" alt="The finished set of prototyping tools, image targets, and Arduino components" loading="lazy">
+          <figcaption>The finished set: forms, targets, sensors, and Arduino components</figcaption>
         </figure>
       </div>
     </section>
 
-    <section class="proj-sec proj-reveal">
+    <section class="proj-sec proj-reveal" aria-labelledby="sec-system">
+      <div class="proj-sec-title proj-string-row" data-freq="207.65">
+        <h2 class="proj-sec-label" id="sec-system">System</h2>
+        <div class="string-zone" tabindex="0" aria-label="System — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+      <div class="proj-row proj-row--wide proj-grid">
+        <figure class="proj-row-media">
+          <img src="images/capstone/image-2-1.webp" alt="Isometric diagram of all six prototyping tools" loading="lazy">
+          <figcaption>Six prototypes exploring image tracking, masking, visual effects, and sensor input</figcaption>
+        </figure>
+      </div>
+
+
+
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <h3 class="proj-figblock-title">Physical inputs</h3>
+          <p>The sensor tools connect a physical input to a variable in a digital model. Each combines a power source, Arduino controller, and sensor or dial with a virtual response.</p>
+          <p>Ambient light controls a virtual lamp; a dial controls a virtual fan&rsquo;s speed. These mappings let me explore how environmental conditions and deliberate gestures could become part of an AR interaction.</p>
+        </div>
+        <figure class="proj-row-media">
+          <img src="images/capstone/image-4-2.png" alt="Power, Arduino controller, and input diagrams for the light sensor and dial tools" loading="lazy">
+          <figcaption>Hardware and digital responses for tools 05 and 06</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="proj-sec proj-reveal" aria-labelledby="sec-findings">
       <div class="proj-sec-title proj-string-row" data-freq="174.61">
-        <p class="proj-sec-label">What it found</p>
-        <div class="string-zone" tabindex="0" aria-label="What it found — strum">
+        <h2 class="proj-sec-label" id="sec-findings">Findings</h2>
+        <div class="string-zone" tabindex="0" aria-label="Findings — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
       </div>
 
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
-          <p>Across all six, the physical decisions drove the digital behaviour. Tracking dropped when surfaces were too reflective. Occlusion broke when the geometry was off by millimetres. The sensor tools only felt direct when nothing sat between the gesture and the parameter.</p>
-          <p>None of this is easy to judge at design time, because you can't see it until something is built. The tools were an attempt to find out sooner.</p>
-          <p>I set out to build an AR experience and ended up building instruments for designing them. That turned out to be the more useful thing to have made.</p>
+          <p>Test material choices through the camera before committing to fabrication. A finish that suits the physical object also needs enough contrast and detail for reliable tracking.</p>
+          <p>Develop physical and virtual geometry together. Masking depends on their alignment, so reviewing either model in isolation can miss problems that appear in the combined view.</p>
+          <p>Test in the intended setting. Changes in light and viewing conditions can affect behavior that appeared consistent at the workbench.</p>
         </div>
         <figure class="proj-row-media">
           <img src="images/capstone/Process/image42.webp" alt="A virtual interior rendered at architectural scale in a field" loading="lazy">
@@ -313,14 +324,30 @@
 
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
-          <p class="proj-row-head">Out of the studio</p>
-          <p>Outside, the tools stopped being desk objects. The masking mechanic that hides a wooden cube on a cutting mat can also hold a room-sized interior in a field. The failure modes don't go away at that scale, they just follow the light instead.</p>
+          <h3 class="proj-figblock-title">Out of the studio</h3>
+          <p>Outdoor tests extended the masking concept to an architectural scale. They explored whether a mechanic developed with small objects could support a room-sized virtual interior, and how changing light affected the result.</p>
         </div>
-        <figure class="proj-row-media">
+        <!-- both are 4:3, so an even split lands them at the same height -->
+        <figure class="proj-row-media proj-row-media--pair">
           <img src="images/capstone/Process/image51.webp" alt="3D masking tested at outdoor scale" loading="lazy">
           <img src="images/capstone/Process/image56.webp" alt="A dark interior scene seen through the physical box outdoors" loading="lazy">
           <figcaption>Scale and lighting tests in the field</figcaption>
         </figure>
+      </div>
+    </section>
+
+    <section class="proj-sec proj-reveal" aria-labelledby="sec-outcome">
+      <div class="proj-sec-title proj-string-row" data-freq="155.56">
+        <h2 class="proj-sec-label" id="sec-outcome">Outcome</h2>
+        <div class="string-zone" tabindex="0" aria-label="Outcome — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+      <div class="proj-prose">
+        <p class="proj-thesis">A physical prototyping toolkit</p>
+        <p>I completed six working prototypes and documented their construction and behavior. The toolkit was presented at a live capstone exhibition, where visitors could try the mechanics firsthand.</p>
+        <p>The project produced a method for examining AR constraints during design. The findings describe the materials, forms, and setups tested; broader use by other designers would help establish how well the toolkit supports work beyond this project.</p>
+        <p>The project changed how I approach unfamiliar technology. I start by building small tests of the behaviors an experience relies on, then develop the concept around what those tests reveal.</p>
       </div>
     </section>
 

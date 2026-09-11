@@ -6,12 +6,12 @@
   <script src="auth.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Real-Time Text — ACS UI Library — Tay Aras</title>
-  <meta name="description" content="A synchronous, always-visible text channel that gives someone who cannot speak the same presence in a call as someone talking. Shipped across four SDKs ahead of the European Accessibility Act deadline.">
+  <meta name="description" content="Product and interaction design for Real-Time Text in the ACS UI Library. Activation, message timing, captions integration, and release scope across Web and Native.">
   <link rel="canonical" href="https://www.tayaras.com/acs-real-time-text.html">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://www.tayaras.com/acs-real-time-text.html">
   <meta property="og:title" content="Real-Time Text — ACS UI Library — Tay Aras">
-  <meta property="og:description" content="Text with equal footing to speech. Shipped across four SDKs ahead of a European accessibility deadline, and ahead of Teams.">
+  <meta property="og:description" content="Designing Real-Time Text for calls: interaction decisions, platform constraints, and the 2025 release across four ACS SDKs.">
   <meta property="og:image" content="https://www.tayaras.com/images/og-acs.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -92,125 +92,80 @@
           <dt>Platform</dt>
           <dd>Web · Native<br>WebUI · NativeUI</dd>
         </div>
-        <div class="proj-fact">
-          <dt>Standards</dt>
-          <dd>EN 301 549 §6.2<br>RFC 4103</dd>
-        </div>
-        <div class="proj-fact">
-          <dt>Shipped in</dt>
-          <dd>UI Library 1.24.0</dd>
-        </div>
       </dl>
 
       <div class="proj-summary">
-        <p>A synchronous, always-visible text channel that gives someone who cannot speak the same presence in a call as someone talking. Shipped across four SDKs ahead of a European accessibility deadline, and ahead of Teams.</p>
-        <p>The design problem was never the text field. It was a platform with no way to signal the feature was on, two design reversals I made when better evidence appeared, and two moments where I refused to let a reasonable business request take away a deaf user's equal footing in a call.</p>
-      </div>
-      <p class="proj-linkline">
+        <p>Real-Time Text (RTT) lets people contribute to a call through text that appears as they type. I led product and design for Web and WebUI, working with a counterpart on Native and NativeUI. The feature shipped across all four SDKs in 2025.</p>
+        <p>My work focused on keeping typed contributions visible within the conversation. I defined the interaction model, revised message timing and captions integration, and worked with engineering to adapt the design to platform constraints.</p>
+        <p class="proj-linkline" style="margin-top: 16px">
         <a href="ui-library.html">Part of the UI Library &rarr;</a>
         <a href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/real-time-text" target="_blank" rel="noopener">Documentation &rarr;</a>
       </p>
+      </div>
     </header>
 
-    <!-- the call stage: messages arriving as they're typed. In-progress text is
-         dimmed and tagged; both clear the moment a message commits, which is
-         the shipped behavior rather than an effect. -->
-    <section class="proj-featured proj-dark proj-reveal" style="margin-top: clamp(28px, 3vw, 44px)" aria-label="Real-Time Text demonstration">
-      <div class="proj-stage">
-        <div class="proj-stage-bar">
-          <span class="proj-stage-dot" aria-hidden="true"></span>
-          Real-time text · on · cannot be turned off
-        </div>
-        <div class="proj-stage-body">
-          <span data-type='["I can hear you fine, I just cannot speak right now.","Give me a second, I am typing.","This is why it has to show up in the main window."]'><span class="proj-type-out proj-type--live"></span></span><span class="proj-caret" aria-hidden="true"></span><span class="proj-stage-tag">RTT typing</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="proj-sec proj-reveal">
+    <section class="proj-sec proj-reveal" aria-labelledby="sec-opportunity">
       <div class="proj-sec-title proj-string-row" data-freq="246.94">
-        <p class="proj-sec-label">Problem</p>
-        <div class="string-zone" tabindex="0" aria-label="Problem — strum">
+        <h2 class="proj-sec-label" id="sec-opportunity">Opportunity</h2>
+        <div class="string-zone" tabindex="0" aria-label="Opportunity — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
-      </div>
-
-      <div class="proj-prose">
-        <p class="proj-thesis">A call where the loudest voice is a keyboard.</p>
-        <p>Picture a video call where one person cannot speak. Maybe they are deaf or hard of hearing, maybe they have a speech disability, maybe they are somewhere they cannot safely talk out loud. In most calling products that person drops to second class. They get a chat box off to the side that everyone else can collapse and forget, and their words wait in a queue while the conversation moves on without them.</p>
-        <p>Real-Time Text is the feature that fixes that. As you type, the text appears immediately, letter by letter, in the main call stage, so a typed contribution carries the same weight as a spoken one. The conversation feels live, closer to talking than to messaging.</p>
-
-        <p class="proj-subhead">The forcing function</p>
-        <p>RTT was not a nice-to-have. Under the European Accessibility Act (Directive 2019/882), real-time text became a compliance requirement for voice and video platforms in the EU as of June 30, 2025. Put plainly, a service without it could not operate in Europe or serve European customers past that date. We had to ship, and we had to ship before our own video calling story was complete.</p>
-        <p>The deadline explains why the work existed. The design problem itself started with who the feature is for. RTT matters for people who are deaf or hard of hearing, for neurodiverse users, and for anyone with a speech disability. It lets them communicate in real time, with hearing users and with each other, without needing an interpreter in the room. It also matters in emergencies, where speaking out loud may be impossible or unsafe. Once you frame the user that way, the design goal writes itself: text has to have equal footing with speech. If someone is typing, they are participating as fully as someone talking, and the interface has to treat them that way.</p>
-        <p>That principle became the thing every hard decision got measured against.</p>
+      </div>      <div class="proj-row proj-grid">
+        <div class="proj-row-copy"><h3 class="proj-figblock-title">Participation through text</h3>
+        <p>When a caller relies on text, a separate chat panel can make participation difficult. Other participants may overlook messages or close the panel while the spoken conversation continues. This affects people with speech disabilities and anyone who cannot speak in their current setting.</p>
+<p>RTT displays text character by character in the main call stage. Participants can follow a contribution while it is being written, without waiting for the sender to finish and submit a message.</p>
+<p><strong>Accessibility requirements</strong></p>
+<p>The team was working toward a June 2025 accessibility deadline. We needed to deliver RTT while parts of the underlying calling platform were still in development, which made release scope and technical dependencies central to the design.</p>
+<p>The intended audience included people who are deaf or hard of hearing, people with speech disabilities, and callers who prefer or need to type. RTT provides the typed contribution; captions provide access to spoken contributions. The interface needed to support both within the same conversation.</p>
+<p>I used the visibility of typed contributions as a criterion when evaluating layout, activation, and moderation decisions.</p></div>
+        <div class="proj-row-media"><figure>
+            <img src="images/acs/acs-rtt-panel.webp" alt="The Real-Time Text panel during a call, showing committed messages and a line still being typed" loading="lazy">
+            <figcaption>Captions and RTT in a shared window</figcaption>
+          </figure></div>
       </div>
     </section>
-
-    <section class="proj-sec proj-reveal">
+    <section class="proj-sec proj-reveal" aria-labelledby="sec-design">
       <div class="proj-sec-title proj-string-row" data-freq="207.65">
-        <p class="proj-sec-label">Process</p>
-        <div class="string-zone" tabindex="0" aria-label="Process — strum">
+        <h2 class="proj-sec-label" id="sec-design">Design</h2>
+        <div class="string-zone" tabindex="0" aria-label="Design — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
-      </div>
-
-      <div class="proj-prose">
-        <p class="proj-thesis">What I got wrong first.</p>
-        <p>The first version of my design got two things wrong, and both are worth showing, because fixing them is where the design actually happened.</p>
-        <p>I originally proposed a fifteen-second editable window, the span of time a typist could still revise text before it locked in. I at least had the honesty to say we should make that duration easy to change, since I did not know whether ten, fifteen, or thirty seconds was right. It turned out to be none of them. Looking at how RTT already worked on iOS and Samsung devices, the established pattern was two to three seconds before text commits. Fifteen felt sluggish and strange next to that. I moved it to three, matching the muscle memory people already had.</p>
-        <p>I also had RTT replacing live captions outright, on the assumption that two streams of text on screen would compete. That was backwards. Captions and RTT are different things doing different jobs, and users needed both. So I reworked it. The captions surface became the shell that hosts RTT, a single window for both. When RTT is on, captions can still be toggled alongside it.</p>
-      </div>
-
-      <!-- IMAGE NEEDED — v1 vs shipped, side by side. The two reversals, pulled
-           from Figma: the 15-second editable window and RTT replacing captions,
-           next to the three-second commit and RTT living inside the captions
-           shell as one window. -->
-      <div class="proj-row proj-row--12 proj-grid" style="margin-top: clamp(24px, 3vw, 36px)">
-        <figure class="proj-ph" style="grid-column: 1 / span 6; margin-top: 0">
+      </div>      <div class="proj-row proj-grid">
+        <div class="proj-row-copy"><h3 class="proj-figblock-title">Message timing</h3>
+        <p>I revised two early assumptions: how long text should remain editable, and whether RTT should replace captions.</p>
+<p>I initially proposed a 15-second editing window, with the duration left configurable because it had not been validated. A review of RTT on iOS and Samsung devices showed a shorter, two-to-three-second interval. I changed the design to commit text after three seconds of inactivity, aligning it with those existing patterns.</p></div>
+        <div class="proj-row-media"><figure class="proj-ph">
           <div class="proj-ph-box" style="--ph-ratio: 4 / 3">
-            <p class="proj-ph-kind">v1</p>
-            <p class="proj-ph-title">What I first drew</p>
-            <p class="proj-ph-desc">A 15-second editable window, and RTT replacing captions. The version the evidence overturned.</p>
+            <p class="proj-ph-kind">Image · Timing comparison</p>
+            <p class="proj-ph-title">15 seconds → 3 seconds</p>
+            <p class="proj-ph-desc">Add a side-by-side Figma comparison of the original 15-second editing window and the shipped three-second commit. Label when text appears and when editing ends.</p>
           </div>
           <figcaption>4:3 · Source · Figma</figcaption>
-        </figure>
-        <figure class="proj-ph" style="grid-column: 7 / -1; margin-top: 0">
+        </figure></div>
+      </div>      <div class="proj-row proj-grid">
+        <div class="proj-row-copy"><h3 class="proj-figblock-title">Captions and RTT</h3>
+        <p>My first design replaced captions with RTT to limit competing text on screen. That removed access to spoken contributions for callers who needed both. I revised the captions window to host RTT alongside captions, with captions remaining independently available.</p></div>
+        <div class="proj-row-media"><figure class="proj-ph">
           <div class="proj-ph-box" style="--ph-ratio: 4 / 3">
-            <p class="proj-ph-kind">Shipped</p>
-            <p class="proj-ph-title">What shipped</p>
-            <p class="proj-ph-desc">A three-second commit, and RTT living inside the captions shell as one window.</p>
+            <p class="proj-ph-kind">Image · Captions comparison</p>
+            <p class="proj-ph-title">Separate needs, shared window</p>
+            <p class="proj-ph-desc">Add a side-by-side Figma comparison of RTT replacing captions in the initial design and RTT alongside captions in the shipped window.</p>
           </div>
           <figcaption>4:3 · Source · Figma</figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <section class="proj-sec proj-reveal">
-      <div class="proj-sec-title proj-string-row" data-freq="185.00">
-        <p class="proj-sec-label">Constraint</p>
-        <div class="string-zone" tabindex="0" aria-label="Constraint — strum">
-          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
-        </div>
-      </div>
-
-      <div class="proj-prose">
-        <p class="proj-thesis">One missing signal shaped everything.</p>
-        <p>Partway through, engineering surfaced a platform limitation that reshaped the whole design. There was no explicit signal to tell a client that RTT was active on a call. The client had to infer it, by watching for incoming real-time text data and reasoning backward.</p>
-        <p>That one missing signal cascaded into three decisions a user can actually see. The RTT panel cannot be closed once it opens, because if we let people dismiss it, someone typing could go unseen, which defeats the entire purpose. RTT cannot be turned on before a call connects, because we had no way to know it was active until the call was live and data was flowing, so pre-join enablement had to go. And message attribution had to be handled in the client itself, mapping text back to the right participant, because the layer below could not hand us that mapping.</p>
-        <p>I like this part because it is the reality of platform design. The version I first drew needed a signal the platform did not send, so the real work became shaping that constraint into something that felt deliberate.</p>
-      </div>
-
-      <!-- built rather than photographed, in the same hairline-and-mono
-           language as Fig. 01 on the UI Library page -->
-      <figure class="proj-diagram">
+        </figure></div>
+      </div>      <div class="proj-row proj-grid">
+        <div class="proj-row-copy"><h3 class="proj-figblock-title">Platform constraints</h3>
+        <p>Engineering identified a constraint during development: the platform did not send an explicit signal that RTT was active. The client had to detect incoming RTT data to determine when to display the interface.</p>
+<p>I removed pre-join activation because the client could only detect RTT after the call connected. Once RTT appeared, the panel remained visible so participants would not miss incoming text. The client also had to map messages to participants to display attribution.</p>
+<p>These constraints changed the activation flow and panel behavior. I revised the design with engineering around the information the client could reliably receive.</p></div>
+        <div class="proj-row-media"><figure class="proj-diagram">
         <svg viewBox="0 0 900 290" role="img" aria-labelledby="dg-title dg-desc">
-          <title id="dg-title">One missing signal, three consequences</title>
-          <desc id="dg-desc">The platform sends no signal that Real-Time Text is active, so the client infers it from incoming data. That inference forces three visible decisions: the panel cannot be closed, pre-join enablement was cut, and the client maps message attribution itself.</desc>
+          <title id="dg-title">RTT activation and client behavior</title>
+          <desc id="dg-desc">The client detects RTT through incoming text data. The diagram shows persistent panel visibility, activation after joining, and client-side participant attribution.</desc>
 
           <rect class="dg-box dg-box--src" x="1" y="120" width="190" height="56"/>
           <text class="dg-t dg-t--red" x="16" y="145">NO PLATFORM SIGNAL</text>
-          <text class="dg-t dg-t--sm" x="16" y="161">the call never says RTT is on</text>
+          <text class="dg-t dg-t--sm" x="16" y="161">no explicit activation event</text>
 
           <line class="dg-line" x1="191" y1="148" x2="243" y2="148"/>
           <polygon class="dg-head" points="243,144 251,148 243,152"/>
@@ -226,152 +181,123 @@
 
           <rect class="dg-box" x="549" y="14" width="350" height="56"/>
           <text class="dg-t" x="564" y="39">PANEL CANNOT BE CLOSED</text>
-          <text class="dg-t dg-t--sm" x="564" y="55">dismissing it would let a typist go unseen</text>
+          <text class="dg-t dg-t--sm" x="564" y="55">keeps typed contributions visible</text>
 
           <rect class="dg-box" x="549" y="120" width="350" height="56"/>
           <text class="dg-t" x="564" y="145">NO PRE-JOIN ENABLEMENT</text>
-          <text class="dg-t dg-t--sm" x="564" y="161">nothing to read until the call connects</text>
+          <text class="dg-t dg-t--sm" x="564" y="161">activation follows call connection</text>
 
           <rect class="dg-box" x="549" y="226" width="350" height="56"/>
           <text class="dg-t" x="564" y="251">CLIENT MAPS ATTRIBUTION</text>
-          <text class="dg-t dg-t--sm" x="564" y="267">the layer below cannot say who typed what</text>
+          <text class="dg-t dg-t--sm" x="564" y="267">matches text to the participant</text>
         </svg>
-        <figcaption>Fig. 02 — One missing signal, three consequences</figcaption>
-      </figure>
-    </section>
-
-    <section class="proj-sec proj-reveal">
-      <div class="proj-sec-title proj-string-row" data-freq="164.81">
-        <p class="proj-sec-label">Decisions</p>
-        <div class="string-zone" tabindex="0" aria-label="Decisions — strum">
-          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
-        </div>
+        <figcaption>Fig. 02 · Platform constraints and client behavior</figcaption>
+      </figure></div>
       </div>
-
-      <div class="proj-prose">
-        <p class="proj-thesis">Two decisions I defended, and one I reversed.</p>
-        <p>The first was whether the RTT panel should be allowed to appear on its own when someone starts typing. A teammate pointed out, fairly, that a panel sliding in mid-call is jarring and can push the call controls out from under someone reaching for mute. The proposed fix was a subtle indicator instead. I decided against it. A subtle indicator is exactly the second-class treatment RTT exists to remove. If someone is typing, their words have to show, even at the cost of a small jolt to everyone else. Accessibility wins the tie.</p>
-        <p>The second was whether developers should be able to switch RTT off entirely. The argument for it was commercial and completely understandable: a customer with no EU users might not want the feature at all. I said no. An accessibility feature you can quietly disable stops being an accessibility feature. The moment a business can decide a deaf user does not get equal footing, the guarantee is gone.</p>
-        <p>Not every call went my way. I had originally specced the ability to mute an RTT participant, by direct analogy to muting a speaker. A colleague challenged it on dignity grounds. Muting someone's typed voice strips their controls and sends a strange message, and they were right. It got scaled back to an organizer-only capability rather than something anyone could do to anyone.</p>
-      </div>
+      <div class="proj-railhead"><h3 class="proj-figblock-title">Visibility and moderation</h3>
+      <p class="proj-figblock-lede">Three calls where a teammate pushed back and the decision either held or changed.</p></div>
+      <dl class="proj-contrib"><div><dt>Automatic opening</dt>
+      <dd>I kept automatic panel opening when RTT starts. A teammate raised a valid concern: opening a panel mid-call can shift the layout while someone is reaching for a control. We considered a subtle indicator instead. I prioritized showing the text immediately because an indicator could leave a participant typing without being noticed.</dd></div>
+      <div><dt>Feature availability</dt>
+      <dd>I also kept RTT available rather than adding a developer option to disable the feature entirely. Some customers wanted that control for products outside the European market. My concern was that disabling RTT at the product level would prevent callers who rely on text from choosing it when needed.</dd></div>
+      <div><dt>Organizer controls</dt>
+      <dd>I initially proposed participant muting by analogy with audio controls. A colleague challenged whether peers should be able to suppress another person&rsquo;s typed contribution. I revised the specification to restrict that capability to organizers, retaining moderation while limiting who could use it.</dd></div></dl>
     </section>
-
-    <section class="proj-sec proj-reveal">
-      <div class="proj-sec-title proj-string-row" data-freq="146.83">
-        <p class="proj-sec-label">Scope</p>
+    <section class="proj-sec proj-reveal" aria-labelledby="sec-scope">
+      <div class="proj-sec-title proj-string-row" data-freq="185.00">
+        <h2 class="proj-sec-label" id="sec-scope">Scope</h2>
         <div class="string-zone" tabindex="0" aria-label="Scope — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
       </div>
-
-      <div class="proj-prose">
-        <p class="proj-thesis">What I cut, and why.</p>
-        <p>Shipping on a legal deadline means being ruthless about scope. The v1 spec promised RTT everywhere; the shipped table said no to a lot of it. Here is what I dropped, and why.</p>
-      </div>
-
+      <div class="proj-railhead"><h3 class="proj-figblock-title">Release scope</h3>
+      <p class="proj-figblock-lede">I narrowed the first release around the platform capabilities and partner dependencies we could support by the deadline. Translation, telephone calls, Teams interoperability, and pre-join activation were excluded.</p></div>
       <dl class="proj-contrib">
         <div>
           <dt>Translation</dt>
-          <dd>Nobody could settle what translating character-by-character text even means as it streams in, and the technical path we chose closed off server-side processing anyway. Captions can be translated; RTT, for now, cannot. A real gap I chose to accept rather than hold the ship.</dd>
+          <dd>We had not resolved how translation should handle text that changes as it is typed. The chosen implementation also ruled out server-side processing, so I deferred RTT translation from the first release.</dd>
         </div>
         <div>
           <dt>PSTN</dt>
-          <dd>Bringing RTT to phone calls depends on carriers deciding how they will implement and deploy it. We understood the shape of the problem, but you cannot ship against partners who have not made their decision yet.</dd>
+          <dd>Support for telephone calls depended on carrier implementation and deployment plans. Those dependencies were unresolved, so PSTN was outside the initial scope.</dd>
         </div>
         <div>
           <dt>Teams interop</dt>
-          <dd>RTT in Teams interop scenarios would follow once Teams itself implemented it, so we scoped it out of the first release rather than build against a moving target.</dd>
+          <dd>Interoperability depended on Teams implementing RTT. I excluded it from the first release until that dependency was ready.</dd>
         </div>
         <div>
           <dt>Pre-join</dt>
-          <dd>Cut for the platform-signal reason above. We could not know RTT was on until the call connected.</dd>
+          <dd>Activation required a connected call and incoming RTT data. I removed pre-join activation from the release scope.</dd>
         </div>
       </dl>
     </section>
-
-    <section class="proj-sec proj-reveal">
-      <div class="proj-sec-title proj-string-row" data-freq="130.81">
-        <p class="proj-sec-label">Solution</p>
-        <div class="string-zone" tabindex="0" aria-label="Solution — strum">
+    <section class="proj-sec proj-reveal" aria-labelledby="sec-system">
+      <div class="proj-sec-title proj-string-row" data-freq="164.81">
+        <h2 class="proj-sec-label" id="sec-system">System</h2>
+        <div class="string-zone" tabindex="0" aria-label="System — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
       </div>
-
-      <div class="proj-prose">
-        <p class="proj-thesis">What shipped.</p>
-        <p>RTT went out as four components in the UI Library, built to drop into the calling composites.</p>
-      </div>
-
-      <dl class="proj-contrib">
+      <div class="proj-railhead"><h3 class="proj-figblock-title">RTT demo</h3>
+      <p class="proj-figblock-lede">Try the RealTimeText component used in the UI Library. This is a local demonstration, not a connected call.</p></div>
+      <figure class="proj-embed">
+  <div class="proj-embed-bar"><span class="proj-embed-pkg"><i class="proj-embed-dot" aria-hidden="true"></i>@azure/communication-react</span><span class="proj-embed-state">Interactive demo</span></div>
+  <div class="proj-demo-frame" style="--frame-h: 340px"><iframe src="acs-demo/?component=rtt&amp;chrome=off" title="Live demo: the RealTimeText component" loading="lazy"></iframe></div>
+</figure>
+<div class="proj-railhead"><h3 class="proj-figblock-title">Shipped components</h3>
+<p class="proj-figblock-lede">The UI Library implementation used four components to integrate RTT into the calling experience.</p></div>
+<dl class="proj-contrib">
         <div>
           <dt>RealTimeText</dt>
-          <dd>Shows a single line as it is typed, with an is-typing indicator.</dd>
+          <dd>Displays incoming text as it is typed, with an indicator for text still in progress.</dd>
         </div>
         <div>
           <dt>RealTimeTextModal</dt>
-          <dd>Tells everyone RTT is now on and cannot be turned off.</dd>
+          <dd>Notifies participants that RTT is active and will remain on for the call.</dd>
         </div>
         <div>
           <dt>StartRealTimeTextButton</dt>
-          <dd>Sits in the call control bar.</dd>
+          <dd>Provides the entry point for starting RTT from the call control bar.</dd>
         </div>
         <div>
           <dt>CaptionsBanner</dt>
-          <dd>Renders captions and RTT in one window, tags in-progress typing, folds committed messages into the feed.</dd>
+          <dd>Displays captions and RTT together, distinguishes in-progress text, and adds committed messages to the conversation.</dd>
         </div>
-      </dl>
-
-      <div class="proj-row proj-grid">
-        <div class="proj-row-copy">
-          <p>The interaction model is simple by design. RTT is off by default. Any participant can start it from the control bar. Starting it turns it on for everyone, and once on, it stays on for the rest of the call. A message commits when you press Enter or after three seconds without typing, and stays editable until then. It shipped in UI Library version 1.24.0 and later.</p>
-          <p>The clearest way I found to explain RTT is by contrast with chat. Chat is asynchronous. It can be collapsed or hidden, which gives it a secondary place in the call. RTT is synchronous. It shows text as it is typed, in the main gallery, and the window cannot be hidden or closed. That is what gives it the same level of prominence as speaking.</p>
-          <p>Underneath, the work sat on real standards. RTT transports real-time text over RTP following RFC 4103, and the accessibility standard, EN 301 549 section 6.2, sets a hard latency target: typed text has to reach the network within 500 milliseconds of a reliably composed unit, and under 300 milliseconds to feel fluid. Most of this design lived in timing, and it was a fun problem to build against.</p>
-        </div>
-        <div class="proj-row-media">
-          <figure>
-            <img src="images/acs/acs-rtt-panel.webp" alt="The Real-Time Text panel during a call, showing committed messages and a line still being typed" loading="lazy">
-            <figcaption>The captions shell hosting RTT — one window for both</figcaption>
-          </figure>
-          <figure>
+      </dl>      <div class="proj-row proj-grid">
+        <div class="proj-row-copy"><h3 class="proj-figblock-title">Activation and visibility</h3>
+        <p>RTT is off by default. Any participant can activate it from the control bar, making it available to everyone for the rest of the call. Text remains editable until the sender presses Enter or pauses for three seconds. Committing a message ends editing; the text has already appeared as it was typed.</p>
+<p>The panel remains visible while RTT is active. This keeps typed contributions within view throughout the conversation, including when other participants are speaking.</p></div>
+        <div class="proj-row-media"><figure>
             <img src="images/acs/acs-rtt-notification.webp" alt="The notification telling everyone in the call that Real-Time Text is on and cannot be turned off" loading="lazy">
-            <figcaption>RealTimeTextModal — consent before it starts, in those words</figcaption>
-          </figure>
-          <figure>
+            <figcaption>Notification explaining that RTT remains active for the call</figcaption>
+          </figure><figure>
             <img src="images/acs/acs-rtt-menu.webp" alt="The control bar menu with the option to start Real-Time Text" loading="lazy">
-            <figcaption>StartRealTimeTextButton — any participant can start it</figcaption>
-          </figure>
-        </div>
-      </div>
-
-      <!-- IMAGE NEEDED — the four components from Storybook. A labeled grid of
-           RealTimeText, RealTimeTextModal, StartRealTimeTextButton, and the
-           unified CaptionsBanner. Shows the actual shipped pieces of the
-           design system. Source: Storybook, Real Time Text page. -->
-      <figure class="proj-ph">
+            <figcaption>RTT activation in the call control menu</figcaption>
+          </figure></div>
+      </div>      <div class="proj-row proj-grid">
+        <div class="proj-row-copy"><h3 class="proj-figblock-title">Message completion</h3>
+        <p>For the interaction design, I distinguished transmission timing from message completion: text needed to appear during typing, while the three-second pause determined when an editable message became final.</p></div>
+        <div class="proj-row-media"><figure class="proj-ph">
         <div class="proj-ph-box" style="--ph-ratio: 16 / 9">
           <p class="proj-ph-kind">Image · Components</p>
           <p class="proj-ph-title">The four components</p>
-          <p class="proj-ph-desc">A labeled grid of RealTimeText, RealTimeTextModal, StartRealTimeTextButton, and the unified CaptionsBanner, captured from Storybook. Shows the actual shipped pieces of the design system.</p>
+          <p class="proj-ph-desc">Add a labeled Storybook capture of RealTimeText, RealTimeTextModal, StartRealTimeTextButton, and CaptionsBanner.</p>
         </div>
         <figcaption>16:9 · Source · Storybook, Real Time Text page</figcaption>
-      </figure>
+      </figure></div>
+      </div>
     </section>
-
-    <section class="proj-sec proj-reveal">
-      <div class="proj-sec-title proj-string-row" data-freq="123.47">
-        <p class="proj-sec-label">Outcome</p>
+    <section class="proj-sec proj-reveal" aria-labelledby="sec-outcome">
+      <div class="proj-sec-title proj-string-row" data-freq="130.81">
+        <h2 class="proj-sec-label" id="sec-outcome">Outcome</h2>
         <div class="string-zone" tabindex="0" aria-label="Outcome — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
       </div>
-
-      <div class="proj-prose">
-        <p class="proj-thesis">Shipped on schedule, across four SDKs, ahead of Teams.</p>
-        <p>Public preview landed for the Native Calling SDK first, then on January 30, 2025 for the Web Calling SDK, Web UI Library, and Native UI Library, followed by general availability in Calling Web SDK 1.34.1 and UI Library 1.24.0. It shipped ahead of the June 2025 deadline, and ahead of Teams, which gave customers the maximum runway to implement it in their own apps.</p>
-        <p>I drove the full launch: the rollout across all four SDKs, plus the announcements, demos, and workshops around it. None of it was solo work. RTT existed because of the collaboration between the Calling Web, Native, UI, and Design teams, and our partners on IC3 and Teams.</p>
-      </div>
-
-      <div class="proj-artifacts">
+      <div class="proj-prose"><p class="proj-thesis">Release and rollout</p>
+      <p>The rollout began with Native Calling SDK public preview, followed by Web Calling, Web UI Library, and Native UI Library on January 30, 2025. General availability followed in Calling Web SDK 1.34.1 and UI Library 1.24.0, ahead of the team&rsquo;s June 2025 deadline.</p>
+<p>I coordinated the release, announcements, demos, and workshops across the four SDKs. Delivery involved the Calling Web, Native, UI, and Design teams, with partners in IC3 and Teams.</p></div>
+<div class="proj-artifacts">
         <p class="proj-artifacts-label">Live &amp; public</p>
         <div class="proj-links">
           <a class="proj-link proj-link--artifact" href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/real-time-text" target="_blank" rel="noopener">
@@ -392,25 +318,16 @@
           </a>
         </div>
       </div>
-
-      <div class="proj-credits">
-        <p>Web and WebUI ownership mine; Native and NativeUI led alongside a counterpart. Shipped with the Calling Web, Native, UI, and Design teams, and partners across IC3 and Teams.</p>
-      </div>
-    </section>
-
-    <section class="proj-sec proj-reveal">
-      <div class="proj-sec-title proj-string-row" data-freq="110.00">
-        <p class="proj-sec-label">Hindsight</p>
-        <div class="string-zone" tabindex="0" aria-label="Hindsight — strum">
-          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
-        </div>
-      </div>
-
-      <div class="proj-prose">
-        <p class="proj-thesis">What I would do differently.</p>
-        <p>I shipped a compliance-critical accessibility feature without the instrumentation to prove anyone used it. I flagged the telemetry gap early, and I knew exactly what I wanted to measure, messages sent and received, session duration, adoption by region, but the numbers were not there when it counted. If I did it again, the telemetry would be part of the ship, not a follow-up.</p>
-        <p>There was a screen-reader question I raised and never fully closed: how a screen-reader user is notified that RTT messages are arriving. It was on my list, and it did not get resolved in the release. I would rather name that gap than pretend it was closed.</p>
-        <p>And I committed to full call-type coverage before I understood what the platform could actually signal. Every one of those early commitments, Teams interop, PSTN, pre-join, came back out. The lesson I took is to map the platform's real capabilities before writing the scope table, not after.</p>
+<div class="proj-railhead"><h3 class="proj-figblock-title">Gaps and follow-up</h3>
+<p class="proj-figblock-lede">What the release left open, and what I would scope differently next time.</p></div>
+<dl class="proj-contrib"><div><dt>Measurement</dt>
+<dd>The release established feature availability, but we lacked the telemetry to assess adoption and use. I had identified messages sent and received, session duration, and regional adoption as measures. I would include that instrumentation in the initial release scope to evaluate whether RTT was supporting participation as intended.</dd></div>
+<div><dt>Screen-reader feedback</dt>
+<dd>Screen-reader notification of incoming RTT remained unresolved at release. I had raised the issue, but it needed further design and validation. This remained an accessibility gap in the experience.</dd></div>
+<div><dt>Scope planning</dt>
+<dd>I also committed to broader call-type coverage before confirming platform capabilities and partner dependencies. In future work, I would establish those constraints before setting scope, particularly for interoperability and pre-join behavior.</dd></div></dl>
+<div class="proj-credits">
+        <p>I owned product and design for Web and WebUI and coordinated with a counterpart leading Native and NativeUI. The Calling, UI, and Design teams delivered the feature together.</p>
       </div>
     </section>
 

@@ -92,9 +92,9 @@
       </dl>
 
       <div class="proj-summary">
-        <p>Orbit is an interactive wall speaker for two people who live apart. One person shares a song, the other reacts to it, and the speaker turns that exchange into light. Over months the reactions build up into a record of the relationship you can see from across the room.</p>
-        <p>We were trying to work out how a close relationship survives losing the in-person part of itself. Texting keeps you in contact, but it leaves nothing behind. We wanted something that held onto the feeling of a friendship and got richer the longer it went on.</p>
-        <p>It's an interaction study about music as a way of being present at a distance. The interface, the object, and the electronics all had to be designed at the same time: Figma and the Spotify API on one side, TinkerCad, Solidworks, and Arduino on the other.</p>
+        <p>Orbit is a wall-speaker concept for two people who live apart. They share songs and send reactions, which appear as light patterns on the speaker. The proposed experience accumulates those exchanges into a visual listening history.</p>
+        <p>Our team explored how sharing music could support connection between people who no longer see each other regularly. We designed a physical object that could keep those exchanges visible in the home.</p>
+        <p>I contributed interaction design, concept development, and physical prototyping alongside Dorcas Lin and Franklin Guttman. The project combined app screens, motion studies, and an Arduino-based speaker prototype to explore the experience.</p>
       </div>
       <p class="proj-linkline">
         <a href="orbit.html">Full case study &rarr;</a>
@@ -116,44 +116,44 @@
                     allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
                     title="Orbit: Growing Together — demo video" loading="lazy"></iframe>
           </div>
-          <figcaption>Demo — the full exchange, end to end</figcaption>
+          <figcaption>Concept demonstration of the song-sharing experience</figcaption>
         </figure>
       </div>
 
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
-          <p class="proj-row-head">A two-person loop</p>
-          <p>Find a song, send it, receive it, listen, react, rewind. Every exchange gets drawn as a light pattern and kept, so the speaker you listen through is also the thing holding the history.</p>
+          <p class="proj-row-head">Sharing and response</p>
+          <p>The experience follows a shared song from discovery to listening, reaction, and later replay. Each exchange contributes a light pattern to the speaker&rsquo;s visual history.</p>
         </div>
         <figure class="proj-row-media">
           <img src="images/orbit/journey-map.webp" alt="User journey map of the full Orbit experience" loading="lazy">
-          <figcaption>The full arc — from discovering a song to the tapestry it joins</figcaption>
+          <figcaption>Journey map from song discovery to shared listening history</figcaption>
         </figure>
       </div>
 
       <div class="proj-tiles proj-tiles--16x9" style="margin-top: clamp(32px, 4vw, 48px);">
         <figure class="proj-tile">
           <img src="images/orbit/slide-01.webp" alt="Storyboard: finding a song to send" loading="lazy">
-          <figcaption><span class="proj-tile-name">Find a song</span><span class="proj-tile-note">It starts in Spotify, in a library someone already has. Sharing takes one action.</span></figcaption>
+          <figcaption><span class="proj-tile-name">Find a song</span><span class="proj-tile-note">The proposed Spotify flow lets someone share a song from their existing library.</span></figcaption>
         </figure>
         <figure class="proj-tile">
           <img src="images/orbit/slide-03.webp" alt="Storyboard: the speaker signalling that a song is waiting" loading="lazy">
-          <figcaption><span class="proj-tile-name">Receive a song</span><span class="proj-tile-note">Orbit glows a different colour when something is waiting. You catch it from across the room.</span></figcaption>
+          <figcaption><span class="proj-tile-name">Receive a song</span><span class="proj-tile-note">A change in the speaker&rsquo;s light signals that a song is waiting.</span></figcaption>
         </figure>
         <figure class="proj-tile">
           <img src="images/orbit/slide-06.webp" alt="Storyboard: sending an emotional reaction back" loading="lazy">
-          <figcaption><span class="proj-tile-name">Send a reaction</span><span class="proj-tile-note">Swing the control to pick a state. The visuals move as you go, so you see the reaction before you send it.</span></figcaption>
+          <figcaption><span class="proj-tile-name">Send a reaction</span><span class="proj-tile-note">Move the control to select a reaction. The light pattern previews the selection before it is sent.</span></figcaption>
         </figure>
         <figure class="proj-tile">
           <img src="images/orbit/slide-07.webp" alt="Storyboard: rewinding through the accumulated history" loading="lazy">
-          <figcaption><span class="proj-tile-name">Rewind</span><span class="proj-tile-note">The control doubles as a dial. Turn it and you walk back through past songs and the visuals that came with them.</span></figcaption>
+          <figcaption><span class="proj-tile-name">Rewind</span><span class="proj-tile-note">Turn the dial to revisit previous songs and their associated light patterns.</span></figcaption>
         </figure>
       </div>
 
       <div class="proj-row proj-grid" style="margin-top: clamp(40px, 6vw, 72px);">
         <div class="proj-row-copy">
-          <p class="proj-row-head">Built on the library people already have</p>
-          <p>Orbit plugs into Spotify instead of building a catalog. Songs go straight out of a library someone already keeps, and the companion app shows what was sent, by whom, and what came back.</p>
+          <p class="proj-row-head">Spotify integration</p>
+          <p>We designed the sharing flow around an existing Spotify library. The companion app shows the sender, shared song, and response, keeping the exchange connected to its musical context.</p>
         </div>
         <figure class="proj-row-media">
           <img src="images/orbit/slide-04.webp" alt="The song sharing interface built on Spotify" loading="lazy">
@@ -174,27 +174,27 @@
       <dl class="proj-contrib">
         <div>
           <dt>The interaction model</dt>
-          <dd>Defined the two-person loop of share, react, accumulate, and made the call that what travels between people is a reaction rather than a message.</dd>
+          <dd>Defined the share-and-react interaction, using reactions to give each song exchange a visual response.</dd>
         </div>
         <div>
           <dt>Emotional language</dt>
-          <dd>Five states: hype, surprising, chill, nostalgic, rewind. I animated them instead of drawing icons, tuning speed, colour, and movement together so you can tell them apart without being taught.</dd>
+          <dd>Animated the reaction and rewind states, exploring how speed, color, and movement could distinguish them.</dd>
         </div>
         <div>
           <dt>Physical form</dt>
-          <dd>Modelled the speaker in TinkerCad and Solidworks to sit flush against a wall, so it hangs like art instead of sitting on a shelf like a gadget.</dd>
+          <dd>Modeled the wall-mounted speaker in Tinkercad and SolidWorks, exploring how it could function as an object displayed in the home.</dd>
         </div>
         <div>
           <dt>Electronics</dt>
-          <dd>Arduino driving the LED array, with an enclosure material picked to diffuse the light so the states arrive as a glow instead of a hard pattern.</dd>
+          <dd>Prototyped the LED lighting with Arduino and selected an enclosure material to diffuse the individual light sources.</dd>
         </div>
         <div>
           <dt>Companion interface</dt>
-          <dd>Designed the app against the Spotify layer so the music keeps its context and sharing stays a single action.</dd>
+          <dd>Designed the companion app and Spotify sharing flow, including song context, sender information, and reactions.</dd>
         </div>
         <div>
           <dt>System architecture</dt>
-          <dd>Mapped how a reaction gets from one person's phone through the shared layer to light on both speakers at once.</dd>
+          <dd>Mapped the proposed flow of song and reaction data between the app and two speakers.</dd>
         </div>
       </dl>
     </section>
@@ -209,9 +209,9 @@
 
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
-          <p class="proj-row-head">A speaker shaped like something you'd hang</p>
-          <p>The shell sits flush to the wall so Orbit hangs like art. We wanted a record of a relationship to be somewhere you'd see it every day.</p>
-          <p>Inside, an Arduino drives the LED array. The enclosure diffuses the light so a state arrives as a glow across the whole face and you never see the individual pixels.</p>
+          <p class="proj-row-head">Wall-mounted form</p>
+          <p>We designed the shell to sit flush against a wall, keeping the shared listening history visible as part of the room.</p>
+          <p>An Arduino controls the prototype&rsquo;s LED array. The enclosure diffuses individual LEDs into a continuous glow across the face.</p>
         </div>
         <figure class="proj-row-media">
           <img src="images/orbit/physical-01.webp" alt="The Orbit speaker prototype, front view" loading="lazy">
@@ -222,8 +222,8 @@
 
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
-          <p class="proj-row-head">Two speakers, one signal</p>
-          <p>A reaction leaves one person's phone, passes through the shared music layer, and lands on both speakers at the same time. The simultaneity is what makes it feel like it happened in one room.</p>
+          <p class="proj-row-head">Connected system</p>
+          <p>The system diagram proposes sending a reaction through the app to both speakers. Synchronized light patterns were intended to give both people a visible response to the same exchange.</p>
         </div>
         <figure class="proj-row-media">
           <img src="images/orbit/systems-diagram.webp" alt="Systems diagram showing how a reaction travels between two Orbit speakers" loading="lazy">
@@ -242,9 +242,9 @@
 
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
-          <p>Five states — <em>hype, surprising, chill, nostalgic, rewind</em> — each one a moving pattern instead of an icon. I tuned speed, colour temperature, and movement together so you can tell them apart across a room without learning a key.</p>
-          <p>They pile up. Five weeks in you have a small ring; five years in it's dense, and you can see which songs landed, when, and how hard.</p>
-          <p>The object turned out to do things a screen couldn't. The same exchange in a chat thread is gone as soon as you scroll past it. On a wall it just stays there.</p>
+          <p>The visual system includes <em>hype, surprising, chill, nostalgic, rewind</em>. I varied animation speed, color temperature, and movement to explore how the states could be distinguished at a distance.</p>
+          <p>The concept uses density and scale to represent accumulated exchanges. The motion studies illustrate how the display could develop over weeks or years.</p>
+          <p>The wall-mounted display keeps the proposed listening history visible outside the app. The prototypes explore how an ongoing exchange could become part of a room.</p>
         </div>
         <figure class="proj-row-media">
           <img src="images/orbit/emotion-01.gif" alt="An emotional state rendered as a light animation" loading="lazy">
@@ -255,19 +255,19 @@
       <div class="proj-tiles" style="margin-top: clamp(32px, 4vw, 48px);">
         <figure class="proj-tile">
           <img src="images/orbit/emotion-02.gif" alt="Light animation for sending and receiving a reaction" loading="lazy">
-          <figcaption><span class="proj-tile-name">Sending and receiving</span><span class="proj-tile-note">"I sent this song because it's hype." / "Ooh, it is surprising!" Two lights answering each other.</span></figcaption>
+          <figcaption><span class="proj-tile-name">Sending and receiving</span><span class="proj-tile-note">Paired light animations show a song being shared and a reaction being returned.</span></figcaption>
         </figure>
         <figure class="proj-tile">
           <img src="images/orbit/emotion-03.gif" alt="Light animation showing the tapestry growing over time" loading="lazy">
-          <figcaption><span class="proj-tile-name">Growth over time</span><span class="proj-tile-note">Depth and opacity carry duration: five weeks is a small ring, five years is a dense figure.</span></figcaption>
+          <figcaption><span class="proj-tile-name">Growth over time</span><span class="proj-tile-note">Depth and opacity represent elapsed time in the proposed visual history.</span></figcaption>
         </figure>
         <figure class="proj-tile">
           <img src="images/orbit/emotion-04.gif" alt="Light animation reflecting the tone of the music" loading="lazy">
-          <figcaption><span class="proj-tile-name">Tone of the music</span><span class="proj-tile-note">The music's tone maps to a colour gradient, so the pattern takes its colour from what was actually shared.</span></figcaption>
+          <figcaption><span class="proj-tile-name">Tone of the music</span><span class="proj-tile-note">A color gradient explores how the tone of a shared song could shape its light pattern.</span></figcaption>
         </figure>
         <figure class="proj-tile">
           <img src="images/orbit/emotion-05.gif" alt="Light animation showing relationship size from songs shared" loading="lazy">
-          <figcaption><span class="proj-tile-name">Scale of the exchange</span><span class="proj-tile-note">The number of songs shared sets the projection size, so a longer friendship takes up more of the wall.</span></figcaption>
+          <figcaption><span class="proj-tile-name">Scale of the exchange</span><span class="proj-tile-note">The proposed display grows with the number of songs shared, representing activity rather than the strength of the relationship.</span></figcaption>
         </figure>
       </div>
     </section>

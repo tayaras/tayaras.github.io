@@ -346,6 +346,20 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 /* expanded, the box is taller than the frame's aspect, so the crop is
    horizontal and the vertical position has nothing left to move */
 .home-bio-photo.is-full img { object-position: center 50%; }
+
+/* The same beach in motion, stacked on the still and faded in on hover. Both
+   frames share every crop rule above, so the swap is a cross-fade in place
+   rather than a jump. */
+.home-bio-photo-motion {
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+.home-bio-photo:hover .home-bio-photo-motion { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  /* no autoplaying frame for a reader who asked for stillness */
+  .home-bio-photo-motion { display: none; }
+}
 @media (prefers-reduced-motion: reduce) {
   .home-bio-photo, .home-bio-photo img { transition: none; }
 }
@@ -569,7 +583,7 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
    browser's job. Sized to the reading measure and scrollable inside itself:
    the list is long, and the page behind it must not scroll with it. */
 .ex-modal {
-  width: min(680px, calc(100vw - 32px));
+  width: min(1040px, calc(100vw - 32px));
   max-height: min(80vh, 760px);
   margin: auto;             /* the global reset zeroes the UA's centring margin */
   padding: 0;
@@ -625,38 +639,26 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 /* name left, date and place right — they meet in the middle and the pair
    stacks instead of colliding once the dialog is narrow */
 .ex-group li {
-  display: flex;
-  flex-wrap: wrap;
+  /* name · venue · year, the year in a fixed column so the dates align */
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) 4ch;
   align-items: baseline;
-  justify-content: space-between;
   gap: 2px 24px;
   padding: 9px 0;
   border-bottom: 1px solid var(--line);
 }
 .ex-group li:last-child { border-bottom: 0; }
 .ex-name { font-family: var(--sans); font-size: 14px; line-height: 1.4; color: var(--black); }
-.ex-meta { font-family: var(--sans); font-size: 13px; line-height: 1.4; color: var(--mid-600); text-align: right; }
-/* what I played, revealed on hover: a full-width line that opens under the
-   name, in the red every other hover state on the page uses */
-.ex-role {
-  flex: 0 0 100%;
+/* the venue sits between the name and the year, which holds its own column at
+   the right edge so the dates line up down the list */
+.ex-venue { font-family: var(--sans); font-size: 13px; line-height: 1.4; color: var(--mid-600); }
+.ex-year {
   font-family: var(--sans);
-  font-size: 12px;
-  letter-spacing: 0.02em;
-  color: #ff2d2d;
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
-}
-.ex-group li:hover .ex-role { max-height: 2.4em; opacity: 1; }
-/* no hover on a touch screen — the roles are simply always there */
-@media (hover: none) {
-  .ex-role { max-height: none; opacity: 1; transition: none; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .ex-role { transition: opacity 0.15s ease; }
-  .ex-group li:hover .ex-role { max-height: 2.4em; }
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--mid-600);
+  text-align: right;
+  white-space: nowrap;
 }
 @media (max-width: 560px) {
   .ex-modal-head { padding: 20px 20px 14px; }

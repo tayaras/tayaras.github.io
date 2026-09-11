@@ -95,9 +95,9 @@
       </dl>
 
       <div class="proj-summary">
-        <p>The ACS UI Library is the interface layer for Azure Communication Services: an open-source SDK of prebuilt voice, video, and chat experiences, built on top of the Calling, Chat, and Rooms SDKs. It carries 11.1M+ monthly minutes and ships inside 200+ businesses.</p>
-        <p>I own the roadmap and the customer conversations for the same features I design. 40+ have shipped with a team of 20+ engineers.</p>
-        <p>Everything here is designed through defaults. Developers adopt the library; their patients, customers, and agents just get whatever we shipped, without ever choosing it. So one control bar has to hold up in a telehealth appointment and in a contact center, and still bend far enough that a team can make it theirs.</p>
+        <p>The ACS UI Library provides prebuilt voice, video, and chat interfaces for Azure Communication Services. Developers use it to add communication features to their products, from telehealth appointments to customer support.</p>
+        <p>As product lead and designer, I lead customer research, set the roadmap, and design interactions across web, iOS, and Android. I have led more than 40 features through release with a team of 20+ engineers.</p>
+        <p>My design focus is the relationship between shared defaults and customization. A call needs clear controls and accessible feedback from the first integration, while giving teams room to adapt the interface to their product.</p>
       </div>
 
       <p class="proj-linkline">
@@ -117,15 +117,15 @@
 
       <div class="proj-row proj-row--split proj-grid">
         <div class="proj-row-copy">
-        <p class="proj-thesis">Every product needs a call in it now, and almost none of them can afford to build one.</p>
-        <p>Healthcare, finance, automotive, retail: the products in all of them started needing voice and video inside the thing the customer was already using, not in a separate app. Building that in-house runs to months, and the parts that take longest are the ones nobody notices until they fail. Device permissions. A dropped network. A screen reader that finds nothing to read.</p>
-        <p>Those last ones set the size of the prize. Accessibility is the hardest thing for a small team to get right, and it stopped being optional on a date: under the European Accessibility Act, real-time text became a requirement for voice and video platforms serving Europe from June 30, 2025. Every customer needed it, and almost none of them were going to build it themselves.</p>
-        <p>For Azure it compounds. Every app built on the library is an app running on the platform, so this is not a convenience feature sitting next to the SDKs. It is how the platform gets adopted.</p>
-        <p>All of which is worth exactly as much as the number of developers who reach for it. For much of the time I owned it, they were not reaching often enough, so I set out to find out why.</p>
+        <p class="proj-thesis">Embedded communication</p>
+        <p>Teams in healthcare, finance, automotive, and retail needed voice and video within their existing products. Building the interface required more than a video window: callers needed to select devices, understand connection problems, and navigate with assistive technology.</p>
+        <p>Accessibility was a core requirement. Features such as Real-Time Text needed consistent behavior across the call experience. Providing them in the library reduced the work each customer team had to take on.</p>
+        <p>For Azure, the library also offered a more direct path from the communication APIs to a working product. Its value depended on whether developers could integrate it and adapt it to their needs.</p>
+        <p>Adoption was initially below expectations. I interviewed customers to understand what prevented them from using the library and used those findings to set design priorities.</p>
         </div>
         <figure class="proj-row-media">
           <img src="images/acs/acs-gallery-view.webp" alt="A video call running in the UI Library: a gallery of participant tiles above a control bar with mute, camera, present and hang-up" loading="lazy">
-          <figcaption>The gallery, the tiles and the control bar, running as shipped components</figcaption>
+          <figcaption>Shipped gallery, participant tiles, and call controls</figcaption>
         </figure>
       </div>
     </section>
@@ -140,33 +140,33 @@
 
       <div class="proj-railhead">
         <h3 class="proj-figblock-title">What I did</h3>
-        <p class="proj-figblock-lede">Six threads, run in parallel across three platforms.</p>
+        <p class="proj-figblock-lede">I led product and design work across web, iOS, and Android, in collaboration with the designers and engineers listed above.</p>
       </div>
 
       <dl class="proj-contrib">
         <div>
           <dt>Interaction design</dt>
-          <dd>Set the models end to end: RTT panel behavior, call summary hierarchy, control bar overflow, pre-call device setup.</dd>
+          <dd>Designed interaction models for RTT, call summaries, control bar overflow, and pre-call device setup.</dd>
         </div>
         <div>
           <dt>Visual design direction</dt>
-          <dd>Set the visual direction on every feature, down to the opacity model for RTT text states and component density on each platform.</dd>
+          <dd>Directed visual design, including the opacity of RTT text states and component density across platforms.</dd>
         </div>
         <div>
           <dt>Design strategy and roadmap</dt>
-          <dd>Decided what got designed and when, against accessibility deadlines, adoption gaps, and the platform's move toward AI.</dd>
+          <dd>Prioritized work around customer adoption barriers, accessibility requirements, and emerging AI features.</dd>
         </div>
         <div>
           <dt>Customer research</dt>
-          <dd>Interviewed Teladoc, CVS, OP Bank and others to find what was blocking adoption, then turned that into design priorities.</dd>
+          <dd>Interviewed customers including Teladoc, CVS, and OP Bank, then translated integration barriers into design priorities.</dd>
         </div>
         <div>
           <dt>Cross-platform leadership</dt>
-          <dd>Led design across web, iOS, and Android at once, so one interaction model held steady across three engineering teams.</dd>
+          <dd>Coordinated design across three engineering teams, maintaining consistent interaction models while accounting for platform differences.</dd>
         </div>
         <div>
           <dt>Accessibility</dt>
-          <dd>Drove the first Real-Time Text implementation at Microsoft, scoped for the European Accessibility Act deadline.</dd>
+          <dd>Led design work for Real-Time Text, including how callers enter, read, and follow text during a call.</dd>
         </div>
       </dl>
     </section>
@@ -181,10 +181,10 @@
 
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
-          <p class="proj-thesis">One system, many levels of control.</p>
-          <p>The library is built in two tiers. Composites are turn-key experiences for common scenarios, packaged to drop straight into an app. Components are the building blocks beneath them, for teams that need custom layouts or their own behavior. Accessibility and localization run across both.</p>
-          <p>Three axes decide where a team lands: identity, meaning bring your own or use Microsoft 365 identity to reach Teams resources; platform, meaning web and native; and look and feel. The headline I wrote for it: build the exact user experience you want.</p>
-          <p>Documentation was itself a design decision. Component docs need to be visual and interactive, so we built on Storybook, where a developer can try a component with their own IDs before writing a line of code.</p>
+          <p class="proj-thesis">Integration options</p>
+          <p>The library offers two levels of integration. Composites provide complete call and chat experiences; individual components support custom layouts and behavior. Both include accessibility and localization support.</p>
+          <p>Teams also need to choose their identity model, target platforms, and visual treatment. The design challenge was to support those choices without requiring every team to build a calling interface from scratch.</p>
+          <p>We used Storybook to make the components visible and testable within the documentation. Developers can explore states and configuration options before committing to an implementation.</p>
         </div>
         <figure class="proj-row-media">
           <figure class="proj-ladder">
@@ -192,10 +192,10 @@
                 <div class="proj-ladder-tier">
                   <div class="proj-ladder-head">
                     <span class="proj-ladder-n">01</span>
-                    <h3 class="proj-ladder-name">Composites<span class="proj-ladder-kind">Turn-key experiences</span></h3>
+                    <h3 class="proj-ladder-name">Composites<span class="proj-ladder-kind">Prebuilt experiences</span></h3>
                     <span class="proj-ladder-dots" role="img" aria-label="Control: one of three"><i class="on"></i><i></i><i></i></span>
                   </div>
-                  <p class="proj-ladder-desc">Full call and chat experiences for common scenarios — <code>CallComposite</code>, <code>ChatComposite</code>, and <code>CallWithChatComposite</code> — packaged to drop straight into an app.</p>
+                  <p class="proj-ladder-desc">Complete calling and chat interfaces: <code>CallComposite</code>, <code>ChatComposite</code>, and <code>CallWithChatComposite</code>. Each packages the components needed for a common scenario.</p>
                   <p class="proj-ladder-control"><b>You control</b> branding, layout presets, limited behavior overrides</p>
                 </div>
     
@@ -205,7 +205,7 @@
                     <h3 class="proj-ladder-name">Components<span class="proj-ladder-kind">Building blocks</span></h3>
                     <span class="proj-ladder-dots" role="img" aria-label="Control: two of three"><i class="on"></i><i class="on"></i><i></i></span>
                   </div>
-                  <p class="proj-ladder-desc">The modular pieces beneath the composites, for teams that need their own layout, their own features, or deeper customization.</p>
+                  <p class="proj-ladder-desc">Individual interface components for teams that need custom layouts, styling, or behavior.</p>
                   <p class="proj-ladder-control"><b>You control</b> custom layout, styling, behavior, full observability</p>
                 </div>
     
@@ -215,30 +215,30 @@
                     <h3 class="proj-ladder-name">Core SDKs<span class="proj-ladder-kind">Low-level access</span></h3>
                     <span class="proj-ladder-dots" role="img" aria-label="Control: three of three"><i class="on"></i><i class="on"></i><i class="on"></i></span>
                   </div>
-                  <p class="proj-ladder-desc">The headless Calling, Chat, and Rooms SDKs underneath everything. Build the interface from nothing when the prebuilt tiers aren&rsquo;t enough.</p>
-                  <p class="proj-ladder-control"><b>You control</b> everything, and you own the whole build</p>
+                  <p class="proj-ladder-desc">The underlying Calling, Chat, and Rooms SDKs provide communication capabilities for teams building their own interface.</p>
+                  <p class="proj-ladder-control"><b>You control</b> the full interface, with responsibility for its design and implementation</p>
                 </div>
             </div>
           </figure>
-          <figcaption>Fig. 01 &middot; the customization ladder &mdash; reach lower for more control, and take on more as you go</figcaption>
+          <figcaption>Fig. 01 &middot; Integration options, from prebuilt experiences to a custom interface</figcaption>
         </figure>
       </div>
 
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
           <h3 class="proj-figblock-title">Built on Fluent</h3>
-          <p>The library is a communication layer over Fluent rather than a design system of its own. Buttons, panels, personas and menus come from Fluent; what sits in the ring around it is everything a call needs and a form does not: the video tile, the gallery, the control bar, the message thread.</p>
-          <p>That is what makes one theme provider enough. A team that already themes Fluent gets the call themed with it.</p>
+          <p>The library extends Fluent with communication-specific components. Buttons, panels, personas, and menus use Fluent primitives. Video tiles, the gallery, call controls, and message threads build on that foundation.</p>
+          <p>A shared theme provider keeps the call visually consistent with the surrounding product. Teams can apply their existing Fluent theme across the communication components.</p>
         </div>
         <figure class="proj-row-media proj-row-media--framed">
           <img src="images/acs/acs-fluent-relationship.webp" alt="A diagram: a Fluent UI core containing buttons, panels, personas and menus, inside a wider ring of ACS UI Library communication components including video tile, video gallery, call control bar and message bubble" loading="lazy">
-          <figcaption>Fig. 02 &middot; Fluent&rsquo;s primitives at the center, the call-specific components in the ring around them</figcaption>
+          <figcaption>Fig. 02 &middot; Fluent primitives and the communication components built on them</figcaption>
         </figure>
       </div>
 
       <div class="proj-railhead">
-        <h3 class="proj-figblock-title">The full experience, live</h3>
-        <p class="proj-figblock-lede">The composite tier: a whole call in one drop, running in the page. Turn your camera on and you are in it.</p>
+        <h3 class="proj-figblock-title">Calling demo</h3>
+        <p class="proj-figblock-lede">Explore a simulated call assembled from UI Library components. The demo brings the gallery, participant list, and call controls together in one interface.</p>
       </div>
       <figure class="proj-embed">
         <div class="proj-embed-bar">
@@ -255,13 +255,13 @@
       </figure>
 
       <div class="proj-railhead">
-        <h3 class="proj-figblock-title">The pieces, one at a time</h3>
-        <p class="proj-figblock-lede">Or assemble the same experience yourself, from the pieces underneath it. Each one runs live here rather than being screenshotted, and where a component has props worth seeing, the frame lets you switch them.</p>
+        <h3 class="proj-figblock-title">Components</h3>
+        <p class="proj-figblock-lede">Each demo below isolates a component. Where configuration options are available, switch between them to compare layouts and behavior.</p>
       </div>
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
           <h4 class="proj-demo-name">VideoGallery</h4>
-          <p>The grid, the overflow row and the local tile. The Calling SDK renders four remote video streams at a time, so the design problem is not how to lay out a room &mdash; it is who those four are. Dominant speaker tracking decides, up to six speakers deep, and everyone else drops to the overflow row with their audio intact. Six layouts ship on top of that; switch between them here.</p>
+          <p>The gallery balances active video, the local preview, and participants in the overflow row. Dominant-speaker tracking helps determine which participants remain visible as the conversation changes. The layouts below show how the gallery adapts to different arrangements.</p>
         </div>
         <figure class="proj-row-media">
           <div class="proj-demo-frame" style="--frame-h: clamp(400px, 36vw, 520px)">
@@ -273,7 +273,7 @@
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
           <h4 class="proj-demo-name">ControlBar</h4>
-          <p>Ten presets: horizontal and vertical, docked to any edge, or floating over the stage. A product embedding a call rarely gets the whole window, so the bar has to survive being put somewhere its designer didn&rsquo;t choose &mdash; the floating variants carry their own background and shadow, and flip for right-to-left layouts.</p>
+          <p>The control bar supports horizontal, vertical, docked, and floating layouts. These options accommodate calls embedded in products with different space constraints. Floating variants use a background and shadow to keep controls legible over video; layouts also adapt to right-to-left reading.</p>
         </div>
         <figure class="proj-row-media">
           <div class="proj-demo-frame" style="--frame-h: clamp(380px, 33vw, 480px)">
@@ -285,7 +285,7 @@
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
           <h4 class="proj-demo-name">MessageThread</h4>
-          <p>Grouping, timestamps, receipts and system messages. Dates and read receipts are both off by default: a support thread wants them, a quick in-call chat doesn&rsquo;t, and the quieter default is the one a developer can ship without thinking about it. Consecutive messages from one person collapse under a single name.</p>
+          <p>Consecutive messages from one person share a name to reduce repetition. Dates and read receipts are optional and off by default, allowing teams to add the detail their conversation requires without making every thread equally dense.</p>
         </div>
         <figure class="proj-row-media">
           <div class="proj-demo-frame" style="--frame-h: clamp(380px, 33vw, 480px)">
@@ -297,7 +297,7 @@
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
           <h4 class="proj-demo-name">SendBox + TypingIndicator</h4>
-          <p>The composer and the presence line under it. Messages cap at 8,000 characters, and the indicator gets a 35-character budget for names &mdash; past that it counts the rest (&ldquo;Claire and 3 others are typing&rdquo;) rather than letting one long display name push the line off the screen. Type in it.</p>
+          <p>The composer pairs message entry with typing feedback. Long participant lists collapse into a name and a count, keeping the indicator readable within a single line. Try entering a message to see the interaction.</p>
         </div>
         <figure class="proj-row-media">
           <div class="proj-demo-frame" style="--frame-h: 270px">
@@ -309,7 +309,7 @@
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
           <h4 class="proj-demo-name">ParticipantList</h4>
-          <p>The roster, its indicators, and the per-person menu. Mute and video state sit on the row itself; the menu holds only the actions that reach into someone else&rsquo;s call, and it appears on a row at all only when the app has granted that permission &mdash; so the same component serves a peer meeting and a moderated one without a second variant.</p>
+          <p>Mute and video status appear directly in each participant row. Actions affecting another participant are grouped in a menu and shown only when the app grants permission. The same roster can support peer conversations and moderated calls.</p>
         </div>
         <figure class="proj-row-media">
           <div class="proj-demo-frame" style="--frame-h: 400px">
@@ -321,7 +321,7 @@
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
           <h4 class="proj-demo-name">Device selection</h4>
-          <p>Split buttons and DevicesButton, running on your real devices. Turning the camera on stays one click; choosing <em>which</em> camera lives in the chevron beside it. The menu adapts to the platform underneath &mdash; browsers that won&rsquo;t enumerate speakers get microphone selection alone, with their own labels and tooltips, rather than a control that lies about what it can do.</p>
+          <p>Split buttons keep common actions directly accessible: turning the camera on takes one click, while choosing <em>which</em> camera to use sits in the adjacent menu. Device options reflect browser capabilities, so callers only see selections the browser supports.</p>
         </div>
         <figure class="proj-row-media">
           <div class="proj-demo-frame" style="--frame-h: 250px">
@@ -333,7 +333,7 @@
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
           <h4 class="proj-demo-name">RealTimeText</h4>
-          <p>Character-by-character text for callers who can&rsquo;t use voice, in the main stage rather than a side panel. Once anyone starts it, RTT is on for everyone for the rest of the call and can&rsquo;t be switched off.</p>
+          <p>Real-Time Text lets callers communicate as they type. Text appears in the main call stage so participants can follow it alongside the conversation. Once activated, RTT remains available to everyone for the rest of the call.</p>
           <p class="proj-row-cta"><a href="acs-real-time-text.html">Read the Real-Time Text case study &rarr;</a></p>
         </div>
         <figure class="proj-row-media">
@@ -346,28 +346,28 @@
 
       <div class="proj-railhead">
         <h3 class="proj-figblock-title">Customization and brand</h3>
-        <p class="proj-figblock-lede">What the whole ladder is in service of: a team taking it somewhere that looks like them, without rebuilding it. Theming runs through a single Fluent provider, so a team can take it anywhere its palette still passes the accessibility checker.</p>
+        <p class="proj-figblock-lede">Teams can adapt the call to their brand through a shared Fluent theme provider. Color and visual treatment can change while the underlying interactions remain consistent. Theme choices still need to meet accessibility requirements.</p>
       </div>
 
       <figure class="proj-row-media">
         <img src="images/acs/acs-custom-theme.webp" alt="Pre-call device setup screen themed with a customer's logo and background image" loading="lazy">
-        <figcaption>Pre-call device setup in a customer&rsquo;s own logo, color, and background</figcaption>
+        <figcaption>Pre-call device setup with a customer logo, color palette, and background</figcaption>
       </figure>
 
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
           <h4 class="proj-demo-name">Sample Builder</h4>
-          <p>The shortest version of that. Five steps &mdash; template, bookings, theme, post-call, review &mdash; and it ends on Deploy to Azure, Download .zip, or Clone to GitHub. A team that has not written a line yet leaves with a branded, working app.</p>
+          <p>The Sample Builder guides teams through template selection, bookings, theming, and post-call options. They can review the configured experience, then deploy to Azure, download the project, or clone it from GitHub.</p>
         </div>
         <figure class="proj-row-media">
           <img src="images/acs/sample-builder-themes.webp" alt="The ACS Sample Builder, choosing between Healthcare, Banking, Insurance and Professional services templates, each with its own brand color, beside a live preview of the resulting call" loading="lazy">
-          <figcaption>Four industry templates on the left, the themed call previewing live on the right</figcaption>
+          <figcaption>Industry templates alongside a live preview of the themed call</figcaption>
         </figure>
       </div>
 
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
-          <p>Some of the first public AI tooling in ACS shipped here. Transcription and call summaries went out through the Sample Builder, so a team could try them without writing code and leave with a working implementation to build on &mdash; the same no-code path that had been carrying the rest of the library.</p>
+          <p>We added transcription and call summaries to the Sample Builder so teams could evaluate them in a working call before integrating them. The downloadable sample provided an implementation they could extend.</p>
           <p class="proj-row-cta"><a href="https://techcommunity.microsoft.com/blog/azurecommunicationservicesblog/bringing-ai-to-meetings-with-the-sample-builder/4414730" target="_blank" rel="noopener">Read the announcement &nearr;</a></p>
         </div>
         <figure class="proj-row-media proj-video-fig">
@@ -379,7 +379,7 @@
                     referrerpolicy="strict-origin-when-cross-origin"
                     allowfullscreen></iframe>
           </div>
-          <figcaption>Microsoft&rsquo;s walkthrough: transcription running live in a call, and the summary that comes back after it</figcaption>
+          <figcaption>Microsoft walkthrough of live transcription and the post-call summary</figcaption>
         </figure>
       </div>
 
@@ -397,9 +397,8 @@
 
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
-          <p class="proj-thesis">It found its audience and grew fast.</p>
-          <p>As the platform evolved, this stayed one of the clearest examples in ACS of a system that met developers where they were. By the time it matured, they were using it to add voice, video, and chat to their apps in days.</p>
-          <p>The accessibility work is the part that compounds. Every composite ships WCAG 2.1 AA, and RTT shipped ahead of the European Accessibility Act deadline &mdash; so the teams building on it inherited both rather than retrofitting them under a deadline of their own.</p>
+          <p class="proj-thesis">Product adoption</p>
+          <p>The library reached more than 200 businesses. Monthly usage grew from roughly 2 million minutes at the start of 2025 to more than 11.1 million by year-end. These figures reflect adoption of the library as a whole, supported by the wider team&rsquo;s work.</p>
         </div>
         <div class="proj-row-media">
           <div class="proj-stats">
@@ -413,7 +412,7 @@
             </div>
             <div>
               <p class="proj-stat-n">40+</p>
-              <p class="proj-stat-d">Features owned end to end, from first Figma frame to public release</p>
+              <p class="proj-stat-d">Features I led from design through release, in collaboration with engineering</p>
             </div>
           </div>
         </div>
@@ -424,7 +423,7 @@
            colours; check the individual agreement before treating any of them
            as an endorsement. -->
       <figure class="proj-logos-fig">
-        <figcaption class="proj-logos-title">Some of the 200+ businesses shipping on the library</figcaption>
+        <figcaption class="proj-logos-title">Organizations using the UI Library</figcaption>
         <div class="proj-logos-marquee">
           <!-- the marks run twice: the animation slides the track half its
                width, so the second pass lands where the first began -->

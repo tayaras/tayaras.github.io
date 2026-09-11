@@ -397,14 +397,19 @@ body.proj-collapsed .proj-id {
 .proj-contrib {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px 44px;
+  /* the row gap has to clear the tallest entry's last line, so it scales with
+     the type rather than sitting at a fixed 28px */
+  gap: clamp(32px, 3vw, 44px) 44px;
   margin-top: clamp(36px, 5vw, 56px);
 }
 .proj-contrib dt {
   font-size: 14px;
   font-weight: 700;
   color: var(--black);
-  margin-bottom: 6px;
+  /* a whole line, so a term reads as a heading over its description rather
+     than as the first line of it — 6px was fine for a one-line dd and cramped
+     for a paragraph */
+  margin-bottom: 0.6em;
 }
 .proj-contrib dd { font-size: 14px; line-height: 1.6; color: var(--mid-500); }
 
@@ -1166,6 +1171,32 @@ body.proj-collapsed .proj-id {
   margin-top: 6px;
 }
 
+/* ─── PHOTO & VIDEO ROUNDING ─────────────────────────────────────────────
+   Every piece of media on a project page carries the site's shared corner, the
+   same one the home page's thumbnails use. Listed rather than applied to bare
+   img/video/iframe so logos, diagrams-in-frames and the lightbox keep their
+   own treatment. */
+.proj-row-media > img,
+.proj-row-media > video,
+.proj-row-media figure > img,
+.proj-sec figure > img,
+.proj-tile img,
+.proj-vid,
+.proj-vid video,
+.proj-demo-frame,
+.proj-demo-frame iframe,
+.proj-embed-frame,
+.proj-embed-frame iframe,
+.proj-embed > iframe {
+  border-radius: var(--media-radius);
+}
+/* a frame with a title bar above it rounds only its lower corners, so the bar
+   and the frame still read as one window */
+.proj-embed .proj-embed-frame,
+.proj-embed .proj-embed-frame iframe {
+  border-radius: 0 0 var(--media-radius) var(--media-radius);
+}
+
 /* ─── HOSTED VIDEO ──────────────────────────────────────────────────────── */
 /* A YouTube/Vimeo embed set like the page's other figures: 16:9, hairline
    border, caption underneath. Named apart from .proj-embed, which is the live
@@ -1282,6 +1313,7 @@ body.proj-collapsed .proj-id {
      all. An outline has to hold its own edge, so it takes a share of the text
      grey instead and lands the same in both themes. */
   border: 1px solid color-mix(in srgb, var(--mid-500) 40%, transparent);
+  border-radius: var(--media-radius);   /* the corner every photo on the page carries */
   padding: 0 clamp(16px, 2vw, 24px);
 }
 
@@ -1748,6 +1780,11 @@ body.proj-collapsed .proj-id {
 .proj--rail .proj-row-copy p,
 .proj--rail .proj-prose .proj-thesis,
 .proj--rail .proj-row-copy .proj-thesis { max-width: none; }
+
+/* Any heading over the copy in a row gets the same air under it. .proj-demo-name
+   carried this on its own, so rows headed by a .proj-figblock-title sat with
+   their heading jammed against the first line. */
+.proj-row-copy .proj-figblock-title { margin-bottom: 0.6em; }
 
 /* a component name heading the left rail of its own row (--mono is this site's
    label stack, not a monospace face) */

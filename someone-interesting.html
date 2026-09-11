@@ -6,12 +6,12 @@
   <script src="auth.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>someoneinteresting.online — Tay Aras</title>
-  <meta name="description" content="A proximity app that points you toward one nearby stranger and tells you nothing else about them. Designed and built at Nowhere Interesting.">
+  <meta name="description" content="A mobile-web experiment in meeting nearby strangers through direction, proximity, and a photographed hand interface. Designed and built at Nowhere Interesting.">
   <link rel="canonical" href="https://www.tayaras.com/someone-interesting.html">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://www.tayaras.com/someone-interesting.html">
   <meta property="og:title" content="someoneinteresting.online — Tay Aras">
-  <meta property="og:description" content="A proximity app that points you toward one nearby stranger and tells you nothing else about them.">
+  <meta property="og:description" content="A mobile-web experiment in meeting nearby strangers through direction, proximity, and a photographed hand interface.">
   <meta property="og:image" content="https://www.tayaras.com/images/og-acs.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="shared.css">
   <link rel="stylesheet" href="chords.css">
   <link rel="stylesheet" href="project.css">
+  <link rel="stylesheet" href="someone-interesting.css">
 </head>
 <body>
 <a href="#main" class="skip-link">Skip to main content</a>
@@ -62,7 +63,7 @@
     <img src="images/someoneinteresting/si-hero.webp" alt="Two hands entering the frame from opposite sides, each pointing toward the other across an empty white gap">
   </figure>
 
-  <article class="proj proj--rail">
+  <article class="proj proj--rail si-case">
 
     <header class="proj-head proj-grid">
       <div class="proj-string-row proj-id-row" data-freq="277.18">
@@ -79,11 +80,11 @@
         </div>
         <div class="proj-fact">
           <dt>Role</dt>
-          <dd>Designer<br>Developer</dd>
+          <dd>Independent designer &amp; developer</dd>
         </div>
         <div class="proj-fact">
           <dt>Collaborators</dt>
-          <dd>Grace Nakahara (Hand)</dd>
+          <dd>Grace Nakahara · hand model</dd>
         </div>
         <div class="proj-fact">
           <dt>Duration</dt>
@@ -92,15 +93,205 @@
       </dl>
 
       <div class="proj-summary">
-        <p>A proximity app that points you toward one nearby stranger and tells you nothing else. No profile, no photo, no name, no map. Just a hand on your screen, pointing, and a distance that closes as you walk.</p>
-        <p>I designed and built the whole thing: the concept, the interface, the photography, and a front end that streams live position through a lightweight real-time backend.</p>
-        <p>This is an experiment in trust and social dynamics. It's a new way for strangers to engage: aware of each other in the same moment, one direction between them, and no way to learn more without moving.</p>
-        <p>Case study coming soon.</p>
+        <p>Someone Interesting is a mobile-web experiment that points toward the nearest other person using it. A photographed hand gives direction and changes gesture as the distance closes. There are no profiles to browse or messages to exchange.</p>
+        <p>I conceived, designed, and built the app through my studio, Nowhere Interesting. I owned the interaction model, interface, photography, motion system, writing, and real-time implementation. Grace Nakahara contributed as a hand model.</p>
+        <p>The question was whether a small amount of information could give strangers a reason to approach each other. The result is a working prototype; its effect on real-world encounters still needs field testing.</p>
+        <p class="proj-linkline" style="margin-top: 16px">
+          <a href="https://someoneinteresting.online" target="_blank" rel="noopener">Open the app &rarr;</a>
+          <a href="https://github.com/nowhereinteresting/someoneinteresting" target="_blank" rel="noopener">View the source &rarr;</a>
+        </p>
       </div>
-      <p class="proj-linkline">
-        <a href="https://someoneinteresting.online" target="_blank" rel="noopener">Open the site &rarr;</a>
-      </p>
     </header>
+
+    <section class="proj-sec proj-reveal" aria-labelledby="sec-premise">
+      <div class="proj-sec-title proj-string-row" data-freq="246.94">
+        <h2 class="proj-sec-label" id="sec-premise">Premise</h2>
+        <div class="string-zone" tabindex="0" aria-label="Premise — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <h3 class="proj-figblock-title">Direction as an invitation</h3>
+          <p>Proximity interfaces often ask people to make decisions from a map, a photograph, or a profile. I wanted to explore an interaction that began with curiosity about someone nearby, before either person had a biography to evaluate.</p>
+          <p>I chose to show one direction instead of a list of people. The app selects the nearest active participant and gives the user a bearing. The interface offers enough information to move, while leaving the encounter itself unresolved.</p>
+          <p>I retained a distance readout so someone could judge whether approaching was practical. As they enter the closest range, that number gives way to a simple nearby message. The goal is to support a decision to approach, not prescribe a route.</p>
+        </div>
+        <figure class="proj-row-media">
+          <img src="images/someoneinteresting/desktop-frame.webp" alt="The invitation card on the Someone Interesting entry screen" loading="lazy">
+          <figcaption>An invitation introduces the experience before the sensor requests.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="proj-sec proj-reveal" aria-labelledby="sec-experience">
+      <div class="proj-sec-title proj-string-row" data-freq="220.00">
+        <h2 class="proj-sec-label" id="sec-experience">Experience</h2>
+        <div class="string-zone" tabindex="0" aria-label="Experience — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <h3 class="proj-figblock-title">From pointing to recognition</h3>
+          <p>The hand carries the main interaction. It points toward another participant, changes gesture as the distance closes, and forms half of a heart at close range. I used familiar gestures to make the progression readable without introducing a separate set of status icons.</p>
+          <p>Two photographed hands give the experience a counterpart. On joining, a session receives the opposite hand from its nearest participant when that information is available. This creates a visual relationship between two screens without introducing an avatar or profile.</p>
+        </div>
+        <figure class="proj-row-media">
+          <img src="images/someoneinteresting/gestures.webp" alt="Hand gestures for far, closer, close, very close, and the paired heart" loading="lazy">
+          <figcaption>The gesture sequence turns proximity into a visible change in the interface.</figcaption>
+        </figure>
+      </div>
+<div class="proj-row proj-grid"><div class="proj-row-copy"><h3 class="proj-figblock-title">The interaction sequence</h3><p>The primary path moves from an invitation to orientation, approach, and a shared arrival state. The diagram distinguishes being nearby from the separate attempt to confirm a meeting.</p><p>Location denial blocks the main experience; an unavailable compass uses cardinal directions. The current no-peer branch uses a simulated participant, so this diagram describes the real-participant path rather than that demo fallback.</p></div><figure class="proj-row-media proj-diagram"><ol class="si-flow" aria-label="Real-participant interaction flow"><li><span class="si-flow-title">01 · Accept the invitation</span><span class="si-flow-detail">“find them” starts the sensor requests</span></li><li><span class="si-flow-title">02 · Locate a participant</span><span class="si-flow-detail">Nearest active person → bearing and distance</span></li><li><span class="si-flow-title">03 · Follow the hand</span><span class="si-flow-detail">Direction and gesture respond to proximity</span></li><li><span class="si-flow-title">04 · Enter nearby mode</span><span class="si-flow-detail">Below 60 m → heart gesture and nearby copy</span></li><li><span class="si-flow-title">05 · Confirm arrival</span><span class="si-flow-detail">Mutual audio detection → paired heart and tally</span></li></ol><figcaption>Interaction map reconstructed from the current implementation. Arrival detection remains experimental.</figcaption></figure></div>
+
+
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <h3 class="proj-figblock-title">A shared arrival</h3>
+          <p>The ending extends across two screens. Each hand forms half of a heart; the app attempts to confirm arrival through mutual audio detection before showing the paired state. I wanted the closing gesture to give both people a reason to look up from the interface.</p>
+          <p>Entering the nearby range and meeting someone are different events. The heart introduces the possibility of an encounter; the detection sequence is an experimental attempt to recognize it.</p>
+        </div>
+        <figure class="proj-row-media proj-ph">
+          <div class="proj-ph-box">
+            <p class="proj-ph-kind">Video · Placeholder</p>
+            <p class="proj-ph-title">The complete two-person experience</p>
+            <p class="proj-ph-desc">Capture a staged walkthrough with two real devices: invitation and permissions, following the hand, entering nearby mode, audio confirmation, and the paired ending. Keep both screens visible at arrival. Label the walkthrough as staged and identify any simulated behavior; retain an unsuccessful attempt if detection fails.</p>
+          </div>
+          <figcaption>Capture needed · 30–45 seconds · Entry through arrival</figcaption>
+        </figure>
+      </div>
+
+    </section>
+
+    <section class="proj-sec proj-reveal" aria-labelledby="sec-design">
+      <div class="proj-sec-title proj-string-row" data-freq="196.00">
+        <h2 class="proj-sec-label" id="sec-design">Design and motion</h2>
+        <div class="string-zone" tabindex="0" aria-label="Design and motion — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <h3 class="proj-figblock-title">From instrument to hand</h3>
+          <p>The first prototype used a compass arrow. I then explored instrument and radio interfaces, where changing device states communicated proximity. Those directions established the behavior, but made the screen feel like a tool for locating a signal.</p>
+          <p>I chose a photographed hand to connect direction to a familiar human gesture. Pointing could guide the approach, while the same hand could change pose to acknowledge someone nearby. That choice introduced a motion challenge: the transitions had to stay coherent as live location readings changed.</p>
+        </div>
+        <figure class="proj-row-media proj-ph">
+          <div class="proj-ph-box">
+            <p class="proj-ph-kind">Image · Placeholder</p>
+            <p class="proj-ph-title">Early direction → selected interface</p>
+            <p class="proj-ph-desc">Place an original compass or radio study beside the photographed-hand interface at the same distance and bearing. Annotate the directional cue, proximity feedback, and change in character. Use original artifacts; label any reconstructed study.</p>
+          </div>
+          <figcaption>Original artifacts needed · Two comparable screens with annotations</figcaption>
+        </figure>
+      </div>
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <h3 class="proj-figblock-title">A photographed interface</h3>
+          <p>I treated the hand as the primary interface element. Photography gives it a specific person&rsquo;s texture and proportions; the open background keeps the gesture legible as it rotates.</p>
+          <p>I produced twelve animation clips for each hand, covering held poses and the transitions between them. Working directly with the photography and playback let me refine the interface as a moving image.</p>
+        </div>
+        <figure class="proj-row-media">
+          <div class="proj-vid">
+            <video muted loop playsinline preload="metadata" poster="images/someoneinteresting/si-poster.webp" aria-label="Someone Interesting interface demonstration">
+              <source src="images/someoneinteresting/si-thumb.webm" type="video/webm">
+              <source src="images/someoneinteresting/si-thumb.mp4" type="video/mp4">
+            </video>
+            <button class="vid-btn" aria-label="Play video">
+              <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+          </div>
+          <figcaption>Recorded interface demonstration. This portfolio preview does not request location or microphone access.</figcaption>
+        </figure>
+      </div>
+
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <h3 class="proj-figblock-title">Motion behavior</h3>
+          <p>Direction and proximity have different jobs. Rotation tells someone where to turn; a change in pose communicates that the distance has changed. I kept those signals independent so a new bearing would not interrupt a gesture.</p>
+          <p>Loops hold each pose, transition clips connect them, and eased rotation softens changes in heading. Four distance bands limit pose changes to meaningful thresholds. Below 60 metres, the hand enters its nearby gesture; that threshold does not confirm a meeting.</p>
+        </div>
+        <figure class="proj-row-media proj-ph">
+          <div class="proj-ph-box">
+            <p class="proj-ph-kind">Video or annotated sequence · Placeholder</p>
+            <p class="proj-ph-title">Turn, transition, settle</p>
+            <p class="proj-ph-desc">Use actual clips to show three moments: a bearing change during a loop, the transition into a closer gesture, and the transition into the heart. Mark where each clip begins and ends, how it returns to a loop, and how rotation continues. Show real playback timing; do not invent duration values.</p>
+          </div>
+          <figcaption>Capture needed · Three short loops or a labeled filmstrip</figcaption>
+        </figure>
+      </div>
+
+
+
+
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <h3 class="proj-figblock-title">Secondary controls</h3>
+          <p>I moved how it works, privacy, and terms behind a single corner control to keep the main screen focused on the hand. I explored a bottom sheet, radial options, and fanned buttons before settling on the compact corner menu.</p>
+          <p>The closed state takes up little space; opening it reveals written labels. That keeps the supporting information available without adding another persistent panel to the directional view.</p>
+        </div>
+        <figure class="proj-row-media proj-ph">
+          <div class="proj-ph-box">
+            <p class="proj-ph-kind">Image · Placeholder</p>
+            <p class="proj-ph-title">The corner menu, closed and open</p>
+            <p class="proj-ph-desc">Capture the current interface with the menu closed and expanded at the same phone size. Include one original earlier version if available. Annotate label readability, placement, and the space left for the hand.</p>
+          </div>
+          <figcaption>Capture needed · Two current states and an optional original alternative</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="proj-sec proj-reveal" aria-labelledby="sec-implementation">
+      <div class="proj-sec-title proj-string-row" data-freq="174.61">
+        <h2 class="proj-sec-label" id="sec-implementation">Implementation</h2>
+        <div class="string-zone" tabindex="0" aria-label="Implementation — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+<div class="proj-prose"><p class="proj-thesis">Designing around sensors</p><p>Building the app myself made the interaction constraints tangible. I adjusted the interface around imprecise location, inconsistent compass support, and people joining or leaving during an approach.</p></div>
+<div class="proj-railhead"><h3 class="proj-figblock-title">Constraints and responses</h3></div>
+<dl class="proj-contrib"><div><dt>Location drift</dt><dd>I smoothed position updates and used distance bands for gesture changes, so small GPS fluctuations would not trigger a new pose with every reading.</dd></div><div><dt>Missing orientation</dt><dd>When the compass is unavailable, cardinal directions provide a fallback with north at the top. A retry action lets someone attempt to restore orientation.</dd></div><div><dt>Changing presence</dt><dd>Disconnected and stale participants are removed from the active set. A nearest-person interface must account for its target changing during an approach; how clearly people understand that change remains a field-testing question.</dd></div></dl>
+    </section>
+
+    <section class="proj-sec proj-reveal" aria-labelledby="sec-trust">
+      <div class="proj-sec-title proj-string-row" data-freq="155.56">
+        <h2 class="proj-sec-label" id="sec-trust">Trust</h2>
+        <div class="string-zone" tabindex="0" aria-label="Trust — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+<div class="proj-prose"><p class="proj-thesis">Disclosure and control</p><p>I removed profiles and browsing, but kept distance so someone could decide whether an approach was practical. That leaves less information to judge another person by, which is part of the experiment and a constraint on informed participation.</p><p>The invitation precedes sensor access. The current entry action can request location, orientation, and microphone access together; I would separate those explanations and defer the microphone request until arrival. Audio confirmation adds a permission cost that the experience needs to justify.</p><p>The shared tally records reported meetings without storing a who-met-whom history. Active coordinates still reach connected clients, and nearest-person selection does not guarantee reciprocal pairing. The restrained interface should not imply anonymity or a mutual match.</p></div>
+    </section>
+
+    <section class="proj-sec proj-reveal" aria-labelledby="sec-outcome">
+      <div class="proj-sec-title proj-string-row" data-freq="138.59">
+        <h2 class="proj-sec-label" id="sec-outcome">Outcome</h2>
+        <div class="string-zone" tabindex="0" aria-label="Outcome — strum">
+          <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
+        </div>
+      </div>
+<div class="proj-prose"><p class="proj-thesis">A working experiment</p>          <p>I took the project from an initial compass prototype to a working web app with photographed motion, real-time presence, and an experimental meeting-confirmation sequence. Designing and implementing it myself let me adjust the visual behavior alongside the sensor and network behavior that drives it.</p>
+          <p>The result demonstrates the interaction, not yet the social hypothesis. I do not have field evidence that it increases encounters or helps people feel comfortable approaching strangers. The next stage is to test that experience with participants and observe where they choose to continue, hesitate, or leave.</p></div>
+<div class="proj-railhead"><h3 class="proj-figblock-title">Two questions to test</h3></div>
+<dl class="proj-contrib"><div><dt>Do people understand and choose to participate?</dt><dd>Observe what they expect before granting permissions, when they hesitate, and how they want to pause or leave. Before field testing, separate the simulated-participant demo from a clear waiting state.</dd></div><div><dt>Does the guidance lead to a recognizable arrival?</dt><dd>Observe turns, gesture changes, target changes, and the moment people look up. Compare audio confirmation across real devices with what actually happened between the participants.</dd></div></dl>
+
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <h3 class="proj-figblock-title">Learning through use</h3>
+          <p>The next iteration needs evidence from people using the app together. I would follow a small set of encounters from invitation to exit, then use the moments of confusion or hesitation to choose what to revise.</p>
+        </div>
+        <figure class="proj-row-media proj-ph">
+          <div class="proj-ph-box">
+            <p class="proj-ph-kind">Field study · Placeholder</p>
+            <p class="proj-ph-title">Observation → revision → follow-up</p>
+            <p class="proj-ph-desc">After a real session, document one specific moment: what the participant did or said, the screen or behavior involved, the resulting design change, and what happened when tested again. Include the session context. Leave this as future work until observations exist.</p>
+          </div>
+          <figcaption>Planned evidence · No field findings collected yet</figcaption>
+        </figure>
+      </div>
+    </section>
 
     <!-- chord keys — surface only while the page is compressed, same as home -->
     <div class="chord-hint">
@@ -140,7 +331,7 @@
     <nav class="proj-next" aria-label="Next project" style="margin-top: clamp(72px, 10vw, 150px);">
       <div>
         <p class="label">Next project</p>
-        <a class="proj-next-title" href="cmu-thesis.html">Physicalization of AR/XR →</a>
+        <a class="proj-next-title" href="thesis.html">Physicalization of AR/XR →</a>
       </div>
       <a class="proj-back" href="index.html">← All work</a>
     </nav>

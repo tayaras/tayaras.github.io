@@ -202,6 +202,7 @@
       object-fit: contain;
       display: block;
       user-select: none;
+      border-radius: var(--media-radius);
     }
     .lightbox-btn {
       position: absolute;
@@ -253,6 +254,18 @@
 
     /* ── Dark mode for image backgrounds ── */
         html[data-theme="dark"] .yt-wrap { background: #111; }
+
+    /* every photo and video on the page carries the site's shared corner */
+    .vimeo-wrap, .vimeo-wrap iframe,
+    .yt-wrap, .yt-wrap iframe,
+    .walkthrough-main, .walkthrough-main img,
+    .walkthrough-cell, .walkthrough-cell img,
+    .emotion-gif, .emotion-gif img,
+    .systems-diagram img, .physical-main img, .physical-sm img,
+    .dark-cta-img img {
+      border-radius: var(--media-radius);
+      overflow: hidden;
+    }
   </style>
 </head>
 <body>

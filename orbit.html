@@ -236,6 +236,7 @@
       object-fit: contain;
       display: block;
       user-select: none;
+      border-radius: var(--media-radius);
     }
     .lightbox-btn {
       position: absolute;
@@ -317,6 +318,18 @@
         html[data-theme="dark"] .systems-diagram { background: #252422; }
     html[data-theme="dark"] .systems-inner p,
     html[data-theme="dark"] .physical-body > div p { color: var(--mid); }
+
+    /* every photo and video on the page carries the site's shared corner */
+    .vimeo-wrap, .vimeo-wrap iframe,
+    .yt-wrap, .yt-wrap iframe,
+    .walkthrough-main, .walkthrough-main img,
+    .walkthrough-cell, .walkthrough-cell img,
+    .emotion-gif, .emotion-gif img,
+    .systems-diagram img, .physical-main img, .physical-sm img,
+    .dark-cta-img img {
+      border-radius: var(--media-radius);
+      overflow: hidden;
+    }
   </style>
 </head>
 <body>
@@ -409,8 +422,8 @@
     <div class="section-row-inner">
       <div class="section-label-col"><p class="label">Overview</p></div>
       <div>
-        <p class="overview-p">Orbit is an interactive wall speaker for two people to connect and bond over music: discovering songs together, sharing reactions, and building a physical record of the relationship over time.</p>
-        <p class="overview-p" style="margin-top: 24px;">The project began with a question: <em>how might we preserve close relationships impacted by a lack of in-person interaction?</em> With distance a persistent reality for many friendships, we wanted to design something that made the emotional texture of a relationship visible and lasting. A shared artifact that accumulates meaning as the relationship does.</p>
+        <p class="overview-p">Orbit is a wall-speaker concept for two people who live apart. Sharing songs and reactions creates light patterns that form a visual record of their listening history.</p>
+        <p class="overview-p" style="margin-top: 24px;">We explored <em>how sharing music could support connection at a distance.</em> I contributed interaction design, concept development, and physical prototyping with Dorcas Lin and Franklin Guttman. Together, we developed app screens, motion studies, and a physical prototype to explore that idea.</p>
       </div>
     </div>
   </div>
@@ -428,11 +441,11 @@
   <!-- Experience walkthrough -->
   <section class="walkthrough-section" aria-label="Experience Walkthrough">
     <div class="cs-section-head">
-      <p class="label">Experience Walkthrough</p>
+      <p class="label">Interaction flow</p>
     </div>
     <div class="walkthrough-intro">
       <div></div>
-      <p>Orbit is built around a two-person loop: one person shares a song, the other reacts with an emotion. Each exchange is recorded and visualized as a light pattern on the speaker, building a physical record of the relationship over time. The journey map below traces that full arc, from discovering a new song to the tapestry it becomes part of.</p>
+      <p>One person shares a song and the other sends a reaction. The proposed system translates each exchange into a light pattern, which becomes part of the speaker&rsquo;s visual history. The journey map follows this sequence from song discovery to replay.</p>
     </div>
     <!-- Journey map: main overview item -->
     <div class="walkthrough-main">
@@ -440,8 +453,8 @@
     </div>
     <!-- Slide breakdown -->
     <div class="walkthrough-sublabel">
-      <p class="label">Step-by-step breakdown</p>
-      <p>Each slide details a specific moment in the experience: from opening the app and discovering a shared song, to reacting and watching the speaker respond in real time.</p>
+      <p class="label">Experience storyboard</p>
+      <p>The storyboard shows key moments in the proposed experience: discovering a shared song, listening, selecting a reaction, and seeing the speaker respond.</p>
     </div>
     <div class="walkthrough-grid">
       <div class="walkthrough-cell">
@@ -466,8 +479,8 @@
 
     <!-- Spotify UI -->
     <div class="walkthrough-sublabel" style="padding-top: 48px; border-top: 1px solid var(--line); margin-top: 48px;">
-      <p class="label">App Interface: Spotify Integration</p>
-      <p>Orbit plugs into Spotify as the music layer. Users share songs directly from their existing library, and the companion interface surfaces what's been shared, who sent it, and what emotion it received, keeping the music context intact rather than building a separate catalog from scratch.</p>
+      <p class="label">Spotify integration</p>
+      <p>We designed the app around Spotify so people could share songs from an existing library. The companion interface shows the song, sender, and reaction, preserving the context of each exchange.</p>
     </div>
     <div class="walkthrough-stack">
       <div class="walkthrough-cell">
@@ -488,10 +501,10 @@
       <p class="label">Visual System</p>
     </div>
     <div class="visual-system-intro">
-      <h2>Emotions made visible</h2>
-      <p class="lede">Each reaction a user sends to a shared song maps to a distinct visual state, a living light pattern that the Orbit speaker displays.</p>
-      <p>Over time, the accumulated reactions build a visual history of the relationship: which songs moved you, when, and how. The speaker becomes a record as much as it is a speaker.</p>
-      <p>Five emotional states are encoded into the system, each with its own animation language: speed, color temperature, and movement pattern are all considered together.</p>
+      <h2>Reaction animations</h2>
+      <p class="lede">Each reaction has a corresponding light animation for the speaker.</p>
+      <p>The concept combines those animations into a listening history. The motion studies explore how repeated exchanges could change the display over time.</p>
+      <p>I explored speed, color temperature, and movement across five states, including a rewind mode for revisiting earlier exchanges.</p>
     </div>
     <div class="emotion-grid">
       <div class="emotion-cell">
@@ -532,7 +545,7 @@
     <div class="systems-inner">
       <div style="display: grid; grid-template-columns: 200px 1fr; gap: 48px; align-items: start; margin-bottom: 32px;">
         <p class="label" style="padding-top: 4px;">Systems Diagram</p>
-        <p style="font-size: 13px; line-height: 1.7; color: var(--mid); max-width: 560px;">The system connects two physical speakers across distance through a shared Spotify layer. When one person reacts to a song, the emotion signal travels through the app and is rendered as a light animation on both speakers simultaneously, making the exchange feel present even across distance.</p>
+        <p style="font-size: 13px; line-height: 1.7; color: var(--mid); max-width: 560px;">The diagram maps a proposed connection between two speakers and the companion app. A reaction would trigger a light animation on both speakers, giving each person a visible response to the shared song.</p>
       </div>
       <div class="systems-diagram" role="img" aria-label="Systems diagram showing how Orbit components connect">
         <img loading="lazy" src="images/orbit/systems-diagram.webp" alt="Systems diagram — Orbit architecture">
@@ -548,7 +561,7 @@
     <div class="physical-body">
       <div style="display: grid; grid-template-columns: 200px 1fr; gap: 48px; align-items: start; margin-bottom: 40px;">
         <div></div>
-        <p style="font-size: 13px; line-height: 1.7; color: var(--mid); max-width: 560px;">The speaker form was prototyped using TinkerCad and Solidworks, with the physical shell designed to sit flush against a wall like a piece of art. Visible and permanent. Inside, an Arduino controls the LED array that generates the light animations. The enclosure material was chosen to diffuse light evenly, so emotional states read as ambient glow rather than harsh pattern.</p>
+        <p style="font-size: 13px; line-height: 1.7; color: var(--mid); max-width: 560px;">We prototyped the wall-mounted form in Tinkercad and SolidWorks. The shell sits flush against the wall, and its material diffuses an Arduino-controlled LED array into a continuous glow. This let us explore the relationship between the physical form and the light animations.</p>
       </div>
       <div class="physical-main">
         <img loading="lazy" src="images/orbit/physical-01.webp" alt="Orbit speaker — physical prototype front view">

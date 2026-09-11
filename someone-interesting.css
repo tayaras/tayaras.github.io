@@ -1,0 +1,27 @@
+/* Artifact sizing for this case study only. */
+.si-case .proj-row > *, .si-case .proj-summary { min-width: 0; }
+.si-case .proj-row-copy .proj-figblock-title + p { margin-top: 12px; }
+.si-case .proj-linkline { display: flex; flex-wrap: wrap; gap: 12px 28px; }
+.si-case .proj-linkline a + a { margin-left: 0; }
+.si-case .proj-row-media { width: 100%; box-sizing: border-box; }
+.si-case .proj-vid { aspect-ratio: auto; background: var(--line); }
+.si-case .proj-vid video { width: 100%; height: auto; object-fit: contain; }
+.si-case .si-flow { list-style: none; margin: 0; padding: 0; }
+.si-case .si-flow li { position: relative; border: 1px solid var(--line); padding: 16px 20px; }
+.si-case .si-flow li + li { margin-top: 24px; }
+.si-case .si-flow li + li::before { content: "↓"; position: absolute; top: -24px; left: 50%; transform: translateX(-50%); height: 23px; line-height: 23px; color: var(--mid-500); font-size: 16px; }
+.si-case .si-flow-title { display: block; font-family: var(--sans); font-size: 17px; font-weight: 500; line-height: 1.4; color: var(--black); }
+.si-case .si-flow-detail { display: block; margin-top: 5px; font-family: var(--sans); font-size: 14px; line-height: 1.55; color: var(--mid-500); overflow-wrap: anywhere; }
+.si-case .proj-ph-box { min-height: 220px; box-sizing: border-box; padding: clamp(20px, 3vw, 36px); }
+.si-case .proj-ph-desc { max-width: none; }
+.si-case .proj-row-media figcaption { line-height: 1.6; overflow-wrap: anywhere; }
+@media (min-width: 1000px) {
+  .si-case .proj-row + .proj-row { margin-top: 0; }
+  .si-case .proj-row > .proj-diagram, .si-case .proj-row > .proj-ph { margin-top: 0; }
+}
+@media (max-width: 599px) {
+  .si-case .si-flow li { padding: 14px 16px; }
+  .si-case .proj-sec { margin-top: 72px; }
+  .si-case .proj-ph-box { min-height: 0; }
+  .si-case .proj-summary, .si-case .proj-fact dd { overflow-wrap: anywhere; }
+}
