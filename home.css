@@ -628,10 +628,23 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 }
 .ex-close:hover { color: #ff2d2d; }
 /* the scroller — the head stays put while the list moves under it */
-.ex-modal-body { padding: 4px 28px 28px; overflow-y: auto; max-height: calc(min(80vh, 760px) - 62px); }
-.ex-group { padding-top: 22px; }
+/* One grid for the whole dialog, not one per group: a grid per group let the
+   three sections size their columns independently, so the venues started at a
+   different x in each. Every row in the dialog shares these columns now. */
+.ex-modal-body {
+  padding: 4px 28px 28px;
+  overflow-y: auto;
+  max-height: calc(min(80vh, 760px) - 62px);
+  display: grid;
+  grid-template-columns: max-content max-content auto;
+  column-gap: clamp(24px, 3vw, 48px);
+  align-content: start;
+}
+/* the groups and rows hand their cells up to that grid */
+.ex-group { display: contents; }
+.ex-group h3 { grid-column: 1 / -1; }
 .ex-group h3 {
-  margin: 0 0 10px;
+  margin: 22px 0 10px;   /* the group's own top spacing, now that .ex-group has no box */
   font-family: var(--sans);
   font-size: 11px;
   font-weight: 700;
@@ -639,18 +652,7 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   text-transform: uppercase;
   color: var(--mid-500);
 }
-/* The list is one grid rather than a grid per row, so the three columns share
-   their edges down the whole group and size to their longest entry. Splitting
-   the row into fractions of the dialog instead left short names stranded —
-   "ZAF 2.0" sat 445px from its venue. */
-.ex-group ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: max-content max-content auto;
-  column-gap: clamp(24px, 3vw, 48px);
-}
+.ex-group ul { margin: 0; padding: 0; list-style: none; display: contents; }
 /* the row hands its cells to the grid above; the rule under each row is drawn
    by the cells, since the row itself no longer generates a box */
 .ex-group li { display: contents; }
