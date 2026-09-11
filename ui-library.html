@@ -94,39 +94,45 @@
         </div>
       </dl>
 
+      <div class="proj-summary">
+        <p>The ACS UI Library is the interface layer for Azure Communication Services: an open-source SDK of prebuilt voice, video, and chat experiences, built on top of the Calling, Chat, and Rooms SDKs. It carries 11.1M+ monthly minutes and ships inside 200+ businesses.</p>
+        <p>I own the roadmap and the customer conversations for the same features I design. 40+ have shipped with a team of 20+ engineers.</p>
+        <p>Everything here is designed through defaults. Developers adopt the library; their patients, customers, and agents just get whatever we shipped, without ever choosing it. So one control bar has to hold up in a telehealth appointment and in a contact center, and still bend far enough that a team can make it theirs.</p>
+      </div>
+
       <p class="proj-linkline">
         <a href="https://azure.microsoft.com/products/communication-services" target="_blank" rel="noopener">Product Site &rarr;</a>
         <a href="https://azure.github.io/communication-ui-library/" target="_blank" rel="noopener">Product Storybook &rarr;</a>
       </p>
 
-      <div class="proj-summary">
-        <p>The ACS UI Library is the interface layer for Azure Communication Services: an open-source SDK of prebuilt voice, video, and chat experiences, built on top of the Calling, Chat, and Rooms SDKs. It ships in two tiers: composites that drop a whole calling or chat experience into a product in a few lines, and components a developer assembles into their own. Both run on web, iOS, and Android. It carries 11.1M+ monthly minutes and ships inside 200+ businesses.</p>
-        <p>I'm the product lead and the designer. I set the interaction model, made the visual calls, and wrote the specs. I also own the roadmap and the customer conversations for those same features. 40+ have shipped with a team of 20+ engineers.</p>
-        <p>Everything here is designed through defaults. Developers adopt the library; their patients, customers, and agents just get whatever we shipped, without ever choosing it. So one control bar has to hold up in a telehealth appointment and in a contact center, and still bend far enough that a team can make it theirs.</p>
-      </div>
-
     </header>
 
     <section class="proj-sec proj-reveal" aria-labelledby="sec-opportunity">
       <div class="proj-sec-title proj-string-row" data-freq="246.94">
-        <h2 class="proj-sec-label" id="sec-opportunity"><span class="proj-sec-num">§01</span>Opportunity</h2>
+        <h2 class="proj-sec-label" id="sec-opportunity">Opportunity</h2>
         <div class="string-zone" tabindex="0" aria-label="Opportunity — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
       </div>
 
-      <div class="proj-prose">
+      <div class="proj-row proj-row--split proj-grid">
+        <div class="proj-row-copy">
         <p class="proj-thesis">Every product needs a call in it now, and almost none of them can afford to build one.</p>
         <p>Healthcare, finance, automotive, retail: the products in all of them started needing voice and video inside the thing the customer was already using, not in a separate app. Building that in-house runs to months, and the parts that take longest are the ones nobody notices until they fail. Device permissions. A dropped network. A screen reader that finds nothing to read.</p>
         <p>Those last ones set the size of the prize. Accessibility is the hardest thing for a small team to get right, and it stopped being optional on a date: under the European Accessibility Act, real-time text became a requirement for voice and video platforms serving Europe from June 30, 2025. Every customer needed it, and almost none of them were going to build it themselves.</p>
         <p>For Azure it compounds. Every app built on the library is an app running on the platform, so this is not a convenience feature sitting next to the SDKs. It is how the platform gets adopted.</p>
-        <p>All of which is worth exactly as much as the number of developers who reach for it. For much of the time I owned it, they were not reaching often enough, so I set out to learn why rather than assume.</p>
+        <p>All of which is worth exactly as much as the number of developers who reach for it. For much of the time I owned it, they were not reaching often enough, so I set out to find out why.</p>
+        </div>
+        <figure class="proj-row-media">
+          <img src="images/acs/acs-gallery-view.webp" alt="A video call running in the UI Library: a gallery of participant tiles above a control bar with mute, camera, present and hang-up" loading="lazy">
+          <figcaption>The gallery, the tiles and the control bar, running as shipped components</figcaption>
+        </figure>
       </div>
     </section>
 
     <section class="proj-sec proj-reveal" aria-labelledby="sec-role">
       <div class="proj-sec-title proj-string-row" data-freq="207.65">
-        <h2 class="proj-sec-label" id="sec-role"><span class="proj-sec-num">§02</span>Role</h2>
+        <h2 class="proj-sec-label" id="sec-role">Role</h2>
         <div class="string-zone" tabindex="0" aria-label="Role — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
@@ -167,7 +173,7 @@
 
     <section class="proj-sec proj-reveal" aria-labelledby="sec-system">
       <div class="proj-sec-title proj-string-row" data-freq="185.00">
-        <h2 class="proj-sec-label" id="sec-system"><span class="proj-sec-num">§03</span>System</h2>
+        <h2 class="proj-sec-label" id="sec-system">System</h2>
         <div class="string-zone" tabindex="0" aria-label="System — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
@@ -176,7 +182,7 @@
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
           <p class="proj-thesis">One system, many levels of control.</p>
-          <p>The library is built in two tiers. Composites are turn-key experiences for common scenarios, packaged to drop straight into an app. Components are the building blocks beneath them, for teams that need custom layouts or their own behavior. Accessibility and localization run across both. The ladder beside this reads the same way: the more you want to shape the experience, the lower you reach, and the more you take on.</p>
+          <p>The library is built in two tiers. Composites are turn-key experiences for common scenarios, packaged to drop straight into an app. Components are the building blocks beneath them, for teams that need custom layouts or their own behavior. Accessibility and localization run across both.</p>
           <p>Three axes decide where a team lands: identity, meaning bring your own or use Microsoft 365 identity to reach Teams resources; platform, meaning web and native; and look and feel. The headline I wrote for it: build the exact user experience you want.</p>
           <p>Documentation was itself a design decision. Component docs need to be visual and interactive, so we built on Storybook, where a developer can try a component with their own IDs before writing a line of code.</p>
         </div>
@@ -186,7 +192,7 @@
                 <div class="proj-ladder-tier">
                   <div class="proj-ladder-head">
                     <span class="proj-ladder-n">01</span>
-                    <h4 class="proj-ladder-name">Composites<span class="proj-ladder-kind">Turn-key experiences</span></h4>
+                    <h3 class="proj-ladder-name">Composites<span class="proj-ladder-kind">Turn-key experiences</span></h3>
                     <span class="proj-ladder-dots" role="img" aria-label="Control: one of three"><i class="on"></i><i></i><i></i></span>
                   </div>
                   <p class="proj-ladder-desc">Full call and chat experiences for common scenarios — <code>CallComposite</code>, <code>ChatComposite</code>, and <code>CallWithChatComposite</code> — packaged to drop straight into an app.</p>
@@ -196,7 +202,7 @@
                 <div class="proj-ladder-tier">
                   <div class="proj-ladder-head">
                     <span class="proj-ladder-n">02</span>
-                    <h4 class="proj-ladder-name">Components<span class="proj-ladder-kind">Building blocks</span></h4>
+                    <h3 class="proj-ladder-name">Components<span class="proj-ladder-kind">Building blocks</span></h3>
                     <span class="proj-ladder-dots" role="img" aria-label="Control: two of three"><i class="on"></i><i class="on"></i><i></i></span>
                   </div>
                   <p class="proj-ladder-desc">The modular pieces beneath the composites, for teams that need their own layout, their own features, or deeper customization.</p>
@@ -206,7 +212,7 @@
                 <div class="proj-ladder-tier">
                   <div class="proj-ladder-head">
                     <span class="proj-ladder-n">03</span>
-                    <h4 class="proj-ladder-name">Core SDKs<span class="proj-ladder-kind">Low-level access</span></h4>
+                    <h3 class="proj-ladder-name">Core SDKs<span class="proj-ladder-kind">Low-level access</span></h3>
                     <span class="proj-ladder-dots" role="img" aria-label="Control: three of three"><i class="on"></i><i class="on"></i><i class="on"></i></span>
                   </div>
                   <p class="proj-ladder-desc">The headless Calling, Chat, and Rooms SDKs underneath everything. Build the interface from nothing when the prebuilt tiers aren&rsquo;t enough.</p>
@@ -226,6 +232,7 @@
         </div>
         <figure class="proj-row-media proj-row-media--framed">
           <img src="images/acs/acs-fluent-relationship.webp" alt="A diagram: a Fluent UI core containing buttons, panels, personas and menus, inside a wider ring of ACS UI Library communication components including video tile, video gallery, call control bar and message bubble" loading="lazy">
+          <figcaption>Fig. 02 &middot; Fluent&rsquo;s primitives at the center, the call-specific components in the ring around them</figcaption>
         </figure>
       </div>
 
@@ -245,10 +252,6 @@
             allow="camera; microphone"
             loading="lazy"></iframe>
         </div>
-        <figcaption class="proj-embed-cap">
-          <span class="proj-embed-note">The participants and the conversation are fabricated. The camera button is real: it runs your own webcam, and nothing leaves your browser. <a href="acs-demo/" target="_blank" rel="noopener">Open it full screen &nearr;</a></span>
-          <span class="proj-embed-fine">Running the finished <b>CallWithChatComposite</b> here instead would take an ACS endpoint and a short-lived access token, which a static site has nowhere safe to keep. The finished composite runs in Microsoft&rsquo;s own Storybook, linked at the top of this page.</span>
-        </figcaption>
       </figure>
 
       <div class="proj-railhead">
@@ -258,7 +261,7 @@
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
           <h4 class="proj-demo-name">VideoGallery</h4>
-          <p>The grid, the overflow row and the local tile. Switch the layout.</p>
+          <p>The grid, the overflow row and the local tile. The Calling SDK renders four remote video streams at a time, so the design problem is not how to lay out a room &mdash; it is who those four are. Dominant speaker tracking decides, up to six speakers deep, and everyone else drops to the overflow row with their audio intact. Six layouts ship on top of that; switch between them here.</p>
         </div>
         <figure class="proj-row-media">
           <div class="proj-demo-frame" style="--frame-h: clamp(400px, 36vw, 520px)">
@@ -270,7 +273,7 @@
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
           <h4 class="proj-demo-name">ControlBar</h4>
-          <p>All ten preset layouts, labelled or icon-only.</p>
+          <p>Ten presets: horizontal and vertical, docked to any edge, or floating over the stage. A product embedding a call rarely gets the whole window, so the bar has to survive being put somewhere its designer didn&rsquo;t choose &mdash; the floating variants carry their own background and shadow, and flip for right-to-left layouts.</p>
         </div>
         <figure class="proj-row-media">
           <div class="proj-demo-frame" style="--frame-h: clamp(380px, 33vw, 480px)">
@@ -282,7 +285,7 @@
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
           <h4 class="proj-demo-name">MessageThread</h4>
-          <p>Grouping, timestamps, receipts and system messages.</p>
+          <p>Grouping, timestamps, receipts and system messages. Dates and read receipts are both off by default: a support thread wants them, a quick in-call chat doesn&rsquo;t, and the quieter default is the one a developer can ship without thinking about it. Consecutive messages from one person collapse under a single name.</p>
         </div>
         <figure class="proj-row-media">
           <div class="proj-demo-frame" style="--frame-h: clamp(380px, 33vw, 480px)">
@@ -294,7 +297,7 @@
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
           <h4 class="proj-demo-name">SendBox + TypingIndicator</h4>
-          <p>The composer and the presence line under it. Type in it.</p>
+          <p>The composer and the presence line under it. Messages cap at 8,000 characters, and the indicator gets a 35-character budget for names &mdash; past that it counts the rest (&ldquo;Claire and 3 others are typing&rdquo;) rather than letting one long display name push the line off the screen. Type in it.</p>
         </div>
         <figure class="proj-row-media">
           <div class="proj-demo-frame" style="--frame-h: 270px">
@@ -306,7 +309,7 @@
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
           <h4 class="proj-demo-name">ParticipantList</h4>
-          <p>The roster, its indicators, and the per-person menu.</p>
+          <p>The roster, its indicators, and the per-person menu. Mute and video state sit on the row itself; the menu holds only the actions that reach into someone else&rsquo;s call, and it appears on a row at all only when the app has granted that permission &mdash; so the same component serves a peer meeting and a moderated one without a second variant.</p>
         </div>
         <figure class="proj-row-media">
           <div class="proj-demo-frame" style="--frame-h: 400px">
@@ -318,7 +321,7 @@
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
           <h4 class="proj-demo-name">Device selection</h4>
-          <p>Split buttons and DevicesButton, on your real devices.</p>
+          <p>Split buttons and DevicesButton, running on your real devices. Turning the camera on stays one click; choosing <em>which</em> camera lives in the chevron beside it. The menu adapts to the platform underneath &mdash; browsers that won&rsquo;t enumerate speakers get microphone selection alone, with their own labels and tooltips, rather than a control that lies about what it can do.</p>
         </div>
         <figure class="proj-row-media">
           <div class="proj-demo-frame" style="--frame-h: 250px">
@@ -330,7 +333,7 @@
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
           <h4 class="proj-demo-name">RealTimeText</h4>
-          <p>Character-by-character text for callers who can&rsquo;t use voice, in the main stage rather than a side panel. Once anyone starts it, RTT is on for everyone for the rest of the call and can&rsquo;t be switched off, which is why the notification says so in those words.</p>
+          <p>Character-by-character text for callers who can&rsquo;t use voice, in the main stage rather than a side panel. Once anyone starts it, RTT is on for everyone for the rest of the call and can&rsquo;t be switched off.</p>
           <p class="proj-row-cta"><a href="acs-real-time-text.html">Read the Real-Time Text case study &rarr;</a></p>
         </div>
         <figure class="proj-row-media">
@@ -343,12 +346,12 @@
 
       <div class="proj-railhead">
         <h3 class="proj-figblock-title">Customization and brand</h3>
-        <p class="proj-figblock-lede">What the whole ladder is in service of: a team taking it somewhere that looks like them, without rebuilding it.</p>
+        <p class="proj-figblock-lede">What the whole ladder is in service of: a team taking it somewhere that looks like them, without rebuilding it. Theming runs through a single Fluent provider, so a team can take it anywhere its palette still passes the accessibility checker.</p>
       </div>
 
       <figure class="proj-row-media">
         <img src="images/acs/acs-custom-theme.webp" alt="Pre-call device setup screen themed with a customer's logo and background image" loading="lazy">
-        <figcaption>Camera and microphone confirmed before joining, under a customer&rsquo;s own logo, color, and background. Theming runs through a single Fluent provider, and a team can take it anywhere its palette still passes the accessibility checker</figcaption>
+        <figcaption>Pre-call device setup in a customer&rsquo;s own logo, color, and background</figcaption>
       </figure>
 
       <div class="proj-row proj-grid">
@@ -358,7 +361,25 @@
         </div>
         <figure class="proj-row-media">
           <img src="images/acs/sample-builder-themes.webp" alt="The ACS Sample Builder, choosing between Healthcare, Banking, Insurance and Professional services templates, each with its own brand color, beside a live preview of the resulting call" loading="lazy">
-          <figcaption>Pick an industry template, name the company, set a color, configure the post-call survey, and watch the composite come back in your own brand. Four templates, one component set</figcaption>
+          <figcaption>Four industry templates on the left, the themed call previewing live on the right</figcaption>
+        </figure>
+      </div>
+
+      <div class="proj-row proj-grid">
+        <div class="proj-row-copy">
+          <p>Some of the first public AI tooling in ACS shipped here. Transcription and call summaries went out through the Sample Builder, so a team could try them without writing code and leave with a working implementation to build on &mdash; the same no-code path that had been carrying the rest of the library.</p>
+          <p class="proj-row-cta"><a href="https://techcommunity.microsoft.com/blog/azurecommunicationservicesblog/bringing-ai-to-meetings-with-the-sample-builder/4414730" target="_blank" rel="noopener">Read the announcement &nearr;</a></p>
+        </div>
+        <figure class="proj-row-media proj-video-fig">
+          <div class="proj-video">
+            <iframe src="https://www.youtube-nocookie.com/embed/5o4LcIiVLb4?start=5"
+                    title="Smarter meetings: AI-powered transcription and summaries with Azure Communication Services"
+                    loading="lazy"
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen></iframe>
+          </div>
+          <figcaption>Microsoft&rsquo;s walkthrough: transcription running live in a call, and the summary that comes back after it</figcaption>
         </figure>
       </div>
 
@@ -368,7 +389,7 @@
 
     <section class="proj-sec proj-reveal" aria-labelledby="sec-outcome">
       <div class="proj-sec-title proj-string-row" data-freq="164.81">
-        <h2 class="proj-sec-label" id="sec-outcome"><span class="proj-sec-num">§04</span>Outcome</h2>
+        <h2 class="proj-sec-label" id="sec-outcome">Outcome</h2>
         <div class="string-zone" tabindex="0" aria-label="Outcome — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
@@ -377,9 +398,8 @@
       <div class="proj-row proj-grid">
         <div class="proj-row-copy">
           <p class="proj-thesis">It found its audience and grew fast.</p>
-          <p>One of ACS's most-used surfaces, shipping in healthcare, finance, automotive, retail, and enterprise products. Every composite meets WCAG 2.1 AA before a developer touches it.</p>
-          <p>As the platform evolved, this stayed one of the clearest examples in ACS of a system that met developers where they were: reach for a composite when you want speed, drop to components when you want control. By the time it matured, developers were using it to add voice, video, and chat to their apps in days, with accessibility handled by default.</p>
-          <p>Two of the smaller decisions underneath it: in-progress text is dimmed rather than colored, and turning RTT on asks for consent before it starts.</p>
+          <p>As the platform evolved, this stayed one of the clearest examples in ACS of a system that met developers where they were. By the time it matured, they were using it to add voice, video, and chat to their apps in days.</p>
+          <p>The accessibility work is the part that compounds. Every composite ships WCAG 2.1 AA, and RTT shipped ahead of the European Accessibility Act deadline &mdash; so the teams building on it inherited both rather than retrofitting them under a deadline of their own.</p>
         </div>
         <div class="proj-row-media">
           <div class="proj-stats">
@@ -399,52 +419,54 @@
         </div>
       </div>
 
-      <div class="proj-railhead">
-        <h3 class="proj-figblock-title">Live and public</h3>
-        <p class="proj-figblock-lede">Shipped products you can go and look at, and the docs, package and running Storybook behind them. Not a claim you have to take on trust.</p>
-      </div>
-
-
-      <figure class="proj-row-media">
-        <img src="images/acs/acs-mercedes.webp" alt="A Mercedes dashboard screen showing a call and chat experience: a calendar entry with a Join button, a list of frequently contacted people, and chat and calendar tabs" loading="lazy">
-        <figcaption>The library running on a Mercedes dashboard, inside the car rather than in an app beside it</figcaption>
+      <!-- Customer marks are trademarks of their owners, shown here as a
+           reference to work delivered. Each is the public wordmark, in its own
+           colours; check the individual agreement before treating any of them
+           as an endorsement. -->
+      <figure class="proj-logos-fig">
+        <figcaption class="proj-logos-title">Some of the 200+ businesses shipping on the library</figcaption>
+        <div class="proj-logos-marquee">
+          <!-- the marks run twice: the animation slides the track half its
+               width, so the second pass lands where the first began -->
+          <ul class="proj-logos">
+          <li><img src="images/acs/logos/cvs-health.svg" alt="CVS Health" style="--logo-h: 20px" loading="lazy"></li>
+          <li><img src="images/acs/logos/teladoc.svg" alt="Teladoc Health" style="--logo-h: 30px" loading="lazy"></li>
+          <li><img src="images/acs/logos/boston-scientific.svg" alt="Boston Scientific" style="--logo-h: 28px" loading="lazy"></li>
+          <li><img src="images/acs/logos/bdms.svg" alt="Bangkok Dusit Medical Services" style="--logo-h: 32px" loading="lazy"></li>
+          <li><img src="images/acs/logos/bumrungrad.svg" alt="Bumrungrad International Hospital" style="--logo-h: 32px" loading="lazy"></li>
+          <li><img src="images/acs/logos/amil.svg" alt="Amil" style="--logo-h: 26px" loading="lazy"></li>
+          <li><img src="images/acs/logos/nhs.svg" alt="NHS" style="--logo-h: 28px" loading="lazy"></li>
+          <li><img src="images/acs/logos/abn-amro.svg" alt="ABN AMRO" style="--logo-h: 26px" loading="lazy"></li>
+          <li><img src="images/acs/logos/rabobank.svg" alt="Rabobank" style="--logo-h: 22px" loading="lazy"></li>
+          <li><img src="images/acs/logos/op-financial.svg" alt="OP Financial Group" style="--logo-h: 34px" loading="lazy"></li>
+          <li><img src="images/acs/logos/adecco.svg" alt="The Adecco Group" style="--logo-h: 32px" loading="lazy"></li>
+          <li><img src="images/acs/logos/allegis.svg" alt="Allegis Group" style="--logo-h: 30px" loading="lazy"></li>
+          <li><img src="images/acs/logos/copilot.svg" alt="Microsoft Copilot" style="--logo-h: 26px" loading="lazy"></li>
+          <li><img src="images/acs/logos/groupme.svg" alt="GroupMe" style="--logo-h: 34px" loading="lazy"></li>
+          <li><img src="images/acs/logos/luxottica.svg" alt="Luxottica" style="--logo-h: 24px" loading="lazy"></li>
+          <li><img src="images/acs/logos/loblaw.svg" alt="Loblaw" style="--logo-h: 32px" loading="lazy"></li>
+          <li><img src="images/acs/logos/tryg.svg" alt="Tryg" style="--logo-h: 26px" loading="lazy"></li>
+          <li aria-hidden="true"><img src="images/acs/logos/cvs-health.svg" alt="" style="--logo-h: 20px" loading="lazy"></li>
+          <li aria-hidden="true"><img src="images/acs/logos/teladoc.svg" alt="" style="--logo-h: 30px" loading="lazy"></li>
+          <li aria-hidden="true"><img src="images/acs/logos/boston-scientific.svg" alt="" style="--logo-h: 28px" loading="lazy"></li>
+          <li aria-hidden="true"><img src="images/acs/logos/bdms.svg" alt="" style="--logo-h: 32px" loading="lazy"></li>
+          <li aria-hidden="true"><img src="images/acs/logos/bumrungrad.svg" alt="" style="--logo-h: 32px" loading="lazy"></li>
+          <li aria-hidden="true"><img src="images/acs/logos/amil.svg" alt="" style="--logo-h: 26px" loading="lazy"></li>
+          <li aria-hidden="true"><img src="images/acs/logos/nhs.svg" alt="" style="--logo-h: 28px" loading="lazy"></li>
+          <li aria-hidden="true"><img src="images/acs/logos/abn-amro.svg" alt="" style="--logo-h: 26px" loading="lazy"></li>
+          <li aria-hidden="true"><img src="images/acs/logos/rabobank.svg" alt="" style="--logo-h: 22px" loading="lazy"></li>
+          <li aria-hidden="true"><img src="images/acs/logos/op-financial.svg" alt="" style="--logo-h: 34px" loading="lazy"></li>
+          <li aria-hidden="true"><img src="images/acs/logos/adecco.svg" alt="" style="--logo-h: 32px" loading="lazy"></li>
+          <li aria-hidden="true"><img src="images/acs/logos/allegis.svg" alt="" style="--logo-h: 30px" loading="lazy"></li>
+          <li aria-hidden="true"><img src="images/acs/logos/copilot.svg" alt="" style="--logo-h: 26px" loading="lazy"></li>
+          <li aria-hidden="true"><img src="images/acs/logos/groupme.svg" alt="" style="--logo-h: 34px" loading="lazy"></li>
+          <li aria-hidden="true"><img src="images/acs/logos/luxottica.svg" alt="" style="--logo-h: 24px" loading="lazy"></li>
+          <li aria-hidden="true"><img src="images/acs/logos/loblaw.svg" alt="" style="--logo-h: 32px" loading="lazy"></li>
+          <li aria-hidden="true"><img src="images/acs/logos/tryg.svg" alt="" style="--logo-h: 26px" loading="lazy"></li>
+          </ul>
+        </div>
       </figure>
 
-      <!-- IMAGE NEEDED — customer logo strip. The brands shipping on the
-           library, set in a row: Mercedes, Teladoc, CVS, OP Bank and whoever
-           else can be named. Check what each customer's agreement allows before
-           publishing a logo; several will need permission or a press reference. -->
-      <figure class="proj-ph">
-        <div class="proj-ph-box" style="--ph-ratio: 4 / 1">
-          <p class="proj-ph-kind">Image &middot; Customers</p>
-          <p class="proj-ph-title">Who ships on it</p>
-          <p class="proj-ph-desc">A row of customer marks. Names already on this page: Mercedes, Teladoc, CVS, OP Bank. A logo strip makes 200+ businesses concrete in a way the number cannot.</p>
-          <p class="proj-ph-warn">Permission needed &middot; check each agreement before publishing a mark</p>
-        </div>
-        <figcaption>4:1 &middot; logo row &middot; Source &middot; customer press pages or brand kits</figcaption>
-      </figure>
-
-      <div class="proj-artifacts">
-        <p class="proj-artifacts-label">Live &amp; public</p>
-        <div class="proj-links">
-          <a class="proj-link proj-link--artifact" href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/ui-library/ui-library-overview" target="_blank" rel="noopener">
-            <span><span class="proj-link-kind">Docs</span><span class="proj-link-name">UI Library overview</span><span class="proj-link-host">Microsoft Learn</span></span>
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <a class="proj-link proj-link--artifact" href="https://www.npmjs.com/package/@azure/communication-react" target="_blank" rel="noopener">
-            <span><span class="proj-link-kind">Package</span><span class="proj-link-name">@azure/communication-react</span><span class="proj-link-host">npm</span></span>
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <a class="proj-link proj-link--artifact" href="https://aka.ms/acsstorybook" target="_blank" rel="noopener">
-            <span><span class="proj-link-kind">Interactive</span><span class="proj-link-name">Component Storybook</span><span class="proj-link-host">aka.ms</span></span>
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <a class="proj-link proj-link--artifact" href="https://github.com/Azure/communication-ui-library" target="_blank" rel="noopener">
-            <span><span class="proj-link-kind">Source</span><span class="proj-link-name">communication-ui-library</span><span class="proj-link-host">GitHub</span></span>
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
 
     </section>
 

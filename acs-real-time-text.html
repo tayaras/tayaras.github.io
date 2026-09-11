@@ -65,7 +65,7 @@
     <img src="images/acs/acs-rtt-in-call.webp" alt="Real-Time Text during a call, with typed text appearing in the unified captions and RTT window">
   </figure>
 
-  <article class="proj">
+  <article class="proj proj--rail">
 
     <header class="proj-head proj-grid">
       <div class="proj-string-row proj-id-row" data-freq="277.18">
@@ -102,15 +102,14 @@
         </div>
       </dl>
 
-      <p class="proj-linkline">
-        <a href="ui-library.html">Part of the UI Library &rarr;</a>
-        <a href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/real-time-text" target="_blank" rel="noopener">Documentation &rarr;</a>
-      </p>
-
       <div class="proj-summary">
         <p>A synchronous, always-visible text channel that gives someone who cannot speak the same presence in a call as someone talking. Shipped across four SDKs ahead of a European accessibility deadline, and ahead of Teams.</p>
         <p>The design problem was never the text field. It was a platform with no way to signal the feature was on, two design reversals I made when better evidence appeared, and two moments where I refused to let a reasonable business request take away a deaf user's equal footing in a call.</p>
       </div>
+      <p class="proj-linkline">
+        <a href="ui-library.html">Part of the UI Library &rarr;</a>
+        <a href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/real-time-text" target="_blank" rel="noopener">Documentation &rarr;</a>
+      </p>
     </header>
 
     <!-- the call stage: messages arriving as they're typed. In-progress text is
@@ -130,7 +129,7 @@
 
     <section class="proj-sec proj-reveal">
       <div class="proj-sec-title proj-string-row" data-freq="246.94">
-        <p class="proj-sec-label"><span class="proj-sec-num">§01</span>Problem</p>
+        <p class="proj-sec-label">Problem</p>
         <div class="string-zone" tabindex="0" aria-label="Problem — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
@@ -150,7 +149,7 @@
 
     <section class="proj-sec proj-reveal">
       <div class="proj-sec-title proj-string-row" data-freq="207.65">
-        <p class="proj-sec-label"><span class="proj-sec-num">§02</span>Process</p>
+        <p class="proj-sec-label">Process</p>
         <div class="string-zone" tabindex="0" aria-label="Process — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
@@ -167,7 +166,7 @@
            from Figma: the 15-second editable window and RTT replacing captions,
            next to the three-second commit and RTT living inside the captions
            shell as one window. -->
-      <div class="proj-row proj-grid" style="margin-top: clamp(24px, 3vw, 36px)">
+      <div class="proj-row proj-row--12 proj-grid" style="margin-top: clamp(24px, 3vw, 36px)">
         <figure class="proj-ph" style="grid-column: 1 / span 6; margin-top: 0">
           <div class="proj-ph-box" style="--ph-ratio: 4 / 3">
             <p class="proj-ph-kind">v1</p>
@@ -189,7 +188,7 @@
 
     <section class="proj-sec proj-reveal">
       <div class="proj-sec-title proj-string-row" data-freq="185.00">
-        <p class="proj-sec-label"><span class="proj-sec-num">§03</span>Constraint</p>
+        <p class="proj-sec-label">Constraint</p>
         <div class="string-zone" tabindex="0" aria-label="Constraint — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
@@ -243,7 +242,7 @@
 
     <section class="proj-sec proj-reveal">
       <div class="proj-sec-title proj-string-row" data-freq="164.81">
-        <p class="proj-sec-label"><span class="proj-sec-num">§04</span>Decisions</p>
+        <p class="proj-sec-label">Decisions</p>
         <div class="string-zone" tabindex="0" aria-label="Decisions — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
@@ -259,7 +258,7 @@
 
     <section class="proj-sec proj-reveal">
       <div class="proj-sec-title proj-string-row" data-freq="146.83">
-        <p class="proj-sec-label"><span class="proj-sec-num">§05</span>Scope</p>
+        <p class="proj-sec-label">Scope</p>
         <div class="string-zone" tabindex="0" aria-label="Scope — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
@@ -292,7 +291,7 @@
 
     <section class="proj-sec proj-reveal">
       <div class="proj-sec-title proj-string-row" data-freq="130.81">
-        <p class="proj-sec-label"><span class="proj-sec-num">§06</span>Solution</p>
+        <p class="proj-sec-label">Solution</p>
         <div class="string-zone" tabindex="0" aria-label="Solution — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
@@ -360,7 +359,7 @@
 
     <section class="proj-sec proj-reveal">
       <div class="proj-sec-title proj-string-row" data-freq="123.47">
-        <p class="proj-sec-label"><span class="proj-sec-num">§07</span>Outcome</p>
+        <p class="proj-sec-label">Outcome</p>
         <div class="string-zone" tabindex="0" aria-label="Outcome — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
@@ -401,7 +400,7 @@
 
     <section class="proj-sec proj-reveal">
       <div class="proj-sec-title proj-string-row" data-freq="110.00">
-        <p class="proj-sec-label"><span class="proj-sec-num">§08</span>Hindsight</p>
+        <p class="proj-sec-label">Hindsight</p>
         <div class="string-zone" tabindex="0" aria-label="Hindsight — strum">
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>

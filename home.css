@@ -19,8 +19,6 @@
   /* the Additional sections' thumbnail, as a fraction of the hero column —
      kept as a number so the thumbnail and the row size off the same value */
   --small-thumb-n: 0.224;
-  /* corner rounding shared by every photo on the page */
-  --media-radius: clamp(10px, 0.9vw, 18px);
 }
 
 .strum-home {
@@ -75,6 +73,16 @@ body.stack-open .home-fret.has-media-title:hover .home-label {
   margin-right: -16px;   /* absorb the row gap so the string reaches the edge */
   transform: translateX(-12px);
 }
+/* Names whose own casing is the point — 0xPARC — opt out of the all-caps the
+   row labels and display titles otherwise use. The row label carries the flag;
+   the hover title and the phone's lead title are built from it, so they follow.
+   Set data-case="literal" on the .home-label to add another. */
+.home-label[data-case="literal"],
+.home-fret:has(.home-label[data-case="literal"]) .home-hover-title span,
+.home-fret:has(.home-label[data-case="literal"]) .home-lead-title {
+  text-transform: none;
+}
+
 .home-fret[data-primary] .home-label { color: var(--black); }
 /* the name doubles as this page's brand — the corner mark every other page
    carries as a link, so it behaves like one here too */
@@ -113,8 +121,32 @@ a.home-label:hover { opacity: 0.5; }
 /* hover-photo keywords (scatter) — mirrors the about page */
 /* underline tracks the text it sits in — the bio's middle paragraphs are grey,
    so a fixed --black rule left the keywords darker than their own sentence */
-.kw { cursor: pointer; border-bottom: 1px solid currentColor; transition: opacity 0.15s; color: inherit; }
-.kw:hover { opacity: 0.4; }
+/* A keyword that has photos behind it glows the way the stack arrow does, so
+   the words you can open read as interactive before you touch them. Pinned
+   (clicked open) it holds at the peak rather than continuing to pulse. */
+@keyframes kwGlow {
+  0%, 100% { text-shadow: none; }
+  50% {
+    text-shadow: 0 0 6px rgba(59, 130, 246, 0.55),
+                 0 0 14px rgba(59, 130, 246, 0.28);
+  }
+}
+.kw {
+  cursor: pointer;
+  border-bottom: 1px solid currentColor;
+  transition: opacity 0.15s, text-shadow 0.25s ease, border-color 0.25s ease;
+  color: inherit;
+  animation: kwGlow 2.2s ease-in-out infinite;
+}
+.kw:hover, .kw.is-pinned {
+  animation: none;
+  opacity: 1;
+  text-shadow: 0 0 6px rgba(59, 130, 246, 0.7), 0 0 16px rgba(59, 130, 246, 0.35);
+  border-color: rgba(59, 130, 246, 0.9);
+}
+@media (prefers-reduced-motion: reduce) {
+  .kw { animation: none; }
+}
 .scatter-stage { position: fixed; inset: 0; pointer-events: none; z-index: 200; }
 .scatter-img {
   position: absolute; background: #ede9e2; opacity: 0; overflow: hidden;
@@ -160,12 +192,24 @@ a.home-label:hover { opacity: 0.5; }
 #stackCollapse:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
 /* mute button's muted red matches the "More about me" hover red */
 .mute-btn.muted { color: #ff2d2d; border-color: #ff2d2d; }
-/* the arrow slowly glows blue until it's clicked (draws the eye to it) */
+/* the arrow glows blue until it's clicked (draws the eye to it). Two layers:
+   a tight halo and a wider bloom, with the border and the chevron itself
+   coming up to the accent at the peak — a soft box-shadow alone reads as
+   almost nothing against the page's light ground. */
 @keyframes stackGlow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); border-color: var(--line); color: var(--mid); }
-  50%      { box-shadow: 0 0 7px 0 rgba(59, 130, 246, 0.28); border-color: rgba(59, 130, 246, 0.5); color: var(--mid); }
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0), 0 0 0 0 rgba(59, 130, 246, 0);
+    border-color: var(--line);
+    color: var(--mid);
+  }
+  50% {
+    box-shadow: 0 0 10px 1px rgba(59, 130, 246, 0.55), 0 0 22px 6px rgba(59, 130, 246, 0.28);
+    border-color: rgba(59, 130, 246, 0.95);
+    color: rgba(59, 130, 246, 1);
+  }
 }
-#stackCollapse.pulse { animation: stackGlow 2.6s ease-in-out infinite; }
+#stackCollapse.pulse { animation: stackGlow 2.2s ease-in-out infinite; }
+
 #stackCollapse svg { width: 14px; height: 14px; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
 body.stack-open #stackCollapse svg { transform: rotate(180deg); }
 
@@ -209,10 +253,12 @@ body:not(.stack-open) .home-fret--over .home-row {
 .home-divider-mark {
   flex: 0 0 auto;
   font-family: var(--sans);
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--mid);
+  /* the grey the project descriptions use */
+  color: var(--mid-500);
   white-space: nowrap;
 }
 /* compressed, the stack is only strings — the divider packs away with them.
@@ -276,19 +322,28 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 }
 .home-content--small .home-media { width: var(--small-thumb); }
 
+/* full project sections — same idea as --small above: the grid columns are
+   untouched so meta and description stay aligned across every row, and only
+   the thumbnail inside the hero column is scaled — to the measure of the bio
+   copy above it, which is its own column less the gutter it carries. */
+.home-content:not(.home-content--small):not(.home-content--bio) .home-media {
+  width: calc(100% - var(--home-gap));
+}
+
 /* bio (top section). One photo serves both states: compressed it's a band as
    tall as the short copy, expanded it opens to the full frame. The column never
    changes width, so the reveal is a pure height change — home.js sets
    --bio-photo-h for each state and the transition below does the rest. */
-/* The photo starts exactly where a project's hero image ends — same first
-   column, no gutter of its own. */
-.home-content--bio { grid-template-columns: var(--hero-w) 1fr; column-gap: 0; }
+/* The photo lines up with the text block in the project rows below: same left
+   edge as their meta column, same right edge as their description. That means
+   carrying the row gap the projects carry, so the photo starts a gutter's width
+   past the hero column rather than hard against it. */
+.home-content--bio { grid-template-columns: var(--hero-w) 1fr; column-gap: var(--home-gap); }
 /* The bio runs the full width of its column rather than taking the site's
-   44rem reading measure — the column is sized to put the photo's left edge on
-   the project hero's right edge, and a capped measure left a wide gutter
-   between the text and the photo. The column has no gutter of its own, so the
-   copy carries one, otherwise the text would touch the photo's edge. */
-.home-content--bio .home-copy { max-width: none; padding-right: calc(var(--home-gap) * 2); }
+   44rem reading measure — a capped measure left a wide gutter between the text
+   and the photo. The grid gap above now holds the two apart, so the copy needs
+   only a single gutter of its own to keep the text off the photo's edge. */
+.home-content--bio .home-copy { max-width: none; padding-right: var(--home-gap); }
 
 /* the image is absolutely placed so it can't push the row taller than the
    height we've asked for; cover + object-position keeps the head in the band */
@@ -305,14 +360,16 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 42%;   /* the band is a slot: head near its top edge, as much body under it as fits */
+  object-position: center 66%;   /* the band is a slot: the figure held in it, horizon above and beach below */
   display: block;
   border-radius: inherit;
   transition: object-position 0.62s cubic-bezier(0.16, 1, 0.3, 1);
 }
 /* expanded, the square shows two thirds of the frame — enough for the arch
    overhead and the figure under it, so the crop can sit near the middle */
-.home-bio-photo.is-full img { object-position: center 47%; }
+/* expanded, the box is taller than the frame's aspect, so the crop is
+   horizontal and the vertical position has nothing left to move */
+.home-bio-photo.is-full img { object-position: center 50%; }
 @media (prefers-reduced-motion: reduce) {
   .home-bio-photo, .home-bio-photo img { transition: none; }
 }
@@ -397,10 +454,10 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 .home-listening-label {
   display: block;
   font-family: var(--sans);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--mid-500);
+  /* matches the bio copy it sits under (.home-copy p) */
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--black);
   margin-bottom: 12px;
 }
 /* Cover tiles — our own markup, so they carry the page's type and rounding
@@ -434,7 +491,7 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 /* Spotify's own player, which has three layouts and picks one from the height
    it's given: 352 = full card with tracklist, 152 = compact card with a peek
    at the tracklist, anything under that = a single row of art, title and
-   controls. 80 is the quietest of them. Nothing here can restyle its insides;
+   controls. Nothing here can restyle its insides;
    its colour comes from the artwork. */
 /* auto-fill rather than auto-fit: when a row is short of players the leftover
    track stays empty instead of stretching the last one across the column */
@@ -443,9 +500,19 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 16px;
 }
+/* exactly two players: one row of halves, so the pair spans the copy column
+   instead of leaving an empty auto-fill track beside them */
+.home-listening-players:has(iframe:nth-child(2):last-child) {
+  grid-template-columns: 1fr 1fr;
+}
 .home-listening-players iframe {
+  /* Spotify's iframe carries a 300px intrinsic width — without this it sits
+     at that size inside a wider track instead of filling it */
+  width: 100%;
   min-width: 0;
-  height: 80px;
+  /* under 152 Spotify drops the card for a single row: artwork, title and the
+     controls, nothing else */
+  height: 104px;
   border: 0;
   border-radius: var(--media-radius);
 }
@@ -687,6 +754,9 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 /* the name is the line under the years now, so the meta's own title line goes
    — the small sections, which have no hover title, keep theirs */
 .home-fret.has-media-title .home-meta-title { display: none; }
+/* the Additional rows are down to a name and a date: the name arrives on hover
+   like the projects above, so the company line above the date goes too */
+.home-content--small .home-meta-company { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .home-hover-title span { transform: none; transition: opacity 0.2s ease; }
 }
@@ -698,6 +768,7 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   .home-content .home-media { grid-column: 1 / -1; }
   /* stacked, the thumbnail is on its own row — no reason to keep it small */
   .home-content--small .home-media { width: 100%; }
+  .home-content:not(.home-content--small):not(.home-content--bio) .home-media { width: 100%; }
   /* stacked, the crop would be a thin band under the copy — it only comes back
      once the bio is expanded and the photo can be shown whole */
   .home-content--bio { grid-template-columns: 1fr; }

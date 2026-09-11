@@ -42,6 +42,10 @@
   --shadow-card: 0 30px 80px rgba(0,0,0,0.08);
   --radius-card: 16px;
   --radius-diagram: 32px;
+  /* the rounding every photo on the site shares — the home thumbnails set it
+     and the project heroes follow. Lived in home.css, which only index.html
+     loads, so project.css's uses of it resolved to nothing. */
+  --media-radius: clamp(10px, 0.9vw, 18px);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -356,12 +360,15 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; bo
 }
 
 /* ─── SHARED TYPOGRAPHY ─── */
+/* Section labels read as text, not as an eyebrow: body size, sentence case,
+   full contrast. The hero eyebrows and the home divider mark below match. */
 .label {
   font-family: var(--sans);
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--mid);
+  color: var(--black);
   display: block;
 }
 
@@ -421,8 +428,8 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); max-width: var(
   margin-bottom: 24px;
 }
 
-.hero-eyebrow-l { font-family: var(--sans); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); }
-.hero-eyebrow-r { font-family: var(--sans); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); }
+.hero-eyebrow-l { font-family: var(--sans); font-size: 14px; line-height: 1.55; letter-spacing: 0.04em; text-transform: uppercase; color: var(--black); }
+.hero-eyebrow-r { font-family: var(--sans); font-size: 14px; line-height: 1.55; letter-spacing: 0.04em; text-transform: uppercase; color: var(--black); }
 
 .hero-title {
   padding: 0 var(--pad);
@@ -457,7 +464,8 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); max-width: var(
   display: block;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  border-radius: var(--radius-card);
+  /* the shared photo rounding, so every page's hero matches the home thumbnails */
+  border-radius: var(--media-radius);
   border: 1px solid var(--line);
   box-shadow: var(--shadow-card);
   background: var(--accent-light);
@@ -1463,7 +1471,7 @@ p.lede { font-size: 16px; line-height: 1.6; color: var(--black); max-width: var(
 }
 
 /* Design decision callout — green-left-border accent block.
-   Inner label uses .label class (color: var(--mid)).
+   Inner label uses .label class.
    Inner body uses 13px non-italic var(--mid). */
 .cs-decision {
   border-left: 2px solid var(--accent);

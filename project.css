@@ -125,13 +125,17 @@ body.proj-collapsed .proj-id {
 :root { --proj-rail: 180px; }
 
 /* ─── LEAD IMAGE ────────────────────────────────────────────────────────── */
-/* the work lands before a single word of copy: full-bleed, most of the
-   viewport, no border. Sits outside .proj so it ignores the page padding. */
+/* the work lands before a single word of copy: most of the viewport, no border.
+   Sits outside .proj, so it carries the page's own gutters rather than
+   inheriting them — the width below is .proj's content box exactly. */
 .proj-lead-img {
-  width: 100%;
+  width: calc(min(100%, var(--max)) - 2 * var(--pad));
+  margin-inline: auto;
   height: clamp(360px, 72vh, 860px);
   background: var(--line);
   overflow: hidden;
+  /* rounded like the home page's thumbnails */
+  border-radius: var(--media-radius);
   /* the same air the home page leaves between its header row and the bio —
      .home-panel's top padding, matched exactly */
   margin-top: clamp(24px, 3.5vw, 44px);
@@ -338,22 +342,23 @@ body.proj-collapsed .proj-id {
   margin-top: clamp(28px, 3.5vw, 44px);
 }
 .proj-fact dt {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--black);
   margin-bottom: 4px;
 }
-.proj-fact dd { font-size: 13px; line-height: 1.5; color: var(--mid-500); }
+.proj-fact dd { font-size: 14px; line-height: 1.5; color: var(--mid-500); }
 
-/* the live link, alone on the left, under the facts */
+/* the live links, under the overview they belong to rather than under the
+   facts on the other side of the grid */
 .proj-linkline {
-  grid-column: 1 / span 5;
-  grid-row: 3;
+  grid-column: 7 / -1;
+  grid-row: 4;
   align-self: start;
-  margin-top: clamp(24px, 3vw, 36px);
+  margin-top: clamp(20px, 2.5vw, 28px);
 }
 .proj-linkline a {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--black);
   text-decoration: none;
@@ -364,7 +369,7 @@ body.proj-collapsed .proj-id {
 .proj-linkline a:hover { color: #ff2d2d; border-color: #ff2d2d; }
 /* a status line standing where a link would — same weight, nothing to click */
 .proj-linkline-note {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--mid-500);
 }
@@ -377,7 +382,7 @@ body.proj-collapsed .proj-id {
   align-self: start;
   margin-top: clamp(28px, 3.5vw, 44px);
 }
-.proj-summary p { font-size: 13px; line-height: 1.65; color: var(--mid-500); max-width: var(--measure); }
+.proj-summary p { font-size: 14px; line-height: 1.65; color: var(--mid-500); max-width: var(--measure); }
 .proj-summary p:first-child { color: var(--black); }
 .proj-summary p + p { margin-top: 1em; }
 .proj-summary a {
@@ -396,12 +401,12 @@ body.proj-collapsed .proj-id {
   margin-top: clamp(36px, 5vw, 56px);
 }
 .proj-contrib dt {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--black);
   margin-bottom: 6px;
 }
-.proj-contrib dd { font-size: 13px; line-height: 1.6; color: var(--mid-500); }
+.proj-contrib dd { font-size: 14px; line-height: 1.6; color: var(--mid-500); }
 
 /* tiles — a highlight reel of surfaces, two across so the screens are legible,
    each with a name and a line of context */
@@ -442,7 +447,7 @@ body.proj-collapsed .proj-id {
   margin-bottom: 6px;
 }
 .proj-tile-note {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   color: var(--mid-500);
   display: block;
@@ -451,7 +456,19 @@ body.proj-collapsed .proj-id {
 
 /* video tiles — click to play, three across. Carried over from the thesis
    page's prototype grid; project.js wires the play/pause button. */
-.proj-tiles--video { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+/* three clips across, set a little smaller than the column allows so the air
+   between them reads as part of the grid rather than a hairline */
+.proj-tiles--video {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(36px, 4.5vw, 64px) clamp(28px, 3.6vw, 56px);
+  /* the clips sit smaller than their column and centre in it, so the air
+     between them is the gap plus what each one gives back. Tune with --vid-scale. */
+  justify-items: center;
+}
+.proj-tiles--video > * { width: calc(var(--vid-scale, 0.82) * 100%); }
+/* a group whose screenshots are 16:9 rather than the 16:10 the tile assumes —
+   without this they lose their right edge to the cover crop */
+.proj-tiles--16x9 .proj-tile img { aspect-ratio: 16 / 9; }
 .proj-vid {
   position: relative;
   aspect-ratio: 4 / 3;
@@ -548,11 +565,16 @@ body.proj-collapsed .proj-id {
 /* the first section follows the head, which already ends in its own bottom
    padding — the full inter-section margin on top of that reads as a void */
 .proj-sec:first-of-type { margin-top: clamp(28px, 3vw, 44px); }
+/* set like the home page's "Additional" mark (.home-divider-mark): body size,
+   sentence case, the grey the descriptions use — a heading in the page's own
+   voice rather than a mono eyebrow */
 .proj-sec-label {
   flex: 0 0 auto;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.55;
+  /* all-caps needs a little air to stay readable at text size */
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--mid-500);
   white-space: nowrap;
@@ -573,10 +595,10 @@ body.proj-collapsed .proj-id {
 }
 .proj-row + .proj-row { margin-top: clamp(48px, 7vw, 96px); }
 .proj-row-copy { grid-column: 1 / span 4; }
-.proj-row-copy p { font-size: 13px; line-height: 1.7; color: var(--mid-500); }
+.proj-row-copy p { font-size: 14px; line-height: 1.7; color: var(--mid-500); }
 .proj-row-copy p + p { margin-top: 1em; }
 .proj-row-copy .proj-row-head {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--black);
   margin-bottom: 10px;
@@ -618,6 +640,11 @@ body.proj-collapsed .proj-id {
 .proj-row-media--pair figcaption { grid-column: 1 / -1; }
 /* a row whose media should run the full width instead */
 .proj-row--wide .proj-row-media { grid-column: 1 / -1; }
+/* …or an even split, for a text-led row where the image is a companion to the
+   argument rather than the subject of it: the copy needs more than the 4
+   columns above, so both sides take half the row. */
+.proj-row--split .proj-row-copy  { grid-column: 1 / span 6; }
+.proj-row--split .proj-row-media { grid-column: 8 / -1; }
 
 @media (max-width: 820px) {
   /* the side-by-side band unwinds back into a single stack */
@@ -626,6 +653,8 @@ body.proj-collapsed .proj-id {
   .proj-facts, .proj-linkline, .proj-summary { grid-row: auto; }
   .proj-summary { margin-top: clamp(28px, 4vw, 40px); }
   .proj-row-copy, .proj-row-media { grid-column: 1 / -1; }
+  .proj-row--split .proj-row-copy,
+  .proj-row--split .proj-row-media { grid-column: 1 / -1; }
   .proj-row-media { margin-top: 24px; }
 }
 
@@ -862,6 +891,7 @@ body.proj-collapsed .proj-id {
   background: var(--line);
   aspect-ratio: 16 / 9;
   overflow: hidden;
+  border-radius: var(--media-radius);
 }
 .proj-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
@@ -1019,13 +1049,6 @@ body.proj-collapsed .proj-id {
 
 /* the § number riding ahead of a section's word. Red because it's structural —
    it tells you where you are — not because it's decoration. */
-.proj-sec-num {
-  color: #ff2d2d;
-  margin-right: 10px;
-  font-variant-numeric: tabular-nums;
-}
-.proj-string-row:hover .proj-sec-num { color: inherit; }
-
 /* the line each section opens on. Bigger than body copy, black against the
    grey prose under it, and the sentence that carries the argument.
    Written with the container in the selector because it sits among <p>s that
@@ -1060,7 +1083,7 @@ body.proj-collapsed .proj-id {
   grid-row: 1 / span 99;   /* stays at the top while the prose stacks beside it */
   margin-bottom: 0;
 }
-.proj-prose p { font-size: 13px; line-height: 1.7; color: var(--mid-500); max-width: var(--measure); }
+.proj-prose p { font-size: 14px; line-height: 1.7; color: var(--mid-500); max-width: var(--measure); }
 .proj-prose p + p { margin-top: 1em; }
 .proj-prose .proj-thesis + p { margin-top: 0; }
 @media (max-width: 820px) {
@@ -1078,7 +1101,7 @@ body.proj-collapsed .proj-id {
 .proj-row-copy p { max-width: var(--measure); }
 /* a subhead inside a prose run — "The forcing function" */
 .proj-subhead {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--black);
   margin-top: 28px;
@@ -1119,7 +1142,7 @@ body.proj-collapsed .proj-id {
   color: var(--black);
 }
 .proj-ph-desc {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   color: var(--mid-500);
   max-width: 34rem;
@@ -1143,6 +1166,88 @@ body.proj-collapsed .proj-id {
   margin-top: 6px;
 }
 
+/* ─── HOSTED VIDEO ──────────────────────────────────────────────────────── */
+/* A YouTube/Vimeo embed set like the page's other figures: 16:9, hairline
+   border, caption underneath. Named apart from .proj-embed, which is the live
+   running-component frame with its own title bar. */
+.proj-video {
+  aspect-ratio: 16 / 9;
+  background: #111;
+  border: 1px solid var(--line);
+  border-radius: var(--media-radius);
+  overflow: hidden;
+}
+.proj-video iframe { display: block; width: 100%; height: 100%; border: 0; }
+.proj-video-fig { margin-top: clamp(24px, 3vw, 36px); }
+/* inside a row the copy beside it sets the top edge — the standalone spacing
+   above would drop the video below the first line of text */
+.proj-row > .proj-video-fig { margin-top: 0; }
+
+/* ─── CUSTOMER LOGO STRIP ───────────────────────────────────────────────── */
+/* Real marks, so each one is set to its own optical height (--logo-h) rather
+   than a shared box: a square roundel and a long wordmark look wrong at the
+   same pixel height. Marks are shown in their own colours, which is what most
+   brand guidelines require, so the strip sits on a light plate that holds in
+   both themes — several of these wordmarks are near-black and would vanish on
+   the dark ground. */
+.proj-logos-fig { margin-top: clamp(24px, 3vw, 36px); }
+/* the row's own heading, set at the rail-heading size — the marquee crosses
+   both rails, so its title sits above it rather than beside it */
+.proj-logos-title {
+  font-size: clamp(17px, 1.9vw, 20px);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--black);
+  margin-bottom: clamp(20px, 2.5vw, 32px);
+}
+/* the window the track runs through: it is the full width of the row, and the
+   marks fade out at both ends rather than being cut off by a hard edge */
+.proj-logos-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+/* One track holding the marks twice over. Sliding it exactly half its width
+   puts copy two where copy one started, so the loop has no seam and no jump. */
+.proj-logos {
+  --logo-gap: clamp(40px, 5vw, 80px);
+  --logo-scale: 1.6;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: var(--logo-gap);
+  width: max-content;
+  /* the trailing gap matters: flex puts a gap *between* items but none after
+     the last, so without this the track is half a gap short of twice the first
+     pass and the loop lands with a visible hitch */
+  padding: 8px var(--logo-gap) 8px 0;
+  animation: projLogoMarquee 60s linear infinite;
+}
+.proj-logos li { flex: 0 0 auto; display: flex; align-items: center; }
+.proj-logos img {
+  display: block;
+  /* --logo-h is each mark's own optical height; --logo-scale sizes the whole
+     row off one number */
+  height: calc(var(--logo-h, 26px) * var(--logo-scale, 1));
+  width: auto;
+}
+@keyframes projLogoMarquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+/* let a reader stop it to look at a mark */
+.proj-logos-marquee:hover .proj-logos { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  /* no crawl; the row becomes something you scroll yourself */
+  .proj-logos { animation: none; }
+  .proj-logos-marquee { overflow-x: auto; }
+}
+@media (max-width: 560px) {
+  .proj-logos { --logo-gap: 40px; }
+  .proj-logos { --logo-scale: 1.1; }
+}
+
 /* ─── FEATURE LIST ──────────────────────────────────────────────────────── */
 /* what the system shipped over its life — a list, set as hairline chips so a
    long inventory reads as one texture instead of twenty bullet points */
@@ -1160,7 +1265,7 @@ body.proj-collapsed .proj-id {
   color: #ff2d2d;
 }
 .proj-figblock-title {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   color: var(--mid-500);
   margin-top: 8px;
@@ -1181,7 +1286,10 @@ body.proj-collapsed .proj-id {
 }
 
 .proj-ladder-tier { border-bottom: 1px solid var(--line); }
-.proj-ladder-tier h3 { font-weight: inherit; font-size: inherit; }
+/* neutralises the global h3 size for any heading dropped into a tier — but the
+   tier's own name sets its type below, so exclude it or this wins on
+   specificity (0-1-1 over 0-1-0) and flattens it */
+.proj-ladder-tier h3:not(.proj-ladder-name) { font-weight: inherit; font-size: inherit; }
 .proj-ladder-n {
   font-family: var(--mono);
   font-size: 10px;
@@ -1341,7 +1449,7 @@ body.proj-collapsed .proj-id {
   text-transform: none;
   letter-spacing: 0;
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 14px;
 }
 .proj-link-kind {
   display: block;
@@ -1464,7 +1572,7 @@ body.proj-collapsed .proj-id {
 }
 .proj-embed-note {
   display: block;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   color: var(--mid-500);
   max-width: 46rem;
@@ -1557,12 +1665,21 @@ body.proj-collapsed .proj-id {
   /* the two things that cross both rails */
   .proj--rail .proj-sec > .proj-sec-title,
   .proj--rail .proj-sec > .proj-embed,
+  .proj--rail .proj-sec > .proj-logos-fig,
   .proj--rail .proj-sec > .proj-credits { grid-column: 1 / -1; }
+
+  /* a row whose children place themselves on the 12-column grid keeps it —
+     the rail's two columns would land those spans in the wrong places */
+  .proj--rail .proj-sec > .proj-row--12 {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+  }
 
   /* Prose and rows carry the same split internally, so they span the section
      and re-declare it rather than fighting it from inside one column. */
   .proj--rail .proj-sec > .proj-prose,
-  .proj--rail .proj-sec > .proj-row {
+  .proj--rail .proj-sec > .proj-row:not(.proj-row--12) {
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: minmax(0, 530fr) minmax(0, 837fr);
@@ -1577,12 +1694,22 @@ body.proj-collapsed .proj-id {
   }
   .proj--rail .proj-row-copy { grid-column: 1; }
   .proj--rail .proj-row-media { grid-column: 2; }
+  /* a wide row still crosses both rails — declared after the rule above so it
+     wins on order, since the two selectors carry the same specificity */
+  .proj--rail .proj-row--wide .proj-row-media { grid-column: 1 / -1; }
 
   /* Fig. 01 pairs its caption with the ladder rather than running 1,400px wide */
   .proj--rail .proj-figblock > .proj-ladder { grid-column: 2; }
 
+  /* a video specimen grid crosses both rails and keeps its three across —
+     six clips read as 3x2 there rather than 2x3 squeezed into one column */
+  .proj--rail .proj-sec > .proj-tiles--video {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   /* the specimen grids live in the right rail now, so they drop to two up */
-  .proj--rail .proj-tiles,
+  .proj--rail .proj-tiles:not(.proj-tiles--video),
   /* two columns inside the right rail, paired the way the facts are */
   .proj--rail .proj-contrib {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1602,17 +1729,17 @@ body.proj-collapsed .proj-id {
 }
 .proj--rail .proj-figblock-lede {
   font-size: 14px;
-  line-height: 1.65;
+  line-height: 1.55;
   color: var(--mid-500);
   margin-top: 10px;
   max-width: 22rem;
 }
 
-/* 13px was set for a full-bleed column. In a 530fr rail it reads cramped, and
-   the reference runs 16px. */
+/* Body text matches the home page — one reading size across the site, rather
+   than the project pages running their own. */
 .proj--rail .proj-prose p:not(.proj-thesis),
 .proj--rail .proj-row-copy p:not(.proj-thesis),
-.proj--rail .proj-contrib dd { font-size: 14.5px; line-height: 1.65; }
+.proj--rail .proj-contrib dd { font-size: 14px; line-height: 1.55; }
 
 /* The rail already sets the measure. A second cap at --measure left ~100px of
    dead space on the right of every paragraph, which read as the whole page
@@ -1628,7 +1755,7 @@ body.proj-collapsed .proj-id {
 .proj--rail .proj-row-copy .proj-tile-name {
   display: block;
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: -0.01em;
   color: var(--black);
   margin-bottom: 8px;
@@ -1664,9 +1791,10 @@ h4.proj-demo-name { margin-bottom: 8px; }
     align-items: start;
   }
   .proj--rail .proj-head > .proj-id-row { grid-column: 1 / -1; }
-  .proj--rail .proj-head > .proj-facts,
-  .proj--rail .proj-head > .proj-linkline { grid-column: 1; }
+  .proj--rail .proj-head > .proj-facts { grid-column: 1; }
   .proj--rail .proj-head > .proj-summary { grid-column: 2; grid-row: 2 / span 2; }
+  /* the links follow the overview down its own column */
+  .proj--rail .proj-head > .proj-linkline { grid-column: 2; grid-row: 4; }
 
   /* two columns, paired inside the left rail rather than spanning past it */
   .proj--rail .proj-facts {
@@ -1674,6 +1802,7 @@ h4.proj-demo-name { margin-bottom: 8px; }
     column-gap: 24px;
   }
   .proj--rail .proj-linkline { margin-top: 0; }
+  /* the head's row-gap already sets it off from the prose above */
 }
 
 /* ── the ladder, static ───────────────────────────────────────────────────── */
@@ -1691,7 +1820,7 @@ h4.proj-demo-name { margin-bottom: 8px; }
 .proj-ladder-desc,
 .proj-ladder-control { margin: 10px 0 0; }
 .proj-ladder-desc {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.7;
   color: var(--mid-500);
 }
@@ -1699,13 +1828,11 @@ h4.proj-demo-name { margin-bottom: 8px; }
 /* the closing brand figure and the placeholder under it read as one beat */
 
 /* ── the head's type, matched to the sections ─────────────────────────────── */
-/* The overview was set a step smaller than everything under it: 13px body
-   against the sections' 14.5px, and fact values 13px against the identical
-   dt/dd pairs in §02 at 14.5px. Same line-height ratio, so only the size and
-   the title's tracking were out. */
+/* The overview and the facts read at the same size as everything under them,
+   which is the site's one body size. */
 @media (min-width: 1000px) {
   .proj--rail .proj-summary p,
-  .proj--rail .proj-fact dd { font-size: 14.5px; line-height: 1.65; }
+  .proj--rail .proj-fact dd { font-size: 14px; line-height: 1.55; }
 
   /* the id row and the section labels sit on the same string device, so they
      should track alike — 0.12em either way, rather than 0.02em against 0.12em */
@@ -1736,7 +1863,7 @@ h4.proj-demo-name { margin-bottom: 8px; }
 .proj-row-cta { margin-top: 14px; }
 .proj-row-cta a {
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--black);
   border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent);
   transition: color 0.15s ease, border-color 0.15s ease;

@@ -11,7 +11,7 @@
 .cmu-subtitle{white-space:nowrap;margin:24px 0 0;font-size:1.5rem;line-height:1.02;letter-spacing:-.04em;font-weight:400;color:var(--mid)}
 .cmu-hero-line{max-width:720px;margin:18px 0 0;color:var(--mid);font-size:18px;line-height:1.6}
 .cmu-hero-media,.cmu-process-tile{overflow:hidden}
-.cmu-hero-media{margin-top:56px;aspect-ratio:16/9;border:1px solid var(--line);border-radius:var(--radius-diagram);background:var(--accent-light)}
+.cmu-hero-media{margin-top:56px;aspect-ratio:16/9;border:1px solid var(--line);border-radius:var(--media-radius);background:var(--accent-light)}
 .cmu-hero-media img,.cmu-process-tile img,.cmu-video video{width:100%;height:100%;object-fit:cover;display:block}
 .cmu-image img{width:100%;height:auto;display:block}
 
@@ -37,7 +37,10 @@
 .cmu-image{margin:42px 0}.cmu-image img{border:1px solid var(--line);border-radius:var(--radius-card);background:var(--accent-light);box-shadow:var(--shadow-card)}
 .cmu-caption{margin-top:12px;color:var(--mid);font-size:14px;line-height:1.5}
 
-.cmu-tool-list{display:grid;grid-template-columns:repeat(3,1fr);gap:46px 24px}.cmu-tool-item{min-width:0}
+.cmu-tool-list{display:grid;grid-template-columns:repeat(3,1fr);gap:46px 24px}
+/* the tool list runs the whole section rather than sitting in the copy column,
+   so three tools across get the full page width instead of a third of it */
+.cmu-grid>.cmu-tool-list--full{grid-column:1/-1}.cmu-tool-item{min-width:0}
 .cmu-video{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:var(--radius-card);border:1px solid var(--line);background:var(--accent-light);margin-bottom:16px;cursor:pointer}
 .cmu-video video{width:100%;height:100%;object-fit:cover}
 .cmu-tool-meta{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}.cmu-tool-num{font-family:var(--mono);font-size:10px;color:var(--mid);letter-spacing:.06em}.cmu-tool-tag{font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--mid)}

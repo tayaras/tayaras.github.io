@@ -138,10 +138,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     "I studied (and taught) <a href='https://design.cmu.edu/about-our-programs/undergraduate-degrees/environments' target='_blank' rel='noopener'>Hybrid Environments Design</a> at <a href='https://design.cmu.edu' target='_blank' rel='noopener'>Carnegie Mellon University</a>, where I focused on interactive experiences and speculative technology.",
 
-    "Outside of work, I am huuuge into music and love connecting with people and the world through it. I went to <span class='kw' data-photos='shows'>100+ sets in 2025</span>, play <span class='kw' data-photos='bass'>guitar and bass</span>, and I'm becoming an avid CD collector (to rip onto my modded 5.5-gen iPod Classic), with a little record collecting maybe creeping back in. I also play in bands and have organized small DIY shows across Seattle, Chicago, NYC, and Pittsburgh. I also <span class='kw' data-photos='outdoors'>climb</span>, play soccer, cook pasta (and gnocchi), find cool jackets (and pants too, now), and dig for new artists.",
+    "Outside of work, I am very into music and love connecting with people and the world through it. I went to <span class='kw' data-photos='shows'>100+ sets in 2025</span>, play <span class='kw' data-photos='bass'>guitar and bass</span>, and I'm becoming an avid CD collector (to rip onto my modded 5.5-gen iPod Classic), with a little record collecting maybe creeping back in. I also play in bands and have organized small DIY shows across Seattle, Chicago, NYC, and Pittsburgh. I also <span class='kw' data-photos='outdoors'>climb</span>, play soccer, cook pasta (and gnocchi), find cool jackets (and pants too, now), and dig for new artists.",
 
     "If you’re working on something cool, or just want to talk about music - <a href='mailto:tayaras@outlook.com'>reach out</a>."
   ];
+
 
   // contact links — shown only on the expanded view, sitting at the bottom of
   // the bio text column so they align with the photo beside it
@@ -221,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }).join('');
 
     return "<div class='home-listening'>" +
-             "<span class='home-listening-label'>Currently listening</span>" +
+             "<span class='home-listening-label'>Current favorite albums</span>" +
              (tiles ? "<ul class='home-listening-tiles'>" + tiles + "</ul>" : '') +
              (players ? "<div class='home-listening-players'>" + players + "</div>" : '') +
              (lines ? "<ul>" + lines + "</ul>" : '') +
@@ -233,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function () {
      its own aspect. Same element, same width — so the two states are one
      continuous height transition rather than a cut between two images. */
   var photoEl = document.getElementById('bioPhoto');
-  var PHOTO_RATIO = 4000 / 6000;  // natural aspect of images/main/IMG_amber-fort.webp
+  var PHOTO_RATIO = 2023 / 1914;  // natural aspect of images/main/IMG_beach.webp
 
   /* Expanded, the photo opens toward its own aspect but stops at a square:
      this one is a 2:3 portrait, and at full aspect it stands half again as
@@ -365,13 +366,13 @@ document.addEventListener('DOMContentLoaded', function () {
    the foot of its meta column, where CSS slides it out from the column's left
    edge on hover and lands it under the years line. Built here rather
    than in the markup so the name lives in exactly one place. The
-   .has-media-title class is what lets the string row collapse its small label:
-   the smaller sections keep theirs, since their columns are shared with a
-   thumbnail and there is no room for display type. */
+   .has-media-title class is what lets the string row collapse its small label.
+   The Additional sections do the same: their meta column is the same width as
+   a full section's, so there is room for the name to ride into. */
 (function () {
   [].forEach.call(document.querySelectorAll('.home-fret:not([data-primary])'), function (fret) {
     var label = fret.querySelector('.home-label');
-    var copy = fret.querySelector('.home-content:not(.home-content--small) .home-copy');
+    var copy = fret.querySelector('.home-copy');
     if (!label || !copy || copy.querySelector('.home-hover-title')) return;
 
     var mask = document.createElement('span');
@@ -385,7 +386,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // it belongs to the meta column now, as the line under the years — the
     // copy column is only the fallback for a section without a meta block
-    var meta = fret.querySelector('.home-content:not(.home-content--small) .home-meta');
+    var meta = fret.querySelector('.home-meta');
     if (meta) {
       meta.appendChild(mask);
     } else {
@@ -503,7 +504,12 @@ document.addEventListener('DOMContentLoaded', function () {
   function hide(key) { pools[key].forEach(function (el) { el.classList.remove('visible'); }); }
 
   var pinnedKey = null;
-  function unpin() { if (!pinnedKey) return; hide(pinnedKey); pinnedKey = null; }
+  function unpin() {
+    if (!pinnedKey) return;
+    hide(pinnedKey);
+    pinnedKey = null;
+    document.querySelectorAll('.kw.is-pinned').forEach(function (el) { el.classList.remove('is-pinned'); });
+  }
 
   window.__initScatterLinks = function () {
     document.querySelectorAll('.kw').forEach(function (kw) {
@@ -513,7 +519,13 @@ document.addEventListener('DOMContentLoaded', function () {
       kw.setAttribute('data-scatter-bound', '1');
       kw.addEventListener('mouseenter', function () { if (pinnedKey && pinnedKey !== key) unpin(); show(key); });
       kw.addEventListener('mouseleave', function () { if (pinnedKey === key) return; hide(key); });
-      kw.addEventListener('click', function () { if (pinnedKey === key) unpin(); else { if (pinnedKey) unpin(); pinnedKey = key; show(key); } });
+      kw.addEventListener('click', function () {
+        if (pinnedKey === key) { unpin(); }
+        else { if (pinnedKey) unpin(); pinnedKey = key; show(key); }
+        // the glow holds steady while a keyword is pinned open
+        document.querySelectorAll('.kw.is-pinned').forEach(function (el) { el.classList.remove('is-pinned'); });
+        if (pinnedKey === key) kw.classList.add('is-pinned');
+      });
     });
   };
 
