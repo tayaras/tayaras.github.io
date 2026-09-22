@@ -148,9 +148,11 @@ document.addEventListener('DOMContentLoaded', function () {
   // the bio text column so they align with the photo beside it
   var LINKS =
     "<div class='home-about-links'>" +
-      // opens the list in a dialog rather than a page — it is a credits list,
-      // not a destination. Styled as a link because it sits in a row of them.
-      "<button type='button' class='home-about-link-btn' data-exhibits-open>Exhibitions &amp; Performances</button>" +
+      // Shelved for now — uncomment this line and the exhibitsModal dialog in
+      // index.html to bring the list back. It opens in a dialog rather than a
+      // page (it is a credits list, not a destination), styled as a link
+      // because it sits in a row of them.
+      // "<button type='button' class='home-about-link-btn' data-exhibits-open>Exhibitions &amp; Performances</button>" +
       "<a href='mailto:tayaras@outlook.com'>Email ↗</a>" +
       "<a href='https://www.linkedin.com/in/tayaras/' target='_blank' rel='noopener'>LinkedIn ↗</a>" +
       "<a href='https://nowhereinteresting.online' target='_blank' rel='noopener'>Studio ↗</a>" +

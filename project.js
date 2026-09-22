@@ -45,7 +45,9 @@ document.addEventListener('DOMContentLoaded', function () {
      home page packs down to. So the article itself contributes five. */
   var STRINGS = 6;
   var IN_ARTICLE = STRINGS - 1;          // the header supplies the sixth
-  var SCALE = [277.18, 246.94, 207.65, 185.00, 164.81];
+  // standard tuning minus the top E, which the header string supplies:
+  // B3 G3 D3 A2 E2, high → low, the order the rows read
+  var SCALE = [246.94, 196.00, 146.83, 110.00, 82.41];
   var rows = [].slice.call(document.querySelectorAll('.proj-string-row'));
   var projStrings = [];                  // one GuitarString per real row
   var fillerStrings = [];                // the spares that appear when compressed

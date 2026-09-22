@@ -394,7 +394,9 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 .home-content--bio .home-copy p:nth-of-type(2) { color: var(--mid-500); }
 .home-content--bio .home-copy.is-expanded p:not(:first-of-type):not(:last-of-type) { color: var(--mid-500); }
 .home-copy p + p { margin-top: 1em; }
-.home-copy a { color: inherit; text-decoration: none; border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent); transition: color 0.15s ease; }
+.home-copy a,
+/* a CTA with no page to link to yet — a span, styled like the links beside it */
+.home-copy span.home-cta { color: inherit; text-decoration: none; border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent); transition: color 0.15s ease; }
 .home-copy a:hover { color: #001EFF; }
 
 /* expanded "more about me" — the copy keeps its column (the photo holds the

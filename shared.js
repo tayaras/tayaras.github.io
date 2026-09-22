@@ -168,10 +168,9 @@ class StringsPanel {
     this.grid = document.getElementById('stringsGrid');
     this.open = false;
     this.strings = [];
-    const path = window.location.pathname;
-    this.tuning = path.includes('about')
-      ? [277.18, 220.00, 164.81, 110.00, 82.41]
-      : [246.94, 207.65, 164.81, 123.47, 82.41];
+    // B3 G3 D3 A2 E2 — standard tuning under the header's top E, so the
+    // header string plus this grid reads as a normal guitar: E A D G B E
+    this.tuning = [246.94, 196.00, 146.83, 110.00, 82.41];
     if (!this.btn) return;   // pages without the header dropdown (e.g. home) skip this
     this.btn.addEventListener('click', () => this.toggle());
   }
@@ -336,9 +335,8 @@ class PortfolioApp {
     const zone = document.getElementById('singleZone');
     const path = document.getElementById('singlePath');
     if (!zone || !path) return;
-    const path_ = window.location.pathname;
-    const freq = path_.includes('about') ? 246.94 : 329.63;
-    this.mainString = new GuitarString(zone, path, freq);
+    // the top string of a standard-tuned guitar, on every page
+    this.mainString = new GuitarString(zone, path, 329.63);
   }
 
   showControls() {
