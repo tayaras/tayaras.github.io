@@ -130,8 +130,82 @@ document.addEventListener('DOMContentLoaded', function () {
       var rect = content.getBoundingClientRect();
       var below = pointer.y > rect.bottom || rect.bottom < window.innerHeight / 2;
       content.classList.toggle('is-open', open);
+      if (demo) demo(open);
+      if (clip) clip(open);
       if (!open && below && fret.nextElementSibling) holdStill(fret.nextElementSibling, 800);
     }
+
+    /* A live demo in place of the photo (UI Library: data-demo on its
+       .home-media). It loads the first time the row opens, fades in over the
+       photo once the photo has grown, and fades back out on close — staying
+       loaded, so the next open is instant. It's drawn at a desktop size and
+       scaled to the box, so the whole call layout fits. */
+    /* A video in place of the photo (XR: data-video on its .home-media, the
+       path without its extension — .webm and .mp4 both exist). Loaded on the
+       first open, then it plays muted and looping from the start each time
+       the row opens, and pauses as the row closes, fading back to the photo. */
+    var vMedia = content.querySelector('.home-media[data-video]');
+    var clip = vMedia && (function () {
+      var video = null, timer = null;
+      return function (open) {
+        clearTimeout(timer);
+        if (!open) {
+          vMedia.classList.remove('is-demo');
+          if (video) timer = setTimeout(function () { video.pause(); }, 350);   // after the fade
+          return;
+        }
+        if (!video) {
+          video = document.createElement('video');
+          video.muted = true;
+          video.defaultMuted = true;
+          video.loop = true;
+          video.playsInline = true;
+          video.setAttribute('muted', '');
+          video.setAttribute('playsinline', '');
+          video.setAttribute('aria-hidden', 'true');
+          video.preload = 'auto';
+          ['webm', 'mp4'].forEach(function (ext) {
+            var src = document.createElement('source');
+            src.src = vMedia.dataset.video + '.' + ext;
+            src.type = 'video/' + ext;
+            video.appendChild(src);
+          });
+          vMedia.appendChild(video);
+        }
+        video.currentTime = 0;
+        var p = video.play();
+        if (p && p.catch) p.catch(function () {});   // autoplay policy; the photo stays
+        timer = setTimeout(function () {
+          if (content.classList.contains('is-open')) vMedia.classList.add('is-demo');
+        }, 450);
+      };
+    })();
+
+    var media = content.querySelector('.home-media[data-demo]');
+    var demo = media && (function () {
+      var DEMO_W = 1280, DEMO_H = 720;
+      var frame = null, timer = null;
+      function fit() { if (frame) media.style.setProperty('--demo-scale', media.clientWidth / DEMO_W); }
+      if (window.ResizeObserver) new ResizeObserver(fit).observe(media);
+      return function (open) {
+        clearTimeout(timer);
+        if (!open) { media.classList.remove('is-demo'); return; }
+        if (!frame) {
+          frame = document.createElement('iframe');
+          frame.src = media.dataset.demo;
+          frame.title = media.dataset.demoTitle || 'Live demo';
+          frame.setAttribute('allow', 'camera; microphone');
+          frame.style.width = DEMO_W + 'px';
+          frame.style.height = DEMO_H + 'px';
+          media.appendChild(frame);
+          fit();
+        }
+        // after the photo's grown (its width transition is 0.7s)
+        timer = setTimeout(function () {
+          if (content.classList.contains('is-open')) { fit(); media.classList.add('is-demo'); }
+        }, 450);
+      };
+    })();
 
     // opens on the mouse actually moving over the row — not on the page
     // scrolling a row under a mouse that's standing still

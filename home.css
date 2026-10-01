@@ -400,6 +400,41 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
 }
 .home-content--expandable.is-open .home-meta-company span { opacity: 1; transform: none; }
+/* the video that replaces the XR photo while its row is open (home.js) */
+.home-media[data-video] { overflow: hidden; }
+.home-media[data-video] video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.home-media[data-video].is-demo video { opacity: 1; }
+.home-media[data-video] img { transition: opacity 0.35s ease; }
+.home-media[data-video].is-demo img { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .home-media[data-video] video { display: none; } }
+
+/* the live demo that replaces the UI Library photo while its row is open
+   (home.js) — drawn at desktop size, scaled to the box, faded over the photo */
+.home-media[data-demo] { overflow: hidden; }
+.home-media[data-demo] iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0;
+  border-radius: inherit;
+  transform-origin: 0 0;
+  transform: scale(var(--demo-scale, 0.5));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.home-media[data-demo].is-demo iframe { opacity: 1; pointer-events: auto; }
+.home-media[data-demo] img { transition: opacity 0.35s ease; }
+.home-media[data-demo].is-demo img { opacity: 0; }
 .home-more { display: none; }
 .home-content--expandable.is-open .home-more { display: block; animation: homeMoreIn 0.5s ease 0.15s both; }
 @keyframes homeMoreIn { from { opacity: 0; } to { opacity: 1; } }
