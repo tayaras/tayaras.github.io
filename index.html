@@ -9,15 +9,18 @@
   <link rel="preconnect" href="https://use.typekit.net" crossorigin>
   <link rel="preconnect" href="https://p.typekit.net" crossorigin>
   <link rel="stylesheet" href="https://use.typekit.net/nzi3inl.css">
-  <link rel="stylesheet" href="shared.css?v=20260922">
-  <link rel="stylesheet" href="chords.css?v=20260922">
-  <link rel="stylesheet" href="home.css?v=20260922">
+  <link rel="stylesheet" href="shared.css?v=20260930">
+  <link rel="stylesheet" href="chords.css?v=20261001j">
+  <link rel="stylesheet" href="home.css?v=20261001zg">
 </head>
 <body class="stack-open">
 <a href="#main" class="skip-link">Skip to main content</a>
-<div class="scatter-stage" id="scatterStage" aria-hidden="true"></div>
 <main id="main">
   <div class="strum-home" id="strumHome">
+    <!-- the hover photos' stage. In here rather than at the top of <body> so it
+         shares the page's stacking layer: home.css slots it in front of the
+         bio photo and behind all the text. -->
+    <div class="scatter-stage" id="scatterStage" aria-hidden="true"></div>
 
     <!-- 1 · Tay Aras — bio (carries the collapse arrow on the top string) -->
     <section class="home-fret" data-primary data-freq="329.63">
@@ -43,8 +46,8 @@
       </div>
       <div class="home-panel"><div class="home-panel-inner"><div class="home-content home-content--bio">
         <div class="home-copy">
-          <p>Howdy! I'm Tay Aras, a designer and product manager focused on emergent technologies, hybrid environments, and interaction design. My work explores connection: how we can connect people to each other, and to the things they care about.</p>
-          <p>Currently at <a href="https://microsoft.com" target="_blank" rel="noopener">Microsoft</a>, building virtual communication platforms and multimodal interfaces. Also <a href="https://nowhereinteresting.online" target="_blank" rel="noopener">Nowhere Interesting</a>, a design studio &amp; lab. I studied (and taught) <a href="https://design.cmu.edu/about-our-programs/undergraduate-degrees/environments" target="_blank" rel="noopener">Hybrid Environments Design</a> at <a href="https://design.cmu.edu" target="_blank" rel="noopener">Carnegie Mellon University</a>. Outside of work, I play in bands and organize DIY shows across New York, Seattle, Chicago, and Pittsburgh. If you have any interesting ideas or want to chat about music, please <a href="mailto:tayaras@outlook.com">reach out</a>!</p>
+          <p>Tay Aras is a designer, builder, and musician. His work explores connection: how we can bring people closer to each other, and to the things they care about.</p>
+          <p>At <a href="https://microsoft.com" target="_blank" rel="noopener">Microsoft</a>, he builds virtual communication experiences and multimodal sharing products. He also runs <a href="https://nowhereinteresting.online" target="_blank" rel="noopener">Nowhere Interesting</a>, an independent design studio and creative lab working with artists, musicians, and startups.</p>
           <a class="home-cta" id="aboutExpand" href="about.html">More about me →</a>
         </div>
         <div class="home-bio-photo" id="bioPhoto"><img src="images/main/IMG_beach.webp" alt="A lone figure on a wide beach, facing the surf under heavy cloud"><!-- the same beach, moving. A video rather than an animated image so it can actually be paused: an animated webp plays on regardless of opacity, so a hover would only ever reveal it mid-loop. home.js starts it from the top on enter. --><video class="home-bio-photo-motion" muted loop playsinline preload="metadata" aria-hidden="true"><source src="images/main/run3.webm?v=20260922" type="video/webm"><source src="images/main/run3.mp4?v=20260922" type="video/mp4"></video></div>
@@ -59,15 +62,16 @@
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
       </div>
-      <div class="home-panel"><div class="home-panel-inner"><div class="home-content">
+      <div class="home-panel"><div class="home-panel-inner"><div class="home-content home-content--small home-content--expandable">
         <div class="home-media"><img loading="lazy" src="images/acs/acs-thumb.webp" alt="ACS UI Library — video calling UI"></div>
         <div class="home-meta">
-          <p class="home-meta-company">Microsoft</p>
+          <p class="home-meta-company"><span>Microsoft</span></p>
           <p class="home-meta-title">ACS UI Library</p>
           <p class="home-meta-year">2022 – Present</p>
         </div>
         <div class="home-copy">
-          <p>Product lead and designer for the ACS UI Library, the component system behind Azure Communication Services' video calling, chat, and real-time collaboration. Own the roadmap and the design work that lets product teams ship accessible, production-ready communication features without building them from scratch.</p>
+          <p>Product lead and designer for the ACS UI Library, the component system behind Azure Communication Services' video calling, chat, and real-time collaboration.</p>
+          <p class="home-more">Own the roadmap and the design work that lets product teams ship accessible, production-ready communication features without building them from scratch.</p>
           <a class="home-cta" href="ui-library.html">View project →</a>
         </div>
       </div></div></div>
@@ -81,15 +85,16 @@
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
       </div>
-      <div class="home-panel"><div class="home-panel-inner"><div class="home-content">
+      <div class="home-panel"><div class="home-panel-inner"><div class="home-content home-content--small home-content--expandable">
         <div class="home-media"><img loading="lazy" src="images/acs/copilot-thumb.webp" alt="Collective IQ — meeting intelligence interface"></div>
         <div class="home-meta">
-          <p class="home-meta-company">Microsoft</p>
+          <p class="home-meta-company"><span>Microsoft</span></p>
           <p class="home-meta-title">Collective IQ</p>
           <p class="home-meta-year">2026 – Present · NDA</p>
         </div>
         <div class="home-copy">
-          <p>Design lead for a 0-to-1 AI knowledge product built on the Microsoft 365 stack. Designed the contributor experience that lets people share what they know without exposing what was said, the web management platform behind it, and the integrations that bring it into Teams, Outlook, and web. In progress, under NDA.</p>
+          <p>Design lead for a 0-to-1 AI knowledge product built on the Microsoft 365 stack.</p>
+          <p class="home-more">Designed the contributor experience that lets people share what they know without exposing what was said, the web management platform behind it, and the integrations that bring it into Teams, Outlook, and web. In progress, under NDA.</p>
           <a class="home-cta" href="collective-iq-overview.html">View project →</a>
         </div>
       </div></div></div>
@@ -103,15 +108,16 @@
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
       </div>
-      <div class="home-panel"><div class="home-panel-inner"><div class="home-content">
+      <div class="home-panel"><div class="home-panel-inner"><div class="home-content home-content--small home-content--expandable">
         <div class="home-media"><img loading="lazy" src="images/capstone/Process/image13.webp" alt="Physicalization of AR/XR — capstone prototyping"></div>
         <div class="home-meta">
-          <p class="home-meta-company">Carnegie Mellon University</p>
+          <p class="home-meta-company"><span>Carnegie Mellon University</span></p>
           <p class="home-meta-title">Physicalization of AR/XR Experiences</p>
           <p class="home-meta-year">2022</p>
         </div>
         <div class="home-copy">
-          <p>Researched how to move augmented reality off the screen, from a digital layer on top of the world to experiences embedded in physical materials, spaces, and objects. Framed the design space and prototyped what it means for an experience to span both worlds at once.</p>
+          <p>Researched how to move augmented reality off the screen, from a digital layer on top of the world to experiences embedded in physical materials, spaces, and objects.</p>
+          <p class="home-more">Framed the design space and prototyped what it means for an experience to span both worlds at once.</p>
           <a class="home-cta" href="thesis.html">View project →</a>
         </div>
       </div></div></div>
@@ -125,15 +131,16 @@
           <svg class="string-svg" viewBox="0 0 1100 36" preserveAspectRatio="none"><path class="string-path" d="M0 19 Q 550 19 1100 19"/></svg>
         </div>
       </div>
-      <div class="home-panel"><div class="home-panel-inner"><div class="home-content">
+      <div class="home-panel"><div class="home-panel-inner"><div class="home-content home-content--small home-content--expandable">
         <div class="home-media"><video autoplay muted loop playsinline preload="metadata" poster="images/someoneinteresting/si-poster.webp" aria-label="someoneinteresting.online — a hand on screen pointing toward a nearby person, over a map"><source src="images/someoneinteresting/si-thumb.webm" type="video/webm"><source src="images/someoneinteresting/si-thumb.mp4" type="video/mp4"></video></div>
         <div class="home-meta">
-          <p class="home-meta-company">Nowhere Interesting</p>
+          <p class="home-meta-company"><span>Nowhere Interesting</span></p>
           <p class="home-meta-title">someoneinteresting.online</p>
           <p class="home-meta-year">2026</p>
         </div>
         <div class="home-copy">
-          <p>Designed and built a proximity app that points you toward a nearby stranger and tells you nothing else about them. An experiment in chance connection and how little you need to know about someone to get curious enough to meet them. About noticing the people around you, and what information can do to bring people together instead of keeping them apart.</p>
+          <p>Designed and built a proximity app that points you toward a nearby stranger and tells you nothing else about them.</p>
+          <p class="home-more">An experiment in chance connection and how little you need to know about someone to get curious enough to meet them. About noticing the people around you, and what information can do to bring people together instead of keeping them apart.</p>
           <span class="home-cta">Case study coming soon</span>
         </div>
       </div></div></div>
@@ -268,7 +275,7 @@
 
     <div class="chord-hint">
       <div class="chord-now" id="chordNow" aria-hidden="true">—</div>
-      <div class="chord-instr" aria-hidden="true">Press <span class="k">A</span>–<span class="k">G</span> to tune a chord, then strum the strings · <span class="k">Z</span> = major · <span class="k">X</span> = minor</div>
+      <div class="chord-instr" aria-hidden="true">Press <span class="k">A</span>–<span class="k">G</span> to select a chord · <span class="k">Z</span> = major · <span class="k">X</span> = minor · <span class="k">5</span> <span class="k">7</span> <span class="k">9</span> · <span class="k">S</span> = sus · <span class="k">M</span> = mute · then <span class="k">scroll</span> or press <span class="k">↑</span> <span class="k">↓</span> to strum the strings</div>
       <div class="chord-pads" id="chordPads">
         <div class="chord-pad-deck">
           <div class="chord-pad-left">
@@ -284,6 +291,10 @@
             <div class="chord-pad-col chord-pad-col--mode" role="group" aria-label="Chord quality">
               <button type="button" class="chord-pad chord-pad--mode" data-mode="major" aria-pressed="true">Major</button>
               <button type="button" class="chord-pad chord-pad--mode" data-mode="minor" aria-pressed="false">Minor</button>
+              <button type="button" class="chord-pad chord-pad--ext" data-ext="5" aria-pressed="false" aria-label="Power chord">5</button>
+              <button type="button" class="chord-pad chord-pad--ext" data-ext="7" aria-pressed="false" aria-label="Seventh">7</button>
+              <button type="button" class="chord-pad chord-pad--ext" data-ext="9" aria-pressed="false" aria-label="Ninth">9</button>
+              <button type="button" class="chord-pad chord-pad--ext" data-sus aria-pressed="false" aria-label="Suspended">Sus</button>
             </div>
           </div>
           <div class="chord-pad-col chord-pad-col--strum" role="group" aria-label="Strum the strings">
@@ -352,8 +363,11 @@
 </dialog>
 -->
 
-<script src="shared.js?v=20260922"></script>
-<script src="chords.js?v=20260922"></script>
-<script src="home.js?v=20260922"></script>
+<script src="shared.js?v=20261001m"></script>
+<script src="chords.js?v=20261001m"></script>
+<script src="live-music.js?v=20261001d"></script>
+<script src="guitar-bass.js?v=20261001d"></script>
+<script src="outdoors.js?v=20261001d"></script>
+<script src="home.js?v=20261001zh"></script>
 </body>
 </html>

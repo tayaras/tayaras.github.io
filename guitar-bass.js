@@ -1,0 +1,30 @@
+/* Guitar-and-bass photos for the home page collage (home.js) — same format
+   as live-music.js; see the notes there. */
+window.GUITAR_BASS = [
+  {"src":"images/guitar-bass/DSCN0830-900.webp","r":0.75,"keep":[[0.382,0.194,0.316,0.231]],"caption":""},
+  {"src":"images/guitar-bass/DSCN0982-900.webp","r":0.75,"keep":[[0.497,0.276,0.279,0.262]],"caption":""},
+  {"src":"images/guitar-bass/DSCN0738-900.webp","r":0.75,"keep":[[0.213,0.14,0.209,0.157],[0.561,0.35,0.156,0.117],[0.341,0.222,0.294,0.242]],"caption":""},
+  {"src":"images/guitar-bass/DSCN0874-900.webp","r":0.75,"keep":[[0.33,0.16,0.265,0.198],[0.433,0.322,0.31,0.352]],"caption":""},
+  {"src":"images/guitar-bass/IMG_2529-900.webp","r":1.665,"keep":[[0.35,0.358,0.325,0.203]],"caption":""},
+  {"src":"images/guitar-bass/IMG_9192-900.webp","r":1.333,"keep":[[0.299,0.316,0.398,0.19]],"caption":""},
+  {"src":"images/guitar-bass/112D9BE7-07F8-46BF-8BEB-DE5EDF4814D6.webp","r":0.562,"keep":[[0.328,0.377,0.31,0.253]],"caption":""},
+  {"src":"images/guitar-bass/20200320_184436.webp","r":1.333,"keep":[[0.319,0.317,0.322,0.263]],"caption":""},
+  {"src":"images/guitar-bass/2020_1224_00444800_polarr.webp","r":0.667,"keep":[[0.576,0.28,0.168,0.112],[0.449,0.32,0.238,0.224]],"caption":""},
+  {"src":"images/guitar-bass/4B1A2A1C-880C-4E2D-B585-CD6737E09B7F.webp","r":0.562,"keep":[[0.346,0.378,0.325,0.198]],"caption":""},
+  {"src":"images/guitar-bass/AAB748BD-A694-444B-93D7-4F7482691378.webp","r":0.562,"keep":[[0.322,0.388,0.273,0.182]],"caption":""},
+  {"src":"images/guitar-bass/DSCN0824.webp","r":0.75,"keep":[[0.609,0.15,0.201,0.151],[0.125,0.134,0.224,0.168],[0.292,0.252,0.35,0.289]],"caption":""},
+  {"src":"images/guitar-bass/DSCN0847.webp","r":0.75,"keep":[[0.393,0.33,0.341,0.245]],"caption":""},
+  {"src":"images/guitar-bass/DSCN0869.webp","r":0.75,"keep":[[0.38,0.274,0.288,0.216],[0.432,0.321,0.276,0.256]],"caption":""},
+  {"src":"images/guitar-bass/DSCN0995.webp","r":0.75,"keep":[[0.291,0.085,0.232,0.174],[0.431,0.214,0.291,0.283]],"caption":""},
+  {"src":"images/guitar-bass/F38E889D-155B-4A8B-B6E1-56C93A53A7CE.webp","r":0.562,"keep":[[0.397,0.363,0.334,0.203]],"caption":""},
+  {"src":"images/guitar-bass/IMG_0074.webp","r":0.561,"keep":[[0.311,0.209,0.318,0.278]],"caption":""},
+  {"src":"images/guitar-bass/IMG_0945.webp","r":1.333,"keep":[[0.24,0.237,0.276,0.275]],"caption":""},
+  {"src":"images/guitar-bass/IMG_3256.webp","r":0.75,"keep":[[0.345,0.344,0.374,0.19]],"caption":""},
+  {"src":"images/guitar-bass/IMG_3269.webp","r":0.75,"keep":[[0.401,0.269,0.265,0.198],[0.292,0.359,0.291,0.263]],"caption":""},
+  {"src":"images/guitar-bass/IMG_4823.webp","r":1.003,"keep":[[0.205,0.164,0.179,0.179],[0.786,0.319,0.136,0.137],[0.348,0.287,0.357,0.278]],"caption":""},
+  {"src":"images/guitar-bass/IMG_6685.webp","r":0.75,"keep":[[0.413,0.364,0.106,0.08],[0.358,0.245,0.354,0.264]],"caption":""},
+  {"src":"images/guitar-bass/IMG_7353.webp","r":1.333,"keep":[[0.432,0.297,0.056,0.074],[0.365,0.325,0.337,0.25]],"caption":""},
+  {"src":"images/guitar-bass/IMG_9343.webp","r":0.75,"keep":[[0.198,0.026,0.296,0.222],[0.9,0.362,0.081,0.061],[0.41,0.196,0.336,0.262]],"caption":""},
+  {"src":"images/guitar-bass/received_564693538210180.webp","r":0.927,"keep":[[0.3,0.301,0.328,0.329]],"caption":""},
+  {"src":"images/guitar-bass/received_718071589629917.webp","r":0.75,"keep":[[0.298,0.457,0.362,0.21]],"caption":""}
+];

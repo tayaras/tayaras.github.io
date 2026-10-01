@@ -73,6 +73,83 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   syncToggle();
 
+  // Shared by the hover rows below. `pointer` is where the mouse last really
+  // was: a pointermove whose position hasn't changed is the browser re-testing
+  // hover after a scroll, not the reader moving. Updated on the document, so it
+  // still holds the previous position while a row's own listener runs.
+  var pointer = {
+    x: -1, y: -1,
+    moved: function (e) { return e.clientX !== pointer.x || e.clientY !== pointer.y; }
+  };
+  document.addEventListener('pointermove', function (e) { pointer.x = e.clientX; pointer.y = e.clientY; });
+  // the reader scrolling cancels any row that was about to open under the
+  // cursor — but not holdStill's own correcting scroll
+  var pendingOpens = [];
+  var anchoring = 0;
+  window.addEventListener('scroll', function () {
+    if (!anchoring) pendingOpens.forEach(function (fn) { fn(); });
+  }, { passive: true });
+  // keep `el` at the same spot on screen for `ms`, scrolling by however far
+  // the layout above it moves it — a manual scroll anchor (CSS scroll anchoring
+  // is off on this page so the two don't both correct; Safari has none anyway)
+  function holdStill(el, ms) {
+    var start = el.getBoundingClientRect().top;
+    var end = performance.now() + ms;
+    anchoring++;
+    (function step() {
+      var d = el.getBoundingClientRect().top - start;
+      // instant: the page's scroll-behavior: smooth would otherwise turn each
+      // frame's correction into an animation that the next one interrupts
+      if (d) window.scrollBy({ top: d, behavior: 'instant' });
+      if (performance.now() < end) requestAnimationFrame(step);
+      else setTimeout(function () { anchoring--; }, 50);   // let the last scroll event land first
+    })();
+  }
+
+  // The four main projects open in place on hover: the compact row grows to
+  // its full size and adds the rest of the description. A click goes to the
+  // project's page, like every other row (below).
+  document.querySelectorAll('.home-content--expandable').forEach(function (content) {
+    var fret = content.closest('.home-fret');
+
+    // Resting on a row for HOVER_OPEN ms opens it, and it closes HOVER_CLOSE ms
+    // after the pointer leaves — the delays keep a pass down the page from
+    // opening every row it crosses.
+    var HOVER_OPEN = 450, HOVER_CLOSE = 300;
+    var openTimer = null, closeTimer = null;
+    function cancelOpen() { clearTimeout(openTimer); openTimer = null; }
+    function cancelClose() { clearTimeout(closeTimer); closeTimer = null; }
+    pendingOpens.push(cancelOpen);
+
+    // Closing a row shrinks it, which pulls everything under it up the page.
+    // When the reader is below the row (the pointer left through its bottom, or
+    // the row sits in the top half of the screen), hold the next section still
+    // through the collapse instead, so what they're looking at doesn't move.
+    function setOpen(open) {
+      if (open === content.classList.contains('is-open')) return;
+      var rect = content.getBoundingClientRect();
+      var below = pointer.y > rect.bottom || rect.bottom < window.innerHeight / 2;
+      content.classList.toggle('is-open', open);
+      if (!open && below && fret.nextElementSibling) holdStill(fret.nextElementSibling, 800);
+    }
+
+    // opens on the mouse actually moving over the row — not on the page
+    // scrolling a row under a mouse that's standing still
+    content.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse' || !pointer.moved(e)) return;
+      cancelClose();   // came back before it closed
+      if (openTimer || content.classList.contains('is-open')) return;
+      openTimer = setTimeout(function () { openTimer = null; setOpen(true); }, HOVER_OPEN);
+    });
+    content.addEventListener('pointerleave', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      cancelOpen();
+      if (!content.classList.contains('is-open')) return;
+      cancelClose();
+      closeTimer = setTimeout(function () { closeTimer = null; setOpen(false); }, HOVER_CLOSE);
+    });
+  });
+
   // make each project section clickable → open its project page. Strumming the
   // string and real links/buttons still work; the "View project" link stays for
   // keyboard/screen-reader users.
@@ -101,48 +178,187 @@ document.addEventListener('DOMContentLoaded', function () {
     if (app.muteBtn) app.muteBtn.show();
   }
 
+  // The page loads muted (the button red). When a string click turns sound
+  // on, the mute button glows like the collapse arrow beside it, pointing at
+  // the way back to quiet, until someone clicks it.
+  var muteEl = document.getElementById('muteBtn');
+  if (muteEl) document.addEventListener('tay:mute', function (e) {
+    if (e.detail.source === 'string') muteEl.classList.add('pulse');
+    else if (e.detail.source === 'button') muteEl.classList.remove('pulse');
+  });
+
+  // ── Scroll strum: while compressed, a two-finger scroll over the strings
+  //    moves a pick across them. Each string sounds as the pick crosses it,
+  //    so the scroll's speed is the strum's speed — and how hard it's hit.
+  //    Reversing mid-gesture strums back the other way (down-up-down), and
+  //    a fresh swipe the same way starts a new stroke from the top again
+  //    (down-down-down), or the bottom (up-up-up).
+  (function () {
+    var PX_PER_STRING = 34;   // scroll distance between one string and the next
+    var MIN_DELTA = 2;        // smaller scroll events (trackpad jitter) are ignored
+    var REVERSE_PX = 18;      // scroll the other way this far before the pick turns
+    var GAP_MS = 70;          // a pause this long between scroll events ends a swipe
+    // Fingers moving down the trackpad strum down (top string first). With
+    // macOS natural scrolling that's a negative deltaY; flip to 1 if not.
+    var DOWN = -1;
+    var EDGE = 1;             // how far past the outer strings the pick rests — a
+                              // string's worth of run-up before the first one sounds
+    var pick = -EDGE, lastT = 0;
+    // A trackpad keeps sending momentum events after the fingers lift, so the
+    // next swipe often arrives with no pause at all. Momentum only ever slows;
+    // a swipe speeds up. So: once the deltas have fallen to half their peak,
+    // a jump back up off their low point is a new swipe.
+    var peak = 0, trough = Infinity, decaying = false;
+    var queueEnd = 0;         // when the last scheduled pluck sounds
+    var moveDir = 0, reverse = 0;   // the pick's direction, and travel banked against it
+
+    function pluckNow(gs, v) {
+      var r = gs.zone.getBoundingClientRect();
+      // seed the velocity tracker so pluck() reads exactly speed v (0–1)
+      gs.lastT = performance.now() - 30;
+      gs.lastX = 60 - v * 54;
+      gs.pluck(r.left + 60, r.top + r.height / 2);
+    }
+
+    // One queue, played strictly in order by a single timer — separate
+    // setTimeouts a few ms apart can fire out of order, which scrambles a
+    // fast strum. Each entry waits for its own time, or the one before it.
+    var queue = [], running = false;
+    function pluckAt(gs, v, at) {
+      queue.push({ gs: gs, v: v, at: at });
+      if (!running) run();
+    }
+    function run() {
+      if (!queue.length) { running = false; return; }
+      running = true;
+      var wait = queue[0].at - performance.now();
+      if (wait > 1) { setTimeout(run, wait); return; }
+      var next = queue.shift();
+      pluckNow(next.gs, next.v);
+      run();
+    }
+
+    window.addEventListener('wheel', function (e) {
+      if (opened || e.ctrlKey) return;   // expanded page scrolls normally; ctrl = pinch zoom
+      if (!e.target.closest || !e.target.closest('.strum-home')) return;
+      var strings = homeStrings.slice(0, STRINGS);
+      if (!strings.length) return;
+      e.preventDefault();
+
+      var dy = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 400 : 1);
+      if (Math.abs(dy) < MIN_DELTA) return;
+      var dir = Math.sign(dy) === DOWN ? 1 : -1;   // +1 = toward the bottom string
+      var now = performance.now();
+      var dt = now - lastT;
+      lastT = now;
+
+      var abs = Math.abs(dy);
+      // only movement the way the pick is already going can read as a new
+      // swipe by speeding up; a twitch the other way is left to REVERSE_PX
+      var sameWay = !moveDir || dir === moveDir;
+      var newSwipe = dt > GAP_MS || (sameWay && decaying && abs > trough * 2 && abs - trough >= 4);
+      if (newSwipe) { peak = abs; trough = Infinity; decaying = false; }
+      else if (sameWay) {
+        peak = Math.max(peak, abs);
+        if (abs < peak * 0.5) decaying = true;
+        if (decaying) trough = Math.min(trough, abs);
+      }
+
+      var last = strings.length - 1;
+      // a new swipe the same way as the stroke before it starts afresh from the
+      // other side — that's what makes down-down-down. "Same way" is the pick
+      // sitting past the middle in the direction it's going, so a short swipe
+      // that only reached string 4 or 5 still resets rather than finishing off.
+      if (newSwipe) {
+        if (dir > 0 && pick > last / 2) pick = -EDGE;
+        if (dir < 0 && pick < last / 2) pick = last + EDGE;
+      }
+
+      // Mid-swipe, a turn the other way has to add up to REVERSE_PX before the
+      // pick follows it — so a wobble in the fingers doesn't strum back. Once
+      // it does, the banked distance counts, so nothing is lost. A new swipe
+      // turns at once: there the change of direction is the point.
+      var travel = abs;
+      if (moveDir && dir !== moveDir && !newSwipe) {
+        reverse += abs;
+        if (reverse < REVERSE_PX) return;
+        travel = reverse;
+        peak = abs; trough = Infinity; decaying = false;   // a new direction, a new swipe shape
+      }
+      reverse = 0;
+      moveDir = dir;
+
+      var from = pick;
+      pick = Math.max(-EDGE, Math.min(last + EDGE, pick + dir * travel / PX_PER_STRING));
+
+      // speed of this movement, 0–1, which sets how hard each string is hit
+      var v = Math.min(1, Math.abs(dy) / Math.max(8, Math.min(dt, 60)) / 2.5);
+      // a new gesture shouldn't wait on the tail of the last one
+      if (newSwipe) queueEnd = 0;
+
+      // every string the pick crossed, in the order it crossed them, spaced by
+      // how long the pick takes to travel one string at this speed — so a fast
+      // flick still ripples. Queued behind anything already scheduled, so two
+      // quick scroll events can never sound their strings out of order.
+      var hit = [];
+      for (var i = 0; i <= last; i++) {
+        if (dir > 0 ? (from < i && i <= pick) : (pick <= i && i < from)) hit.push(i);
+      }
+      if (dir < 0) hit.reverse();
+      var rate = Math.abs(dy) / Math.max(8, Math.min(dt, 60));      // px per ms
+      var gap = Math.max(4, Math.min(60, PX_PER_STRING / rate));    // ms per string
+      var at = Math.max(now, queueEnd);
+      hit.forEach(function (i, k) {
+        if (k) at += gap;
+        pluckAt(strings[i], v, at);
+      });
+      if (hit.length) queueEnd = at + 4;
+    }, { passive: false });
+  })();
+
   // ── Chord keys: while compressed, A–G retune the strings to a chord and the
   //    pads mirror it for touch. Shared with the project pages via chords.js.
-  if (window.initChordKeys) {
-    window.initChordKeys({
-      strings: function () { return homeStrings.slice(0, STRINGS); },
-      isActive: function () { return !opened; }
-    });
-  }
+  var chordKeys = window.initChordKeys && window.initChordKeys({
+    strings: function () { return homeStrings.slice(0, STRINGS); },
+    isActive: function () { return !opened; }
+  });
+
+  // ── Arrow keys strum too, while compressed: ↓ a downstroke (top string
+  //    first), ↑ an upstroke — the same strum the on-screen pads play. A held
+  //    key doesn't machine-gun; each press is one stroke.
+  if (chordKeys) document.addEventListener('keydown', function (e) {
+    if (opened || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+    if (e.target && e.target.matches && e.target.matches('input, textarea, select')) return;
+    e.preventDefault();   // the compressed page has nothing to scroll to
+    // a quick flick across the strings — about a third the pads' stagger
+    if (!e.repeat) chordKeys.strum(e.key === 'ArrowDown' ? 'down' : 'up', 18);
+  });
 });
 
-/* "More about me" / "See less" — toggles the bio in place (no navigation).
-   The current copy wipes up, the content is swapped while it's hidden, then the
-   new copy wipes back down. Instant swap for reduced motion / no-JS fallback. */
+/* "More about me" / "See less" — opens the bio in place (no navigation). The
+   two short paragraphs stay put; the rest of the bio slides down beneath them,
+   and the contact links fade in beside "See less". Closing slides it back up.
+   Without JS the link simply goes to about.html. */
 (function () {
-  var start = document.getElementById('aboutExpand');
-  if (!start) return;
-  var copy = start.closest('.home-copy');
+  var cta = document.getElementById('aboutExpand');
+  if (!cta) return;
+  var copy = cta.closest('.home-copy');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var running = false;
-  var afterRender = null;   // one-shot callback fired once the new copy is in place
+  var SLIDE_MS = 550;   // matches .home-about-extra's transition
 
-  var EXPAND_CTA = '<a class="home-cta" id="aboutExpand" href="about.html">More about me →</a>';
-  var COLLAPSE_CTA = '<a class="home-cta" id="aboutCollapse" href="#">See less ←</a>';
+  // the rest of the bio — the first two paragraphs live in index.html
+  var MORE = [
+    "Through the studio he\u2019s worked on in-house projects and advised on design and product strategy, branding, product conceptualization, and speculative design.",
 
-  var SHORT = [
-    "Howdy! I'm Tay Aras, a designer and product manager focused on emergent technologies, hybrid environments, and interaction design. My work explores connection: how we can connect people to each other, and to the things they care about.",
+    "He studied (and taught) <a href='https://design.cmu.edu/about-our-programs/undergraduate-degrees/environments' target='_blank' rel='noopener'>Hybrid Environments Design</a> at <a href='https://design.cmu.edu' target='_blank' rel='noopener'>Carnegie Mellon University</a>, where he focused on interactive experiences and speculative technology.",
 
-    "Currently at <a href='https://microsoft.com' target='_blank' rel='noopener'>Microsoft</a>, building virtual communication platforms and multimodal interfaces. Also <a href='https://nowhereinteresting.online' target='_blank' rel='noopener'>Nowhere Interesting</a>, a design studio &amp; lab. I studied (and taught) <a href='https://design.cmu.edu/about-our-programs/undergraduate-degrees/environments' target='_blank' rel='noopener'>Hybrid Environments Design</a> at <a href='https://design.cmu.edu' target='_blank' rel='noopener'>Carnegie Mellon University</a>. Outside of work, I play in bands and organize DIY shows across New York, Seattle, Chicago, and Pittsburgh. If you have any interesting ideas or want to chat about music, please <a href='mailto:tayaras@outlook.com'>reach out</a>!"
+    "Outside of work, Tay is very into music and loves connecting with people and the world through it. He went to <span class='kw' data-photos='shows'>100+ sets in 2025</span>, plays <span class='kw' data-photos='bass'>guitar and bass</span>, and is becoming an avid CD collector (to rip onto his modded 5.5-gen iPod Classic), with a little record collecting and DJing back in. He plays in bands and has organized small DIY events across Seattle, Chicago, NYC, and Pittsburgh.",
+
+    "He loves <span class='kw' data-photos='outdoors'>climbing and the outdoors</span>, soccer, cooking (and eating) pasta and gnocchi, a cool jacket, and digging for new artists.",
+
+    "If you\u2019re working on something cool, or just want to talk about music, <a href='mailto:tayaras@outlook.com'>reach out</a>."
   ];
-
-  var ABOUT = [
-    "Howdy! I'm Tay Aras, a designer and product manager focused on emergent technologies, hybrid environments, and interaction design. My work explores connection: how we can connect people to each other, and to the things they care about.",
-  
-    "Currently at <a href='https://microsoft.com' target='_blank' rel='noopener'>Microsoft</a>, building virtual communication platforms and multimodal interfaces. I also run <a href='https://nowhereinteresting.online' target='_blank' rel='noopener'>Nowhere Interesting</a>, a Design Studio &amp; Lab exploring how what we make shapes how we live. Through the studio I've worked on in-house projects and advised on design and product strategy, branding, product conceptualization, and futures thinking.",
-
-    "I studied (and taught) <a href='https://design.cmu.edu/about-our-programs/undergraduate-degrees/environments' target='_blank' rel='noopener'>Hybrid Environments Design</a> at <a href='https://design.cmu.edu' target='_blank' rel='noopener'>Carnegie Mellon University</a>, where I focused on interactive experiences and speculative technology.",
-
-    "Outside of work, I am very into music and love connecting with people and the world through it. I went to <span class='kw' data-photos='shows'>100+ sets in 2025</span>, play <span class='kw' data-photos='bass'>guitar and bass</span>, and I'm becoming an avid CD collector (to rip onto my modded 5.5-gen iPod Classic), with a little record collecting maybe creeping back in. I also play in bands and have organized small DIY shows across Seattle, Chicago, NYC, and Pittsburgh. I also <span class='kw' data-photos='outdoors'>climb</span>, play soccer, cook pasta (and gnocchi), find cool jackets (and pants too, now), and dig for new artists.",
-
-    "If you’re working on something cool, or just want to talk about music - <a href='mailto:tayaras@outlook.com'>reach out</a>."
-  ];
-
 
   // contact links — shown only on the expanded view, sitting at the bottom of
   // the bio text column so they align with the photo beside it
@@ -231,136 +447,81 @@ document.addEventListener('DOMContentLoaded', function () {
            "</div>";
   }
 
-  /* The photo lives outside .home-copy (index.html) so it survives the copy
-     swap: collapsed it's a band as tall as the short copy, expanded it grows to
-     its own aspect. Same element, same width — so the two states are one
-     continuous height transition rather than a cut between two images. */
+  /* Built once: the extra paragraphs (and the albums, if any) in a slider
+     after the short copy, and a footer line holding the CTA with the contact
+     links beside it, which only show while the bio is open. */
+  var extra = document.createElement('div');
+  extra.className = 'home-about-extra';
+  extra.innerHTML = "<div class='home-about-inner'>" +
+    MORE.map(function (h) { return '<p>' + h + '</p>'; }).join('') + albumsHTML() + "</div>";
+  var inner = extra.firstChild;
+  var footer = document.createElement('div');
+  footer.className = 'home-bio-footer';
+  copy.insertBefore(extra, cta);
+  copy.insertBefore(footer, cta);
+  footer.appendChild(cta);
+  footer.insertAdjacentHTML('beforeend', LINKS);
+  var links = footer.querySelector('.home-about-links');
+  if (links) links.setAttribute('aria-hidden', 'true');
+  // wire the hover-photo keywords — deferred a tick, since the scatter code
+  // that defines this sits further down the file
+  setTimeout(function () { if (window.__initScatterLinks) window.__initScatterLinks(); }, 0);
+  extra.inert = true;   // closed: nothing in it can be tabbed to
+
+  /* The photo sits beside the copy. Collapsed it's a band as tall as the
+     short copy; open, it grows toward its own aspect but stops at a square,
+     and never ends shorter than the text — so both columns finish on the same
+     line, which puts "See less" on the photo's bottom edge. */
   var photoEl = document.getElementById('bioPhoto');
   var PHOTO_RATIO = 2023 / 1914;  // natural aspect of images/main/IMG_beach.webp
-
-  /* Expanded, the photo opens toward its own aspect but stops at a square:
-     this one is a 2:3 portrait, and at full aspect it stands half again as
-     tall as the bio beside it, stranding the contact links a long way under
-     the text. It never goes shorter than the text either — both columns end
-     on the same line, which is what puts "See less" on the photo's bottom
-     edge at every width. The height is measured with the copy's min-height
-     lifted, otherwise the two would be sizing off each other. */
   var bioRow = photoEl && photoEl.closest('.home-content');
 
-  function sizePhoto(expanded) {
+  // how tall the copy will be once the slide finishes — measured now, with
+  // the copy's min-height lifted and the slider counted at its full height
+  function openTextHeight() {
+    copy.style.minHeight = '0';
+    var h = copy.offsetHeight - extra.offsetHeight + inner.scrollHeight;
+    copy.style.minHeight = '';
+    return h;
+  }
+  function sizePhoto(open) {
     if (!photoEl) return;
     var h;
-    if (expanded) {
-      copy.style.minHeight = '0';
-      var textHeight = copy.offsetHeight;
-      copy.style.minHeight = '';
+    if (open) {
       var w = photoEl.clientWidth;
-      h = Math.max(Math.min(w / PHOTO_RATIO, w), textHeight);
+      h = Math.max(Math.min(w / PHOTO_RATIO, w), openTextHeight());
     } else {
       h = copy.offsetHeight;
     }
-    photoEl.classList.toggle('is-full', !!expanded);
+    photoEl.classList.toggle('is-full', !!open);
     if (h) (bioRow || photoEl).style.setProperty('--bio-photo-h', h + 'px');
   }
 
-  function paraHTML(paras) {
-    return paras.map(function (h) { return '<p>' + h + '</p>'; }).join('');
-  }
-  function bioHTML(paras, photo) {
-    // `photo` doubles as the "this is the expanded bio" flag
-    return paraHTML(paras) + (photo ? albumsHTML() : '');
-  }
-  /* Expanded, "See less" and the contact links share one line at the foot of
-     the column — the link out on the left, the contacts pushed over toward the
-     photo. Collapsed, the CTA stands on its own as before. */
-  function finalHTML(paras, ctaHTML, extra, photo) {
-    var tail = photo
-      ? "<div class='home-bio-footer'>" + ctaHTML + LINKS + "</div>"
-      : ctaHTML;
-    return bioHTML(paras, photo) + (extra || '') + tail;
-  }
-
-  function render(html, expanded) {
-    copy.classList.toggle('is-expanded', !!expanded);
-    copy.innerHTML = html;
-    var ex = copy.querySelector('.home-about-extra');
-    if (ex) ex.classList.add('in');   // the wipe reveals it; no separate slide
-    sizePhoto(expanded);              // photo grows/shrinks alongside the wipe-in
-    bind();
-    if (window.__initScatterLinks) window.__initScatterLinks();   // wire hover-photo keywords
-    running = false;
-    if (afterRender) { var fn = afterRender; afterRender = null; fn(); }
-  }
-
-  // collapsing removes a screenful of CV, so bring the reader back to the
-  // "More about me" link instead of leaving them stranded further down
-  function scrollToCta() {
-    var cta = document.getElementById('aboutExpand');
-    if (!cta) return;
-    requestAnimationFrame(function () {
+  var open = false;
+  function setOpen(next) {
+    open = next;
+    copy.classList.toggle('is-expanded', open);
+    extra.classList.toggle('in', open);
+    extra.inert = !open;
+    if (links) links.setAttribute('aria-hidden', open ? 'false' : 'true');
+    cta.textContent = open ? 'See less \u2190' : 'More about me \u2192';
+    cta.setAttribute('href', open ? '#' : 'about.html');
+    cta.setAttribute('aria-expanded', open ? 'true' : 'false');
+    sizePhoto(open);
+    // closing takes a screenful away — bring the reader back to the link
+    if (!open) setTimeout(function () {
       cta.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
-    });
+    }, reduce ? 0 : SLIDE_MS);
   }
+  cta.setAttribute('aria-expanded', 'false');
+  cta.addEventListener('click', function (e) { e.preventDefault(); setOpen(!open); });
 
-  // Phase 1 — wipe the current copy up: the visible band shrinks from the
-  // bottom edge upward while the block lifts slightly and fades.
-  function wipeUp(done) {
-    var fired = false;
-    function finish() { if (fired) return; fired = true; copy.removeEventListener('transitionend', onEnd); done(); }
-    function onEnd(e) { if (e.target === copy && e.propertyName === 'clip-path') finish(); }
-    copy.addEventListener('transitionend', onEnd);
-    setTimeout(finish, 520);                       // fallback if transitionend never lands
-    requestAnimationFrame(function () { copy.classList.add('wipe-out'); });
-  }
-
-  // Phase 2 — swap the content while it's hidden, then wipe it back down.
-  function wipeDown(paras, ctaHTML, extra, photo) {
-    copy.classList.remove('wipe-out');
-    copy.classList.add('wipe-primed');             // hidden, and not yet animating
-    render(finalHTML(paras, ctaHTML, extra, photo), photo);
-    // two frames: one for the new layout to settle, one to start the transition
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        copy.classList.remove('wipe-primed');
-        copy.classList.add('wipe-in');
-        setTimeout(function () { copy.classList.remove('wipe-in'); }, 700);
-      });
-    });
-  }
-
-  function toggle(paras, ctaHTML, extra, photo, done) {
-    if (running) return;
-    running = true;
-    afterRender = done || null;
-    if (reduce) { copy.classList.toggle('is-expanded', !!photo); render(finalHTML(paras, ctaHTML, extra, photo), photo); return; }
-    function go() { wipeUp(function () { wipeDown(paras, ctaHTML, extra, photo); }); }
-    var openExtra = copy.querySelector('.home-about-extra.in');
-    if (openExtra && !extra) {
-      openExtra.classList.remove('in');   // collapse: slide the CV/contacts closed first
-      setTimeout(go, 480);
-    } else {
-      go();
-    }
-  }
-
-  function bind() {
-    var ex = document.getElementById('aboutExpand');
-    var col = document.getElementById('aboutCollapse');
-    if (ex) ex.addEventListener('click', function (e) { e.preventDefault(); toggle(ABOUT, COLLAPSE_CTA, '', true); });
-    if (col) col.addEventListener('click', function (e) { e.preventDefault(); toggle(SHORT, EXPAND_CTA, '', false, scrollToCta); });
-  }
-
-  bind();
-
-  // keep the collapsed band matched to the copy as it reflows — the panel
-  // opening, a resize, a late webfont all change how tall the short bio is
-  function syncPhoto() { sizePhoto(copy.classList.contains('is-expanded')); }
-  syncPhoto();
-  window.addEventListener('resize', syncPhoto);
+  // keep the photo matched to the copy as it reflows — the panel opening, a
+  // resize, a late webfont, the slide closing all change the copy's height
+  window.addEventListener('resize', function () { sizePhoto(open); });
+  sizePhoto(false);
   if (window.ResizeObserver) {
-    new ResizeObserver(function () {
-      if (!copy.classList.contains('is-expanded')) sizePhoto(false);
-    }).observe(copy);
+    new ResizeObserver(function () { if (!open) sizePhoto(false); }).observe(copy);
   }
 })();
 
@@ -450,34 +611,14 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!stage) return;
 
   var configs = {
-    shows: [
-      { src: 'images/live-music/IMG_2143.webp', caption: 'Native Sun · Bowery Ballroom · 2026' },
-      { src: 'images/live-music/IMG_2174.webp', caption: 'Cab Ellis · Bowery Ballroom · 2026' },
-      { src: 'images/live-music/IMG_3408.webp', caption: 'Telescreens · Irving Plaza · 2025' },
-      { src: 'images/live-music/IMG_4485.webp', caption: "The Dare · Baby's All Right · 2025" },
-      { src: 'images/live-music/bw-crowd.webp', caption: 'Geese · Brooklyn Paramount · 2025' }
-    ],
-    bass: [
-      { src: 'images/guitar-bass/DSCN0830.webp' },
-      { src: 'images/guitar-bass/DSCN0982.webp' },
-      { src: 'images/guitar-bass/DSCN0738.webp' },
-      { src: 'images/guitar-bass/IMG_2529.webp' },
-      { src: 'images/guitar-bass/IMG_9192.webp' }
-    ],
-    outdoors: [
-      { src: 'images/climb/IMG_7417-2.webp', caption: 'Mt. St. Helens · Summit · 2024' },
-      { src: 'images/climb/IMG_7603-2.jpg',  caption: 'Mt. St. Helens · Above the Clouds · 2024' },
-      { src: 'images/climb/IMG_6573.webp',   caption: 'Cascade Pass · 2024' },
-      { src: 'images/climb/IMG_6991.webp',   caption: 'Snoqualmie Area · 2024' },
-      { src: 'images/climb/IMG_0211.webp',   caption: 'Oahu · 2024' }
-    ]
+    // the live-music collage — its photos, and the parts of each the
+    // collage must leave uncovered, are in live-music.js
+    shows: window.LIVE_MUSIC || [],
+    // guitar and bass — a collage too, from guitar-bass.js
+    bass: window.GUITAR_BASS || [],
+    // climbing and the outdoors — a collage too, from outdoors.js
+    outdoors: window.OUTDOORS || []
   };
-  var zoneLayouts = {
-    shows:    [ {top:5,left:6,w:232,rot:-1},{top:4,left:75,w:250,rot:3},{top:44,left:8,w:226,rot:-3},{top:47,left:74,w:242,rot:2},{top:58,left:41,w:236,rot:-2} ],
-    bass:     [ {top:5,left:7,w:230,rot:-3},{top:4,left:73,w:248,rot:2},{top:46,left:9,w:224,rot:2},{top:48,left:72,w:240,rot:-2},{top:58,left:39,w:234,rot:1} ],
-    outdoors: [ {top:5,left:7,w:234,rot:2},{top:3,left:74,w:249,rot:-2},{top:45,left:8,w:227,rot:-2},{top:46,left:73,w:242,rot:3},{top:56,left:40,w:236,rot:-1} ]
-  };
-
   function shuffled(a){ a = a.slice(); for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
   function jitter(b,r){ return b + (Math.random()-0.5)*2*r; }
 
@@ -491,7 +632,6 @@ document.addEventListener('DOMContentLoaded', function () {
       img.fetchPriority = 'low';   // never compete with the initial page load
       img.alt = cfg.caption || '';
       img.dataset.caption = cfg.caption || '';
-      img.addEventListener('click', function (e) { e.stopPropagation(); if (window.__lbOpen) window.__lbOpen(img.src, img.dataset.caption); });
       el.appendChild(img);
       stage.appendChild(el);
       return el;
@@ -505,54 +645,185 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // warm the photos during idle time so the first keyword hover is instant,
   // without adding weight to the initial (critical) page load
-  function preloadPools() { Object.keys(configs).forEach(loadPool); }
-  if ('requestIdleCallback' in window) requestIdleCallback(preloadPools, { timeout: 4000 });
-  else setTimeout(preloadPools, 2500);
-  function applyZoneLayout(key) {
-    var zones = shuffled(zoneLayouts[key]);
-    pools[key].forEach(function (el, i) {
-      var z = zones[i];
-      el.style.top = jitter(z.top,1) + '%';
-      el.style.left = jitter(z.left,1) + '%';
-      el.style.width = jitter(z.w,10) + 'px';
-      el.style.height = 'auto';
-      el.style.setProperty('--rot', jitter(z.rot,1.5) + 'deg');
+  // Each collage is dozens of photos, so nothing loads up front. A set
+  // starts loading when the pointer reaches the paragraph its keyword sits
+  // in — a moment before the keyword itself is hovered (see __initScatterLinks)
+
+  /* ─── THE COLLAGE ───
+     Each keyword fills the whole screen with a fresh collage on every hover,
+     built from a shuffled pick of its photos. The screen is tracked as a grid
+     of cells; each photo is aimed at a cell nothing covers yet and placed
+     where it fills the most of the empty screen. It may hang off the edge, but
+     never covers the parts of an earlier photo that matter — faces and the
+     main subject, the `keep` boxes from live-music.js, guitar-bass.js and
+     outdoors.js — and never buries more than COVER of one. Later photos sit
+     on top, so only their predecessors need protecting; photos that find no
+     spot on top fill the remaining gaps from underneath (second pass, below).
+     Each photo shows at most once; the size is chosen so the set has enough
+     area to fill the screen with room to spare. */
+  var TRIES = 220, COVER = 0.6, CELL = 40;
+  function layoutCollage(key) {
+    var W = window.innerWidth, H = window.innerHeight;
+    var cfgs = configs[key], N = cfgs.length;
+    // a portrait photo's width, sized so the whole pool has ~3.2 screens of
+    // area to work with, within sensible bounds
+    var base = Math.max(W * 0.18, Math.min(W * 0.3, H * 0.42, Math.sqrt(3.2 * W * H / N * 0.75)));
+    var bleed = 0.25;                       // how far a photo may hang off an edge
+    var pad = 6;                            // room for the tilt
+    var cols = Math.ceil(W / CELL), rows = Math.ceil(H / CELL);
+    var filled = new Uint8Array(cols * rows), left = cols * rows;
+    function area(r) { return Math.max(0, r.w) * Math.max(0, r.h); }
+    function inter(a, b) {
+      var x = Math.max(a.x, b.x), y = Math.max(a.y, b.y);
+      return { x: x, y: y, w: Math.min(a.x + a.w, b.x + b.w) - x, h: Math.min(a.y + a.h, b.y + b.h) - y };
+    }
+    function cellsIn(r, mark) {
+      var c0 = Math.max(0, Math.floor(r.x / CELL)), c1 = Math.min(cols - 1, Math.floor((r.x + r.w - 1) / CELL));
+      var r0 = Math.max(0, Math.floor(r.y / CELL)), r1 = Math.min(rows - 1, Math.floor((r.y + r.h - 1) / CELL));
+      var n = 0;
+      for (var y = r0; y <= r1; y++) for (var x = c0; x <= c1; x++) {
+        var i = y * cols + x;
+        if (!filled[i]) { n++; if (mark) { filled[i] = 1; left--; } }
+      }
+      return n;
+    }
+    function emptyCell() {
+      var k = Math.floor(Math.random() * left);
+      for (var i = 0; i < filled.length; i++) if (!filled[i] && k-- === 0) return i;
+      return -1;
+    }
+    var placed = [];
+    var order = shuffled(cfgs.map(function (c, i) { return i; }));
+    pools[key].forEach(function (el) { el.classList.remove('visible'); el.hidden = true; });
+    for (var n = 0; n < order.length && left > 0; n++) {
+      var cfg = cfgs[order[n]], r = cfg.r || 0.75;
+      var w = base * jitter(1, 0.1) * (r > 1 ? 1.3 : 1);   // landscapes a little wider
+      var h = w / r;
+      var best = null;
+      for (var t = 0; t < TRIES; t++) {
+        var cell = emptyCell(); if (cell < 0) break;
+        var cx = (cell % cols + Math.random()) * CELL, cy = (Math.floor(cell / cols) + Math.random()) * CELL;
+        var x = Math.max(-w * bleed, Math.min(W - w * (1 - bleed), cx - Math.random() * w));
+        var y = Math.max(-h * bleed, Math.min(H - h * (1 - bleed), cy - Math.random() * h));
+        var c = { x: x, y: y, w: w, h: h };
+        // its own faces and subject stay on screen
+        var self = (cfg.keep || []).every(function (b) {
+          var kx = x + b[0] * w, ky = y + b[1] * h;
+          return kx >= 0 && ky >= 0 && kx + b[2] * w <= W && ky + b[3] * h <= H;
+        });
+        if (!self) continue;
+        var grown = { x: c.x - pad, y: c.y - pad, w: c.w + 2 * pad, h: c.h + 2 * pad };
+        var ok = true;
+        for (var p = 0; p < placed.length && ok; p++) {
+          var P = placed[p], o = area(inter(grown, P.rect));
+          if (!o) continue;
+          if (o > P.free) { ok = false; break; }
+          for (var k = 0; k < P.keep.length; k++) if (area(inter(grown, P.keep[k])) > 0) { ok = false; break; }
+        }
+        if (!ok) continue;
+        var gain = cellsIn(c, false);
+        if (!best || gain > best.gain) best = { rect: c, gain: gain };
+      }
+      if (!best || !best.gain) continue;
+      var R = best.rect;
+      cellsIn(R, true);
+      placed.forEach(function (P) { var o = area(inter(R, P.rect)); if (o) P.free -= o; });
+      placed.push({
+        idx: order[n], rect: R, free: area(R) * COVER,
+        keep: (cfg.keep || []).map(function (b) { return { x: R.x + b[0] * R.w, y: R.y + b[1] * R.h, w: b[2] * R.w, h: b[3] * R.h }; })
+      });
+    }
+    /* Second pass: whatever's left still shows through. The photos that found
+       no spot on top go underneath instead, aimed at the gaps — under
+       everything they cover nothing, so the only rules are that their own
+       faces and subject aren't hidden and enough of them shows to read. */
+    var under = [];
+    var used = {}; placed.forEach(function (P) { used[P.idx] = 1; });
+    var spare = order.filter(function (i) { return !used[i]; });
+    for (var s2 = 0; s2 < spare.length && left > 0; s2++) {
+      var cfg2 = cfgs[spare[s2]], r2 = cfg2.r || 0.75;
+      var w2 = base * jitter(1.1, 0.1) * (r2 > 1 ? 1.3 : 1), h2 = w2 / r2;
+      var above = placed.concat(under), best2 = null;
+      for (var t2 = 0; t2 < TRIES; t2++) {
+        var cell2 = emptyCell(); if (cell2 < 0) break;
+        var gx = (cell2 % cols + Math.random()) * CELL, gy = (Math.floor(cell2 / cols) + Math.random()) * CELL;
+        var x2 = Math.max(-w2 * bleed, Math.min(W - w2 * (1 - bleed), gx - Math.random() * w2));
+        var y2 = Math.max(-h2 * bleed, Math.min(H - h2 * (1 - bleed), gy - Math.random() * h2));
+        var c2 = { x: x2, y: y2, w: w2, h: h2 };
+        var keep2 = (cfg2.keep || []).map(function (b) { return { x: x2 + b[0] * w2, y: y2 + b[1] * h2, w: b[2] * w2, h: b[3] * h2 }; });
+        var ok2 = keep2.every(function (k) {
+          return k.x >= 0 && k.y >= 0 && k.x + k.w <= W && k.y + k.h <= H &&
+            above.every(function (A) { return !area(inter(k, A.rect)); });
+        });
+        if (!ok2) continue;
+        var hidden2 = 0; above.forEach(function (A) { hidden2 += area(inter(c2, A.rect)); });
+        if (hidden2 > area(c2) * 0.85) continue;   // at least a sixth of it shows
+        var gain2 = cellsIn(c2, false);
+        if (!best2 || gain2 > best2.gain) best2 = { rect: c2, keep: keep2, gain: gain2 };
+      }
+      if (!best2 || !best2.gain) continue;
+      cellsIn(best2.rect, true);
+      under.push({ idx: spare[s2], rect: best2.rect, keep: best2.keep });
+    }
+    // bottom of the stack first: the last photo slid under is the lowest
+    placed = under.reverse().concat(placed);
+
+    placed.forEach(function (P, i) {
+      var el = pools[key][P.idx];
+      el.hidden = false;
+      el.style.left = P.rect.x + 'px';
+      el.style.top = P.rect.y + 'px';
+      el.style.width = P.rect.w + 'px';
+      el.style.height = P.rect.h + 'px';
+      el.style.zIndex = i + 1;
+      el.style.transitionDelay = Math.min(i * 14, 260) + 'ms';   // they land one after another
+      el.style.setProperty('--rot', jitter(0, 2.2) + 'deg');
+      var img = el.querySelector('img');
+      if (img && !img.src) img.src = img.dataset.src;
+    });
+    return placed.map(function (P) { return pools[key][P.idx]; });
+  }
+
+  // while a collage is up, body.collage-on hides the rest of the page, so
+  // only the photos and the hovered keyword (.is-active) are left on screen
+  var showing = {}, current = null;
+  function show(key, kw) {
+    if (current && current !== key) hide(current);
+    current = key;
+    showing[key] = layoutCollage(key);
+    document.body.classList.add('collage-on');
+    if (kw) kw.classList.add('is-active');
+    // fade in on the next frame — unless the pointer has already left, in
+    // which case a late fade-in would strand the photos on screen
+    // read a layout first: the photos were display:none a moment ago, and
+    // without this the browser applies "shown" and "visible" in one go, so
+    // there's nothing to fade from and they just appear
+    void stage.offsetWidth;
+    requestAnimationFrame(function () {
+      if (current !== key) return;
+      showing[key].forEach(function (el) { el.classList.add('visible'); });
     });
   }
-  function show(key) { loadPool(key); applyZoneLayout(key); pools[key].forEach(function (el) { el.classList.add('visible'); }); }
-  function hide(key) { pools[key].forEach(function (el) { el.classList.remove('visible'); }); }
-
-  var pinnedKey = null;
-  function unpin() {
-    if (!pinnedKey) return;
-    hide(pinnedKey);
-    pinnedKey = null;
-    document.querySelectorAll('.kw.is-pinned').forEach(function (el) { el.classList.remove('is-pinned'); });
+  function hide(key) {
+    if (current === key) current = null;
+    document.body.classList.remove('collage-on');
+    document.querySelectorAll('.kw.is-active').forEach(function (el) { el.classList.remove('is-active'); });
+    pools[key].forEach(function (el) { el.style.transitionDelay = '0ms'; el.classList.remove('visible'); });
   }
 
+  // hover only — a click on a keyword does nothing
   window.__initScatterLinks = function () {
     document.querySelectorAll('.kw').forEach(function (kw) {
       if (kw.getAttribute('data-scatter-bound')) return;
       var key = kw.dataset.photos;
       if (!pools[key]) return;
       kw.setAttribute('data-scatter-bound', '1');
-      kw.addEventListener('mouseenter', function () { if (pinnedKey && pinnedKey !== key) unpin(); show(key); });
-      kw.addEventListener('mouseleave', function () { if (pinnedKey === key) return; hide(key); });
-      kw.addEventListener('click', function () {
-        if (pinnedKey === key) { unpin(); }
-        else { if (pinnedKey) unpin(); pinnedKey = key; show(key); }
-        // the glow holds steady while a keyword is pinned open
-        document.querySelectorAll('.kw.is-pinned').forEach(function (el) { el.classList.remove('is-pinned'); });
-        if (pinnedKey === key) kw.classList.add('is-pinned');
-      });
+      var para = kw.closest('p');
+      if (para) para.addEventListener('pointerenter', function () { loadPool(key); }, { once: true });
+      kw.addEventListener('mouseenter', function () { loadPool(key); show(key, kw); });
+      kw.addEventListener('mouseleave', function () { hide(key); });
     });
   };
-
-  document.addEventListener('click', function (e) {
-    if (!pinnedKey) return;
-    if (e.target.closest('.scatter-img img') || e.target.closest('.kw')) return;
-    unpin();
-  });
 })();
 
 

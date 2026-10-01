@@ -40,6 +40,43 @@ body.chords-visible .chord-hint { opacity: 1; height: auto; overflow: visible; }
   margin-top: 10px;
 }
 .chord-instr .k { color: var(--black); font-weight: 700; }
+.chord-instr[hidden] { display: none; }
+
+/* the Guide button that opens it — glows (the same blue pulse as the home
+   page's collapse arrow) until it's been opened once */
+.chord-guide {
+  appearance: none;
+  margin-top: 10px;
+  padding: 5px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mid);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.chord-guide:hover { border-color: var(--mid); color: var(--black); }
+.chord-guide.is-open { color: #ff2d2d; border-color: #ff2d2d; }
+body.chords-visible .chord-guide { pointer-events: auto; }
+@keyframes chordGuideGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0), 0 0 0 0 rgba(59, 130, 246, 0);
+    border-color: var(--line);
+    color: var(--mid);
+  }
+  50% {
+    box-shadow: 0 0 10px 1px rgba(59, 130, 246, 0.55), 0 0 22px 6px rgba(59, 130, 246, 0.28);
+    border-color: rgba(59, 130, 246, 0.95);
+    color: rgba(59, 130, 246, 1);
+  }
+}
+.chord-guide.pulse { animation: chordGuideGlow 2.2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .chord-guide.pulse { animation: none; } }
 
 /* on-screen chord keys — a clickable mirror of the A–G / Z / X shortcuts.
    Desktop: one horizontal row. Touch: stacked columns (see below). */
@@ -64,7 +101,7 @@ body.chords-visible .chord-pads { pointer-events: auto; }
   min-height: 36px;
   padding: 8px 10px;
   border: 1px solid var(--line);
-  border-radius: 2px;
+  border-radius: 999px;   /* the wider pads (major/minor, strum) are pills */
   background: transparent;
   color: var(--mid);
   cursor: pointer;
@@ -72,6 +109,14 @@ body.chords-visible .chord-pads { pointer-events: auto; }
   transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 .chord-pad--mode { min-width: 72px; }
+/* the A–G keys are circles: fixed square box, no padding to stretch it */
+.chord-pad[data-root] {
+  width: 40px; height: 40px;
+  min-width: 0; min-height: 0;
+  padding: 0;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
 .chord-pad--strum {
   min-width: 104px;
   white-space: nowrap;
@@ -86,7 +131,7 @@ body.chords-visible .chord-pads { pointer-events: auto; }
 /* touch: drop the keyboard hint and stack the pads — A–G down the left with
    major/minor beside it, strum controls on the right, all thumb-sized */
 @media (max-width: 640px), (hover: none) and (pointer: coarse) {
-  .chord-instr { display: none; }
+  .chord-instr, .chord-guide { display: none; }   /* keyboard shortcuts — no use on touch */
   .chord-pads { padding: 0 4px 28px; }
   .chord-pad-deck { flex-wrap: nowrap; align-items: stretch; justify-content: space-between; gap: 16px; text-align: left; }
   .chord-pad-left { flex-wrap: nowrap; align-items: stretch; gap: 10px; }
@@ -97,11 +142,16 @@ body.chords-visible .chord-pads { pointer-events: auto; }
   .chord-pad { font-size: 15px; min-width: 54px; min-height: 46px; padding: 10px 12px; }
   .chord-pad--mode { min-width: 88px; }
   .chord-pad--strum { min-width: 124px; }
+  .chord-pad[data-root] { width: 46px; height: 46px; }
+  /* stacked, the mode and strum pads are tall blocks, which a pill radius
+     turns into ovals — round their corners to the circles' radius instead */
+  .chord-pad:not([data-root]) { border-radius: 23px; }
 }
 @media (max-width: 380px) {
   .chord-pad { min-width: 46px; font-size: 14px; padding: 10px 8px; }
   .chord-pad--mode { min-width: 72px; }
   .chord-pad--strum { min-width: 104px; font-size: 12px; }
+  .chord-pad[data-root] { width: 44px; height: 44px; padding: 0; }
 }
 
 
@@ -115,4 +165,106 @@ body.chords-visible .chord-pads { pointer-events: auto; }
   .chord-pad-left { gap: 8px; }
   .chord-pad-col { gap: 6px; }
   .chord-pad { min-height: 40px; padding: 6px 10px; font-size: 14px; }
+  .chord-pad[data-root] { width: 40px; height: 40px; min-height: 0; padding: 0; }
+}
+
+/* ─── AMP DIALS ──────────────────────────────────────────────────────────
+   Seven knobs under the pads (chords.js builds them). A ring shows the
+   setting — grey track, red where it's turned up to — with a pointer on the
+   cap, and the label swaps to the value while the dial is in use. */
+.amp-dials {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px 22px;
+  margin-top: 26px;
+}
+body.chords-visible .amp-dials { pointer-events: auto; }
+.amp-dial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 56px;
+  cursor: ns-resize;
+  touch-action: none;       /* a vertical drag turns the dial, not the page */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+.amp-dial svg { width: 40px; height: 40px; overflow: visible; }
+.amp-dial-track, .amp-dial-level { fill: none; stroke-width: 2.5; stroke-linecap: round; }
+.amp-dial-track { stroke: var(--line); }
+.amp-dial-level { stroke: #ff2d2d; transition: stroke-dasharray 0.06s linear; }
+.amp-dial-cap { fill: transparent; stroke: var(--line); stroke-width: 1; transition: stroke 0.15s; }
+.amp-dial-pointer { stroke: var(--black); stroke-width: 2; stroke-linecap: round; }
+.amp-dial:hover .amp-dial-cap, .amp-dial.is-active .amp-dial-cap { stroke: var(--mid); }
+.amp-dial:focus-visible .amp-dial-cap { stroke: var(--accent); stroke-width: 2; }
+.amp-dial-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mid-500);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.amp-dial:hover .amp-dial-label, .amp-dial.is-active .amp-dial-label, .amp-dial:focus-visible .amp-dial-label { color: var(--black); }
+@media (prefers-reduced-motion: reduce) { .amp-dial-level { transition: none; } }
+
+/* phones: one tight row of smaller knobs, to keep the deck on one screen */
+@media (max-width: 640px), (hover: none) and (pointer: coarse) {
+  .amp-dials { gap: 10px 4px; margin-top: -10px; padding: 0 4px 8px; flex-wrap: nowrap; justify-content: space-between; }
+  .amp-dial { width: 48px; gap: 4px; }
+  .amp-dial svg { width: 34px; height: 34px; }
+  .amp-dial-label { font-size: 9px; letter-spacing: 0.02em; }
+}
+
+/* Acoustic / Electric — a two-way switch on its own line under the knobs.
+   order puts it after them, and a full-width, zero-height spacer ahead of it
+   (the ::after) breaks the line, so the pill keeps its own width. */
+.amp-dials::after { content: ""; order: 1; flex-basis: 100%; height: 0; }
+.amp-type {
+  order: 2;
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px;
+}
+.amp-type-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mid);
+  padding: 7px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s, color 0.15s;
+}
+.amp-type-btn:hover { color: var(--black); }
+.amp-type-btn[aria-pressed="true"] { background: #ff2d2d; color: #fff; }
+/* the overdrive dial rests while the acoustic is on — it's still turnable,
+   ready for when the electric comes back */
+.amp-dial.is-off { opacity: 0.35; }
+@media (max-width: 640px), (hover: none) and (pointer: coarse) {
+  /* phones: the switch takes its own row above the knobs */
+  .amp-dials { flex-wrap: wrap; justify-content: space-between; row-gap: 2px; }
+  .amp-dials { justify-content: space-between; }
+  .amp-dials::after { margin-bottom: -6px; }
+  .amp-type { margin: 0 auto; }
+  /* seven knobs on one row: 7 × 44px plus the gaps fits a 360px screen */
+  .amp-dial { width: 44px; }
+  .amp-dial svg { width: 32px; height: 32px; }
+  .amp-dial-label { font-size: 8px; letter-spacing: 0; }
+  /* and the pads give back the height the switch row takes */
+  .chord-pad { min-height: 42px; }
+  .chord-pad[data-root] { width: 42px; height: 42px; }
+  .chord-pad-left, .chord-pad-col { gap: 7px; }
+  .amp-type-btn { padding: 6px 14px; font-size: 10px; }
 }

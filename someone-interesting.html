@@ -18,8 +18,8 @@
   <link rel="preconnect" href="https://use.typekit.net" crossorigin>
   <link rel="preconnect" href="https://p.typekit.net" crossorigin>
   <link rel="stylesheet" href="https://use.typekit.net/nzi3inl.css">
-  <link rel="stylesheet" href="shared.css?v=20260922">
-  <link rel="stylesheet" href="chords.css?v=20260922">
+  <link rel="stylesheet" href="shared.css?v=20260930">
+  <link rel="stylesheet" href="chords.css?v=20261001j">
   <link rel="stylesheet" href="project.css?v=20260922">
   <link rel="stylesheet" href="someone-interesting.css?v=20260922">
 </head>
@@ -294,7 +294,7 @@
     <!-- chord keys — surface only while the page is compressed, same as home -->
     <div class="chord-hint">
       <div class="chord-now" id="chordNow" aria-hidden="true">—</div>
-      <div class="chord-instr" aria-hidden="true">Press <span class="k">A</span>–<span class="k">G</span> to tune a chord, then strum the strings · <span class="k">Z</span> = major · <span class="k">X</span> = minor</div>
+      <div class="chord-instr" aria-hidden="true">Press <span class="k">A</span>–<span class="k">G</span> to select a chord, then strum the strings · <span class="k">Z</span> = major · <span class="k">X</span> = minor · <span class="k">5</span> <span class="k">7</span> <span class="k">9</span> · <span class="k">S</span> = sus · <span class="k">M</span> = mute</div>
       <div class="chord-pads" id="chordPads">
         <div class="chord-pad-deck">
           <div class="chord-pad-left">
@@ -310,6 +310,10 @@
             <div class="chord-pad-col chord-pad-col--mode" role="group" aria-label="Chord quality">
               <button type="button" class="chord-pad chord-pad--mode" data-mode="major" aria-pressed="true">Major</button>
               <button type="button" class="chord-pad chord-pad--mode" data-mode="minor" aria-pressed="false">Minor</button>
+              <button type="button" class="chord-pad chord-pad--ext" data-ext="5" aria-pressed="false" aria-label="Power chord">5</button>
+              <button type="button" class="chord-pad chord-pad--ext" data-ext="7" aria-pressed="false" aria-label="Seventh">7</button>
+              <button type="button" class="chord-pad chord-pad--ext" data-ext="9" aria-pressed="false" aria-label="Ninth">9</button>
+              <button type="button" class="chord-pad chord-pad--ext" data-sus aria-pressed="false" aria-label="Suspended">Sus</button>
             </div>
           </div>
           <div class="chord-pad-col chord-pad-col--strum" role="group" aria-label="Strum the strings">
@@ -341,8 +345,8 @@
 </footer>
 
 
-<script src="shared.js?v=20260922"></script>
-<script src="chords.js?v=20260922"></script>
+<script src="shared.js?v=20261001m"></script>
+<script src="chords.js?v=20261001m"></script>
 <script src="project.js?v=20260922"></script>
 </body>
 </html>

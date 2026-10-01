@@ -22,6 +22,8 @@
 }
 
 .strum-home {
+  /* the hover rows hold the page still themselves (holdStill in home.js) */
+  overflow-anchor: none;
   max-width: var(--max);
   margin: 0 auto;
   padding: clamp(24px, 5vw, 56px) var(--pad) 120px;
@@ -34,6 +36,20 @@
 
 /* z-index 0 on the section makes a stacking context of its own */
 .home-fret { position: relative; z-index: 0; }
+
+/* ─── LAYERS ─────────────────────────────────────────────────────────────
+   The bio's hover photos (.scatter-stage, z 1) sit in front of the bio photo
+   and behind everything else on the page, text included. That only works if
+   they share a stacking layer with both, so the bio section opts out of being
+   a layer of its own: its photo stays at the bottom (no z-index) and its row
+   and copy step up above the photos, as do all the other sections. */
+.home-fret[data-primary] { z-index: auto; }
+.home-fret[data-primary] .home-row,
+.home-content--bio .home-copy { position: relative; z-index: 2; }
+.home-fret:not([data-primary]),
+.home-divider,
+.chord-hint { z-index: 2; }
+.home-divider, .chord-hint { position: relative; }
 
 .home-row {
   display: flex;
@@ -121,16 +137,42 @@ a.home-label:hover { opacity: 0.5; }
 /* hover-photo keywords (scatter) — mirrors the about page */
 /* underline tracks the text it sits in — the bio's middle paragraphs are grey,
    so a fixed --black rule left the keywords darker than their own sentence */
-.kw { cursor: pointer; border-bottom: 1px solid currentColor; transition: opacity 0.15s; color: inherit; }
-.kw:hover, .kw.is-pinned { opacity: 0.4; }
-.scatter-stage { position: fixed; inset: 0; pointer-events: none; z-index: 200; }
+.kw { cursor: default; border-bottom: 1px solid currentColor; transition: color 0.2s ease; color: inherit; }
+/* hovering the bio's paragraphs shows what in them can be used: the links
+   take the blue they turn on their own hover, and the photo keywords go green.
+   Only the paragraphs count — not the open space under the text, which the
+   column holds to line up with the photo. */
+.home-content--bio .home-copy:has(p:hover) p a { color: #001EFF; }
+.home-content--bio .home-copy:has(p:hover) .kw { color: #00a03c; }
+/* A collage is up (home.js sets body.collage-on): the rest of the page goes
+   — every section, the header row, the footer — leaving only the photos and
+   the keyword being hovered, in white. Hidden with visibility, so nothing
+   moves and the keyword keeps its place under the pointer. */
+body.collage-on main,
+body.collage-on .copyright-footer { visibility: hidden; }
+body.collage-on .scatter-stage,
+body.collage-on .kw.is-active { visibility: visible; }
+/* (the full path outranks the bio's green hover colour) */
+body.collage-on .home-content--bio .home-copy .kw.is-active {
+  position: relative;
+  z-index: 3;           /* above the photos */
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6), 0 0 14px rgba(0, 0, 0, 0.45);
+}
+/* the stage turns white behind the photos, so any gap between them is plain
+   white rather than a glimpse of the hidden page */
+.scatter-stage { background: rgba(255, 255, 255, 0); transition: background 0.3s ease; }
+body.collage-on .scatter-stage { background: #fff; }
+.scatter-stage { position: fixed; inset: 0; pointer-events: none; z-index: 1; }   /* see LAYERS */
 .scatter-img {
   position: absolute; background: #ede9e2; opacity: 0; overflow: hidden;
-  transform: scale(0.94) rotate(var(--rot, 0deg));
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform: scale(0.96) rotate(var(--rot, 0deg));
+  /* a quick fade in (each photo a beat after the last — home.js staggers the
+     delay) and a quicker one out */
+  transition: opacity 0.35s ease, transform 0.35s ease;
 }
 .scatter-img.visible { opacity: 1; transform: scale(1) rotate(var(--rot, 0deg)); }
-.scatter-img.visible img { pointer-events: auto; cursor: zoom-in; }
+.scatter-img:not(.visible) { transition-duration: 0.18s; }
 .scatter-img img { width: 100%; height: auto; display: block; }
 [data-theme="dark"] .scatter-img { background: #252422; }
 @media (max-width: 768px) { .scatter-stage { display: none; } }
@@ -162,7 +204,7 @@ a.home-label:hover { opacity: 0.5; }
   background: transparent;
   color: var(--mid);
   cursor: pointer;
-  border-radius: 2px;
+  border-radius: 50%;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 #stackCollapse:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
@@ -184,7 +226,8 @@ a.home-label:hover { opacity: 0.5; }
     color: rgba(59, 130, 246, 1);
   }
 }
-#stackCollapse.pulse { animation: stackGlow 2.2s ease-in-out infinite; }
+#stackCollapse.pulse,
+.mute-btn.pulse { animation: stackGlow 2.2s ease-in-out infinite; }
 
 #stackCollapse svg { width: 14px; height: 14px; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
 body.stack-open #stackCollapse svg { transform: rotate(180deg); }
@@ -226,15 +269,46 @@ body:not(.stack-open) .home-fret--over .home-row {
   flex: 1 1 auto;
   border-top: 1px solid var(--line);
 }
+/* Wide screens: the mark is centred in the space between a small project
+   thumbnail and the date column — the thumbnail ends --small-thumb-n of the way
+   across the hero column, and the date starts a gap past that column, so the
+   middle is half their sum (--divider-x). The mark can't
+   know its own width to offset itself in layout, so it's placed by transform,
+   and the rule runs the full width behind it — the mark's page-coloured padding
+   breaks it, leaving the rule on either side. */
+@media (min-width: 821px) {
+  .home-divider {
+    position: relative;
+    --divider-x: calc((var(--hero-w) * (1 + var(--small-thumb-n)) + var(--home-gap)) / 2);
+  }
+  .home-divider::after {
+    position: absolute;
+    left: 0;   /* full width: the mark sits over it, so the rule runs either side */
+    right: 0;
+    top: 50%;
+  }
+  .home-divider-mark {
+    position: relative;
+    z-index: 1;
+    margin-left: var(--divider-x);
+    transform: translateX(-50%);
+    padding: 0 16px;
+    background: var(--white);
+  }
+}
 .home-divider-mark {
   flex: 0 0 auto;
+  /* set like the project headers (.home-label) — bold caps at 14px — */
   font-family: var(--sans);
   font-size: 14px;
+  font-weight: 700;
   line-height: 1.55;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  /* the grey the project descriptions use */
-  color: var(--mid-500);
+  /* — but a step lighter than their grey, so it groups the rows under it
+     without reading as one of them. Mixed toward the page colour, so it
+     softens the same way in the dark theme. */
+  color: color-mix(in srgb, var(--mid-500) 55%, var(--white));
   white-space: nowrap;
 }
 /* compressed, the stack is only strings — the divider packs away with them.
@@ -297,6 +371,38 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   padding: clamp(16px, 2.2vw, 28px) 0 clamp(20px, 3vw, 40px);
 }
 .home-content--small .home-media { width: var(--small-thumb); }
+
+/* the four main projects sit in the Additional rows' compact layout until
+   hovered, then open in place to the full-size row: the thumbnail grows to the
+   hero measure, the padding comes back, and the rest of the description (the
+   .home-more paragraph after its first sentence) is added. home.js toggles .is-open
+   on hover. */
+.home-content--expandable {
+  transition: padding 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.home-content--expandable .home-media { transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1), outline-color 0.2s ease; }
+.home-content--expandable.is-open { padding: clamp(24px, 3.5vw, 44px) 0 clamp(32px, 5vw, 72px); }
+.home-content--expandable.is-open .home-media { width: calc(100% - var(--home-gap)); }
+/* opened, the company/school slides in under the project title, out of the
+   meta column's left edge the way the title does on hover. It sits last in the
+   column (order), and holds its line while closed so nothing reflows. */
+.home-content--expandable .home-meta { display: flex; flex-direction: column; }
+.home-content--expandable .home-meta .home-meta-company { display: block; order: 1; overflow: hidden; }
+.home-content--expandable .home-meta-company span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateX(-102%);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+}
+.home-content--expandable.is-open .home-meta-company span { opacity: 1; transform: none; }
+.home-more { display: none; }
+.home-content--expandable.is-open .home-more { display: block; animation: homeMoreIn 0.5s ease 0.15s both; }
+@keyframes homeMoreIn { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .home-content--expandable, .home-content--expandable .home-media { transition: none; }
+  .home-content--expandable .home-meta-company span { transform: none; transition: opacity 0.2s ease; }
+  .home-content--expandable.is-open .home-more { animation: none; }
+}
 
 /* full project sections — same idea as --small above: the grid columns are
    untouched so meta and description stay aligned across every row, and only
@@ -386,13 +492,20 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 /* project descriptions sit a step back from the meta column (company /
    title / year); the bio at the top keeps full-contrast text */
 .home-fret:not([data-primary]) .home-copy p { color: var(--mid-500); }
-/* bio: the opening line and the closing sign-off stay full contrast, the
-   middle paragraphs step back to the same grey the project copy uses.
-   Collapsed copy is two paragraphs, so the second one is a middle one; the
-   expanded copy counts by position so paragraphs can be added or split
-   without a stray one snapping back to full contrast. */
-.home-content--bio .home-copy p:nth-of-type(2) { color: var(--mid-500); }
-.home-content--bio .home-copy.is-expanded p:not(:first-of-type):not(:last-of-type) { color: var(--mid-500); }
+/* bio: the opening line and the closing sign-off stay full contrast, every
+   paragraph between steps back to the same grey the project copy uses. The
+   short copy's paragraphs sit straight in .home-copy; the rest of the bio is
+   in the slider (.home-about-inner, built by home.js), whose last paragraph is
+   the sign-off. */
+.home-content--bio .home-copy p { color: var(--mid-500); }
+.home-content--bio .home-copy > p:first-of-type,
+.home-content--bio .home-about-inner > p:last-of-type { color: var(--black); }
+/* the slider's first paragraph carries the gap a paragraph after the short
+   copy would have — inside the slider, so it's hidden while it's closed.
+   In the bio the gaps between paragraphs are padding, not margin, so they
+   belong to the paragraphs: moving between two doesn't drop the hover. */
+.home-content--bio .home-copy p + p,
+.home-about-inner > p:first-child { margin-top: 0; padding-top: 1em; }
 .home-copy p + p { margin-top: 1em; }
 .home-copy a,
 /* a CTA with no page to link to yet — a span, styled like the links beside it */
@@ -406,13 +519,17 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
    bottom edge of the photo. min-height rather than
    align-self: stretch, because home.js sizes the photo from this column's
    own content when the bio is the taller of the two. */
+.home-content--bio .home-copy {
+  min-height: 0;
+  /* eased with the photo's own height change, so "See less" travels down
+     with the opening text instead of jumping to the bottom */
+  transition: min-height 0.62s cubic-bezier(0.16, 1, 0.3, 1);
+}
 .home-copy.is-expanded {
   display: flex;
   flex-direction: column;
   min-height: var(--bio-photo-h, 0);
 }
-/* a flex child would otherwise stretch the link's underline across the column */
-.home-copy.is-expanded > .home-cta { align-self: flex-start; }
 
 /* what's on rotation — takes the auto margin so it and the footer line below
    it travel to the bottom of the column together. home.js builds it from its
@@ -435,7 +552,18 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 .home-listening + .home-bio-footer { margin-top: 0; }
 .home-bio-footer .home-cta { margin-top: 0; }
 /* the contacts match "See less" — same family, size and underline */
-.home-bio-footer .home-about-links { margin-top: 0; padding-top: 0; gap: 32px; }
+.home-bio-footer .home-about-links { margin-top: 0; padding-top: 0; gap: 32px; transition: opacity 0.4s ease 0.15s, visibility 0.4s 0.15s; }
+/* closed, the footer is just "More about me" — the contacts wait, invisible
+   and lifted out of the line so they can't wrap it onto two rows */
+.home-bio-footer { position: relative; }
+.home-copy:not(.is-expanded) .home-bio-footer .home-about-links {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: none;
+}
 .home-bio-footer .home-about-links a,
 .home-bio-footer .home-about-links .home-about-link-btn {
   font-family: var(--mono);
@@ -521,43 +649,6 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 .album-title { color: var(--black); }
 .album-title::after { content: ' — '; color: var(--mid-500); }
 .album-artist { color: var(--mid-500); }
-
-/* ─── BIO WIPE ───────────────────────────────────────────────────────────
-   Toggling the bio wipes the old copy up (erased bottom edge upward, pulled
-   slightly up as it goes), swaps the content while it's hidden, then wipes
-   the new copy back down. home.js drives the classes.
-   The resting inset() matters: clip-path can't interpolate from `none`, so
-   without it the wipe-up would snap shut instead of animating. */
-.home-copy { clip-path: inset(0 0 0 0); }
-.home-copy.wipe-out {
-  clip-path: inset(0 0 100% 0);
-  transform: translateY(-10px);
-  opacity: 0;
-  transition: clip-path 0.42s cubic-bezier(0.65, 0, 0.35, 1),
-              transform 0.42s cubic-bezier(0.65, 0, 0.35, 1),
-              opacity 0.42s ease-in;   /* matches the wipe so the copy stays
-                                          visible while it's being erased */
-}
-/* the frame the new copy is placed in — hidden, no transition yet */
-.home-copy.wipe-primed {
-  clip-path: inset(0 0 100% 0);
-  transform: translateY(-10px);
-  opacity: 0;
-}
-.home-copy.wipe-in {
-  clip-path: inset(0 0 0 0);
-  transform: none;
-  opacity: 1;
-  transition: clip-path 0.62s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.62s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 0.40s ease;
-}
-/* the CV rides the parent's reveal rather than running its own slide */
-.home-copy.wipe-primed .home-about-extra,
-.home-copy.wipe-in .home-about-extra { transition: none; }
-@media (prefers-reduced-motion: reduce) {
-  .home-copy.wipe-out, .home-copy.wipe-in { transition: none; }
-}
 
 .home-about-extra { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease; }
 .home-about-extra > .home-about-inner { overflow: hidden; min-height: 0; }
@@ -763,6 +854,7 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   /* stacked, the thumbnail is on its own row — no reason to keep it small */
   .home-content--small .home-media { width: 100%; }
   .home-content:not(.home-content--small):not(.home-content--bio) .home-media { width: 100%; }
+  .home-content--expandable.is-open .home-media { width: 100%; }
   /* stacked, the crop would be a thin band under the copy — it only comes back
      once the bio is expanded and the photo can be shown whole */
   .home-content--bio { grid-template-columns: 1fr; }
@@ -798,6 +890,7 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
     padding-bottom: clamp(24px, 6vw, 32px);
   }
   .home-content--small { padding-top: clamp(12px, 2.5vw, 18px); padding-bottom: clamp(20px, 5vw, 26px); }
+  .home-content--expandable.is-open { padding-top: clamp(14px, 3vw, 20px); padding-bottom: clamp(24px, 6vw, 32px); }
   .home-media { order: -1; }
   .home-label { flex-basis: auto; }
   /* project descriptions are desktop-only — stacked single-column they push
@@ -805,6 +898,10 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
      "View project" link stay, so a card is still identifiable and still
      opens. The bio keeps its copy: it IS the content of that section. */
   .home-content:not(.home-content--bio) .home-copy p { display: none; }
+  /* an opened main project is the exception — opening it is asking to read it */
+  .home-content--expandable.is-open .home-copy p { display: block; }
+  /* no hover to open a row here, so the company line would only hold a gap */
+  .home-content--expandable .home-meta .home-meta-company { display: none; }
   /* stacked: margin-top:auto collapses, so the CTA carries its own space —
      enough to sit clear of the meta block, not enough to strand it */
   .home-content:not(.home-content--bio) .home-copy .home-cta { margin-top: 18px; }
@@ -842,7 +939,8 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .home-row, .home-panel, #stackCollapse, #stackCollapse svg, .home-label, .home-about-extra { transition-duration: 0.001s; }
+  .home-row, .home-panel, #stackCollapse, #stackCollapse svg, .home-label, .home-about-extra,
+  .home-content--bio .home-copy, .home-bio-footer .home-about-links { transition-duration: 0.001s; }
   .home-fret:hover .home-cta { animation: none; }
-  #stackCollapse.pulse { animation: none; }
+  #stackCollapse.pulse, .mute-btn.pulse { animation: none; }
 }
