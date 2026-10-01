@@ -241,6 +241,24 @@ window.initChordKeys = function (opts) {
   row.setAttribute('aria-label', 'Amp');
   var pads = hint.querySelector('.chord-pads');
   hint.insertBefore(row, pads ? pads.nextSibling : null);
+  row.id = 'ampDials';
+
+  // On short screens (chords.css) the dials are tucked away so the guitar
+  // fits on one screen; this button opens and closes them. Elsewhere it's
+  // hidden and the dials always show.
+  var ampToggle = document.createElement('button');
+  ampToggle.type = 'button';
+  ampToggle.className = 'amp-toggle';
+  ampToggle.textContent = 'Amp';
+  ampToggle.setAttribute('aria-controls', 'ampDials');
+  ampToggle.setAttribute('aria-expanded', 'false');
+  ampToggle.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var open = row.classList.toggle('is-open');
+    ampToggle.classList.toggle('is-open', open);
+    ampToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  hint.insertBefore(ampToggle, row);
 
   // Acoustic / Electric — the guitar, ahead of the amp's knobs. Acoustic
   // bypasses the overdrive, so that dial dims while it's on.

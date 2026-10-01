@@ -176,6 +176,11 @@ body.collage-on .scatter-stage { background: #fff; }
 .scatter-img img { width: 100%; height: auto; display: block; }
 [data-theme="dark"] .scatter-img { background: #252422; }
 @media (max-width: 768px) { .scatter-stage { display: none; } }
+/* no collage on touch screens (home.js), so the keywords there are plain
+   underlined text — don't tint them as if they did something */
+@media (hover: none), (pointer: coarse) {
+  .home-content--bio .home-copy:has(p:hover) .kw { color: inherit; }
+}
 
 
 /* the string — reuses .string-zone / .string-path from shared.css */

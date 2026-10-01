@@ -268,3 +268,41 @@ body.chords-visible .amp-dials { pointer-events: auto; }
   .chord-pad-left, .chord-pad-col { gap: 7px; }
   .amp-type-btn { padding: 6px 14px; font-size: 10px; }
 }
+
+/* Short phone screens: the dials tuck away behind an Amp button (chords.js),
+   so the strings, pads and footer still land on one screen. Taller screens,
+   and desktop windows of any height, never see the button. */
+.amp-toggle { display: none; }
+@media (max-height: 750px) and (max-width: 640px), (max-height: 750px) and (pointer: coarse) {
+  /* the pads go from columns to rows — A–G, then the qualities, then the
+     two strums — which takes about half the height. Still ≥40px to tap. */
+  .chord-pad-deck { flex-direction: column; align-items: stretch; gap: 8px; margin-top: 8px; }
+  .chord-pad-left { flex-direction: column; gap: 8px; }
+  .chord-pad-col { flex-direction: row; justify-content: space-between; gap: 6px; }
+  /* the seven keys share the row's width, as circles up to 40px across */
+  .chord-pad.chord-pad[data-root] { width: auto; height: auto; max-width: 40px; aspect-ratio: 1; min-height: 0; min-width: 0; flex: 1 1 0; padding: 0; }
+  .chord-pad-col--mode .chord-pad,
+  .chord-pad-col--strum .chord-pad { flex: 1 1 0; min-width: 0; min-height: 40px; padding: 0 4px; font-size: 12px; }
+  .chord-pad-col--strum .chord-pad { min-height: 44px; }
+  .chord-pad-col--mode .chord-pad { font-size: 11px; letter-spacing: 0; }
+  .amp-toggle {
+    display: block;
+    margin: 6px auto 0;
+    appearance: none;
+    padding: 6px 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: transparent;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--mid);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .amp-toggle.is-open { color: #ff2d2d; border-color: #ff2d2d; }
+  body.chords-visible .amp-toggle { pointer-events: auto; }
+  .amp-dials:not(.is-open) { display: none; }
+  .amp-dials.is-open { margin-top: 10px; }
+}

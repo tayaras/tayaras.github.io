@@ -811,7 +811,11 @@ document.addEventListener('DOMContentLoaded', function () {
     pools[key].forEach(function (el) { el.style.transitionDelay = '0ms'; el.classList.remove('visible'); });
   }
 
-  // hover only — a click on a keyword does nothing
+  // hover only — a click on a keyword does nothing. And only where there is
+  // a real hover and room for the collage (the stage is hidden at 768px and
+  // under, home.css): a phone fires mouseenter on a tap, which would blank
+  // the page with nothing to show, and pull in dozens of photos for nothing.
+  var canCollage = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 769px)');
   window.__initScatterLinks = function () {
     document.querySelectorAll('.kw').forEach(function (kw) {
       if (kw.getAttribute('data-scatter-bound')) return;
@@ -819,8 +823,11 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!pools[key]) return;
       kw.setAttribute('data-scatter-bound', '1');
       var para = kw.closest('p');
-      if (para) para.addEventListener('pointerenter', function () { loadPool(key); }, { once: true });
-      kw.addEventListener('mouseenter', function () { loadPool(key); show(key, kw); });
+      if (para) para.addEventListener('pointerenter', function () { if (canCollage.matches) loadPool(key); });
+      kw.addEventListener('mouseenter', function () {
+        if (!canCollage.matches) return;
+        loadPool(key); show(key, kw);
+      });
       kw.addEventListener('mouseleave', function () { hide(key); });
     });
   };

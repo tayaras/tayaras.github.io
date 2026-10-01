@@ -106,6 +106,16 @@ body.proj-collapsed .proj-string-row--over {
   .proj-string-row--filler { animation: none; }
 }
 body.proj-collapsed .proj-string-row { padding: 5px 0; }
+/* Compressed on a phone, the strings, chord deck, dials and footer should
+   land inside one screen, as they do on the home page. Expanded, the page
+   keeps its generous bottom padding; compressed, that's just air under the
+   pads. */
+@media (max-width: 640px) {
+  body.proj-collapsed .proj { padding-bottom: 8px; }
+  body.proj-collapsed .chord-hint { margin-top: 0; }
+  body.proj-collapsed .chord-pads { padding-bottom: 6px; }
+  body.proj-collapsed .copyright-footer { padding-bottom: 10px; }
+}
 body.proj-collapsed .proj-sec-label,
 body.proj-collapsed .proj-id {
   max-width: 0;
