@@ -933,11 +933,10 @@ body.stack-open .home-fret:nth-of-type(12) .home-panel { transition-delay: 0.55s
   .home-content--expandable.is-open { padding-top: clamp(14px, 3vw, 20px); padding-bottom: clamp(24px, 6vw, 32px); }
   .home-media { order: -1; }
   .home-label { flex-basis: auto; }
-  /* project descriptions are desktop-only — stacked single-column they push
-     the next section a screen away. The thumbnail, the meta block and the
-     "View project" link stay, so a card is still identifiable and still
-     opens. The bio keeps its copy: it IS the content of that section. */
+  /* Keep the first description visible on phones so each project has context.
+     Longer descriptions remain available when a main project opens. */
   .home-content:not(.home-content--bio) .home-copy p { display: none; }
+  .home-content:not(.home-content--bio) .home-copy > p:first-of-type { display: block; }
   /* an opened main project is the exception — opening it is asking to read it */
   .home-content--expandable.is-open .home-copy p { display: block; }
   /* no hover to open a row here, so the company line would only hold a gap */

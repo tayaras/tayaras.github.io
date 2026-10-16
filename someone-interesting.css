@@ -1,27 +1,55 @@
-/* Artifact sizing for this case study only. */
+/* Use the shared case-study rails; preserve the original app inside its assets. */
+.si-lead { background: #fff; }
+.si-lead img { object-fit: contain; }
 .si-case .proj-row > *, .si-case .proj-summary { min-width: 0; }
-.si-case .proj-row-copy .proj-figblock-title + p { margin-top: 12px; }
+.si-case .proj-summary, .si-case .proj-fact dd { overflow-wrap: anywhere; }
 .si-case .proj-linkline { display: flex; flex-wrap: wrap; gap: 12px 28px; }
 .si-case .proj-linkline a + a { margin-left: 0; }
-.si-case .proj-row-media { width: 100%; box-sizing: border-box; }
-.si-case .proj-vid { aspect-ratio: auto; background: var(--line); }
-.si-case .proj-vid video { width: 100%; height: auto; object-fit: contain; }
-.si-case .si-flow { list-style: none; margin: 0; padding: 0; }
-.si-case .si-flow li { position: relative; border: 1px solid var(--line); padding: 16px 20px; }
-.si-case .si-flow li + li { margin-top: 24px; }
-.si-case .si-flow li + li::before { content: "↓"; position: absolute; top: -24px; left: 50%; transform: translateX(-50%); height: 23px; line-height: 23px; color: var(--mid-500); font-size: 16px; }
-.si-case .si-flow-title { display: block; font-family: var(--sans); font-size: 17px; font-weight: 500; line-height: 1.4; color: var(--black); }
-.si-case .si-flow-detail { display: block; margin-top: 5px; font-family: var(--sans); font-size: 14px; line-height: 1.55; color: var(--mid-500); overflow-wrap: anywhere; }
-.si-case .proj-ph-box { min-height: 220px; box-sizing: border-box; padding: clamp(20px, 3vw, 36px); }
-.si-case .proj-ph-desc { max-width: none; }
-.si-case .proj-row-media figcaption { line-height: 1.6; overflow-wrap: anywhere; }
-@media (min-width: 1000px) {
-  .si-case .proj-row + .proj-row { margin-top: 0; }
-  .si-case .proj-row > .proj-diagram, .si-case .proj-row > .proj-ph { margin-top: 0; }
-}
+.si-case #sec-experience, #si-sequence { scroll-margin-top: 24px; }
+.si-case .proj-row-media figcaption { font-size: 12px; line-height: 1.6; letter-spacing: normal; text-transform: none; }
+
+/* Two original viewport captures beside their design explanation. */
+.si-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.si-comparison > * { min-width: 0; margin: 0; }
+.si-comparison img { display: block; width: auto; max-width: 100%; height: clamp(280px, 31vw, 420px); object-fit: contain; margin-inline: auto; border-radius: 0; }
+.si-comparison figcaption { margin-top: 14px; }
+.si-comparison figcaption strong { display: block; margin-bottom: 6px; color: var(--black); font-weight: 500; }
+.si-artifact-note { font-size: 12px; line-height: 1.6; color: var(--mid-500); }
+.si-comparison .si-artifact-note { grid-column: 1 / -1; }
+
+/* The presentation board uses the app's paper, red ink, serif and mono. */
+.si-project-board { background: #faf8f2; padding: clamp(20px, 2.4vw, 28px); color: #a9160e; border-radius: var(--media-radius); }
+.si-board-title { color: #a9160e; font-family: 'Instrument Serif', Georgia, serif; font-size: clamp(28px, 3vw, 40px); font-weight: 400; line-height: 1.1; text-align: center; margin: 0 0 24px; }
+.si-sequence-screens { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.si-sequence-screens > div { min-width: 0; }
+.si-sequence-screens img { display: block; width: auto; max-width: 100%; height: auto; max-height: 420px; margin-inline: auto; border: 1px solid rgba(169,22,14,.15); border-radius: 0; }
+.si-sequence-screens h4 { margin: 20px 0 10px; color: #a9160e; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; line-height: 1.5; }
+.si-sequence-screens p { margin: 0; color: #6b322e; font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.6; }
+.si-sequence-screens:focus-visible { outline: 2px solid #a9160e; outline-offset: 6px; }
+.si-case .si-scenario-label { margin: 12px 0; font-size: 11px; line-height: 1.5; letter-spacing: .08em; text-transform: uppercase; }
+
+/* Keep the recorded phone viewport intact within the shared media column. */
+.si-video-board { padding: 24px; }
+.si-case .si-video-board .proj-vid { width: min(100%, 260px); margin-inline: auto; aspect-ratio: auto; background: #fff; border-radius: 0; }
+.si-case .si-video-board video { display: block; width: 100%; height: auto; object-fit: contain; border-radius: 0; }
+
+/* Readable hover feedback in both portfolio themes. */
+.si-case { --si-hover: #bc211b; }
+[data-theme="dark"] .si-case { --si-hover: #ff7770; }
+.si-case .proj-string-row:hover .proj-sec-label,
+.si-case .proj-string-row:hover .proj-id,
+.si-case .proj-linkline a:hover,
+.si-case .proj-prose a:hover,
+.si-case .proj-next-title:hover,
+.si-case .proj-back:hover { color: var(--si-hover); }
+.si-case .proj-linkline a:hover { border-color: var(--si-hover); }
+.si-case .proj-next .label { font-size: 11px; }
+.si-case .chord-guide.pulse { animation: none; }
+.si-case .chord-instr { text-transform: none; letter-spacing: normal; }
+
 @media (max-width: 599px) {
-  .si-case .si-flow li { padding: 14px 16px; }
-  .si-case .proj-sec { margin-top: 72px; }
-  .si-case .proj-ph-box { min-height: 0; }
-  .si-case .proj-summary, .si-case .proj-fact dd { overflow-wrap: anywhere; }
+  .si-comparison { gap: 16px; }
+  .si-comparison img { height: 280px; }
+  .si-sequence-screens { display: flex; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 16px; }
+  .si-sequence-screens > div { flex: 0 0 84%; scroll-snap-align: start; }
 }
