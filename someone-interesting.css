@@ -1,6 +1,5 @@
 /* Use the shared case-study rails; preserve the original app inside its assets. */
-.si-lead { background: #fff; }
-.si-lead img { object-fit: contain; }
+.si-lead { background: #fbfbfb; }
 .si-case .proj-row > *, .si-case .proj-summary { min-width: 0; }
 .si-case .proj-summary, .si-case .proj-fact dd { overflow-wrap: anywhere; }
 .si-case .proj-linkline { display: flex; flex-wrap: wrap; gap: 12px 28px; }
